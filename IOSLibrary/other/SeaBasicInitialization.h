@@ -19,16 +19,12 @@
 + (UIColor*)sea_appMainColor;
 
 ///字体
-+ (void)sea_setMainFontName:(NSString*) name;
-+ (NSString*)sea_mainFontName;
++ (void)sea_setSeaMainFontName:(NSString*) name;
++ (NSString*)sea_SeaMainFontName;
 
 ///数字字体
-+ (void)sea_setMainNumberFontName:(NSString*) name;
-+ (NSString*)sea_mainNumberFontName;
-
-///字体颜色 #666666
-+ (void)sea_setMainTextColor:(UIColor*) color;
-+ (UIColor*)sea_mainTextColor;
++ (void)sea_setSeaMainNumberFontName:(NSString*) name;
++ (NSString*)sea_SeaMainNumberFontName;
 
 ///网络错误提示信息
 + (void)sea_setAlertMsgWhenBadNetwork:(NSString*) msg;

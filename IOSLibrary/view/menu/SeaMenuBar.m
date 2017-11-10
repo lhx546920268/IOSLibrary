@@ -78,8 +78,8 @@
 - (void)initialization
 {
     _titleColor = MainGrayColor;
-    _titleFont = [UIFont fontWithName:MainFontName size:13];
-    _selectedColor = _appMainColor_;
+    _titleFont = [UIFont fontWithName:SeaMainFontName size:13];
+    _selectedColor = SeaAppMainColor;
     
     _buttonWidthExtension = 10.0;
     _callDelegateWhenSetSelectedIndex = YES;
@@ -105,8 +105,8 @@
             break;
     }
     
-    _topSeparatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, _separatorLineWidth_)];
-    _topSeparatorLine.backgroundColor = _separatorLineColor_;
+    _topSeparatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, SeaSeparatorHeight)];
+    _topSeparatorLine.backgroundColor = SeaSeparatorColor;
     [self addSubview:_topSeparatorLine];
     
     _selectedIndex = NSNotFound;
@@ -133,8 +133,8 @@
     [self.collectionView addSubview:_lineView];
     
     //分割线
-    _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - _separatorLineWidth_, self.width, _separatorLineWidth_)];
-    _separatorLine.backgroundColor = _separatorLineColor_;
+    _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - SeaSeparatorHeight, self.width, SeaSeparatorHeight)];
+    _separatorLine.backgroundColor = SeaSeparatorColor;
     [self addSubview:_separatorLine];
     
     self.selectedIndex = 0;
@@ -303,7 +303,7 @@
 - (void)setTitleFont:(UIFont *)titleFont
 {
     if(titleFont == nil)
-        titleFont = [UIFont fontWithName:MainFontName size:15.0];
+        titleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
     if(![_titleFont isEqualToFont:titleFont])
     {
         _titleFont = titleFont;
@@ -314,12 +314,12 @@
     }
 }
 
-/**菜单按钮 选中颜色 default is '_appMainColor_'，设置也会改变 lineView 颜色
+/**菜单按钮 选中颜色 default is 'SeaAppMainColor'，设置也会改变 lineView 颜色
  */
 - (void)setSelectedColor:(UIColor *)selectedColor
 {
     if(selectedColor == nil)
-        selectedColor = _appMainColor_;
+        selectedColor = SeaAppMainColor;
     
     if(![_selectedColor isEqualToColor:selectedColor])
     {

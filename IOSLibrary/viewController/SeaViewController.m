@@ -23,7 +23,7 @@
     {
         self.statusBarHidden = NO;
         self.hideTabBar = YES;
-        self.iconTintColor = WMTintColor;
+        self.iconTintColor = SeaTintColor;
     }
     return self;
 }

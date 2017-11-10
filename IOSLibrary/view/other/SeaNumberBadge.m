@@ -38,7 +38,7 @@
     self.fillColor = [UIColor redColor];
     self.strokeColor = [UIColor clearColor];
     self.textColor = [UIColor whiteColor];
-    self.font = [UIFont fontWithName:MainFontName size:13.0];
+    self.font = [UIFont fontWithName:SeaMainFontName size:13.0];
     self.point = NO;
     self.pointRadius = 5.0;
     self.pointCenter = CGPointMake(self.frame.size.width / 2.0, self.frame.size.height / 2.0);

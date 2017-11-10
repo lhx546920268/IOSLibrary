@@ -65,7 +65,7 @@
  */
 - (void)setDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _width_, 35.0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 35.0)];
     view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     
     CGFloat buttonWidth = 60.0;
@@ -73,7 +73,7 @@
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button setTitle:@"完成" forState:UIControlStateNormal];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [button setFrame:CGRectMake(_width_ - buttonWidth, 0, buttonWidth, 35.0)];
+    [button setFrame:CGRectMake(SeaScreenWidth - buttonWidth, 0, buttonWidth, 35.0)];
     [view addSubview:button];
     self.inputAccessoryView = view;
     

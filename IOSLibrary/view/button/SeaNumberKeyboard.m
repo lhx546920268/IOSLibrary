@@ -38,7 +38,7 @@
     CGFloat buttonHeight = 54.0;
     NSInteger row = 4;
     CGFloat margin = 0.5;
-    self = [super initWithFrame:CGRectMake(0, 0, _width_, buttonHeight * row + margin * (row - 1))];
+    self = [super initWithFrame:CGRectMake(0, 0, SeaScreenWidth, buttonHeight * row + margin * (row - 1))];
     if(self)
     {
         if(otherButtonTittle == nil)

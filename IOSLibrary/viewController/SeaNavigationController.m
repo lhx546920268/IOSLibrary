@@ -24,7 +24,7 @@
 {
     //设置默认导航条
     UINavigationBar *navigationBar = [UINavigationBar appearanceWhenContainedIn:[SeaNavigationController class], nil];
-    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:_navigationBarBackgroundColor_ titleColor:WMTintColor titleFont:[UIFont fontWithName:MainFontName size:17.0]];
+    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:SeaNavigationBarBackgroundColor titleColor:SeaTintColor titleFont:[UIFont fontWithName:SeaMainFontName size:17.0]];
    // navigationBar.translucent = NO; ios 7.0会崩溃
 }
 
@@ -33,7 +33,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        _targetStatusBarStyle = WMStatusBarStyle;
+        _targetStatusBarStyle = SeaStatusBarStyle;
         self.orgStyle = [UIApplication sharedApplication].statusBarStyle;
     }
     return self;

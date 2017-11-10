@@ -37,13 +37,13 @@
  */
 - (id)initWithTitle:(NSString*) title otherButtonTitles:(NSArray*) otherButtonTitles
 {
-    self = [super initWithFrame:CGRectMake(0, 0, _width_, _height_)];
+    self = [super initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight)];
     if(self)
     {
         _titleColor = [UIColor blackColor];
         _destructiveButtonIndex = NSNotFound;
-        _buttonTextColor = _UIKitTintColor_;
-        _butttonFont = [UIFont fontWithName:MainFontName size:17.0];
+        _buttonTextColor = UIKitTintColor;
+        _butttonFont = [UIFont fontWithName:SeaMainFontName size:17.0];
         
         _backgroundView = [[UIView alloc] initWithFrame:self.bounds];
         _backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
@@ -73,7 +73,7 @@
         _titleLabel.textColor = _titleColor;
         _titleLabel.font = font;
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(_width_ / 2.0, _height_ / 2.0, 1.0, 1.0)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(SeaScreenWidth / 2.0, SeaScreenHeight / 2.0, 1.0, 1.0)];
         _contentView.backgroundColor = [UIColor whiteColor];
         _contentView.layer.cornerRadius = 5.0;
         _contentView.layer.masksToBounds = YES;
@@ -81,12 +81,12 @@
         [self addSubview:_contentView];
         
         CGFloat buttonHeight = 45.0;
-        CGFloat lineWidth = _separatorLineWidth_;
+        CGFloat lineWidth = SeaSeparatorHeight;
         
         [_contentView addSubview:_titleLabel];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, _titleLabel.bottom + topMargin - _separatorLineWidth_, contentWidth, _separatorLineWidth_)];
-        line.backgroundColor = _separatorLineColor_;
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, _titleLabel.bottom + topMargin - SeaSeparatorHeight, contentWidth, SeaSeparatorHeight)];
+        line.backgroundColor = SeaSeparatorColor;
         [_contentView addSubview:line];
         
         if(otherButtonTitles.count > 2)
@@ -107,7 +107,7 @@
                 if(i != otherButtonTitles.count - 1)
                 {
                     line = [[UIView alloc] initWithFrame:CGRectMake(textMargin, btn.bottom, contentWidth - textMargin * 2, lineWidth)];
-                    line.backgroundColor = _separatorLineColor_;
+                    line.backgroundColor = SeaSeparatorColor;
                     
                     [_contentView addSubview:line];
                 }
@@ -133,16 +133,16 @@
                 if(i != otherButtonTitles.count - 1)
                 {
                     line = [[UIView alloc] initWithFrame:CGRectMake(btn.right, btn.top, lineWidth, buttonHeight)];
-                    line.backgroundColor = _separatorLineColor_;
+                    line.backgroundColor = SeaSeparatorColor;
                     
                     [_contentView addSubview:line];
                 }
             }
         }
         
-        CGFloat margin = (_width_ - contentWidth) / 2.0;
+        CGFloat margin = (SeaScreenWidth - contentWidth) / 2.0;
         CGFloat height = topMargin + _titleLabel.height + topMargin + buttonHeight;
-        self.targetFrame = CGRectMake(margin, (_height_ - height) / 2.0, contentWidth, height);
+        self.targetFrame = CGRectMake(margin, (SeaScreenHeight - height) / 2.0, contentWidth, height);
     }
     
     return self;
@@ -182,7 +182,7 @@
     if(![_buttonTextColor isEqualToColor:buttonTextColor])
     {
         if(buttonTextColor == nil)
-            buttonTextColor = _UIKitTintColor_;
+            buttonTextColor = UIKitTintColor;
         
         _buttonTextColor = buttonTextColor;
         
@@ -203,7 +203,7 @@
     if(![_butttonFont isEqualToFont:butttonFont])
     {
         if(butttonFont == nil)
-            butttonFont = [UIFont fontWithName:MainFontName size:17.0];
+            butttonFont = [UIFont fontWithName:SeaMainFontName size:17.0];
         _butttonFont = butttonFont;
         
         for(NSInteger i = 0;i < NSNotFound;i ++)

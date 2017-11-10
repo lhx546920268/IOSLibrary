@@ -72,14 +72,14 @@
         //创建选项卡按钮
         NSMutableArray *tabbarItems = [NSMutableArray arrayWithCapacity:itemInfos.count];
         
-        CGFloat width = _width_ / itemInfos.count;
+        CGFloat width = SeaScreenWidth / itemInfos.count;
         
         for(NSInteger i = 0;i < itemInfos.count;i ++)
         {
             
             //创建选项卡按钮
             SeaTabBarItemInfo *info = [itemInfos objectAtIndex:i];
-            SeaTabBarItem *item = [[SeaTabBarItem alloc] initWithFrame:CGRectMake(i * width, 0, width, _tabBarHeight_) normalImage:info.normalImage selectedImage:info.selectedImage title:info.title];
+            SeaTabBarItem *item = [[SeaTabBarItem alloc] initWithFrame:CGRectMake(i * width, 0, width, SeaTabBarHeight) normalImage:info.normalImage selectedImage:info.selectedImage title:info.title];
             [tabbarItems addObject:item];
             
             
@@ -212,7 +212,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    _tabBar = [[SeaTabBar alloc] initWithFrame:CGRectMake(0, self.view.height - _tabBarHeight_, _width_, _tabBarHeight_) items:self.tabBarItems];
+    _tabBar = [[SeaTabBar alloc] initWithFrame:CGRectMake(0, self.view.height - SeaTabBarHeight, SeaScreenWidth, SeaTabBarHeight) items:self.tabBarItems];
     _tabBar.delegate = self;
     [self.view addSubview:_tabBar];
     

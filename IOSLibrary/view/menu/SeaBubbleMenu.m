@@ -101,7 +101,7 @@
 {
     [super layoutSubviews];
     _button.frame = CGRectMake(_contentInsets.left, 0, self.contentView.width - _contentInsets.left - _contentInsets.right, self.contentView.height);
-    _line.frame = CGRectMake(0, self.contentView.height - _separatorLineWidth_, self.contentView.width, _separatorLineWidth_);
+    _line.frame = CGRectMake(0, self.contentView.height - SeaSeparatorHeight, self.contentView.width, SeaSeparatorHeight);
 }
 
 @end
@@ -172,7 +172,7 @@
     
     _textColor = [UIColor blackColor];
     _selectedTextColor = [UIColor redColor];
-    _font = [UIFont fontWithName:MainFontName size:15.0];
+    _font = [UIFont fontWithName:SeaMainFontName size:15.0];
     _selectedBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
     _selectedIndex = NSNotFound;
     _rowHeight = 40.0;
@@ -261,7 +261,7 @@
     if(![_font isEqualToFont:font])
     {
         if(font == nil)
-            font = [UIFont fontWithName:MainFontName size:15.0];
+            font = [UIFont fontWithName:SeaMainFontName size:15.0];
         _font = font;
         [self.tableView reloadData];
     }
@@ -537,7 +537,7 @@
        CGFloat contentWidth = 0;
        for(SeaBubbleMenuItemInfo *info in self.menuItemInfos)
        {
-           CGSize size = [info.title stringSizeWithFont:_font contraintWith:_width_];
+           CGSize size = [info.title stringSizeWithFont:_font contraintWith:SeaScreenWidth];
            contentWidth = MAX(contentWidth, size.width + info.icon.size.width);
        }
        

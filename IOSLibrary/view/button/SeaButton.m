@@ -263,8 +263,8 @@
     
     //画给定数字
     NSString *numberString = [NSString stringWithFormat:@"%d",_number];
-    UIFont *font = [UIFont fontWithName:MainFontName size:14.0];
-    CGSize size = [numberString stringSizeWithFont:font contraintWith:_width_];
+    UIFont *font = [UIFont fontWithName:SeaMainFontName size:14.0];
+    CGSize size = [numberString stringSizeWithFont:font contraintWith:SeaScreenWidth];
     
     CGPoint textPoint = CGPointMake(point2.x + (width - size.width) / 2.0, point2.y + (width - size.height) / 2.0);
     

@@ -1,16 +1,14 @@
 //
-//  UINavigationController+Utilities.h
-//  SeaBasic
+//  UINavigationController+Utils.h
 //
 //  Created by 罗海雄 on 15/11/12.
-//  Copyright © 2015年 qianseit. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @class SeaNavigationBarAlphaOverlayView;
 
-@interface UINavigationController (Utilities)
+@interface UINavigationController (Utils)
 
 #pragma mark- transparent
 

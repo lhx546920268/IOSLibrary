@@ -14,7 +14,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    self.switch_control.onTintColor = _appMainColor_;
+    self.switch_control.onTintColor = SeaAppMainColor;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 

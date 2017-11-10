@@ -47,7 +47,7 @@
 {
     if(!self.contentView)
     {
-        self.backgroundColor = _SeaViewControllerBackgroundColor_;
+        self.backgroundColor = SeaViewControllerBackgroundColor;
         self.clipsToBounds = YES;
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor clearColor];
@@ -70,7 +70,7 @@
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _textLabel.textColor = [UIColor grayColor];
-        _textLabel.font = [UIFont fontWithName:MainFontName size:17.0];
+        _textLabel.font = [UIFont fontWithName:SeaMainFontName size:17.0];
         _textLabel.textAlignment = NSTextAlignmentCenter;
 
         [self.contentView addSubview:_textLabel];

@@ -40,9 +40,9 @@
         [self addSubview:_imageView];
         
         CGFloat height = frame.size.height;
-        _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - _separatorLineWidth_, (frame.size.height - height) / 2.0, _separatorLineWidth_, height)];
+        _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - SeaSeparatorHeight, (frame.size.height - height) / 2.0, SeaSeparatorHeight, height)];
         _separatorLine.userInteractionEnabled = NO;
-        _separatorLine.backgroundColor = _separatorLineColor_;
+        _separatorLine.backgroundColor = SeaSeparatorColor;
         [self addSubview:_separatorLine];
     }
     
@@ -142,13 +142,13 @@
 //初始化
 - (void)intialization
 {
-    self.shadowColor = _separatorLineColor_;
+    self.shadowColor = SeaSeparatorColor;
     _keepHighlightWhenDismissList = YES;
     _shouldHighlighted = YES;
     _shouldShowUnderline = NO;
-    _buttonTitleFont = [UIFont fontWithName:MainFontName size:15.0];
+    _buttonTitleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
     _buttonNormalTitleColor = [UIColor blackColor];
-    _buttonHighlightTitleColor = _appMainColor_;
+    _buttonHighlightTitleColor = SeaAppMainColor;
     
     _listTitleFont = _buttonTitleFont;
     _listNormalTitleColor = _buttonNormalTitleColor;
@@ -283,7 +283,7 @@
     if(![_buttonTitleFont isEqualToFont:buttonTitleFont])
     {
         if(buttonTitleFont == nil)
-            buttonTitleFont = [UIFont fontWithName:MainFontName size:15.0];
+            buttonTitleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
         
         _buttonTitleFont = buttonTitleFont;
         for(NSInteger i = 0;i < _items.count;i ++)
@@ -330,7 +330,7 @@
     if(![_buttonHighlightTitleColor isEqualToColor:buttonHighlightTitleColor])
     {
         if(buttonHighlightTitleColor == nil)
-            buttonHighlightTitleColor = _appMainColor_;
+            buttonHighlightTitleColor = SeaAppMainColor;
         _buttonHighlightTitleColor = buttonHighlightTitleColor;
         
         SeaDropDownMenuCell *cell = [self cellForIndex:_selectedIndex];
@@ -364,7 +364,7 @@
         
         if(!_shadowLine)
         {
-            _shadowLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - _separatorLineWidth_, self.width, _separatorLineWidth_)];
+            _shadowLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - SeaSeparatorHeight, self.width, SeaSeparatorHeight)];
             _shadowLine.backgroundColor = [UIColor clearColor];
             _shadowLine.userInteractionEnabled = NO;
             [self addSubview:_shadowLine];
@@ -396,7 +396,7 @@
         {
             CGFloat height = 2.0;
             _underLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - height, 0, height)];
-            _underLine.backgroundColor = _appMainColor_;
+            _underLine.backgroundColor = SeaAppMainColor;
             _underLine.userInteractionEnabled = NO;
             [self addSubview:_underLine];
             [self updateUnderlinePosition];
@@ -540,7 +540,7 @@
     
     _listShowing = NO;
     self.isAnimating = YES;
-    [UIView animateWithDuration:_animatedDuration_ animations:^(void){
+    [UIView animateWithDuration:0.25 animations:^(void){
         
         _listBackgroundView.alpha = 0;
         _tableView.height = 0;
@@ -589,7 +589,7 @@
     self.isAnimating = YES;
     if(self.tableView.superview != nil)
     {
-        [UIView animateWithDuration:_animatedDuration_ animations:^(void){
+        [UIView animateWithDuration:0.25 animations:^(void){
             
             self.tableView.height = MIN(_tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - _tableView.top : self.listMaxHeight);
 
@@ -626,7 +626,7 @@
         _tableView.width = superview.width;
         [superview addSubview:_tableView];
         
-        [UIView animateWithDuration:_animatedDuration_ animations:^(void){
+        [UIView animateWithDuration:0.25 animations:^(void){
             
             _listBackgroundView.alpha = 1.0;
             _tableView.height = MIN(_tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - _tableView.top : self.listMaxHeight);

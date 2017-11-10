@@ -10,6 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SeaAlbumGroupListCell.h"
 #import "SeaBasic.h"
+#import "UIViewController+Utilities.h"
 
 @interface SeaAlbumGroupListView ()
 
@@ -35,9 +36,9 @@
 /**以分组信息初始化
  *@param groups 图片分组信息 数组元素是 ALAssetsGroup 对象
  */
-- (id)initWithGroups:(NSArray*) groups
+- (id)initWithFrame:(CGRect)frame groups:(NSArray*) groups
 {
-    self = [super initWithFrame:CGRectMake(0, 0, _width_, _height_ - _statusHeight_ - _navigationBarHeight_)];
+    self = [super initWithFrame:frame];
     if(self)
     {
         self.infos = groups;
@@ -45,7 +46,7 @@
         //黑色半透明高度
         CGFloat rowHeight = SeaAlbumGroupListCellImageSize + SeaAlbumGroupListCellMargin;
         CGFloat buttonHeight = 0;
-        CGFloat blackHeight = self.height - (MIN(_infos.count, 5) * rowHeight + SeaAlbumGroupListCellMargin + buttonHeight + _separatorLineWidth_);
+        CGFloat blackHeight = self.height - (MIN(_infos.count, 5) * rowHeight + SeaAlbumGroupListCellMargin + buttonHeight + SeaSeparatorHeight);
         
         CGFloat containerHeight = self.height - blackHeight;
         UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0)];
@@ -62,8 +63,8 @@
 //        [container addSubview:button];
         
         //分割线
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, containerHeight - _separatorLineWidth_, _width_, _separatorLineWidth_)];
-        line.backgroundColor = _separatorLineColor_;
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, containerHeight - SeaSeparatorHeight, SeaScreenWidth, SeaSeparatorHeight)];
+        line.backgroundColor = SeaSeparatorColor;
         [container addSubview:line];
         
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.width, line.top) style:UITableViewStylePlain];

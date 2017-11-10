@@ -51,7 +51,7 @@
 {
     if(_collectionView == nil)
     {
-        CGRect frame = CGRectMake(0, 0, _width_, self.contentHeight);
+        CGRect frame = CGRectMake(0, 0, SeaScreenWidth, self.contentHeight);
         
         _collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:self.layout];
         _collectionView.dataSource = self;

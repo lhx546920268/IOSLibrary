@@ -174,7 +174,7 @@
             {
                 _percentLabel = [[UILabel alloc] initWithFrame:self.bounds];
                 _percentLabel.textColor = [UIColor blackColor];
-                _percentLabel.font = [UIFont fontWithName:MainFontName size:20.0];
+                _percentLabel.font = [UIFont fontWithName:SeaMainFontName size:20.0];
                 _percentLabel.textAlignment = NSTextAlignmentCenter;
                 [self addSubview:_percentLabel];
             }

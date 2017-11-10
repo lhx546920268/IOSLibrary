@@ -27,7 +27,7 @@
 /**以分组信息初始化
  *@param groups 图片分组信息 数组元素是 ALAssetsGroup 对象
  */
-- (id)initWithGroups:(NSArray*) groups;
+- (id)initWithFrame:(CGRect)frame groups:(NSArray*) groups;
 
 /**是否显示
  */

@@ -10,10 +10,15 @@
 #import "SeaAlbumGroupListView.h"
 #import <AVFoundation/AVFoundation.h>
 #import "SeaImageCropViewController.h"
+#import "UIImagePickerController+Utilities.h"
+#import "UIViewController+Utilities.h"
+#import "UIView+Utilities.h"
+#import "UIButton+utilities.h"
+#import "UIImage+Utilities.h"
+#import "SeaUtlities.h"
 #import "SeaBasic.h"
-//#import "WMRecommendCropImageViewController.h"
 
-@interface SeaAlbumAssetsViewController ()<SeaAlbumGroupListViewDelegate>
+@interface SeaAlbumAssetsViewController ()<SeaAlbumGroupListViewDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 //选中的图片资源信息 数组元素是 ALAssets
 @property(nonatomic,strong) NSMutableArray *selectedAssetInfos;
@@ -45,6 +50,8 @@
         self.present = YES;
         self.target = SeaAlbumAssetsViewControllerTargetSelected;
         self.maxSelectedCount = 1;
+        self.numberOfItemsPerRow = 3;
+        self.gridInterval = 3.0;
     }
     
     return self;
@@ -173,12 +180,13 @@
 {
     self.loading = NO;
     self.selectedAssetInfos = [NSMutableArray array];
-    
+
+    int size = (self.view.width - self.gridInterval * (self.numberOfItemsPerRow + 1)) / self.numberOfItemsPerRow;
     self.layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.layout.minimumInteritemSpacing = _SeaAlbumAssetThumbnailInterval_;
-    self.layout.minimumLineSpacing = _SeaAlbumAssetThumbnailInterval_;
-    self.layout.sectionInset = UIEdgeInsetsMake(_SeaAlbumAssetThumbnailInterval_, _SeaAlbumAssetThumbnailInterval_, _SeaAlbumAssetThumbnailInterval_, _SeaAlbumAssetThumbnailInterval_);
-    self.layout.itemSize = CGSizeMake(_SeaAlbumAssetThumbnailSize_, _SeaAlbumAssetThumbnailSize_);
+    self.layout.minimumInteritemSpacing = self.gridInterval;
+    self.layout.minimumLineSpacing = self.gridInterval;
+    self.layout.sectionInset = UIEdgeInsetsMake(self.gridInterval, self.gridInterval, self.gridInterval, self.gridInterval);
+    self.layout.itemSize = CGSizeMake(size, size);
     
     [super initialization];
     [self.collectionView registerClass:[SeaAlbumAssetsThumbnail class] forCellWithReuseIdentifier:@"cell"];
@@ -191,7 +199,7 @@
         titleButton.frame = CGRectMake(0, 0, 100.0, 30.0);
         [titleButton setTitle:@"相册" forState:UIControlStateNormal];
         [titleButton setTitleColor:self.iconTintColor forState:UIControlStateNormal];
-        titleButton.titleLabel.font = [UIFont fontWithName:MainFontName size:19.0];
+        titleButton.titleLabel.font = [UIFont systemFontOfSize:19.0];
         [titleButton setImage:arrow forState:UIControlStateNormal];
         [titleButton setImage:[UIImage imageNamed:@"triangle_up"] forState:UIControlStateSelected];
         [titleButton setButtonIconToRightWithInterval:2.0];
@@ -271,7 +279,7 @@
 {
     if(!self.listView)
     {
-        _listView = [[SeaAlbumGroupListView alloc] initWithGroups:self.infos];
+        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.statusBarHeight - self.sea_navigationBarHeight) groups:self.infos];
         _listView.delegate = self;
         [self.view addSubview:_listView];
     }
@@ -455,37 +463,6 @@
             
         }
             break;
-        case SeaAlbumAssetsViewControllerHeadImage :
-        {
-            self.requesting = YES;
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-               
-                UIImage *image = [UIImage imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
-                
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                   
-                    self.requesting = NO;
-                    [self cropHeadImage:image];
-                });
-            });
-            
-        }
-            break;
-        case SeaAlbumAssetsViewControllerRecommend :
-        {
-            self.requesting = YES;
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                
-                UIImage *image = [UIImage imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
-                
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    
-                    self.requesting = NO;
-                     [self cropRecommendImage:image];
-                });
-            });
-        }
-            break;
         case SeaAlbumAssetsViewControllerImageCrop :
         {
             self.requesting = YES;
@@ -502,37 +479,6 @@
         }
             break;
             
-    }
-}
-
-//头像
-- (void)cropHeadImage:(UIImage*) image
-{
-    if(image)
-    {
-        SeaImageCropSettings *settings = [[SeaImageCropSettings alloc] init];
-        settings.cropSize = CGSizeMake(140, 140);
-        settings.image = image;
-        
-        SeaImageCropViewController *imageCrop = [[SeaImageCropViewController alloc] initWithSettings:settings];
-        imageCrop.delegate = self.delegate;
-        [self.navigationController pushViewController:imageCrop animated:YES];
-    }
-}
-
-//推荐图片
-- (void)cropRecommendImage:(UIImage*) image
-{
-    if(image)
-    {
-//        SeaImageCropSettings *settings = [[SeaImageCropSettings alloc] init];
-//        settings.cropSize = WMRecommendImageSize;
-//        settings.image = image;
-//        
-//        WMRecommendCropImageViewController *imageCrop = [[WMRecommendCropImageViewController alloc] initWithSettings:settings];
-//        imageCrop.delegate = self.delegate;
-//        imageCrop.goodInfo = self.recommendGoodInfo;
-//        [self.navigationController pushViewController:imageCrop animated:YES];
     }
 }
 

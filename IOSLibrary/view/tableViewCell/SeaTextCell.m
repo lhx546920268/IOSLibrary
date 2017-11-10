@@ -19,7 +19,7 @@
         self.contentHeight = font.lineHeight;
         
         //内容
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_SeaTextCellMargin_, _SeaTextCellMargin_, _width_ - _SeaTextCellMargin_ * 2 , font.lineHeight)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_SeaTextCellMargin_, _SeaTextCellMargin_, SeaScreenWidth - _SeaTextCellMargin_ * 2 , font.lineHeight)];
         _contentLabel.backgroundColor = [UIColor clearColor];
         _contentLabel.textColor = [UIColor blackColor];
         _contentLabel.font = font;

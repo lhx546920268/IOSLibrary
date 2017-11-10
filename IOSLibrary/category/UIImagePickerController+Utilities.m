@@ -26,7 +26,7 @@
     else if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusDenied)
     {
         NSString *msg = [NSString stringWithFormat:@"无法使用您的相机，请在本机的“设置-隐私-相机”中设置,允许%@使用您的相机", appName()];
-
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:msg delegate:[UIApplication sharedApplication].delegate cancelButtonTitle:nil otherButtonTitles:@"取消", @"去设置", nil];
         [alertView show];
         

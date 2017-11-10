@@ -439,8 +439,8 @@
     if(interval < 0)
         interval = - interval;
     
-    UIFont *numberFont = [UIFont fontWithName:MainNumberFontName size:14.0];
-    UIFont *stringFont = [UIFont fontWithName:MainFontName size:14.0];
+    UIFont *numberFont = [UIFont fontWithName:SeaMainNumberFontName size:14.0];
+    UIFont *stringFont = [UIFont fontWithName:SeaMainFontName size:14.0];
     UIColor *textColor = [UIColor grayColor];
     
     NSMutableAttributedString *text = nil;

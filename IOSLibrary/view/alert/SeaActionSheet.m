@@ -12,7 +12,7 @@
 #import "SeaBasic.h"
 
 //系统默认的蓝色
-#define _UIKitTintColor_ [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
+#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
 //边距
 #define SeaActionSheetMargin 10.0
@@ -42,7 +42,7 @@
 
 - (id)init
 {
-    self = [super initWithFrame:CGRectMake(0, 0, _width_ - SeaActionSheetMargin * 2, 0)];
+    self = [super initWithFrame:CGRectMake(0, 0, SeaScreenWidth - SeaActionSheetMargin * 2, 0)];
     if(self)
     {
         self.backgroundColor = [UIColor clearColor];
@@ -127,8 +127,8 @@
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.contentView.backgroundColor = [UIColor clearColor];
         
-        _line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _width_, _separatorLineWidth_)];
-        _line.backgroundColor = _separatorLineColor_;
+        _line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaSeparatorHeight)];
+        _line.backgroundColor = SeaSeparatorColor;
         _line.userInteractionEnabled = NO;
         [self.contentView addSubview:_line];
     }
@@ -187,7 +187,7 @@
  */
 - (id)initWithTitle:(NSString*) title delegate:(id<SeaActionSheetDelegate>)delegate cancelButtonTitle:(NSString *) cancelButtonTitle otherButtonTitles:(NSArray*) otherButtonTitles
 {
-    self = [super initWithFrame:CGRectMake(0, 0, _width_, 0)];
+    self = [super initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 0)];
     if(self)
     {
         self.title = title;
@@ -204,22 +204,22 @@
 - (void)initlization
 {
     _mainColor = [UIColor whiteColor];
-    _titleFont = [UIFont fontWithName:MainFontName size:13.0];
+    _titleFont = [UIFont fontWithName:SeaMainFontName size:13.0];
     _titleTextColor = [UIColor colorWithWhite:0.85 alpha:1.0];
-    _butttonFont = [UIFont fontWithName:MainFontName size:17.0];
-    _buttonTextColor = _UIKitTintColor_;
+    _butttonFont = [UIFont fontWithName:SeaMainFontName size:17.0];
+    _buttonTextColor = UIKitTintColor;
     
-    _destructiveButtonFont = [UIFont fontWithName:MainFontName size:17.0];
+    _destructiveButtonFont = [UIFont fontWithName:SeaMainFontName size:17.0];
     _destructiveButtonTextColor = [UIColor redColor];
     
-    _cancelButtonFont = [UIFont fontWithName:MainFontName size:20.0];
-    _cancelButtonTextColor = _UIKitTintColor_;
+    _cancelButtonFont = [UIFont fontWithName:SeaMainFontName size:20.0];
+    _cancelButtonTextColor = UIKitTintColor;
     
     //标题
     CGFloat titleHeight = [self headerHeight];
     
     //tableView高度
-    CGFloat tableViewHeight = MIN(_otherButtonTitles.count * SeaActionSheetButtonHeight + titleHeight, _height_ - _statusHeight_ - _navigationBarHeight_ - SeaActionSheetMargin * 3 - SeaActionSheetButtonHeight);
+    CGFloat tableViewHeight = MIN(_otherButtonTitles.count * SeaActionSheetButtonHeight + titleHeight, SeaScreenHeight - SeaStatusHeight - 44.0 - SeaActionSheetMargin * 3 - SeaActionSheetButtonHeight);
     
     //内容
     _contentView = [[UIView alloc] initWithFrame:CGRectMake(SeaActionSheetMargin, 0, self.width - SeaActionSheetMargin * 2, tableViewHeight + SeaActionSheetMargin * 2 + SeaActionSheetButtonHeight)];
@@ -373,7 +373,7 @@
     if(![_butttonFont isEqualToFont:butttonFont])
     {
         if(butttonFont == nil)
-            butttonFont = [UIFont fontWithName:MainFontName size:16.0];
+            butttonFont = [UIFont fontWithName:SeaMainFontName size:16.0];
         _butttonFont = butttonFont;
         
         [self.tableView reloadData];
@@ -387,7 +387,7 @@
     if(![_buttonTextColor isEqualToColor:buttonTextColor])
     {
         if(buttonTextColor == nil)
-            buttonTextColor = _UIKitTintColor_;
+            buttonTextColor = UIKitTintColor;
         
         _buttonTextColor = buttonTextColor;
         
@@ -402,7 +402,7 @@
     if(![_destructiveButtonFont isEqualToFont:destructiveButtonFont])
     {
         if(destructiveButtonFont == nil)
-            destructiveButtonFont = [UIFont fontWithName:MainFontName size:16.0];
+            destructiveButtonFont = [UIFont fontWithName:SeaMainFontName size:16.0];
         _destructiveButtonFont = destructiveButtonFont;
         
         if(self.destructiveButtonIndex < _otherButtonTitles.count)
@@ -440,7 +440,7 @@
     if(![_cancelButtonFont isEqualToFont:cancelButtonFont])
     {
         if(cancelButtonFont == nil)
-            cancelButtonFont = [UIFont fontWithName:MainFontName size:16.0];
+            cancelButtonFont = [UIFont fontWithName:SeaMainFontName size:16.0];
         
         _cancelButtonFont = cancelButtonFont;
         self.cancelButton.titleLabel.font = _cancelButtonFont;
@@ -454,7 +454,7 @@
     if(![_cancelButtonTextColor isEqualToColor:cancelButtonTextColor])
     {
         if(cancelButtonTextColor == nil)
-            cancelButtonTextColor = _UIKitTintColor_;
+            cancelButtonTextColor = UIKitTintColor;
         _cancelButtonTextColor = cancelButtonTextColor;
         
         self.cancelButton.titleLabel.textColor = _cancelButtonTextColor;

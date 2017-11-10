@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 
 /**导航栏高度
  */
-@property(nonatomic,readonly) CGFloat navigationBarHeight;
+@property(nonatomic,readonly) CGFloat sea_navigationBarHeight;
 
 /**选项卡高度
  */
@@ -135,11 +135,11 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 
 /**获取最上层的 presentedViewController
  */
-- (UIViewController*)topestPresentedViewController;
+- (UIViewController*)sea_topestPresentedViewController;
 
 /**获取最底层的 presentingViewController
  */
-- (UIViewController*)rootPresentingViewController;
+- (UIViewController*)sea_rootPresentingViewController;
 
 /**长按返回第一个视图
  */

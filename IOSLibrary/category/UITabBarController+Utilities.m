@@ -49,7 +49,7 @@ static char SeaTabBarPointDictionaryKey;
     
     point.backgroundColor = color;
     
-    CGFloat width = _width_ / self.viewControllers.count;
+    CGFloat width = SeaScreenWidth / self.viewControllers.count;
     CGFloat x = width * index + width / 2.0 + image.size.width / 2.0;
     if(x + size.width > width * (index + 1))
     {

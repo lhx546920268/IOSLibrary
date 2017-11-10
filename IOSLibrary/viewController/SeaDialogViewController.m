@@ -237,7 +237,7 @@
     {
         _keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
         
-        y = MIN(self.targetFrame.origin.y, _height_ - _keyboardFrame.size.height - self.targetFrame.size.height - 20.0);
+        y = MIN(self.targetFrame.origin.y, SeaScreenHeight - _keyboardFrame.size.height - self.targetFrame.size.height - 20.0);
     }
     
     [UIView animateWithDuration:0.25 animations:^(void){
@@ -293,7 +293,7 @@
     [super viewWillDisappear:animated];
     //[self.navigationController setNavigationBarHidden:NO animated:YES];
     SeaNavigationController *nav = (SeaNavigationController*)self.navigationController;
-    nav.targetStatusBarStyle = WMStatusBarStyle;
+    nav.targetStatusBarStyle = SeaStatusBarStyle;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -329,7 +329,7 @@
  */
 - (void)show
 {
-    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController topestPresentedViewController]];
+    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
 }
 
 - (void)showInViewController:(UIViewController *)viewController

@@ -30,8 +30,8 @@
             [self addSubview:item];
         }
         
-        _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, _separatorLineWidth_)];
-        _separatorLine.backgroundColor = _separatorLineColor_;
+        _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, SeaSeparatorHeight)];
+        _separatorLine.backgroundColor = SeaSeparatorColor;
         _separatorLine.userInteractionEnabled = NO;
         [self addSubview:_separatorLine];
     }

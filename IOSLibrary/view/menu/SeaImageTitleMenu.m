@@ -66,7 +66,7 @@
 - (void)setTitleFont:(UIFont *)titleFont
 {
     if(titleFont == nil)
-        titleFont = [UIFont fontWithName:MainFontName size:13.0];
+        titleFont = [UIFont fontWithName:SeaMainFontName size:13.0];
     if(titleFont != _titleFont)
     {
         _titleFont = titleFont;

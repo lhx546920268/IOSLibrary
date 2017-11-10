@@ -12,9 +12,8 @@
 static UIColor *shareAppMainColor = nil;
 static UIColor *shareBackgroundColor = nil;
 static UIColor *shareButtonBackgroundColor = nil;
-static NSString *shareMainFontName = nil;
-static NSString *shareMainNumberFontName = nil;
-static UIColor *shareMainGrayColor = nil;
+static NSString *shareSeaMainFontName = nil;
+static NSString *shareSeaMainNumberFontName = nil;
 static NSString *shareAlertMsgWhenBadNetwork = nil;
 static UIColor *shareSeparatorLineColor = nil;
 static CGFloat shareSeparatorLineWidth = 0;
@@ -47,36 +46,25 @@ static UIColor *shareButtonTitleColor = nil;
 }
 
 ///字体
-+ (void)sea_setMainFontName:(NSString*) name
++ (void)sea_setSeaMainFontName:(NSString*) name
 {
-    shareMainFontName = name;
+    shareSeaMainFontName = name;
 }
 
-+ (NSString*)sea_mainFontName
++ (NSString*)sea_SeaMainFontName
 {
-    return shareMainFontName;
+    return shareSeaMainFontName;
 }
 
 ///数字字体
-+ (void)sea_setMainNumberFontName:(NSString*) name
++ (void)sea_setSeaMainNumberFontName:(NSString*) name
 {
-    shareMainNumberFontName = name;
+    shareSeaMainNumberFontName = name;
 }
 
-+ (NSString*)sea_mainNumberFontName
++ (NSString*)sea_SeaMainNumberFontName
 {
-    return shareMainNumberFontName;
-}
-
-///字体颜色 #666666
-+ (void)sea_setMainTextColor:(UIColor*) color
-{
-    shareMainGrayColor = color;
-}
-
-+ (UIColor*)sea_mainTextColor
-{
-    return shareMainGrayColor;
+    return shareSeaMainNumberFontName;
 }
 
 ///网络错误提示信息
@@ -156,6 +144,17 @@ static UIColor *shareButtonTitleColor = nil;
     return shareStatusBarStyle;
 }
 
+///导航栏tintColor
++ (void)sea_setTintColor:(UIColor*) color
+{
+    shareTintColor = color;
+}
+
++ (UIColor*)sea_tintColor
+{
+    return shareTintColor;
+}
+
 /**初始化
  */
 + (void)initialize
@@ -176,37 +175,22 @@ static UIColor *shareButtonTitleColor = nil;
     shareButtonTitleColor = [UIColor blackColor];
     
         //主要字体名称
-    shareMainFontName = [UIFont systemFontOfSize:14].fontName;//
+    shareSeaMainFontName = [UIFont systemFontOfSize:14].fontName;//
     
         //数字字体、英文字体
-    shareMainNumberFontName = [UIFont systemFontOfSize:14].fontName;
-
-    ///主要字体颜色
-    shareMainGrayColor = [UIColor colorFromHexadecimal:@"666666"];
-
+    shareSeaMainNumberFontName = [UIFont systemFontOfSize:14].fontName;
     
     //网络状态不好加载数据失败提示信息
     shareAlertMsgWhenBadNetwork = @"网络状态不佳";
     
         //分割线颜色
     shareSeparatorLineColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    shareSeparatorLineWidth = 0.5;
+    shareSeparatorLineWidth = 1.0 / [UIScreen mainScreen].scale;
     
     shareNavigationBarColor = [UIColor colorFromHexadecimal:@"9D1202"];
     shareTintColor = [UIColor whiteColor];
     
     shareStatusBarStyle = UIStatusBarStyleDefault;
-}
-
-///导航栏tintColor
-+ (void)sea_setTintColor:(UIColor*) color
-{
-    shareTintColor = color;
-}
-
-+ (UIColor*)sea_tintColor
-{
-    return shareTintColor;
 }
 
 @end

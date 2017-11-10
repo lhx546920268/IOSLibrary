@@ -57,7 +57,7 @@ static char SeaPlaceHolderContentModeKey;
     UIColor *color = objc_getAssociatedObject(self, &SeaImageCacheToolPlaceHolderColor);
     if(color == nil)
     {
-        color = _SeaImageBackgroundColorBeforeDownload_;
+        color = SeaImageBackgroundColorBeforeDownload;
     }
     
     return color;

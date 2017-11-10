@@ -38,7 +38,7 @@
         
         _messageLabel = [[UILabel alloc] init];
         [_messageLabel setTextAlignment:NSTextAlignmentCenter];
-        _messageLabel.font = [UIFont fontWithName:MainFontName size:15.0];
+        _messageLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
         _messageLabel.numberOfLines = 0;
         _messageLabel.backgroundColor = [UIColor clearColor];
         _messageLabel.textColor = [UIColor whiteColor];
@@ -78,8 +78,8 @@
 
 - (void)layout
 {
-    CGFloat superWidth = self.superview == nil ? _width_ : self.superview.width;
-    CGFloat superHeight = self.superview == nil ? _height_ : self.superview.height;
+    CGFloat superWidth = self.superview == nil ? SeaScreenWidth : self.superview.width;
+    CGFloat superHeight = self.superview == nil ? SeaScreenHeight : self.superview.height;
     
     CGFloat width = self.superEdgeInsets.left - self.superEdgeInsets.right;
     

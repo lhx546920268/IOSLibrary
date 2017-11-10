@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
  */
 @property(nonatomic,strong) UIFont *titleFont;
 
-/**菜单按钮 选中颜色 default is '_appMainColor_'，设置也会改变 lineView 颜色
+/**菜单按钮 选中颜色 default is 'SeaAppMainColor'，设置也会改变 lineView 颜色
  */
 @property(nonatomic,strong) UIColor *selectedColor;
 

@@ -64,7 +64,7 @@
     self.normalBackgroundColor = [UIColor clearColor];
     self.disableBackgroundColor = [UIColor clearColor];
     [self setTitleColor:WMGreenColor forState:UIControlStateNormal];
-    self.titleLabel.font = [UIFont fontWithName:MainFontName size:15.0];
+    self.titleLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
     self.titleLabel.numberOfLines = 2;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self setTitle:@"60s" forState:UIControlStateDisabled];
@@ -93,7 +93,7 @@
     if(![_normalBackgroundColor isEqualToColor:normalBackgroundColor])
     {
         if(normalBackgroundColor == nil)
-            normalBackgroundColor = WMButtonBackgroundColor;
+            normalBackgroundColor = SeaButtonBackgroundColor;
         _normalBackgroundColor = normalBackgroundColor;
         if(!self.timing)
         {

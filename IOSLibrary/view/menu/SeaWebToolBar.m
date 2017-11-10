@@ -17,7 +17,7 @@
 @property(nonatomic,strong) SeaButton *shareButton;
 
 //系统默认的蓝色
-#define _UIKitTintColor_ [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
+#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
 @end
 
@@ -43,7 +43,7 @@
         
         //后退按钮
         SeaButton *btn = [[SeaButton alloc] initWithFrame:CGRectMake(0, 0, width, height) buttonType:SeaButtonTypeLeftArrow];
-        btn.lineColor = _UIKitTintColor_;
+        btn.lineColor = UIKitTintColor;
         [btn addTarget:self action:@selector(backword:) forControlEvents:UIControlEventTouchUpInside];
         self.backwordButton = btn;
         
@@ -55,7 +55,7 @@
         
         //前进按钮
         btn = [[SeaButton alloc] initWithFrame:CGRectMake(0, 0, width, height) buttonType:SeaButtonTypeRightArrow];
-        btn.lineColor = _UIKitTintColor_;
+        btn.lineColor = UIKitTintColor;
         [btn addTarget:self action:@selector(forwrod:) forControlEvents:UIControlEventTouchUpInside];
         self.forwrodButton = btn;
         
@@ -67,7 +67,7 @@
         
         //刷新按钮
         btn = [[SeaButton alloc] initWithFrame:CGRectMake(0, 0, width, height) buttonType:SeaButtonTypeRefresh];
-        btn.lineColor = _UIKitTintColor_;
+        btn.lineColor = UIKitTintColor;
         [btn addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventTouchUpInside];
         self.refreshButton = btn;
         
@@ -79,7 +79,7 @@
         
         //分享按钮
 //        btn = [[SeaButton alloc] initWithFrame:CGRectMake(0, 0, width, height) buttonType:SeaButtonTypeUpload];
-//        btn.lineColor = _UIKitTintColor_;
+//        btn.lineColor = UIKitTintColor;
 //        [btn addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
 //        self.shareButton = btn;
 //        
@@ -99,7 +99,7 @@
         NSDictionary *views = NSDictionaryOfVariableBindings(_toolBar);
         NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_toolBar]-0-|" options:0 metrics:nil views:views];
         [self.webViewController.view addConstraints:constraints];
-        constraints = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[_toolBar(%f)]-0-|", _toolBarHeight_] options:0 metrics:nil views:views];
+        constraints = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[_toolBar(%f)]-0-|", SeaToolBarHeight] options:0 metrics:nil views:views];
         [self.webViewController.view addConstraints:constraints];
         
         [self refreshToolBar];
@@ -115,7 +115,7 @@
     CATransform3D transform = CATransform3DIdentity;
     if(hidden)
     {
-        transform = CATransform3DMakeTranslation(0, _toolBarHeight_, 0);
+        transform = CATransform3DMakeTranslation(0, SeaToolBarHeight, 0);
     }
     
     if(!hidden)

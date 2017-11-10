@@ -38,7 +38,7 @@
     
     CGContextSetLineWidth(context, 2.0);
     CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextSetStrokeColorWithColor(context, _appMainColor_.CGColor);
+    CGContextSetStrokeColorWithColor(context, SeaAppMainColor.CGColor);
     CGFloat startAngle = -M_PI / 3;
     CGFloat step = 11 * M_PI / 6 * self.progress; // 保留部分空白
     CGContextAddArc(context, self.bounds.size.width / 2, self.bounds.size.height / 2, self.bounds.size.width / 2 - 3, startAngle, startAngle+step, 0);
@@ -94,7 +94,7 @@ static const CGFloat SeaRefreshControlCriticalPoint = 60.0f;
         
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(_indicatorView.right, 0, self.frame.size.width - _indicatorView.right, _indicatorView.height)];
         _statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _statusLabel.font = [UIFont fontWithName:MainFontName size:13.0f];
+        _statusLabel.font = [UIFont fontWithName:SeaMainFontName size:13.0f];
         _statusLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
 //        _statusLabel.shadowColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
 //        _statusLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);

@@ -8,7 +8,7 @@
 #import "SeaBasic.h"
 
 //系统默认的蓝色
-#define _UIKitTintColor_ [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
+#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
 static char SeaForbidSelectorsKey;
 static char SeaChineseAsTwoCharWhenInputLimitKey;
@@ -174,15 +174,15 @@ static char SeaForbidInputChineseKey;
  */
 - (void)setDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _width_, 35.0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 35.0)];
     view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     
     CGFloat buttonWidth = 60.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitleColor:_UIKitTintColor_ forState:UIControlStateNormal];
+    [button setTitleColor:UIKitTintColor forState:UIControlStateNormal];
     [button setTitle:@"完成" forState:UIControlStateNormal];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [button setFrame:CGRectMake(_width_ - buttonWidth, 0, buttonWidth, 35.0)];
+    [button setFrame:CGRectMake(SeaScreenWidth - buttonWidth, 0, buttonWidth, 35.0)];
     [view addSubview:button];
     self.inputAccessoryView = view;
 }

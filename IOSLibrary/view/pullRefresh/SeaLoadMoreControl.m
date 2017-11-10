@@ -32,7 +32,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
         
         _remindLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _remindLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
-        _remindLabel.font = [UIFont fontWithName:MainFontName size:15.0];
+        _remindLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
         _remindLabel.backgroundColor = [UIColor clearColor];
         _remindLabel.userInteractionEnabled = YES;
         

@@ -29,12 +29,12 @@
 //        _actView = [[SeaNetworkActivityView alloc] initWithFrame:CGRectZero];
 //        [self addSubview:_actView];
         
-        self.backgroundColor = _SeaViewControllerBackgroundColor_;
+        self.backgroundColor = SeaViewControllerBackgroundColor;
         _loadActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _loadActivityIndicator.bounds = CGRectMake(0, 0, 30, 30);
         [self addSubview:_loadActivityIndicator];
         
-        UIFont *font = [UIFont fontWithName:MainFontName size:15.0];
+        UIFont *font = [UIFont fontWithName:SeaMainFontName size:15.0];
         CGSize size = [title stringSizeWithFont:font contraintWith:frame.size.width];
         
         _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];

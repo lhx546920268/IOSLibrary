@@ -129,20 +129,20 @@
     CGSize cropSize = self.settings.cropSize;
     if(self.settings.useFullScreenCropFrame)
     {
-        cropSize = CGSizeMake(_width_, _width_ * cropSize.height / cropSize.width);
+        cropSize = CGSizeMake(SeaScreenWidth, SeaScreenWidth * cropSize.height / cropSize.width);
         self.settings.cropCornerRadius *= cropSize.width / self.settings.cropSize.width;
     }
     
-    _cropFrame = CGRectMake((_width_ - cropSize.width) / 2.0, (self.contentHeight - cropSize.height) / 2.0, cropSize.width, cropSize.height);
+    _cropFrame = CGRectMake((SeaScreenWidth - cropSize.width) / 2.0, (self.contentHeight - cropSize.height) / 2.0, cropSize.width, cropSize.height);
     //显示图片
-    self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, _width_, self.contentHeight)];
+    self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
     [self.showImgView setMultipleTouchEnabled:YES];
     [self.showImgView setUserInteractionEnabled:YES];
     [self.showImgView setImage:self.settings.image];
 
     
     //把图片适配屏幕
-    CGFloat oriWidth = MIN(_width_, self.settings.image.size.width);
+    CGFloat oriWidth = MIN(SeaScreenWidth, self.settings.image.size.width);
     CGFloat oriHeight = self.settings.image.size.height * (oriWidth / self.settings.image.size.width);
     
     if(self.settings.useFullScreenCropFrame)
@@ -174,7 +174,7 @@
     [self.view addSubview:self.showImgView];
     
     //裁剪区分图层
-    self.overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _width_, self.contentHeight)];
+    self.overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
     self.overlayView.alpha = .5f;
     self.overlayView.backgroundColor = [UIColor blackColor];
     self.overlayView.userInteractionEnabled = NO;
@@ -198,7 +198,7 @@
 - (void)initControlBtn
 {
 //    CGFloat buttonHeight = 50.0f;
-//    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - buttonHeight, _width_, buttonHeight)];
+//    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - buttonHeight, SeaScreenWidth, buttonHeight)];
 //    bgView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
 //    [self.view addSubview:bgView];
 //    
@@ -439,7 +439,7 @@
     
     //裁剪图片
     CGFloat height = self.contentHeight;
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(_width_, height), NO, SeaImageScale);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(SeaScreenWidth, height), NO, SeaImageScale);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     

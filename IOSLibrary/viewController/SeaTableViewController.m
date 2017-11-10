@@ -48,7 +48,7 @@
 {
     if(!_tableView)
     {
-        CGRect frame = CGRectMake(0, 0, _width_, self.contentHeight);
+        CGRect frame = CGRectMake(0, 0, SeaScreenWidth, self.contentHeight);
         
         _tableView = [[UITableView alloc] initWithFrame:frame style:_style];
         _tableView.dataSource = self;

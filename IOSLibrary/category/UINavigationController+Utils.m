@@ -1,14 +1,14 @@
 //
-//  UINavigationController+Utilities.m
+//  UINavigationController+Utils.m
 //  SeaBasic
 //
 //  Created by 罗海雄 on 15/11/12.
-//  Copyright © 2015年 qianseit. All rights reserved.
 //
 
-#import "UINavigationController+Utilities.h"
+#import "UINavigationController+Utils.h"
 #import <objc/runtime.h>
 #import "UIColor+colorUtilities.h"
+#import "UIView+Utilities.h"
 #import "SeaBasic.h"
 
 ///导航栏透明视图
@@ -27,7 +27,7 @@
     if(self)
     {
         self.userInteractionEnabled = NO;
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _shadowView = [[UIView alloc] init];
         _shadowView.translatesAutoresizingMaskIntoConstraints = NO;
         _shadowView.backgroundColor = [UIColor colorFromHexadecimal:@"C7C6CB"];
@@ -47,7 +47,7 @@
 ///透明视图key
 static char SeaAlphaOverlayKey;
 
-@implementation UINavigationController (Utilities)
+@implementation UINavigationController (Utils)
 
 #pragma mark- transparent
 
@@ -64,7 +64,18 @@ static char SeaAlphaOverlayKey;
         frame.origin.y = - statusHeight;
         overlay = [[SeaNavigationBarAlphaOverlayView alloc] initWithFrame:frame];
         overlay.backgroundColor = self.navigationBar.barTintColor;
-        [self.navigationBar insertSubview:overlay atIndex:0];
+        
+        
+        
+        if(_ios11_0_){
+            ///ios 11 overlay会一直被放在最前面
+            overlay.top = 0;
+            UIView *view = [self.navigationBar.subviews firstObject];
+            [view insertSubview:overlay atIndex:0];
+        }else{
+            [self.navigationBar insertSubview:overlay atIndex:0];
+        }
+        
         [self setSea_alphaOverlay:overlay];
     }
     
@@ -96,9 +107,9 @@ static char SeaAlphaOverlayKey;
 {
     [self.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     self.sea_alphaOverlay.hidden = YES;
-   // [self.navigationBar setShadowImage:nil];
-    self.navigationBar.translucent = NO;
-    self.navigationBar.barTintColor = _navigationBarBackgroundColor_;
+    // [self.navigationBar setShadowImage:nil];
+    //    self.navigationBar.translucent = NO;
+    self.navigationBar.barTintColor = SeaNavigationBarBackgroundColor;
 }
 
 ///启动导航栏透明功能
@@ -111,3 +122,4 @@ static char SeaAlphaOverlayKey;
 }
 
 @end
+

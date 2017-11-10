@@ -50,7 +50,7 @@
             _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, imageHeight, frame.size.width, _SeaTabBarItemTextHeight_)];
             _textLabel.textAlignment = NSTextAlignmentCenter;
             _textLabel.backgroundColor = [UIColor clearColor];
-            _textLabel.font = [UIFont fontWithName:MainFontName size:13.0];
+            _textLabel.font = [UIFont fontWithName:SeaMainFontName size:13.0];
             _textLabel.textColor = [UIColor blackColor];
             _textLabel.text = title;
             [self addSubview:_textLabel];
@@ -103,7 +103,7 @@
     self.imageView.highlighted = selected;
 //    if(selected)
 //    {
-//        _textLabel.textColor = _appMainColor_;
+//        _textLabel.textColor = SeaAppMainColor;
 //    }
 //    else
 //    {

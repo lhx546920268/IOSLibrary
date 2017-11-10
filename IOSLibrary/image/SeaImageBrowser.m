@@ -177,7 +177,7 @@
 {
     [super viewDidLoad];
     
-    _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _width_, _height_)];
+    _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight)];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.userInteractionEnabled = NO;
     _backgroundView.alpha = 0;
@@ -211,7 +211,7 @@
     _msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.backgroundView.height - 40.0, self.backgroundView.width, 20.0)];
     _msgLabel.textAlignment = NSTextAlignmentCenter;
     _msgLabel.textColor = [UIColor whiteColor];
-    _msgLabel.font = [UIFont fontWithName:MainFontName size:14.0];
+    _msgLabel.font = [UIFont fontWithName:SeaMainFontName size:14.0];
     _msgLabel.shadowColor = [UIColor blackColor];
     _msgLabel.text = [NSString stringWithFormat:@"%d/%d", (int)_visibleIndex + 1, (int)self.source.count];
     _msgLabel.hidden = YES;

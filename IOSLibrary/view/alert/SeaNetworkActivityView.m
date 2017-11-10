@@ -53,7 +53,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 20.0)];
         label.textAlignment = NSTextAlignmentCenter;
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont fontWithName:MainFontName size:14.0];
+        label.font = [UIFont fontWithName:SeaMainFontName size:14.0];
         label.textColor = [UIColor whiteColor];
         label.text = @"加载中...";
         [self addSubview:label];
@@ -71,7 +71,7 @@
     
     //    CGFloat topMargin = 10.0;
     CGFloat interval = 10;
-    CGSize size = [self.msgLabel.text stringSizeWithFont:self.msgLabel.font contraintWith:_width_];
+    CGSize size = [self.msgLabel.text stringSizeWithFont:self.msgLabel.font contraintWith:SeaScreenWidth];
     
     self.actView.center = CGPointMake(self.width / 2, (self.height - self.actView.height - size.height - interval) / 2 + self.actView.height / 2);
     CGRect frame = self.frame;
@@ -82,7 +82,7 @@
     //
     //    if([self.superview isKindOfClass:[UIWindow class]])
     //    {
-    //        frame.origin.y = (_height_ - frame.size.height) / 2.0;
+    //        frame.origin.y = (SeaScreenHeight - frame.size.height) / 2.0;
     //    }
     //    else
     //    {

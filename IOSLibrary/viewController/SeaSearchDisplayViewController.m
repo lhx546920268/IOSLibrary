@@ -117,7 +117,7 @@
 //把控制视图中view改成UiScrollView，因为只有当UISearchBar的父视图为 UIScrollView时，UIBarPositionTopAttached才会生效
 - (void)loadView
 {
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _width_, self.contentHeight)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.bounces = NO;
@@ -137,11 +137,11 @@
 //创建搜索栏
 - (void)createSearchBar
 {
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, _width_, 45.0)];
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 45.0)];
     [_searchBar setImage:[UIImage imageNamed:@"search_icon"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     self.searchBar.delegate = self;
     UITextField *searchField = self.searchTextField;
-    searchField.font = [UIFont fontWithName:MainFontName size:15.0];
+    searchField.font = [UIFont fontWithName:SeaMainFontName size:15.0];
     self.searchBar.placeholder = @"搜索";
 }
 
@@ -275,17 +275,17 @@
                 case SeaSearchBarPositionTableViewTop :
                 case SeaSearchBarPositionTableViewHeader :
                 {
-                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.searchBar.bottom, _width_, self.contentHeight)];
+                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.searchBar.bottom, SeaScreenWidth, self.contentHeight)];
                 }
                     break;
                 case SeaSearchBarPositionNavigationBar :
                 {
-                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _width_, self.contentHeight)];
+                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
                 }
                     break;
                 case SeaSearchBarPositionShowWhenSearch :
                 {
-                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.searchBar.height + self.statusBarHidden, _width_, self.contentHeight)];
+                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.searchBar.height + self.statusBarHidden, SeaScreenWidth, self.contentHeight)];
                 }
                     break;
                 default:

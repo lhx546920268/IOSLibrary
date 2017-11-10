@@ -85,7 +85,7 @@ static char SeaTransitioningDelegateKey;
 {
     if([UIApplication sharedApplication].statusBarHidden)
     {
-        return _statusHeight_;
+        return SeaStatusHeight;
     }
     else
     {
@@ -95,11 +95,11 @@ static char SeaTransitioningDelegateKey;
 
 /**导航栏高度
  */
-- (CGFloat)navigationBarHeight
+- (CGFloat)sea_navigationBarHeight
 {
     if(self.navigationController.navigationBarHidden)
     {
-        return _navigationBarHeight_;
+        return 44.0;
     }
     else
     {
@@ -127,19 +127,19 @@ static char SeaTransitioningDelegateKey;
 {
     CGFloat height = self.navigationController.toolbar.height;
     
-    return MAX(height, _toolBarHeight_);
+    return MAX(height, SeaToolBarHeight);
 }
 
 //获取可显示内容的高度
 - (CGFloat)contentHeight
 {
-    CGFloat contentHeight = _height_;
+    CGFloat contentHeight = SeaScreenHeight;
     
     BOOL existNav = self.navigationController.navigationBar && !self.navigationController.navigationBar.translucent && !self.navigationController.navigationBarHidden;
     
     if(existNav)
     {
-        contentHeight -= self.navigationBarHeight;
+        contentHeight -= self.sea_navigationBarHeight;
     }
     
     if(self.tabBarController && !self.tabBarController.tabBar.hidden && !self.hidesBottomBarWhenPushed)
@@ -172,7 +172,7 @@ static char SeaTransitioningDelegateKey;
     CGFloat y = 0;
     if(self.navigationController.navigationBar.translucent)
     {
-        y += self.navigationBarHeight + self.statusBarHeight;
+        y += self.sea_navigationBarHeight + self.statusBarHeight;
     }
     
     return y;
@@ -297,7 +297,7 @@ static char SeaTransitioningDelegateKey;
             {
                 CGFloat width = SeaNetworkActivityViewWidth;
                 CGFloat height = SeaNetworkActivityViewHeight;
-                SeaNetworkActivityView *view = [[SeaNetworkActivityView alloc] initWithFrame:CGRectMake((_width_ - width) / 2.0, ([self contentHeight] - height) / 2.0, width, height)];
+                SeaNetworkActivityView *view = [[SeaNetworkActivityView alloc] initWithFrame:CGRectMake((SeaScreenWidth - width) / 2.0, ([self contentHeight] - height) / 2.0, width, height)];
                 [self.view addSubview:view];
                 self.networkActivityView = view;
             }
@@ -363,8 +363,8 @@ static char SeaTransitioningDelegateKey;
             {
                 
                 // CGFloat y = ([self contentHeight] - _SeaLoadingIndicatorHeight_) / 2.0;
-//                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, _width_, [self contentHeight] - self.view.top) title:@"正在载入..."];
-                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, _width_, [self contentHeight]) title:@"正在载入..."];
+//                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight] - self.view.top) title:@"正在载入..."];
+                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight]) title:@"正在载入..."];
                 [self.view addSubview:indicator];
                 self.loadingIndicator = indicator;
             }
@@ -421,9 +421,9 @@ static char SeaTransitioningDelegateKey;
 {
     if(!hidden && !self.hasNoMsgView)
     {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _width_, self.view.height)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.view.height)];
         label.backgroundColor = self.view.backgroundColor;
-        label.font = [UIFont fontWithName:MainFontName size:18.0];
+        label.font = [UIFont fontWithName:SeaMainFontName size:18.0];
         label.textColor = [UIColor grayColor];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
@@ -483,7 +483,7 @@ static char SeaTransitioningDelegateKey;
     ///是present出来的
     if(self.presentingViewController)
     {
-        UIViewController *root = [self rootPresentingViewController];
+        UIViewController *root = [self sea_rootPresentingViewController];
         if(root.navigationController.viewControllers.count > 1)
         {
             ///dismiss 之后还有 pop,所以dismiss无动画
@@ -503,11 +503,11 @@ static char SeaTransitioningDelegateKey;
 
 /**获取最上层的 presentedViewController
  */
-- (UIViewController*)topestPresentedViewController
+- (UIViewController*)sea_topestPresentedViewController
 {
     if(self.presentedViewController)
     {
-        return [self.presentedViewController topestPresentedViewController];
+        return [self.presentedViewController sea_topestPresentedViewController];
     }
     else
     {
@@ -517,11 +517,11 @@ static char SeaTransitioningDelegateKey;
 
 /**获取最底层的 presentingViewController
  */
-- (UIViewController*)rootPresentingViewController
+- (UIViewController*)sea_rootPresentingViewController
 {
     if(self.presentingViewController)
     {
-        return [self.presentingViewController rootPresentingViewController];
+        return [self.presentingViewController sea_rootPresentingViewController];
     }
     else
     {
@@ -775,7 +775,7 @@ static char SeaTransitioningDelegateKey;
     //设置默认导航条
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
    // navigationBar.translucent = NO;
-    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:_navigationBarBackgroundColor_ titleColor:WMTintColor titleFont:[UIFont fontWithName:MainFontName size:17.0]];
+    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:SeaNavigationBarBackgroundColor titleColor:SeaTintColor titleFont:[UIFont fontWithName:SeaMainFontName size:17.0]];
 }
 
 #pragma mark- 显示
@@ -905,7 +905,7 @@ static char SeaTransitioningDelegateKey;
  */
 - (void)alerBadNetworkMsg:(NSString*) msg
 {
-    [self alertMsg:[NSString stringWithFormat:@"%@\n%@", _alertMsgWhenBadNetwork_, msg]];
+    [self alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaAlertMsgWhenBadNetwork, msg]];
 }
 
 
@@ -967,7 +967,7 @@ static char SeaTransitioningDelegateKey;
     
     if(title)
     {
-        button.titleLabel.font = [UIFont fontWithName:MainFontName size:16.0];
+        button.titleLabel.font = [UIFont fontWithName:SeaMainFontName size:16.0];
         CGSize size = [title stringSizeWithFont:button.titleLabel.font contraintWith:CGFLOAT_MAX];
         [button setFrame:CGRectMake(0, 0, size.width, size.height)];
         [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
@@ -1006,9 +1006,9 @@ static char SeaTransitioningDelegateKey;
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 
     if(!titleColor)
-        titleColor = WMTintColor;
+        titleColor = SeaTintColor;
     if(!font)
-        font = [UIFont fontWithName:MainFontName size:17.0];
+        font = [UIFont fontWithName:SeaMainFontName size:17.0];
 
     if([titleColor isEqualToColor:[UIColor whiteColor]])
     {

@@ -26,15 +26,15 @@
         [self.contentView addSubview:_button];
         
         CGFloat height = 15.0;
-        _separator = [[UIView alloc] initWithFrame:CGRectMake(_button.right - _separatorLineWidth_, (self.height - height) / 2.0, _separatorLineWidth_, height)];
+        _separator = [[UIView alloc] initWithFrame:CGRectMake(_button.right - SeaSeparatorHeight, (self.height - height) / 2.0, SeaSeparatorHeight, height)];
         _separator.backgroundColor = [UIColor clearColor];
-        _separator.backgroundColor = _separatorLineColor_;
+        _separator.backgroundColor = SeaSeparatorColor;
         [self.contentView addSubview:_separator];
         
         CGFloat width = 44.0;
         height = 40.0;
         _numberBadge = [[SeaNumberBadge alloc] initWithFrame:CGRectMake(self.contentView.width - width + 12.0, - 12.0, width, height)];
-        _numberBadge.font = [UIFont fontWithName:MainFontName size:10.0];
+        _numberBadge.font = [UIFont fontWithName:SeaMainFontName size:10.0];
         _numberBadge.value = @"0";
         [self.contentView addSubview:_numberBadge];
     }

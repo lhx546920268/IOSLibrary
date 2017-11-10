@@ -35,12 +35,4 @@
 
 @end
 
-//缩略图间隔
-#define _SeaAlbumAssetThumbnailInterval_ 3.0
-
-//每行缩略图数量
-#define _SeaAlbumAssetNumberThumbnailPerRow_ 4
-
-//缩略图片大小，正方形
-#define _SeaAlbumAssetThumbnailSize_ ((_width_ - _SeaAlbumAssetThumbnailInterval_ * (_SeaAlbumAssetNumberThumbnailPerRow_ + 1)) / _SeaAlbumAssetNumberThumbnailPerRow_)
 

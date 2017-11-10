@@ -13,13 +13,7 @@ typedef NS_ENUM(NSInteger, SeaAlbumAssetsViewControllerTarget)
     ///选择图片 可设置选择数量
     SeaAlbumAssetsViewControllerTargetSelected = 0,
     
-    ///选择头像，只能选一张，并且会裁剪图片，默认大小为 屏幕宽度 1 : 1
-    SeaAlbumAssetsViewControllerHeadImage,
-    
-    ///店招 只能选一张，并且会裁剪图片，默认大小为 WMRecommendImageSize
-    SeaAlbumAssetsViewControllerRecommend,
-    
-    ///自定义图片裁剪，可设置corpSize
+    ///自定义图片裁剪，可设置corpSize 只能选择一张
     SeaAlbumAssetsViewControllerImageCrop,
 };
 
@@ -27,7 +21,7 @@ typedef NS_ENUM(NSInteger, SeaAlbumAssetsViewControllerTarget)
 
 /**相册分组内容列表
  */
-@interface SeaAlbumAssetsViewController : SeaCollectionViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface SeaAlbumAssetsViewController : SeaCollectionViewController
 
 /**相册代理
  */
@@ -36,6 +30,12 @@ typedef NS_ENUM(NSInteger, SeaAlbumAssetsViewControllerTarget)
 /**图片最大选择数量 default is '1'
  */
 @property(nonatomic,assign) int maxSelectedCount;
+
+///网格图片间距 default is '3.0'
+@property(nonatomic,assign) CGFloat gridInterval;
+
+///每行图片数量 default is '3'
+@property(nonatomic,assign) int numberOfItemsPerRow;
 
 /**相册分组信息
  */

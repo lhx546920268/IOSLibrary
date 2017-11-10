@@ -14,7 +14,7 @@
 #import "SeaBasic.h"
 
 //系统默认的蓝色
-#define _UIKitTintColor_ [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
+#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
 //边距
 #define SeaAlertControllerMargin 15.0
@@ -469,7 +469,7 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     CGFloat width = [self alertViewWidth];
-    CGFloat margin = (_width_ - width) / 2.0;
+    CGFloat margin = (SeaScreenWidth - width) / 2.0;
     
     self.backgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.backgroundView.alpha = 0;
@@ -588,7 +588,7 @@
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.backgroundView.alpha = 1.0;
-                self.contentView.top = _height_ - _contentView.height - SeaAlertControllerMargin - self.cancelButton.height - SeaAlertControllerMargin;
+                self.contentView.top = SeaScreenHeight - _contentView.height - SeaAlertControllerMargin - self.cancelButton.height - SeaAlertControllerMargin;
                 self.cancelButton.top = self.contentView.bottom + SeaAlertControllerMargin;
             }];
         }
@@ -638,7 +638,7 @@
             break;
         case SeaAlertControllerStyleActionSheet :
         {
-            return _width_ - SeaAlertControllerMargin * 2;
+            return SeaScreenWidth - SeaAlertControllerMargin * 2;
         }
             break;
     }
@@ -673,7 +673,7 @@
     {
         case SeaAlertControllerStyleActionSheet :
         {
-            layout.itemSize = CGSizeMake(_width_ - SeaAlertControllerMargin * 2, self.alertButtonHeight);
+            layout.itemSize = CGSizeMake(SeaScreenWidth - SeaAlertControllerMargin * 2, self.alertButtonHeight);
         }
             break;
         case SeaAlertControllerStyleAlert :
@@ -728,7 +728,7 @@
     ///取消按钮高度
     CGFloat cancelHeight = self.cancelButton ? (self.cancelButton.height + SeaAlertControllerMargin) : 0;
     
-    CGFloat maxContentHeight = _height_ - SeaAlertControllerMargin * 2 - cancelHeight;
+    CGFloat maxContentHeight = SeaScreenHeight - SeaAlertControllerMargin * 2 - cancelHeight;
     
     CGRect frame = self.collectionView.frame;
     if(headerHeight + buttonHeight > maxContentHeight)
@@ -773,12 +773,12 @@
     {
         case SeaAlertControllerStyleActionSheet :
         {
-            self.contentView.top = _height_;
+            self.contentView.top = SeaScreenHeight;
         }
             break;
         case SeaAlertControllerStyleAlert :
         {
-            self.contentView.top = (_height_ - self.contentView.height) / 2.0;
+            self.contentView.top = (SeaScreenHeight - self.contentView.height) / 2.0;
         }
             break;
     }
@@ -830,7 +830,7 @@
  */
 - (void)show
 {
-    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController topestPresentedViewController]];
+    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
 }
 
 /**
@@ -866,7 +866,7 @@
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.backgroundView.alpha = 0;
-                self.contentView.top = _height_;
+                self.contentView.top = SeaScreenHeight;
                 self.cancelButton.top = self.contentView.bottom + SeaAlertControllerMargin;
                 
             }completion:^(BOOL finish){
@@ -1091,7 +1091,7 @@
     if(![_buttonTextColor isEqualToColor:buttonTextColor])
     {
         if(buttonTextColor == nil)
-            buttonTextColor = _UIKitTintColor_;
+            buttonTextColor = UIKitTintColor;
         
         _buttonTextColor = buttonTextColor;
         
@@ -1170,7 +1170,7 @@
     if(![_cancelButtonTextColor isEqualToColor:cancelButtonTextColor])
     {
         if(cancelButtonTextColor == nil)
-            cancelButtonTextColor = _UIKitTintColor_;
+            cancelButtonTextColor = UIKitTintColor;
         _cancelButtonTextColor = cancelButtonTextColor;
         
         switch (_style)

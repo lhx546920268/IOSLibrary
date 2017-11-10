@@ -33,7 +33,7 @@
             message = @"加载失败\n轻触屏幕重新加载";
 
         self.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-        UIFont *font = [UIFont fontWithName:MainFontName size:15.0];
+        UIFont *font = [UIFont fontWithName:SeaMainFontName size:15.0];
 
 //        UIImage *image = [UIImage imageNamed:@"load_fail"];
 //        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];

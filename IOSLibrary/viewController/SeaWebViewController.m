@@ -479,14 +479,14 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 - (void)initWebView
 {
     //加载进度条条
-    SeaProgressView *progressView = [[SeaProgressView alloc] initWithFrame:CGRectMake(0, 0, _width_, 2.5) style:SeaProgressViewStyleStraightLine];
-    progressView.progressColor = _UIKitTintColor_;
+    SeaProgressView *progressView = [[SeaProgressView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 2.5) style:SeaProgressViewStyleStraightLine];
+    progressView.progressColor = UIKitTintColor;
     progressView.trackColor = [UIColor clearColor];
     [self.view addSubview:progressView];
     self.progressView = progressView;
 
 
-    CGRect frame = CGRectMake(0, 0, _width_, self.contentHeight);
+    CGRect frame = CGRectMake(0, 0, SeaScreenWidth, self.contentHeight);
     if(_ios8_0_)
     {
 #ifdef __IPHONE_8_0
@@ -832,7 +832,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     UIView *webView = _ios8_0_ ? self.wkWebView : self.webView;
 
     CGRect frame = webView.frame;
-    frame.size.height = self.contentHeight - ((self.showToolBar && !self.toolBar.toolBarHidden) ? _toolBarHeight_ : 0);
+    frame.size.height = self.contentHeight - ((self.showToolBar && !self.toolBar.toolBarHidden) ? SeaToolBarHeight : 0);
 
     if(flag)
     {

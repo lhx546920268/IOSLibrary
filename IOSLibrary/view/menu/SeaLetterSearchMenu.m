@@ -71,7 +71,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, y + _SeaLetterSearchMenuItemHeight_ * i, self.frame.size.width, _SeaLetterSearchMenuItemHeight_)];
         label.tag = i + 1;
         label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont fontWithName:MainNumberFontName size:13.0];
+        label.font = [UIFont fontWithName:SeaMainNumberFontName size:13.0];
         label.backgroundColor = [UIColor clearColor];
         
         NSString *title = [_titles objectAtIndex:i];

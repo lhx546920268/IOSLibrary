@@ -15,7 +15,7 @@
     {
         self.normalColor = [UIColor blackColor];
         _titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        _titleLabel.font = [UIFont fontWithName:MainFontName size:15.0];
+        _titleLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
         _titleLabel.textColor = self.normalColor;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.backgroundColor = [UIColor clearColor];
@@ -43,7 +43,7 @@
         _selected = selected;
         if(_selected)
         {
-            self.layer.borderWidth = _separatorLineWidth_;
+            self.layer.borderWidth = SeaSeparatorHeight;
             self.layer.borderColor = self.selectedColor.CGColor;
             _titleLabel.textColor = self.selectedColor;
         }

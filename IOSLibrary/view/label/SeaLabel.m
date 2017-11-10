@@ -10,7 +10,7 @@
 #import <CoreText/CoreText.h>
 
 //系统默认的蓝色
-#define _UIKitTintColor_ [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
+#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
 /**链接识别 正则表达式
  */
@@ -291,7 +291,7 @@ static NSString *const SeaURLRegex = @"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\
 {
     if(!selectableAttributes)
     {
-        selectableAttributes = [NSDictionary dictionaryWithObjectsAndKeys:(id)[_UIKitTintColor_ CGColor], (NSString*)kCTForegroundColorAttributeName, [NSNumber numberWithBool:YES], (NSString *)kCTUnderlineStyleAttributeName, nil];
+        selectableAttributes = [NSDictionary dictionaryWithObjectsAndKeys:(id)[UIKitTintColor CGColor], (NSString*)kCTForegroundColorAttributeName, [NSNumber numberWithBool:YES], (NSString *)kCTUnderlineStyleAttributeName, nil];
     }
     if(_selectableAttributes != selectableAttributes)
     {

@@ -31,7 +31,7 @@
         _gridLineColor = [UIColor colorWithWhite:0.9 alpha:1.0];
         _gridLineWidth = 0.5;
         _titleColor = [UIColor blackColor];
-        _titleFont = [UIFont fontWithName:MainFontName size:15.0];
+        _titleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
         _titleHightlightColor = [UIColor blueColor];
         _countPerRow = 4;
         _menuItemHeight = 35.0;

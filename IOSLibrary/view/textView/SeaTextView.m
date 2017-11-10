@@ -180,7 +180,7 @@
             [_numLabel setTextAlignment:NSTextAlignmentRight];
             _numLabel.textColor = [UIColor grayColor];
             _numLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            _numLabel.font = [UIFont fontWithName:MainNumberFontName size:14.0];
+            _numLabel.font = [UIFont fontWithName:SeaMainNumberFontName size:14.0];
             [self addSubview:_numLabel];
             
             NSDictionary *views = NSDictionaryOfVariableBindings(_numLabel);
@@ -238,7 +238,7 @@
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_textChanged:) name:UITextViewTextDidChangeNotification object:self];
 	
-    self.placeholderFont = [UIFont fontWithName:MainFontName size:15.0];
+    self.placeholderFont = [UIFont fontWithName:SeaMainFontName size:15.0];
 	self.placeholderTextColor = [UIColor colorWithWhite:0.702f alpha:0.7];
 	_shouldDrawPlaceholder = NO;
     self.placeholderOffset = CGPointMake(8.0f, 8.0f);
