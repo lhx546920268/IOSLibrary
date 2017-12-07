@@ -7,6 +7,20 @@
 
 #import <UIKit/UIKit.h>
 
+///autoLayout 计算大小方式
+typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
+{
+    ///计算宽度 需要给定高度
+    SeaAutoLayoutCalculateTypeWidth = 0,
+    
+    ///计算高度 需要给定宽度
+    SeaAutoLayoutCalculateTypeHeight = 1,
+    
+    ///计算大小，可给最大宽度和高度
+    SeaAutoLayoutCalculateTypeSize = 2,
+};
+
+
 /**
  自动布局 所有约束都会添加到视图中
  @warning 在使用约束之前必须添加到父视图，所有视图必须具有相同的superview
@@ -504,5 +518,13 @@
  */
 @property (nonatomic,readonly) NSLayoutConstraint *sea_bottomLayoutConstraint;
 
+#pragma mark- AutoLayout 计算大小
+
+/**根据给定的 size 计算当前view的大小，要使用auto layout
+ *@param fitsSize 大小范围 0 则不限制范围
+ *@param type 计算方式
+ *@return view 大小
+ */
+- (CGSize)sea_sizeThatFits:(CGSize) fitsSize type:(SeaAutoLayoutCalculateType) type;
 
 @end

@@ -5,16 +5,13 @@
 
 #import <UIKit/UIKit.h>
 
-#define SeaNetworkActivityViewWidth 120
-#define SeaNetworkActivityViewHeight 120
-
 /**网络加载指示器
  */
 @interface SeaNetworkActivityView : UIView
 
 /**提示信息
  */
-@property(nonatomic,assign) NSString *msg;
+@property(nonatomic,copy) NSString *msg;
 
 /**开始动画
  */

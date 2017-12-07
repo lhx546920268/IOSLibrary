@@ -8,7 +8,7 @@
 
 #import "UITableView+SeaRowHeight.h"
 #import <objc/runtime.h>
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 
 ///tableView section 缓存大小
 @interface SeaTableViewSectionInfo : NSObject

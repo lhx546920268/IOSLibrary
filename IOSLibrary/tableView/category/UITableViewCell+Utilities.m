@@ -17,9 +17,9 @@
 
 /**设置默认箭头
  */
-- (void)setDefaultArrow
+- (void)setAccessoryWithImageName:(NSString*) imageName
 {
-    [self setAccessoryWithImage:[UIImage imageNamed:@"arrow_gray"]];
+    [self setAccessoryWithImage:[UIImage imageNamed:imageName]];
 }
 
 @end

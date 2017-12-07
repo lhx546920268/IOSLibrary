@@ -24,7 +24,7 @@
 #import "UITableViewCell+Utilities.h"
 #import "UITextField+Utilities.h"
 #import "UITextView+Utilities.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 #import "UIWebView+Utilities.h"
 
 #import "UIImageView+SeaImageCacheTool.h"
@@ -34,7 +34,7 @@
 #import "UIImagePickerController+Utilities.h"
 #import "UIButton+utilities.h"
 
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 #import "UISearchBar+Utilities.h"
 #import "UITabBarItem+Utilities.h"
 #import "UITabBarController+Utilities.h"

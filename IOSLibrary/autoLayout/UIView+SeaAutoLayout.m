@@ -7,6 +7,9 @@
 
 #import "UIView+SeaAutoLayout.h"
 
+///默认约束优先级
+static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityRequired - 1;
+
 @implementation UIView (SeaAutoLayout)
 
 /**
@@ -102,6 +105,7 @@
 {
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:constant];
     
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self sea_adjustAutoLayoutWithView:view];
     
     [self.superview addConstraint:constraint];
@@ -150,6 +154,7 @@
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:constant];
     [self sea_adjustAutoLayoutWithView:view];
     
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -247,6 +252,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:view attribute:NSLayoutAttributeTop multiplier:1.0 constant:margin];
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     
     [self.superview addConstraint:constraint];
     
@@ -286,7 +292,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -346,7 +352,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -385,7 +391,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -445,7 +451,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -484,7 +490,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:view attribute:NSLayoutAttributeTop multiplier:1.0 constant:-margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -544,7 +550,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -583,7 +589,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-margin];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
     return constraint;
@@ -660,7 +666,7 @@
  */
 - (NSLayoutConstraint*)sea_heightToView:(UIView*) view constant:(CGFloat) constant
 {
-   return [self sea_heightToView:view multiplier:1.0 constant:constant];
+    return [self sea_heightToView:view multiplier:1.0 constant:constant];
 }
 
 /**
@@ -697,7 +703,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:!view ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeWidth multiplier:multiplier constant:constant];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     if(view == nil){
         [self addConstraint:constraint];
     }else{
@@ -719,7 +725,7 @@
     [self sea_adjustAutoLayoutWithView:view];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:view attribute:!view ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeHeight multiplier:multiplier constant:constant];
-    
+    constraint.priority = SeaAutoLayoutPriorityDefault;
     if(view == nil){
         [self addConstraint:constraint];
     }else{
@@ -739,8 +745,8 @@
     [self sea_adjustAutoLayoutWithView:nil];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:ratio constant:0];
-    
-   [self addConstraint:constraint];
+    constraint.priority = SeaAutoLayoutPriorityDefault;
+    [self addConstraint:constraint];
     
     return constraint;
 }
@@ -882,5 +888,52 @@
     return layoutConstraint;
 }
 
+#pragma mark- AutoLayout 计算大小
+
+/**根据给定的 size 计算当前view的大小，要使用auto layout
+ *@param fitsSize 大小范围 0 则不限制范围
+ *@param type 计算方式
+ *@return view 大小
+ */
+- (CGSize)sea_sizeThatFits:(CGSize) fitsSize type:(SeaAutoLayoutCalculateType) type
+{
+    CGSize size = CGSizeZero;
+    if (type != SeaAutoLayoutCalculateTypeSize)
+    {
+        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        //添加临时约束
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:type == SeaAutoLayoutCalculateTypeHeight ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:type == SeaAutoLayoutCalculateTypeHeight ? fitsSize.width : fitsSize.height];
+        
+        [self addConstraint:constraint];
+        size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        [self removeConstraint:constraint];
+        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
+    }
+    else
+    {
+        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        //添加临时约束
+        NSLayoutConstraint *constraint = nil;
+        if(!CGSizeEqualToSize(fitsSize, CGSizeZero))
+        {
+            constraint = [NSLayoutConstraint constraintWithItem:self attribute:fitsSize.width != 0 ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:fitsSize.width != 0 ? fitsSize.width : fitsSize.height];
+            [self addConstraint:constraint];
+        }
+        
+        
+        size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        
+        if(constraint != nil)
+        {
+            [self removeConstraint:constraint];
+        }
+        
+        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
+    }
+    
+    return size;
+}
 
 @end

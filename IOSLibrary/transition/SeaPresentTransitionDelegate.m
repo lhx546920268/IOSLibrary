@@ -7,7 +7,7 @@
 //
 
 #import "SeaPresentTransitionDelegate.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 
 
 @class SeaPresentTransitionDelegate;

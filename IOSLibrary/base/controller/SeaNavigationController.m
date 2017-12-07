@@ -6,7 +6,7 @@
 //
 
 #import "SeaNavigationController.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 #import "SeaBasic.h"
 
 @interface SeaNavigationController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>

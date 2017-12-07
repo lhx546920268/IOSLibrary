@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
     SeaNavigationItemPositionRight = 1 //右边
 };
 
-@interface UIViewController (Utilities)
+@interface UIViewController (Utils)
 
 /**设置返回按钮
  */

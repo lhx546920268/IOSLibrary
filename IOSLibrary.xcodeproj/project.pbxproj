@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		101587781FA9726700CC1588 /* UIAlertController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 101587761FA9726700CC1588 /* UIAlertController+Utils.h */; };
+		101587781FA9726700CC1588 /* UIAlertController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 101587761FA9726700CC1588 /* UIAlertController+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101587791FA9726700CC1588 /* UIAlertController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 101587771FA9726700CC1588 /* UIAlertController+Utils.m */; };
 		101AB8C31FA2E45100711095 /* SeaAlbumAssetsCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 1032E3E71FA2E3C200709FDC /* SeaAlbumAssetsCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101AB8C41FA2E45100711095 /* SeaAlbumAssetsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1032E3DF1FA2E3C200709FDC /* SeaAlbumAssetsViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +24,14 @@
 		101AB8CF1FA2E46800711095 /* SeaSystemSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 1032E3DC1FA2E3B700709FDC /* SeaSystemSound.m */; };
 		101B8B2E1FB5A56C00D333DB /* UIView+SeaAutoLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101B8B2F1FB5A58900D333DB /* UIView+SeaAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */; };
+		1052CAE01FD78EA900F6F01F /* UITableView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADC1FD78DB200F6F01F /* UITableView+Utilities.m */; };
+		1052CAE11FD78EA900F6F01F /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADD1FD78DB200F6F01F /* UITableViewCell+Utilities.m */; };
+		1052CAE21FD78EA900F6F01F /* SeaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADE1FD78E6A00F6F01F /* SeaTableViewController.m */; };
+		1052CAE31FD78EC700F6F01F /* UITableView+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 1052CADB1FD78DB200F6F01F /* UITableView+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1052CAE41FD78EC700F6F01F /* UITableViewCell+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 1052CADA1FD78DB200F6F01F /* UITableViewCell+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1052CAE51FD78EC700F6F01F /* SeaTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1052CADF1FD78E6A00F6F01F /* SeaTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1052CAEB1FD790BA00F6F01F /* UITableView+SeaRowHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CAE91FD790BA00F6F01F /* UITableView+SeaRowHeight.m */; };
+		1052CAEC1FD790D300F6F01F /* UITableView+SeaRowHeight.h in Headers */ = {isa = PBXBuildFile; fileRef = 1052CAEA1FD790BA00F6F01F /* UITableView+SeaRowHeight.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10BB623A1FA0288C00E1EA40 /* SeaCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BB62391FA0288C00E1EA40 /* SeaCheckBox.m */; };
 		10BB623D1FA0293100E1EA40 /* SeaImageGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BB623B1FA0293100E1EA40 /* SeaImageGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10BB623E1FA0293100E1EA40 /* SeaImageGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BB623C1FA0293100E1EA40 /* SeaImageGenerator.m */; };
@@ -38,7 +46,6 @@
 		10E7B1851F9F2D38006A83D8 /* SeaImageCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1101F9F2D13006A83D8 /* SeaImageCacheTool.m */; };
 		10E7B1861F9F2D38006A83D8 /* SeaMovieCacheToolOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1111F9F2D13006A83D8 /* SeaMovieCacheToolOperation.m */; };
 		10E7B1871F9F2D38006A83D8 /* UITabBarController+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */; };
-		10E7B1881F9F2D38006A83D8 /* UIView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1261F9F2D13006A83D8 /* UIView+Utilities.m */; };
 		10E7B1891F9F2D38006A83D8 /* UIButton+utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1281F9F2D13006A83D8 /* UIButton+utilities.m */; };
 		10E7B18A1F9F2D38006A83D8 /* UIWebView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B12A1F9F2D13006A83D8 /* UIWebView+Utilities.m */; };
 		10E7B18B1F9F2D38006A83D8 /* NSDate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B12C1F9F2D13006A83D8 /* NSDate+Utilities.m */; };
@@ -48,16 +55,13 @@
 		10E7B18F1F9F2D38006A83D8 /* NSJSONSerialization+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1331F9F2D13006A83D8 /* NSJSONSerialization+Utilities.m */; };
 		10E7B1901F9F2D38006A83D8 /* UITextView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1341F9F2D13006A83D8 /* UITextView+Utilities.m */; };
 		10E7B1911F9F2D38006A83D8 /* NSDictionary+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1351F9F2D13006A83D8 /* NSDictionary+Utilities.m */; };
-		10E7B1921F9F2D38006A83D8 /* UITableView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1361F9F2D13006A83D8 /* UITableView+Utilities.m */; };
-		10E7B1931F9F2D38006A83D8 /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1381F9F2D13006A83D8 /* UITableViewCell+Utilities.m */; };
 		10E7B1941F9F2D38006A83D8 /* NSIndexPath+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1391F9F2D13006A83D8 /* NSIndexPath+Utilities.m */; };
 		10E7B1951F9F2D38006A83D8 /* UISearchBar+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B13A1F9F2D13006A83D8 /* UISearchBar+Utilities.m */; };
 		10E7B1961F9F2D38006A83D8 /* UITabBarItem+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B13B1F9F2D13006A83D8 /* UITabBarItem+Utilities.m */; };
 		10E7B1971F9F2D38006A83D8 /* NSAttributedString+Utlities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B13E1F9F2D13006A83D8 /* NSAttributedString+Utlities.m */; };
 		10E7B1981F9F2D38006A83D8 /* UIColor+colorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B13F1F9F2D13006A83D8 /* UIColor+colorUtilities.m */; };
-		10E7B1991F9F2D38006A83D8 /* UIViewController+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1401F9F2D13006A83D8 /* UIViewController+Utilities.m */; };
+		10E7B1991F9F2D38006A83D8 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1401F9F2D13006A83D8 /* UIViewController+Utils.m */; };
 		10E7B19A1F9F2D38006A83D8 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1411F9F2D13006A83D8 /* UIImage+Utilities.m */; };
-		10E7B19B1F9F2D38006A83D8 /* UITableViewCell+addLineForCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1421F9F2D13006A83D8 /* UITableViewCell+addLineForCell.m */; };
 		10E7B19C1F9F2D38006A83D8 /* UITextField+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1431F9F2D13006A83D8 /* UITextField+Utilities.m */; };
 		10E7B19D1F9F2D38006A83D8 /* NSArray+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1451F9F2D13006A83D8 /* NSArray+Utilities.m */; };
 		10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1491F9F2D13006A83D8 /* UINavigationController+Utils.m */; };
@@ -82,19 +86,15 @@
 		10E7B1B61F9F2D38006A83D8 /* SeaScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0561F9F2D12006A83D8 /* SeaScrollView.m */; };
 		10E7B1B71F9F2D38006A83D8 /* SeaScrollViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0571F9F2D12006A83D8 /* SeaScrollViewCell.m */; };
 		10E7B1B81F9F2D38006A83D8 /* SeaAutoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0581F9F2D12006A83D8 /* SeaAutoScrollView.m */; };
-		10E7B1B91F9F2D38006A83D8 /* UITableView+SeaRowHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B05B1F9F2D12006A83D8 /* UITableView+SeaRowHeight.m */; };
 		10E7B1BA1F9F2D38006A83D8 /* SeaTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B05E1F9F2D12006A83D8 /* SeaTextView.m */; };
 		10E7B1BB1F9F2D38006A83D8 /* SeaGridPasswordLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0611F9F2D12006A83D8 /* SeaGridPasswordLabel.m */; };
 		10E7B1BC1F9F2D38006A83D8 /* SeaRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0621F9F2D12006A83D8 /* SeaRadarView.m */; };
-		10E7B1BD1F9F2D38006A83D8 /* SeaLoadingIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0661F9F2D12006A83D8 /* SeaLoadingIndicator.m */; };
-		10E7B1BE1F9F2D38006A83D8 /* SeaBadNetworkRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0671F9F2D12006A83D8 /* SeaBadNetworkRemindView.m */; };
 		10E7B1BF1F9F2D38006A83D8 /* SeaCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0691F9F2D12006A83D8 /* SeaCollectionViewFlowLayout.m */; };
 		10E7B1C01F9F2D38006A83D8 /* SeaCollectionViewWaterLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B06A1F9F2D12006A83D8 /* SeaCollectionViewWaterLayout.m */; };
 		10E7B1C11F9F2D38006A83D8 /* SeaCollectionViewDraggableLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B06C1F9F2D12006A83D8 /* SeaCollectionViewDraggableLayout.m */; };
 		10E7B1C21F9F2D38006A83D8 /* UICollectionView+SeaCellSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B06D1F9F2D12006A83D8 /* UICollectionView+SeaCellSize.m */; };
 		10E7B1C31F9F2D38006A83D8 /* SeaCollectionViewFlowFillLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0701F9F2D12006A83D8 /* SeaCollectionViewFlowFillLayout.m */; };
 		10E7B1C41F9F2D38006A83D8 /* SeaProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0751F9F2D12006A83D8 /* SeaProgressView.m */; };
-		10E7B1C51F9F2D38006A83D8 /* SeaNetworkActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0771F9F2D12006A83D8 /* SeaNetworkActivityView.m */; };
 		10E7B1C61F9F2D38006A83D8 /* SeaToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B07B1F9F2D12006A83D8 /* SeaToast.m */; };
 		10E7B1C71F9F2D38006A83D8 /* SeaActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B07C1F9F2D12006A83D8 /* SeaActionSheet.m */; };
 		10E7B1C81F9F2D38006A83D8 /* SeaAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B07E1F9F2D12006A83D8 /* SeaAlertView.m */; };
@@ -139,15 +139,6 @@
 		10E7B1F01F9F2D38006A83D8 /* SeaLoadMoreControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0DB1F9F2D12006A83D8 /* SeaLoadMoreControl.m */; };
 		10E7B1F11F9F2D38006A83D8 /* UIScrollView+SeaDataControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0DD1F9F2D12006A83D8 /* UIScrollView+SeaDataControl.m */; };
 		10E7B1F21F9F2D38006A83D8 /* SeaDataControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0DF1F9F2D12006A83D8 /* SeaDataControl.m */; };
-		10E7B1F31F9F2D38006A83D8 /* SeaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1691F9F2D13006A83D8 /* SeaCollectionViewController.m */; };
-		10E7B1F41F9F2D38006A83D8 /* SeaSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B16A1F9F2D13006A83D8 /* SeaSlideViewController.m */; };
-		10E7B1F51F9F2D38006A83D8 /* SeaDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B16C1F9F2D13006A83D8 /* SeaDialogViewController.m */; };
-		10E7B1F61F9F2D38006A83D8 /* SeaScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B16D1F9F2D13006A83D8 /* SeaScrollViewController.m */; };
-		10E7B1F71F9F2D38006A83D8 /* SeaWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B16E1F9F2D13006A83D8 /* SeaWebViewController.m */; };
-		10E7B1F81F9F2D38006A83D8 /* SeaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1701F9F2D13006A83D8 /* SeaTableViewController.m */; };
-		10E7B1F91F9F2D38006A83D8 /* SeaSearchDisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1721F9F2D13006A83D8 /* SeaSearchDisplayViewController.m */; };
-		10E7B1FA1F9F2D38006A83D8 /* SeaNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1751F9F2D13006A83D8 /* SeaNavigationController.m */; };
-		10E7B1FB1F9F2D38006A83D8 /* SeaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B17B1F9F2D13006A83D8 /* SeaViewController.m */; };
 		10E7B1FC1F9F2D38006A83D8 /* SeaWebDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0FC1F9F2D12006A83D8 /* SeaWebDetailController.m */; };
 		10E7B1FE1F9F2D48006A83D8 /* SeaImageCacheToolOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0FF1F9F2D13006A83D8 /* SeaImageCacheToolOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B1FF1F9F2D48006A83D8 /* UIImageView+SeaImageCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1001F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -162,12 +153,9 @@
 		10E7B2081F9F2D48006A83D8 /* UITabBarItem+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11B1F9F2D13006A83D8 /* UITabBarItem+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2091F9F2D48006A83D8 /* UISearchBar+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11C1F9F2D13006A83D8 /* UISearchBar+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B20A1F9F2D48006A83D8 /* NSIndexPath+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11D1F9F2D13006A83D8 /* NSIndexPath+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B20B1F9F2D48006A83D8 /* UITableViewCell+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11F1F9F2D13006A83D8 /* UITableViewCell+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B20C1F9F2D48006A83D8 /* UITableView+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1201F9F2D13006A83D8 /* UITableView+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B20D1F9F2D48006A83D8 /* SeaUtlities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1211F9F2D13006A83D8 /* SeaUtlities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B20E1F9F2D48006A83D8 /* UITableViewCell+addLineForCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1221F9F2D13006A83D8 /* UITableViewCell+addLineForCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B20F1F9F2D48006A83D8 /* UIImage+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1231F9F2D13006A83D8 /* UIImage+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2101F9F2D48006A83D8 /* UIViewController+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1241F9F2D13006A83D8 /* UIViewController+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10E7B2101F9F2D48006A83D8 /* UIViewController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1241F9F2D13006A83D8 /* UIViewController+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2111F9F2D48006A83D8 /* UIColor+colorUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1251F9F2D13006A83D8 /* UIColor+colorUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2121F9F2D48006A83D8 /* NSAttributedString+Utlities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1271F9F2D13006A83D8 /* NSAttributedString+Utlities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2131F9F2D48006A83D8 /* UINavigationController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1291F9F2D13006A83D8 /* UINavigationController+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -176,7 +164,6 @@
 		10E7B2171F9F2D48006A83D8 /* UIImagePickerController+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1301F9F2D13006A83D8 /* UIImagePickerController+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2181F9F2D48006A83D8 /* UITabBarController+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1371F9F2D13006A83D8 /* UITabBarController+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2191F9F2D48006A83D8 /* UIButton+utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B13C1F9F2D13006A83D8 /* UIButton+utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B21A1F9F2D48006A83D8 /* UIView+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B13D1F9F2D13006A83D8 /* UIView+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B21B1F9F2D48006A83D8 /* NSString+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1441F9F2D13006A83D8 /* NSString+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B21C1F9F2D48006A83D8 /* NSDate+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1461F9F2D13006A83D8 /* NSDate+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B21D1F9F2D48006A83D8 /* UIWebView+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1481F9F2D13006A83D8 /* UIWebView+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -207,11 +194,8 @@
 		10E7B23B1F9F2D48006A83D8 /* SeaScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0531F9F2D12006A83D8 /* SeaScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B23C1F9F2D48006A83D8 /* SeaScrollViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0541F9F2D12006A83D8 /* SeaScrollViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B23D1F9F2D48006A83D8 /* SeaAutoScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0551F9F2D12006A83D8 /* SeaAutoScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B23E1F9F2D48006A83D8 /* UITableView+SeaRowHeight.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B05A1F9F2D12006A83D8 /* UITableView+SeaRowHeight.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B23F1F9F2D48006A83D8 /* SeaTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B05D1F9F2D12006A83D8 /* SeaTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2401F9F2D48006A83D8 /* SeaGridPasswordLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0601F9F2D12006A83D8 /* SeaGridPasswordLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2411F9F2D48006A83D8 /* SeaLoadingIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0641F9F2D12006A83D8 /* SeaLoadingIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2421F9F2D48006A83D8 /* SeaBadNetworkRemindView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0651F9F2D12006A83D8 /* SeaBadNetworkRemindView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2431F9F2D48006A83D8 /* SeaCollectionViewFlowFillLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B06B1F9F2D12006A83D8 /* SeaCollectionViewFlowFillLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2441F9F2D48006A83D8 /* SeaCollectionViewWaterLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B06E1F9F2D12006A83D8 /* SeaCollectionViewWaterLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2451F9F2D48006A83D8 /* SeaCollectionViewFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B06F1F9F2D12006A83D8 /* SeaCollectionViewFlowLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -221,7 +205,6 @@
 		10E7B2491F9F2D48006A83D8 /* SeaActionSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0781F9F2D12006A83D8 /* SeaActionSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B24A1F9F2D49006A83D8 /* SeaAlertController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0791F9F2D12006A83D8 /* SeaAlertController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B24B1F9F2D49006A83D8 /* SeaAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B07A1F9F2D12006A83D8 /* SeaAlertView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B24C1F9F2D49006A83D8 /* SeaNetworkActivityView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B07D1F9F2D12006A83D8 /* SeaNetworkActivityView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B24D1F9F2D49006A83D8 /* SeaToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0801F9F2D12006A83D8 /* SeaToast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B24E1F9F2D49006A83D8 /* SeaMagnifyingGlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0821F9F2D12006A83D8 /* SeaMagnifyingGlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B24F1F9F2D49006A83D8 /* SeaEmptyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0861F9F2D12006A83D8 /* SeaEmptyView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -265,28 +248,44 @@
 		10E7B2761F9F2D49006A83D8 /* SeaRefreshControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0DE1F9F2D12006A83D8 /* SeaRefreshControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2771F9F2D49006A83D8 /* SeaLoadMoreControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0E01F9F2D12006A83D8 /* SeaLoadMoreControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2781F9F2D49006A83D8 /* UIScrollView+SeaDataControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0E11F9F2D12006A83D8 /* UIScrollView+SeaDataControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2791F9F2D49006A83D8 /* SeaSearchDisplayViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B16B1F9F2D13006A83D8 /* SeaSearchDisplayViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B27A1F9F2D49006A83D8 /* SeaNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B16F1F9F2D13006A83D8 /* SeaNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B27B1F9F2D49006A83D8 /* SeaViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1711F9F2D13006A83D8 /* SeaViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B27C1F9F2D49006A83D8 /* SeaSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1731F9F2D13006A83D8 /* SeaSlideViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B27D1F9F2D49006A83D8 /* SeaCollectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1741F9F2D13006A83D8 /* SeaCollectionViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B27E1F9F2D49006A83D8 /* SeaWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1761F9F2D13006A83D8 /* SeaWebViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B27F1F9F2D49006A83D8 /* SeaDialogViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1771F9F2D13006A83D8 /* SeaDialogViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2801F9F2D49006A83D8 /* SeaScrollViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1781F9F2D13006A83D8 /* SeaScrollViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2811F9F2D49006A83D8 /* SeaTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1791F9F2D13006A83D8 /* SeaTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2821F9F2D49006A83D8 /* SeaViewControllerHeaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B17A1F9F2D13006A83D8 /* SeaViewControllerHeaders.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2831F9F2D49006A83D8 /* SeaWebDetailController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0FD1F9F2D12006A83D8 /* SeaWebDetailController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2841F9F2D73006A83D8 /* JSTools.js in Resources */ = {isa = PBXBuildFile; fileRef = 10E7B0F11F9F2D12006A83D8 /* JSTools.js */; };
 		10E7B2851F9F2D7B006A83D8 /* SeaTextListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10E7B0C81F9F2D12006A83D8 /* SeaTextListCell.xib */; };
 		10E7B2861F9F2D7B006A83D8 /* SeaTextSwitchListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10E7B0D21F9F2D12006A83D8 /* SeaTextSwitchListCell.xib */; };
 		10E7B2871F9F2D7B006A83D8 /* SeaTextLoadingListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10E7B0D31F9F2D12006A83D8 /* SeaTextLoadingListCell.xib */; };
 		10E7B2881F9F2D84006A83D8 /* keyboard_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 10E7B0AB1F9F2D12006A83D8 /* keyboard_delete@2x.png */; };
+		10F6A3171FD8DEE500F2B30E /* UIView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3121FD8DED100F2B30E /* UIView+Utils.m */; };
+		10F6A3181FD8DEE500F2B30E /* SeaContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3161FD8DED100F2B30E /* SeaContainer.m */; };
+		10F6A3191FD8DEEF00F2B30E /* UIView+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3131FD8DED100F2B30E /* UIView+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A31A1FD8DEEF00F2B30E /* SeaContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3151FD8DED100F2B30E /* SeaContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A32D1FD8F0B400F2B30E /* SeaSearchDisplayViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A31E1FD8F0A300F2B30E /* SeaSearchDisplayViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A32E1FD8F0B400F2B30E /* SeaNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3221FD8F0A300F2B30E /* SeaNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A32F1FD8F0B400F2B30E /* SeaViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3231FD8F0A300F2B30E /* SeaViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3301FD8F0B400F2B30E /* SeaSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3251FD8F0A300F2B30E /* SeaSlideViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3311FD8F0B400F2B30E /* SeaCollectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3261FD8F0A300F2B30E /* SeaCollectionViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3321FD8F0B400F2B30E /* SeaWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3281FD8F0A300F2B30E /* SeaWebViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3331FD8F0B400F2B30E /* SeaDialogViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3291FD8F0A300F2B30E /* SeaDialogViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3341FD8F0B400F2B30E /* SeaScrollViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A32A1FD8F0A300F2B30E /* SeaScrollViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3351FD8F0B400F2B30E /* SeaViewControllerHeaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A32B1FD8F0A300F2B30E /* SeaViewControllerHeaders.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3361FD8F0C700F2B30E /* SeaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A31C1FD8F0A300F2B30E /* SeaCollectionViewController.m */; };
+		10F6A3371FD8F0C700F2B30E /* SeaSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A31D1FD8F0A300F2B30E /* SeaSlideViewController.m */; };
+		10F6A3381FD8F0C700F2B30E /* SeaDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A31F1FD8F0A300F2B30E /* SeaDialogViewController.m */; };
+		10F6A3391FD8F0C700F2B30E /* SeaScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3201FD8F0A300F2B30E /* SeaScrollViewController.m */; };
+		10F6A33A1FD8F0C700F2B30E /* SeaWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3211FD8F0A300F2B30E /* SeaWebViewController.m */; };
+		10F6A33B1FD8F0C700F2B30E /* SeaSearchDisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3241FD8F0A300F2B30E /* SeaSearchDisplayViewController.m */; };
+		10F6A33C1FD8F0C700F2B30E /* SeaNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3271FD8F0A300F2B30E /* SeaNavigationController.m */; };
+		10F6A33D1FD8F0C700F2B30E /* SeaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A32C1FD8F0A300F2B30E /* SeaViewController.m */; };
+		10F6A35B1FD9327700F2B30E /* SeaNetworkActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3591FD9322A00F2B30E /* SeaNetworkActivityView.m */; };
+		10F6A35C1FD9327700F2B30E /* SeaLoadingIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3571FD9320600F2B30E /* SeaLoadingIndicator.m */; };
+		10F6A35D1FD9327700F2B30E /* SeaBadNetworkRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10F6A3581FD9320600F2B30E /* SeaBadNetworkRemindView.m */; };
+		10F6A35E1FD9328000F2B30E /* SeaNetworkActivityView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A35A1FD9322B00F2B30E /* SeaNetworkActivityView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A35F1FD9328000F2B30E /* SeaLoadingIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3551FD9320600F2B30E /* SeaLoadingIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10F6A3601FD9328000F2B30E /* SeaBadNetworkRemindView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3561FD9320600F2B30E /* SeaBadNetworkRemindView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		101587761FA9726700CC1588 /* UIAlertController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Utils.h"; sourceTree = "<group>"; };
 		101587771FA9726700CC1588 /* UIAlertController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Utils.m"; sourceTree = "<group>"; };
-		101AB8D01FA2E58000711095 /* IOSLibrary.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSLibrary.pch; sourceTree = "<group>"; };
 		101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaAutoLayout.h"; sourceTree = "<group>"; };
 		101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaAutoLayout.m"; sourceTree = "<group>"; };
 		1032E3DC1FA2E3B700709FDC /* SeaSystemSound.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSystemSound.m; sourceTree = "<group>"; };
@@ -300,6 +299,14 @@
 		1032E3E51FA2E3C200709FDC /* SeaAlbumGroupListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumGroupListCell.h; sourceTree = "<group>"; };
 		1032E3E61FA2E3C200709FDC /* SeaAlbumGroupListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumGroupListView.h; sourceTree = "<group>"; };
 		1032E3E71FA2E3C200709FDC /* SeaAlbumAssetsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumAssetsCell.h; sourceTree = "<group>"; };
+		1052CADA1FD78DB200F6F01F /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
+		1052CADB1FD78DB200F6F01F /* UITableView+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+Utilities.h"; sourceTree = "<group>"; };
+		1052CADC1FD78DB200F6F01F /* UITableView+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Utilities.m"; sourceTree = "<group>"; };
+		1052CADD1FD78DB200F6F01F /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
+		1052CADE1FD78E6A00F6F01F /* SeaTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTableViewController.m; sourceTree = "<group>"; };
+		1052CADF1FD78E6A00F6F01F /* SeaTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTableViewController.h; sourceTree = "<group>"; };
+		1052CAE91FD790BA00F6F01F /* UITableView+SeaRowHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SeaRowHeight.m"; sourceTree = "<group>"; };
+		1052CAEA1FD790BA00F6F01F /* UITableView+SeaRowHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+SeaRowHeight.h"; sourceTree = "<group>"; };
 		10BB62371FA024B700E1EA40 /* IOSLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSLibrary.h; sourceTree = "<group>"; };
 		10BB62381FA0288C00E1EA40 /* SeaCheckBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaCheckBox.h; sourceTree = "<group>"; };
 		10BB62391FA0288C00E1EA40 /* SeaCheckBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCheckBox.m; sourceTree = "<group>"; };
@@ -313,17 +320,11 @@
 		10E7B0561F9F2D12006A83D8 /* SeaScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaScrollView.m; sourceTree = "<group>"; };
 		10E7B0571F9F2D12006A83D8 /* SeaScrollViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaScrollViewCell.m; sourceTree = "<group>"; };
 		10E7B0581F9F2D12006A83D8 /* SeaAutoScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaAutoScrollView.m; sourceTree = "<group>"; };
-		10E7B05A1F9F2D12006A83D8 /* UITableView+SeaRowHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+SeaRowHeight.h"; sourceTree = "<group>"; };
-		10E7B05B1F9F2D12006A83D8 /* UITableView+SeaRowHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SeaRowHeight.m"; sourceTree = "<group>"; };
 		10E7B05D1F9F2D12006A83D8 /* SeaTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextView.h; sourceTree = "<group>"; };
 		10E7B05E1F9F2D12006A83D8 /* SeaTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTextView.m; sourceTree = "<group>"; };
 		10E7B0601F9F2D12006A83D8 /* SeaGridPasswordLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaGridPasswordLabel.h; sourceTree = "<group>"; };
 		10E7B0611F9F2D12006A83D8 /* SeaGridPasswordLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaGridPasswordLabel.m; sourceTree = "<group>"; };
 		10E7B0621F9F2D12006A83D8 /* SeaRadarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaRadarView.m; sourceTree = "<group>"; };
-		10E7B0641F9F2D12006A83D8 /* SeaLoadingIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaLoadingIndicator.h; sourceTree = "<group>"; };
-		10E7B0651F9F2D12006A83D8 /* SeaBadNetworkRemindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaBadNetworkRemindView.h; sourceTree = "<group>"; };
-		10E7B0661F9F2D12006A83D8 /* SeaLoadingIndicator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaLoadingIndicator.m; sourceTree = "<group>"; };
-		10E7B0671F9F2D12006A83D8 /* SeaBadNetworkRemindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaBadNetworkRemindView.m; sourceTree = "<group>"; };
 		10E7B0691F9F2D12006A83D8 /* SeaCollectionViewFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		10E7B06A1F9F2D12006A83D8 /* SeaCollectionViewWaterLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCollectionViewWaterLayout.m; sourceTree = "<group>"; };
 		10E7B06B1F9F2D12006A83D8 /* SeaCollectionViewFlowFillLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaCollectionViewFlowFillLayout.h; sourceTree = "<group>"; };
@@ -336,13 +337,11 @@
 		10E7B0721F9F2D12006A83D8 /* SeaCollectionViewDraggableLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaCollectionViewDraggableLayout.h; sourceTree = "<group>"; };
 		10E7B0741F9F2D12006A83D8 /* SeaProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaProgressView.h; sourceTree = "<group>"; };
 		10E7B0751F9F2D12006A83D8 /* SeaProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaProgressView.m; sourceTree = "<group>"; };
-		10E7B0771F9F2D12006A83D8 /* SeaNetworkActivityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNetworkActivityView.m; sourceTree = "<group>"; };
 		10E7B0781F9F2D12006A83D8 /* SeaActionSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaActionSheet.h; sourceTree = "<group>"; };
 		10E7B0791F9F2D12006A83D8 /* SeaAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlertController.h; sourceTree = "<group>"; };
 		10E7B07A1F9F2D12006A83D8 /* SeaAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlertView.h; sourceTree = "<group>"; };
 		10E7B07B1F9F2D12006A83D8 /* SeaToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaToast.m; sourceTree = "<group>"; };
 		10E7B07C1F9F2D12006A83D8 /* SeaActionSheet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaActionSheet.m; sourceTree = "<group>"; };
-		10E7B07D1F9F2D12006A83D8 /* SeaNetworkActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaNetworkActivityView.h; sourceTree = "<group>"; };
 		10E7B07E1F9F2D12006A83D8 /* SeaAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaAlertView.m; sourceTree = "<group>"; };
 		10E7B07F1F9F2D12006A83D8 /* SeaAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaAlertController.m; sourceTree = "<group>"; };
 		10E7B0801F9F2D12006A83D8 /* SeaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaToast.h; sourceTree = "<group>"; };
@@ -482,14 +481,10 @@
 		10E7B11C1F9F2D13006A83D8 /* UISearchBar+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Utilities.h"; sourceTree = "<group>"; };
 		10E7B11D1F9F2D13006A83D8 /* NSIndexPath+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+Utilities.h"; sourceTree = "<group>"; };
 		10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Utilities.m"; sourceTree = "<group>"; };
-		10E7B11F1F9F2D13006A83D8 /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
-		10E7B1201F9F2D13006A83D8 /* UITableView+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+Utilities.h"; sourceTree = "<group>"; };
 		10E7B1211F9F2D13006A83D8 /* SeaUtlities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaUtlities.h; sourceTree = "<group>"; };
-		10E7B1221F9F2D13006A83D8 /* UITableViewCell+addLineForCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+addLineForCell.h"; sourceTree = "<group>"; };
 		10E7B1231F9F2D13006A83D8 /* UIImage+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utilities.h"; sourceTree = "<group>"; };
-		10E7B1241F9F2D13006A83D8 /* UIViewController+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utilities.h"; sourceTree = "<group>"; };
+		10E7B1241F9F2D13006A83D8 /* UIViewController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
 		10E7B1251F9F2D13006A83D8 /* UIColor+colorUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+colorUtilities.h"; sourceTree = "<group>"; };
-		10E7B1261F9F2D13006A83D8 /* UIView+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1271F9F2D13006A83D8 /* NSAttributedString+Utlities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Utlities.h"; sourceTree = "<group>"; };
 		10E7B1281F9F2D13006A83D8 /* UIButton+utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+utilities.m"; sourceTree = "<group>"; };
 		10E7B1291F9F2D13006A83D8 /* UINavigationController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Utils.h"; sourceTree = "<group>"; };
@@ -504,19 +499,15 @@
 		10E7B1331F9F2D13006A83D8 /* NSJSONSerialization+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSJSONSerialization+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1341F9F2D13006A83D8 /* UITextView+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1351F9F2D13006A83D8 /* NSDictionary+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Utilities.m"; sourceTree = "<group>"; };
-		10E7B1361F9F2D13006A83D8 /* UITableView+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1371F9F2D13006A83D8 /* UITabBarController+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Utilities.h"; sourceTree = "<group>"; };
-		10E7B1381F9F2D13006A83D8 /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1391F9F2D13006A83D8 /* NSIndexPath+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+Utilities.m"; sourceTree = "<group>"; };
 		10E7B13A1F9F2D13006A83D8 /* UISearchBar+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Utilities.m"; sourceTree = "<group>"; };
 		10E7B13B1F9F2D13006A83D8 /* UITabBarItem+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarItem+Utilities.m"; sourceTree = "<group>"; };
 		10E7B13C1F9F2D13006A83D8 /* UIButton+utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+utilities.h"; sourceTree = "<group>"; };
-		10E7B13D1F9F2D13006A83D8 /* UIView+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Utilities.h"; sourceTree = "<group>"; };
 		10E7B13E1F9F2D13006A83D8 /* NSAttributedString+Utlities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Utlities.m"; sourceTree = "<group>"; };
 		10E7B13F1F9F2D13006A83D8 /* UIColor+colorUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+colorUtilities.m"; sourceTree = "<group>"; };
-		10E7B1401F9F2D13006A83D8 /* UIViewController+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utilities.m"; sourceTree = "<group>"; };
+		10E7B1401F9F2D13006A83D8 /* UIViewController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
 		10E7B1411F9F2D13006A83D8 /* UIImage+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utilities.m"; sourceTree = "<group>"; };
-		10E7B1421F9F2D13006A83D8 /* UITableViewCell+addLineForCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+addLineForCell.m"; sourceTree = "<group>"; };
 		10E7B1431F9F2D13006A83D8 /* UITextField+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1441F9F2D13006A83D8 /* NSString+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Utilities.h"; sourceTree = "<group>"; };
 		10E7B1451F9F2D13006A83D8 /* NSArray+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utilities.m"; sourceTree = "<group>"; };
@@ -542,25 +533,33 @@
 		10E7B15B1F9F2D13006A83D8 /* SeaNetworkQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNetworkQueue.m; sourceTree = "<group>"; };
 		10E7B15C1F9F2D13006A83D8 /* SeaHttpInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaHttpInterface.h; sourceTree = "<group>"; };
 		10E7B15D1F9F2D13006A83D8 /* SeaHttpRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaHttpRequest.h; sourceTree = "<group>"; };
-		10E7B1691F9F2D13006A83D8 /* SeaCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCollectionViewController.m; sourceTree = "<group>"; };
-		10E7B16A1F9F2D13006A83D8 /* SeaSlideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSlideViewController.m; sourceTree = "<group>"; };
-		10E7B16B1F9F2D13006A83D8 /* SeaSearchDisplayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSearchDisplayViewController.h; sourceTree = "<group>"; };
-		10E7B16C1F9F2D13006A83D8 /* SeaDialogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaDialogViewController.m; sourceTree = "<group>"; };
-		10E7B16D1F9F2D13006A83D8 /* SeaScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaScrollViewController.m; sourceTree = "<group>"; };
-		10E7B16E1F9F2D13006A83D8 /* SeaWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaWebViewController.m; sourceTree = "<group>"; };
-		10E7B16F1F9F2D13006A83D8 /* SeaNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaNavigationController.h; sourceTree = "<group>"; };
-		10E7B1701F9F2D13006A83D8 /* SeaTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTableViewController.m; sourceTree = "<group>"; };
-		10E7B1711F9F2D13006A83D8 /* SeaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaViewController.h; sourceTree = "<group>"; };
-		10E7B1721F9F2D13006A83D8 /* SeaSearchDisplayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSearchDisplayViewController.m; sourceTree = "<group>"; };
-		10E7B1731F9F2D13006A83D8 /* SeaSlideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSlideViewController.h; sourceTree = "<group>"; };
-		10E7B1741F9F2D13006A83D8 /* SeaCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaCollectionViewController.h; sourceTree = "<group>"; };
-		10E7B1751F9F2D13006A83D8 /* SeaNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNavigationController.m; sourceTree = "<group>"; };
-		10E7B1761F9F2D13006A83D8 /* SeaWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaWebViewController.h; sourceTree = "<group>"; };
-		10E7B1771F9F2D13006A83D8 /* SeaDialogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaDialogViewController.h; sourceTree = "<group>"; };
-		10E7B1781F9F2D13006A83D8 /* SeaScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaScrollViewController.h; sourceTree = "<group>"; };
-		10E7B1791F9F2D13006A83D8 /* SeaTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTableViewController.h; sourceTree = "<group>"; };
-		10E7B17A1F9F2D13006A83D8 /* SeaViewControllerHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaViewControllerHeaders.h; sourceTree = "<group>"; };
-		10E7B17B1F9F2D13006A83D8 /* SeaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaViewController.m; sourceTree = "<group>"; };
+		10F6A3121FD8DED100F2B30E /* UIView+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utils.m"; sourceTree = "<group>"; };
+		10F6A3131FD8DED100F2B30E /* UIView+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
+		10F6A3151FD8DED100F2B30E /* SeaContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaContainer.h; sourceTree = "<group>"; };
+		10F6A3161FD8DED100F2B30E /* SeaContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaContainer.m; sourceTree = "<group>"; };
+		10F6A31C1FD8F0A300F2B30E /* SeaCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCollectionViewController.m; sourceTree = "<group>"; };
+		10F6A31D1FD8F0A300F2B30E /* SeaSlideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSlideViewController.m; sourceTree = "<group>"; };
+		10F6A31E1FD8F0A300F2B30E /* SeaSearchDisplayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSearchDisplayViewController.h; sourceTree = "<group>"; };
+		10F6A31F1FD8F0A300F2B30E /* SeaDialogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaDialogViewController.m; sourceTree = "<group>"; };
+		10F6A3201FD8F0A300F2B30E /* SeaScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaScrollViewController.m; sourceTree = "<group>"; };
+		10F6A3211FD8F0A300F2B30E /* SeaWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaWebViewController.m; sourceTree = "<group>"; };
+		10F6A3221FD8F0A300F2B30E /* SeaNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaNavigationController.h; sourceTree = "<group>"; };
+		10F6A3231FD8F0A300F2B30E /* SeaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaViewController.h; sourceTree = "<group>"; };
+		10F6A3241FD8F0A300F2B30E /* SeaSearchDisplayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSearchDisplayViewController.m; sourceTree = "<group>"; };
+		10F6A3251FD8F0A300F2B30E /* SeaSlideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSlideViewController.h; sourceTree = "<group>"; };
+		10F6A3261FD8F0A300F2B30E /* SeaCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaCollectionViewController.h; sourceTree = "<group>"; };
+		10F6A3271FD8F0A300F2B30E /* SeaNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNavigationController.m; sourceTree = "<group>"; };
+		10F6A3281FD8F0A300F2B30E /* SeaWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaWebViewController.h; sourceTree = "<group>"; };
+		10F6A3291FD8F0A300F2B30E /* SeaDialogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaDialogViewController.h; sourceTree = "<group>"; };
+		10F6A32A1FD8F0A300F2B30E /* SeaScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaScrollViewController.h; sourceTree = "<group>"; };
+		10F6A32B1FD8F0A300F2B30E /* SeaViewControllerHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaViewControllerHeaders.h; sourceTree = "<group>"; };
+		10F6A32C1FD8F0A300F2B30E /* SeaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaViewController.m; sourceTree = "<group>"; };
+		10F6A3551FD9320600F2B30E /* SeaLoadingIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaLoadingIndicator.h; sourceTree = "<group>"; };
+		10F6A3561FD9320600F2B30E /* SeaBadNetworkRemindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaBadNetworkRemindView.h; sourceTree = "<group>"; };
+		10F6A3571FD9320600F2B30E /* SeaLoadingIndicator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaLoadingIndicator.m; sourceTree = "<group>"; };
+		10F6A3581FD9320600F2B30E /* SeaBadNetworkRemindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaBadNetworkRemindView.m; sourceTree = "<group>"; };
+		10F6A3591FD9322A00F2B30E /* SeaNetworkActivityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNetworkActivityView.m; sourceTree = "<group>"; };
+		10F6A35A1FD9322B00F2B30E /* SeaNetworkActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaNetworkActivityView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -608,6 +607,37 @@
 			path = album;
 			sourceTree = "<group>";
 		};
+		1052CAD71FD78CFC00F6F01F /* tableView */ = {
+			isa = PBXGroup;
+			children = (
+				1052CAD91FD78DB200F6F01F /* category */,
+				1052CAD81FD78DB200F6F01F /* controller */,
+			);
+			path = tableView;
+			sourceTree = "<group>";
+		};
+		1052CAD81FD78DB200F6F01F /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				1052CADF1FD78E6A00F6F01F /* SeaTableViewController.h */,
+				1052CADE1FD78E6A00F6F01F /* SeaTableViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		1052CAD91FD78DB200F6F01F /* category */ = {
+			isa = PBXGroup;
+			children = (
+				1052CAEA1FD790BA00F6F01F /* UITableView+SeaRowHeight.h */,
+				1052CAE91FD790BA00F6F01F /* UITableView+SeaRowHeight.m */,
+				1052CADB1FD78DB200F6F01F /* UITableView+Utilities.h */,
+				1052CADC1FD78DB200F6F01F /* UITableView+Utilities.m */,
+				1052CADA1FD78DB200F6F01F /* UITableViewCell+Utilities.h */,
+				1052CADD1FD78DB200F6F01F /* UITableViewCell+Utilities.m */,
+			);
+			path = category;
+			sourceTree = "<group>";
+		};
 		10E7B03C1F9F2CAD006A83D8 = {
 			isa = PBXGroup;
 			children = (
@@ -627,6 +657,9 @@
 		10E7B0481F9F2CAD006A83D8 /* IOSLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				10F6A3531FD9320600F2B30E /* loading */,
+				10F6A3101FD8DED100F2B30E /* base */,
+				1052CAD71FD78CFC00F6F01F /* tableView */,
 				101B8B2B1FB5A53F00D333DB /* autoLayout */,
 				1032E3DE1FA2E3C200709FDC /* album */,
 				1032E3DB1FA2E3B700709FDC /* audio */,
@@ -638,11 +671,9 @@
 				10E7B0F31F9F2D12006A83D8 /* transition */,
 				10E7B0F81F9F2D12006A83D8 /* version */,
 				10E7B0511F9F2D12006A83D8 /* view */,
-				10E7B1681F9F2D13006A83D8 /* viewController */,
 				10E7B0FB1F9F2D12006A83D8 /* web */,
 				10E7B04A1F9F2CAD006A83D8 /* Info.plist */,
 				10BB62371FA024B700E1EA40 /* IOSLibrary.h */,
-				101AB8D01FA2E58000711095 /* IOSLibrary.pch */,
 			);
 			path = IOSLibrary;
 			sourceTree = "<group>";
@@ -651,11 +682,9 @@
 			isa = PBXGroup;
 			children = (
 				10E7B0521F9F2D12006A83D8 /* scrollView */,
-				10E7B0591F9F2D12006A83D8 /* tableView */,
 				10E7B05C1F9F2D12006A83D8 /* textView */,
 				10E7B05F1F9F2D12006A83D8 /* password */,
 				10E7B0621F9F2D12006A83D8 /* SeaRadarView.m */,
-				10E7B0631F9F2D12006A83D8 /* loading */,
 				10E7B0681F9F2D12006A83D8 /* collectionView */,
 				10E7B0731F9F2D12006A83D8 /* progress */,
 				10E7B0761F9F2D12006A83D8 /* alert */,
@@ -687,15 +716,6 @@
 			path = scrollView;
 			sourceTree = "<group>";
 		};
-		10E7B0591F9F2D12006A83D8 /* tableView */ = {
-			isa = PBXGroup;
-			children = (
-				10E7B05A1F9F2D12006A83D8 /* UITableView+SeaRowHeight.h */,
-				10E7B05B1F9F2D12006A83D8 /* UITableView+SeaRowHeight.m */,
-			);
-			path = tableView;
-			sourceTree = "<group>";
-		};
 		10E7B05C1F9F2D12006A83D8 /* textView */ = {
 			isa = PBXGroup;
 			children = (
@@ -712,17 +732,6 @@
 				10E7B0611F9F2D12006A83D8 /* SeaGridPasswordLabel.m */,
 			);
 			path = password;
-			sourceTree = "<group>";
-		};
-		10E7B0631F9F2D12006A83D8 /* loading */ = {
-			isa = PBXGroup;
-			children = (
-				10E7B0651F9F2D12006A83D8 /* SeaBadNetworkRemindView.h */,
-				10E7B0671F9F2D12006A83D8 /* SeaBadNetworkRemindView.m */,
-				10E7B0641F9F2D12006A83D8 /* SeaLoadingIndicator.h */,
-				10E7B0661F9F2D12006A83D8 /* SeaLoadingIndicator.m */,
-			);
-			path = loading;
 			sourceTree = "<group>";
 		};
 		10E7B0681F9F2D12006A83D8 /* collectionView */ = {
@@ -760,8 +769,6 @@
 				10E7B07F1F9F2D12006A83D8 /* SeaAlertController.m */,
 				10E7B07A1F9F2D12006A83D8 /* SeaAlertView.h */,
 				10E7B07E1F9F2D12006A83D8 /* SeaAlertView.m */,
-				10E7B07D1F9F2D12006A83D8 /* SeaNetworkActivityView.h */,
-				10E7B0771F9F2D12006A83D8 /* SeaNetworkActivityView.m */,
 				10E7B0801F9F2D12006A83D8 /* SeaToast.h */,
 				10E7B07B1F9F2D12006A83D8 /* SeaToast.m */,
 				101587761FA9726700CC1588 /* UIAlertController+Utils.h */,
@@ -773,18 +780,18 @@
 		10E7B0811F9F2D12006A83D8 /* other */ = {
 			isa = PBXGroup;
 			children = (
-				10E7B0821F9F2D12006A83D8 /* SeaMagnifyingGlass.h */,
-				10E7B0831F9F2D12006A83D8 /* SeaDashView.m */,
-				10E7B0841F9F2D12006A83D8 /* SeaHighlightView.m */,
-				10E7B0851F9F2D12006A83D8 /* SeaNumberBadge.m */,
-				10E7B0861F9F2D12006A83D8 /* SeaEmptyView.h */,
-				10E7B0871F9F2D12006A83D8 /* SeaWeakObjectContainer.h */,
 				10E7B0881F9F2D12006A83D8 /* SeaDashView.h */,
-				10E7B0891F9F2D12006A83D8 /* SeaMagnifyingGlass.m */,
-				10E7B08A1F9F2D12006A83D8 /* SeaHighlightView.h */,
-				10E7B08B1F9F2D12006A83D8 /* SeaNumberBadge.h */,
-				10E7B08C1F9F2D12006A83D8 /* SeaWeakObjectContainer.m */,
+				10E7B0831F9F2D12006A83D8 /* SeaDashView.m */,
+				10E7B0861F9F2D12006A83D8 /* SeaEmptyView.h */,
 				10E7B08D1F9F2D12006A83D8 /* SeaEmptyView.m */,
+				10E7B08A1F9F2D12006A83D8 /* SeaHighlightView.h */,
+				10E7B0841F9F2D12006A83D8 /* SeaHighlightView.m */,
+				10E7B0821F9F2D12006A83D8 /* SeaMagnifyingGlass.h */,
+				10E7B0891F9F2D12006A83D8 /* SeaMagnifyingGlass.m */,
+				10E7B08B1F9F2D12006A83D8 /* SeaNumberBadge.h */,
+				10E7B0851F9F2D12006A83D8 /* SeaNumberBadge.m */,
+				10E7B0871F9F2D12006A83D8 /* SeaWeakObjectContainer.h */,
+				10E7B08C1F9F2D12006A83D8 /* SeaWeakObjectContainer.m */,
 			);
 			path = other;
 			sourceTree = "<group>";
@@ -881,25 +888,25 @@
 		10E7B0C51F9F2D12006A83D8 /* tableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				10E7B0C61F9F2D12006A83D8 /* SeaTextCell.h */,
-				10E7B0C71F9F2D12006A83D8 /* SeaTextLoadingListCell.m */,
-				10E7B0C81F9F2D12006A83D8 /* SeaTextListCell.xib */,
-				10E7B0C91F9F2D12006A83D8 /* SeaTitleContentCell.h */,
-				10E7B0CA1F9F2D12006A83D8 /* SeaTableViewCell.h */,
-				10E7B0CB1F9F2D12006A83D8 /* SeaTextFieldCell.h */,
-				10E7B0CC1F9F2D12006A83D8 /* SeaTextListCell.h */,
-				10E7B0CD1F9F2D12006A83D8 /* SeaTextSwitchListCell.m */,
-				10E7B0CE1F9F2D12006A83D8 /* SeaSeparatorTableViewCell.m */,
-				10E7B0CF1F9F2D12006A83D8 /* SeaTextLoadingListCell.h */,
-				10E7B0D01F9F2D12006A83D8 /* SeaTextCell.m */,
-				10E7B0D11F9F2D12006A83D8 /* SeaTitleContentCell.m */,
-				10E7B0D21F9F2D12006A83D8 /* SeaTextSwitchListCell.xib */,
-				10E7B0D31F9F2D12006A83D8 /* SeaTextLoadingListCell.xib */,
-				10E7B0D41F9F2D12006A83D8 /* SeaTextFieldCell.m */,
-				10E7B0D51F9F2D12006A83D8 /* SeaTableViewCell.m */,
 				10E7B0D61F9F2D12006A83D8 /* SeaSeparatorTableViewCell.h */,
-				10E7B0D71F9F2D12006A83D8 /* SeaTextSwitchListCell.h */,
+				10E7B0CE1F9F2D12006A83D8 /* SeaSeparatorTableViewCell.m */,
+				10E7B0CA1F9F2D12006A83D8 /* SeaTableViewCell.h */,
+				10E7B0D51F9F2D12006A83D8 /* SeaTableViewCell.m */,
+				10E7B0C61F9F2D12006A83D8 /* SeaTextCell.h */,
+				10E7B0D01F9F2D12006A83D8 /* SeaTextCell.m */,
+				10E7B0CB1F9F2D12006A83D8 /* SeaTextFieldCell.h */,
+				10E7B0D41F9F2D12006A83D8 /* SeaTextFieldCell.m */,
+				10E7B0CC1F9F2D12006A83D8 /* SeaTextListCell.h */,
 				10E7B0D81F9F2D12006A83D8 /* SeaTextListCell.m */,
+				10E7B0C81F9F2D12006A83D8 /* SeaTextListCell.xib */,
+				10E7B0CF1F9F2D12006A83D8 /* SeaTextLoadingListCell.h */,
+				10E7B0C71F9F2D12006A83D8 /* SeaTextLoadingListCell.m */,
+				10E7B0D31F9F2D12006A83D8 /* SeaTextLoadingListCell.xib */,
+				10E7B0D71F9F2D12006A83D8 /* SeaTextSwitchListCell.h */,
+				10E7B0CD1F9F2D12006A83D8 /* SeaTextSwitchListCell.m */,
+				10E7B0D21F9F2D12006A83D8 /* SeaTextSwitchListCell.xib */,
+				10E7B0C91F9F2D12006A83D8 /* SeaTitleContentCell.h */,
+				10E7B0D11F9F2D12006A83D8 /* SeaTitleContentCell.m */,
 			);
 			path = tableViewCell;
 			sourceTree = "<group>";
@@ -1047,20 +1054,12 @@
 				10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */,
 				10E7B11B1F9F2D13006A83D8 /* UITabBarItem+Utilities.h */,
 				10E7B13B1F9F2D13006A83D8 /* UITabBarItem+Utilities.m */,
-				10E7B1201F9F2D13006A83D8 /* UITableView+Utilities.h */,
-				10E7B1361F9F2D13006A83D8 /* UITableView+Utilities.m */,
-				10E7B1221F9F2D13006A83D8 /* UITableViewCell+addLineForCell.h */,
-				10E7B1421F9F2D13006A83D8 /* UITableViewCell+addLineForCell.m */,
-				10E7B11F1F9F2D13006A83D8 /* UITableViewCell+Utilities.h */,
-				10E7B1381F9F2D13006A83D8 /* UITableViewCell+Utilities.m */,
 				10E7B12F1F9F2D13006A83D8 /* UITextField+Utilities.h */,
 				10E7B1431F9F2D13006A83D8 /* UITextField+Utilities.m */,
 				10E7B14C1F9F2D13006A83D8 /* UITextView+Utilities.h */,
 				10E7B1341F9F2D13006A83D8 /* UITextView+Utilities.m */,
-				10E7B13D1F9F2D13006A83D8 /* UIView+Utilities.h */,
-				10E7B1261F9F2D13006A83D8 /* UIView+Utilities.m */,
-				10E7B1241F9F2D13006A83D8 /* UIViewController+Utilities.h */,
-				10E7B1401F9F2D13006A83D8 /* UIViewController+Utilities.m */,
+				10E7B1241F9F2D13006A83D8 /* UIViewController+Utils.h */,
+				10E7B1401F9F2D13006A83D8 /* UIViewController+Utils.m */,
 				10E7B1481F9F2D13006A83D8 /* UIWebView+Utilities.h */,
 				10E7B12A1F9F2D13006A83D8 /* UIWebView+Utilities.m */,
 			);
@@ -1087,30 +1086,77 @@
 			path = Http;
 			sourceTree = "<group>";
 		};
-		10E7B1681F9F2D13006A83D8 /* viewController */ = {
+		10F6A3101FD8DED100F2B30E /* base */ = {
 			isa = PBXGroup;
 			children = (
-				10E7B1741F9F2D13006A83D8 /* SeaCollectionViewController.h */,
-				10E7B1691F9F2D13006A83D8 /* SeaCollectionViewController.m */,
-				10E7B1771F9F2D13006A83D8 /* SeaDialogViewController.h */,
-				10E7B16C1F9F2D13006A83D8 /* SeaDialogViewController.m */,
-				10E7B16F1F9F2D13006A83D8 /* SeaNavigationController.h */,
-				10E7B1751F9F2D13006A83D8 /* SeaNavigationController.m */,
-				10E7B1781F9F2D13006A83D8 /* SeaScrollViewController.h */,
-				10E7B16D1F9F2D13006A83D8 /* SeaScrollViewController.m */,
-				10E7B16B1F9F2D13006A83D8 /* SeaSearchDisplayViewController.h */,
-				10E7B1721F9F2D13006A83D8 /* SeaSearchDisplayViewController.m */,
-				10E7B1731F9F2D13006A83D8 /* SeaSlideViewController.h */,
-				10E7B16A1F9F2D13006A83D8 /* SeaSlideViewController.m */,
-				10E7B1791F9F2D13006A83D8 /* SeaTableViewController.h */,
-				10E7B1701F9F2D13006A83D8 /* SeaTableViewController.m */,
-				10E7B1711F9F2D13006A83D8 /* SeaViewController.h */,
-				10E7B17B1F9F2D13006A83D8 /* SeaViewController.m */,
-				10E7B17A1F9F2D13006A83D8 /* SeaViewControllerHeaders.h */,
-				10E7B1761F9F2D13006A83D8 /* SeaWebViewController.h */,
-				10E7B16E1F9F2D13006A83D8 /* SeaWebViewController.m */,
+				10F6A31B1FD8F0A300F2B30E /* controller */,
+				10F6A3111FD8DED100F2B30E /* category */,
+				10F6A3141FD8DED100F2B30E /* view */,
 			);
-			path = viewController;
+			path = base;
+			sourceTree = "<group>";
+		};
+		10F6A3111FD8DED100F2B30E /* category */ = {
+			isa = PBXGroup;
+			children = (
+				10F6A3131FD8DED100F2B30E /* UIView+Utils.h */,
+				10F6A3121FD8DED100F2B30E /* UIView+Utils.m */,
+			);
+			path = category;
+			sourceTree = "<group>";
+		};
+		10F6A3141FD8DED100F2B30E /* view */ = {
+			isa = PBXGroup;
+			children = (
+				10F6A3151FD8DED100F2B30E /* SeaContainer.h */,
+				10F6A3161FD8DED100F2B30E /* SeaContainer.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		10F6A31B1FD8F0A300F2B30E /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				10F6A3261FD8F0A300F2B30E /* SeaCollectionViewController.h */,
+				10F6A31C1FD8F0A300F2B30E /* SeaCollectionViewController.m */,
+				10F6A3291FD8F0A300F2B30E /* SeaDialogViewController.h */,
+				10F6A31F1FD8F0A300F2B30E /* SeaDialogViewController.m */,
+				10F6A3221FD8F0A300F2B30E /* SeaNavigationController.h */,
+				10F6A3271FD8F0A300F2B30E /* SeaNavigationController.m */,
+				10F6A32A1FD8F0A300F2B30E /* SeaScrollViewController.h */,
+				10F6A3201FD8F0A300F2B30E /* SeaScrollViewController.m */,
+				10F6A31E1FD8F0A300F2B30E /* SeaSearchDisplayViewController.h */,
+				10F6A3241FD8F0A300F2B30E /* SeaSearchDisplayViewController.m */,
+				10F6A3251FD8F0A300F2B30E /* SeaSlideViewController.h */,
+				10F6A31D1FD8F0A300F2B30E /* SeaSlideViewController.m */,
+				10F6A3231FD8F0A300F2B30E /* SeaViewController.h */,
+				10F6A32C1FD8F0A300F2B30E /* SeaViewController.m */,
+				10F6A32B1FD8F0A300F2B30E /* SeaViewControllerHeaders.h */,
+				10F6A3281FD8F0A300F2B30E /* SeaWebViewController.h */,
+				10F6A3211FD8F0A300F2B30E /* SeaWebViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		10F6A3531FD9320600F2B30E /* loading */ = {
+			isa = PBXGroup;
+			children = (
+				10F6A3541FD9320600F2B30E /* view */,
+			);
+			path = loading;
+			sourceTree = "<group>";
+		};
+		10F6A3541FD9320600F2B30E /* view */ = {
+			isa = PBXGroup;
+			children = (
+				10F6A3561FD9320600F2B30E /* SeaBadNetworkRemindView.h */,
+				10F6A3581FD9320600F2B30E /* SeaBadNetworkRemindView.m */,
+				10F6A3551FD9320600F2B30E /* SeaLoadingIndicator.h */,
+				10F6A3571FD9320600F2B30E /* SeaLoadingIndicator.m */,
+				10F6A35A1FD9322B00F2B30E /* SeaNetworkActivityView.h */,
+				10F6A3591FD9322A00F2B30E /* SeaNetworkActivityView.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1120,6 +1166,25 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10F6A35E1FD9328000F2B30E /* SeaNetworkActivityView.h in Headers */,
+				10F6A35F1FD9328000F2B30E /* SeaLoadingIndicator.h in Headers */,
+				10F6A3601FD9328000F2B30E /* SeaBadNetworkRemindView.h in Headers */,
+				10F6A32D1FD8F0B400F2B30E /* SeaSearchDisplayViewController.h in Headers */,
+				10F6A32E1FD8F0B400F2B30E /* SeaNavigationController.h in Headers */,
+				10F6A32F1FD8F0B400F2B30E /* SeaViewController.h in Headers */,
+				10F6A3301FD8F0B400F2B30E /* SeaSlideViewController.h in Headers */,
+				10F6A3311FD8F0B400F2B30E /* SeaCollectionViewController.h in Headers */,
+				10F6A3321FD8F0B400F2B30E /* SeaWebViewController.h in Headers */,
+				10F6A3331FD8F0B400F2B30E /* SeaDialogViewController.h in Headers */,
+				10F6A3341FD8F0B400F2B30E /* SeaScrollViewController.h in Headers */,
+				10F6A3351FD8F0B400F2B30E /* SeaViewControllerHeaders.h in Headers */,
+				10F6A3191FD8DEEF00F2B30E /* UIView+Utils.h in Headers */,
+				10F6A31A1FD8DEEF00F2B30E /* SeaContainer.h in Headers */,
+				1052CAEC1FD790D300F6F01F /* UITableView+SeaRowHeight.h in Headers */,
+				101587781FA9726700CC1588 /* UIAlertController+Utils.h in Headers */,
+				1052CAE31FD78EC700F6F01F /* UITableView+Utilities.h in Headers */,
+				1052CAE41FD78EC700F6F01F /* UITableViewCell+Utilities.h in Headers */,
+				1052CAE51FD78EC700F6F01F /* SeaTableViewController.h in Headers */,
 				101B8B2E1FB5A56C00D333DB /* UIView+SeaAutoLayout.h in Headers */,
 				10BB623D1FA0293100E1EA40 /* SeaImageGenerator.h in Headers */,
 				101AB8C31FA2E45100711095 /* SeaAlbumAssetsCell.h in Headers */,
@@ -1143,12 +1208,9 @@
 				10E7B2081F9F2D48006A83D8 /* UITabBarItem+Utilities.h in Headers */,
 				10E7B2091F9F2D48006A83D8 /* UISearchBar+Utilities.h in Headers */,
 				10E7B20A1F9F2D48006A83D8 /* NSIndexPath+Utilities.h in Headers */,
-				10E7B20B1F9F2D48006A83D8 /* UITableViewCell+Utilities.h in Headers */,
-				10E7B20C1F9F2D48006A83D8 /* UITableView+Utilities.h in Headers */,
 				10E7B20D1F9F2D48006A83D8 /* SeaUtlities.h in Headers */,
-				10E7B20E1F9F2D48006A83D8 /* UITableViewCell+addLineForCell.h in Headers */,
 				10E7B20F1F9F2D48006A83D8 /* UIImage+Utilities.h in Headers */,
-				10E7B2101F9F2D48006A83D8 /* UIViewController+Utilities.h in Headers */,
+				10E7B2101F9F2D48006A83D8 /* UIViewController+Utils.h in Headers */,
 				10E7B2111F9F2D48006A83D8 /* UIColor+colorUtilities.h in Headers */,
 				10E7B2121F9F2D48006A83D8 /* NSAttributedString+Utlities.h in Headers */,
 				10E7B2131F9F2D48006A83D8 /* UINavigationController+Utils.h in Headers */,
@@ -1157,7 +1219,6 @@
 				10E7B2171F9F2D48006A83D8 /* UIImagePickerController+Utilities.h in Headers */,
 				10E7B2181F9F2D48006A83D8 /* UITabBarController+Utilities.h in Headers */,
 				10E7B2191F9F2D48006A83D8 /* UIButton+utilities.h in Headers */,
-				10E7B21A1F9F2D48006A83D8 /* UIView+Utilities.h in Headers */,
 				10E7B21B1F9F2D48006A83D8 /* NSString+Utilities.h in Headers */,
 				10E7B21C1F9F2D48006A83D8 /* NSDate+Utilities.h in Headers */,
 				10E7B21D1F9F2D48006A83D8 /* UIWebView+Utilities.h in Headers */,
@@ -1188,11 +1249,8 @@
 				10E7B23B1F9F2D48006A83D8 /* SeaScrollView.h in Headers */,
 				10E7B23C1F9F2D48006A83D8 /* SeaScrollViewCell.h in Headers */,
 				10E7B23D1F9F2D48006A83D8 /* SeaAutoScrollView.h in Headers */,
-				10E7B23E1F9F2D48006A83D8 /* UITableView+SeaRowHeight.h in Headers */,
 				10E7B23F1F9F2D48006A83D8 /* SeaTextView.h in Headers */,
 				10E7B2401F9F2D48006A83D8 /* SeaGridPasswordLabel.h in Headers */,
-				10E7B2411F9F2D48006A83D8 /* SeaLoadingIndicator.h in Headers */,
-				10E7B2421F9F2D48006A83D8 /* SeaBadNetworkRemindView.h in Headers */,
 				10E7B2431F9F2D48006A83D8 /* SeaCollectionViewFlowFillLayout.h in Headers */,
 				10E7B2441F9F2D48006A83D8 /* SeaCollectionViewWaterLayout.h in Headers */,
 				10E7B2451F9F2D48006A83D8 /* SeaCollectionViewFlowLayout.h in Headers */,
@@ -1202,7 +1260,6 @@
 				10E7B2491F9F2D48006A83D8 /* SeaActionSheet.h in Headers */,
 				10E7B24A1F9F2D49006A83D8 /* SeaAlertController.h in Headers */,
 				10E7B24B1F9F2D49006A83D8 /* SeaAlertView.h in Headers */,
-				10E7B24C1F9F2D49006A83D8 /* SeaNetworkActivityView.h in Headers */,
 				10E7B24D1F9F2D49006A83D8 /* SeaToast.h in Headers */,
 				10E7B24E1F9F2D49006A83D8 /* SeaMagnifyingGlass.h in Headers */,
 				10E7B24F1F9F2D49006A83D8 /* SeaEmptyView.h in Headers */,
@@ -1211,7 +1268,6 @@
 				10E7B2521F9F2D49006A83D8 /* SeaHighlightView.h in Headers */,
 				10E7B2531F9F2D49006A83D8 /* SeaNumberBadge.h in Headers */,
 				10E7B2541F9F2D49006A83D8 /* SeaLabel.h in Headers */,
-				101587781FA9726700CC1588 /* UIAlertController+Utils.h in Headers */,
 				10E7B2551F9F2D49006A83D8 /* SeaTextInsetLabel.h in Headers */,
 				10E7B2561F9F2D49006A83D8 /* SeaTextField.h in Headers */,
 				10E7B2571F9F2D49006A83D8 /* SeaSegmentedSliderItem.h in Headers */,
@@ -1247,16 +1303,6 @@
 				10E7B2761F9F2D49006A83D8 /* SeaRefreshControl.h in Headers */,
 				10E7B2771F9F2D49006A83D8 /* SeaLoadMoreControl.h in Headers */,
 				10E7B2781F9F2D49006A83D8 /* UIScrollView+SeaDataControl.h in Headers */,
-				10E7B2791F9F2D49006A83D8 /* SeaSearchDisplayViewController.h in Headers */,
-				10E7B27A1F9F2D49006A83D8 /* SeaNavigationController.h in Headers */,
-				10E7B27B1F9F2D49006A83D8 /* SeaViewController.h in Headers */,
-				10E7B27C1F9F2D49006A83D8 /* SeaSlideViewController.h in Headers */,
-				10E7B27D1F9F2D49006A83D8 /* SeaCollectionViewController.h in Headers */,
-				10E7B27E1F9F2D49006A83D8 /* SeaWebViewController.h in Headers */,
-				10E7B27F1F9F2D49006A83D8 /* SeaDialogViewController.h in Headers */,
-				10E7B2801F9F2D49006A83D8 /* SeaScrollViewController.h in Headers */,
-				10E7B2811F9F2D49006A83D8 /* SeaTableViewController.h in Headers */,
-				10E7B2821F9F2D49006A83D8 /* SeaViewControllerHeaders.h in Headers */,
 				10E7B2831F9F2D49006A83D8 /* SeaWebDetailController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1335,6 +1381,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10F6A35B1FD9327700F2B30E /* SeaNetworkActivityView.m in Sources */,
+				10F6A35C1FD9327700F2B30E /* SeaLoadingIndicator.m in Sources */,
+				10F6A35D1FD9327700F2B30E /* SeaBadNetworkRemindView.m in Sources */,
+				10F6A3361FD8F0C700F2B30E /* SeaCollectionViewController.m in Sources */,
+				10F6A3371FD8F0C700F2B30E /* SeaSlideViewController.m in Sources */,
+				10F6A3381FD8F0C700F2B30E /* SeaDialogViewController.m in Sources */,
+				10F6A3391FD8F0C700F2B30E /* SeaScrollViewController.m in Sources */,
+				10F6A33A1FD8F0C700F2B30E /* SeaWebViewController.m in Sources */,
+				10F6A33B1FD8F0C700F2B30E /* SeaSearchDisplayViewController.m in Sources */,
+				10F6A33C1FD8F0C700F2B30E /* SeaNavigationController.m in Sources */,
+				10F6A33D1FD8F0C700F2B30E /* SeaViewController.m in Sources */,
+				10F6A3171FD8DEE500F2B30E /* UIView+Utils.m in Sources */,
+				10F6A3181FD8DEE500F2B30E /* SeaContainer.m in Sources */,
+				1052CAE01FD78EA900F6F01F /* UITableView+Utilities.m in Sources */,
+				1052CAE11FD78EA900F6F01F /* UITableViewCell+Utilities.m in Sources */,
+				1052CAE21FD78EA900F6F01F /* SeaTableViewController.m in Sources */,
 				101B8B2F1FB5A58900D333DB /* UIView+SeaAutoLayout.m in Sources */,
 				101AB8CB1FA2E46800711095 /* SeaAlbumAssetsCell.m in Sources */,
 				101AB8CC1FA2E46800711095 /* SeaAlbumAssetsViewController.m in Sources */,
@@ -1352,7 +1414,7 @@
 				10E7B1851F9F2D38006A83D8 /* SeaImageCacheTool.m in Sources */,
 				10E7B1861F9F2D38006A83D8 /* SeaMovieCacheToolOperation.m in Sources */,
 				10E7B1871F9F2D38006A83D8 /* UITabBarController+Utilities.m in Sources */,
-				10E7B1881F9F2D38006A83D8 /* UIView+Utilities.m in Sources */,
+				1052CAEB1FD790BA00F6F01F /* UITableView+SeaRowHeight.m in Sources */,
 				10E7B1891F9F2D38006A83D8 /* UIButton+utilities.m in Sources */,
 				10E7B18A1F9F2D38006A83D8 /* UIWebView+Utilities.m in Sources */,
 				10E7B18B1F9F2D38006A83D8 /* NSDate+Utilities.m in Sources */,
@@ -1363,16 +1425,13 @@
 				10E7B1901F9F2D38006A83D8 /* UITextView+Utilities.m in Sources */,
 				10BB623E1FA0293100E1EA40 /* SeaImageGenerator.m in Sources */,
 				10E7B1911F9F2D38006A83D8 /* NSDictionary+Utilities.m in Sources */,
-				10E7B1921F9F2D38006A83D8 /* UITableView+Utilities.m in Sources */,
-				10E7B1931F9F2D38006A83D8 /* UITableViewCell+Utilities.m in Sources */,
 				10E7B1941F9F2D38006A83D8 /* NSIndexPath+Utilities.m in Sources */,
 				10E7B1951F9F2D38006A83D8 /* UISearchBar+Utilities.m in Sources */,
 				10E7B1961F9F2D38006A83D8 /* UITabBarItem+Utilities.m in Sources */,
 				10E7B1971F9F2D38006A83D8 /* NSAttributedString+Utlities.m in Sources */,
 				10E7B1981F9F2D38006A83D8 /* UIColor+colorUtilities.m in Sources */,
-				10E7B1991F9F2D38006A83D8 /* UIViewController+Utilities.m in Sources */,
+				10E7B1991F9F2D38006A83D8 /* UIViewController+Utils.m in Sources */,
 				10E7B19A1F9F2D38006A83D8 /* UIImage+Utilities.m in Sources */,
-				10E7B19B1F9F2D38006A83D8 /* UITableViewCell+addLineForCell.m in Sources */,
 				10E7B19C1F9F2D38006A83D8 /* UITextField+Utilities.m in Sources */,
 				10E7B19D1F9F2D38006A83D8 /* NSArray+Utilities.m in Sources */,
 				10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */,
@@ -1398,12 +1457,9 @@
 				10E7B1B71F9F2D38006A83D8 /* SeaScrollViewCell.m in Sources */,
 				101587791FA9726700CC1588 /* UIAlertController+Utils.m in Sources */,
 				10E7B1B81F9F2D38006A83D8 /* SeaAutoScrollView.m in Sources */,
-				10E7B1B91F9F2D38006A83D8 /* UITableView+SeaRowHeight.m in Sources */,
 				10E7B1BA1F9F2D38006A83D8 /* SeaTextView.m in Sources */,
 				10E7B1BB1F9F2D38006A83D8 /* SeaGridPasswordLabel.m in Sources */,
 				10E7B1BC1F9F2D38006A83D8 /* SeaRadarView.m in Sources */,
-				10E7B1BD1F9F2D38006A83D8 /* SeaLoadingIndicator.m in Sources */,
-				10E7B1BE1F9F2D38006A83D8 /* SeaBadNetworkRemindView.m in Sources */,
 				10E7B1BF1F9F2D38006A83D8 /* SeaCollectionViewFlowLayout.m in Sources */,
 				10E7B1C01F9F2D38006A83D8 /* SeaCollectionViewWaterLayout.m in Sources */,
 				10E7B1C11F9F2D38006A83D8 /* SeaCollectionViewDraggableLayout.m in Sources */,
@@ -1411,7 +1467,6 @@
 				10E7B1C31F9F2D38006A83D8 /* SeaCollectionViewFlowFillLayout.m in Sources */,
 				10E7B1C41F9F2D38006A83D8 /* SeaProgressView.m in Sources */,
 				10BB623A1FA0288C00E1EA40 /* SeaCheckBox.m in Sources */,
-				10E7B1C51F9F2D38006A83D8 /* SeaNetworkActivityView.m in Sources */,
 				10E7B1C61F9F2D38006A83D8 /* SeaToast.m in Sources */,
 				10E7B1C71F9F2D38006A83D8 /* SeaActionSheet.m in Sources */,
 				10E7B1C81F9F2D38006A83D8 /* SeaAlertView.m in Sources */,
@@ -1456,15 +1511,6 @@
 				10E7B1F01F9F2D38006A83D8 /* SeaLoadMoreControl.m in Sources */,
 				10E7B1F11F9F2D38006A83D8 /* UIScrollView+SeaDataControl.m in Sources */,
 				10E7B1F21F9F2D38006A83D8 /* SeaDataControl.m in Sources */,
-				10E7B1F31F9F2D38006A83D8 /* SeaCollectionViewController.m in Sources */,
-				10E7B1F41F9F2D38006A83D8 /* SeaSlideViewController.m in Sources */,
-				10E7B1F51F9F2D38006A83D8 /* SeaDialogViewController.m in Sources */,
-				10E7B1F61F9F2D38006A83D8 /* SeaScrollViewController.m in Sources */,
-				10E7B1F71F9F2D38006A83D8 /* SeaWebViewController.m in Sources */,
-				10E7B1F81F9F2D38006A83D8 /* SeaTableViewController.m in Sources */,
-				10E7B1F91F9F2D38006A83D8 /* SeaSearchDisplayViewController.m in Sources */,
-				10E7B1FA1F9F2D38006A83D8 /* SeaNavigationController.m in Sources */,
-				10E7B1FB1F9F2D38006A83D8 /* SeaViewController.m in Sources */,
 				10E7B1FC1F9F2D38006A83D8 /* SeaWebDetailController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1586,13 +1632,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 25ZC46B2RU;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = IOSLibrary/IOSLibrary.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = IOSLibrary/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1611,11 +1659,12 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 25ZC46B2RU;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = IOSLibrary/IOSLibrary.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = IOSLibrary/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

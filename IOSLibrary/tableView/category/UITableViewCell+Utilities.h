@@ -13,6 +13,6 @@
 
 /**设置默认箭头
  */
-- (void)setDefaultArrow;
+- (void)setAccessoryWithImageName:(NSString*) imageName;
 
 @end

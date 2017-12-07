@@ -7,7 +7,7 @@
 //
 
 #import "SeaTextFieldCell.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 #import "SeaCountDownButton.h"
 #import "UIImageView+SeaImageCacheTool.h"
 

@@ -8,7 +8,7 @@
 
 #import "UICollectionView+SeaCellSize.h"
 #import <objc/runtime.h>
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 
 @implementation UICollectionView (SeaCellSize)
 

@@ -9,6 +9,8 @@
 #ifndef SeaBase_h
 #define SeaBase_h
 
+#import "SeaBasicInitialization.h"
+
 //发布(release)的项目不打印日志
 #ifndef __OPTIMIZE__
 #define NSLog(...) NSLog(__VA_ARGS__)
@@ -42,16 +44,6 @@ dispatch_async(dispatch_get_main_queue(), block);\
 //手机屏幕的宽度和高度
 #define SeaScreenWidth MIN([UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height)
 #define SeaScreenHeight MAX([UIScreen mainScreen].bounds.size.height,[UIScreen mainScreen].bounds.size.width)
-
-
-//选项卡高度
-#define SeaTabBarHeight 49.0
-
-//状态栏高度
-#define SeaStatusHeight 20.0
-
-//工具条高度
-#define SeaToolBarHeight 44.0
 
 //视图主要背景颜色
 #define SeaViewControllerBackgroundColor [SeaBasicInitialization sea_backgroundColor]
@@ -109,5 +101,17 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 //判断是否是4.0寸手机
 #define is4_0Inch (SeaScreenHeight == 568 && SeaScreenWidth == 320)
+
+///大小自适应
+static const CGFloat SeaWrapContent = -1;
+
+//选项卡高度
+static const CGFloat SeaTabBarHeight = 49.0;
+
+//状态栏高度
+static const CGFloat SeaStatusHeight = 20.0;
+
+//工具条高度
+static const CGFloat SeaToolBarHeight = 44.0;
 
 #endif

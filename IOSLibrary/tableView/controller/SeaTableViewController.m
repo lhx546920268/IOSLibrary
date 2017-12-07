@@ -4,7 +4,7 @@
 //
 
 #import "SeaTableViewController.h"
-#import "SeaBasic.h"
+#import "UIViewController+Utils.h"
 
 @interface SeaTableViewController ()
 
@@ -22,7 +22,6 @@
     self = [super initWithNibName:nil bundle:nil];
     if(self)
     {
-        _separatorEdgeInsets = UIEdgeInsetsMake(0, 15.0, 0, 0);
         _style = style;
     }
     return self;
@@ -33,6 +32,11 @@
     return [self initWithStyle:UITableViewStylePlain];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    _separatorEdgeInsets = UIEdgeInsetsMake(0, 15.0, 0, 0);
+}
 
 #pragma mark- public method
 

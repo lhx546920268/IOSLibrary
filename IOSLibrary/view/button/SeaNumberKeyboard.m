@@ -9,7 +9,7 @@
 #import "SeaNumberKeyboard.h"
 #import "SeaHighlightButton.h"
 #import "UIImage+Utilities.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 #import "SeaBasic.h"
 
 @interface SeaNumberKeyboard ()

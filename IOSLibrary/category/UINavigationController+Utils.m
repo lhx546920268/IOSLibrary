@@ -8,7 +8,7 @@
 #import "UINavigationController+Utils.h"
 #import <objc/runtime.h>
 #import "UIColor+colorUtilities.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 #import "SeaBasic.h"
 
 ///导航栏透明视图

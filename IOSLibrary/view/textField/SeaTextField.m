@@ -8,7 +8,7 @@
 
 #import "SeaTextField.h"
 #import "NSString+Utilities.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 
 @interface SeaTextField ()
 

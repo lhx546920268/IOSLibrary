@@ -7,9 +7,9 @@
 //
 
 #import "SeaDialogViewController.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 #import "SeaBasic.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 
 @interface SeaDialog ()
 

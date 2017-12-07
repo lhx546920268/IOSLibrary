@@ -7,7 +7,7 @@
 //
 
 #import "SeaAlbumGroupListCell.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 
 @implementation SeaAlbumGroupListCell
 

@@ -5,8 +5,10 @@
 //
 
 #import "SeaViewController.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 #import "SeaBasic.h"
+#import "SeaContainer.h"
+#import "SeaTabBarController.h"
 
 @interface SeaViewController ()
 
@@ -28,12 +30,6 @@
     return self;
 }
 
-#pragma mark- dealloc
-
-- (void)dealloc
-{
-    
-}
 
 #pragma mark- 视图消失出现
 
@@ -48,15 +44,11 @@
     }
 }
 
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    SeaTabBarController *tabBarController = self.Sea_TabBarController;
-//    if(tabBarController)
-//    {
-//        [tabBarController setTabBarHidden:!self.hideTabBar animated:YES];
-//    }
-//}
+- (void)loadView
+{
+    self.container = [[SeaContainer alloc] init];
+    self.view = self.container;
+}
 
 - (void)viewDidLoad
 {
@@ -67,29 +59,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
-
-
-
-#pragma mark- super method
-
-//- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
-//{
-//    UIViewController *viewController = viewControllerToPresent;
-//    
-//    if([viewController isKindOfClass:[UINavigationController class]])
-//    {
-//        viewController = [[(UINavigationController*)viewControllerToPresent viewControllers] lastObject];
-//    }
-//    
-//    if([viewController isKindOfClass:[SeaViewController class]])
-//    {
-//        SeaViewController *vc = (SeaViewController*)viewController;
-//        vc.Sea_TabBarController = self.Sea_TabBarController;
-//    }
-//    
-//    [super presentViewController:viewControllerToPresent animated:flag completion:completion];
-//}
-//
 #pragma mark- UIStatusBar
 
 /**用于 present ViewController 的 statusBar 隐藏状态控制

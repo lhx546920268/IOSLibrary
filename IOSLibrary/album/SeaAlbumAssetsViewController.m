@@ -11,8 +11,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "SeaImageCropViewController.h"
 #import "UIImagePickerController+Utilities.h"
-#import "UIViewController+Utilities.h"
-#import "UIView+Utilities.h"
+#import "UIViewController+Utils.h"
+#import "UIView+Utils.h"
 #import "UIButton+utilities.h"
 #import "UIImage+Utilities.h"
 #import "SeaUtlities.h"

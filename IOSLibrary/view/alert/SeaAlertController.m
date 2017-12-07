@@ -7,10 +7,10 @@
 //
 
 #import "SeaAlertController.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 #import "NSString+Utilities.h"
 #import "NSAttributedString+Utlities.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 #import "SeaBasic.h"
 
 //系统默认的蓝色

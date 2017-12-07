@@ -10,7 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SeaAlbumGroupListCell.h"
 #import "SeaBasic.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 
 @interface SeaAlbumGroupListView ()
 

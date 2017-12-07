@@ -7,7 +7,7 @@
 //
 
 #import "SeaWebDetailController.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 
 @implementation SeaWebDetailController
 

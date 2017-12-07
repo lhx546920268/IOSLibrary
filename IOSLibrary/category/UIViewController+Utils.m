@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 Sea. All rights reserved.
 //
 
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 #import "SeaLoadingIndicator.h"
 #import "SeaNavigationController.h"
 #import "SeaBadNetworkRemindView.h"
@@ -75,7 +75,7 @@ static char SeaHideTabBarKey;
  */
 static char SeaTransitioningDelegateKey;
 
-@implementation UIViewController (Utilities)
+@implementation UIViewController (Utils)
 
 #pragma mark- property readonly
 

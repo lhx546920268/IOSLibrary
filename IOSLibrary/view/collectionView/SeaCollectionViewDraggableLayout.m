@@ -8,7 +8,7 @@
 
 #import "SeaCollectionViewDraggableLayout.h"
 #import "UIImage+Utilities.h"
-#import "UIView+Utilities.h"
+#import "UIView+Utils.h"
 
 ///拖拽方向
 typedef NS_ENUM(NSInteger, SeaCollectionViewDraggableLayoutDragDirection)

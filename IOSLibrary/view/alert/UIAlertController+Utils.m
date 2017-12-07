@@ -7,7 +7,7 @@
 //
 
 #import "UIAlertController+Utils.h"
-#import "UIViewController+Utilities.h"
+#import "UIViewController+Utils.h"
 
 @implementation UIAlertController (Utils)
 
