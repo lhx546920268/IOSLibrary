@@ -1,11 +1,11 @@
 //
-//  UITableViewCell+Utilities.h
+//  UITableViewCell+Utils.h
 
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UITableViewCell (Utilities)
+@interface UITableViewCell (Utils)
 
 /**设置箭头
  */

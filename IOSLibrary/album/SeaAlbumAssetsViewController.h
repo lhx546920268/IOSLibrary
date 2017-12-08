@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, SeaAlbumAssetsViewControllerTarget)
     SeaAlbumAssetsViewControllerImageCrop,
 };
 
-@class ALAssetsGroup, ALAssetsLibrary,SeaImageCropSettings,WMRecommendGoodInfo;
+@class ALAssetsGroup, ALAssetsLibrary,SeaImageCropSettings;
 
 /**相册分组内容列表
  */
@@ -51,10 +51,6 @@ typedef NS_ENUM(NSInteger, SeaAlbumAssetsViewControllerTarget)
 /**相册使用目的 default is 'SeaAlbumAssetsViewControllerTarget'
  */
 @property(nonatomic,assign) SeaAlbumAssetsViewControllerTarget target;
-
-/**推荐商品信息
- */
-@property(nonatomic,strong) WMRecommendGoodInfo *recommendGoodInfo;
 
 /**相册资源单例，必须使用单例，否则在 ios8.0 重复创建ALAssetsLibrary时 会出现崩溃
  */

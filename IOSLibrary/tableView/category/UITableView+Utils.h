@@ -1,11 +1,11 @@
 //
-//  UITableView+extraCellLine.h
+//  UITableView+Utils.h
 
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UITableView (Utilities)
+@interface UITableView (Utils)
 
 /**隐藏多余的分割线
  */

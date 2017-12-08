@@ -5,10 +5,9 @@
 
 #import "SeaScrollViewController.h"
 #import "SeaBasic.h"
+#import "UIView+SeaAutoLayout.h"
 
 @interface SeaScrollViewController ()<UIScrollViewDelegate>
-
-
 
 @end
 
@@ -26,21 +25,29 @@
 
 #pragma mark- property
 
-//设置是否可以下拉刷新数据
-- (void)setEnableDropDown:(BOOL)enableDropDown
+- (void)setScrollView:(UIScrollView *)scrollView
 {
-    if(_enableDropDown != enableDropDown)
+    if(_scrollView != scrollView){
+        _scrollView = scrollView;
+        self.contentView = _scrollView;
+    }
+}
+
+//设置是否可以下拉刷新数据
+- (void)setRefreshEnable:(int)refreshEnable
+{
+    if(_refreshEnable != refreshEnable)
     {
 #if SeaDebug
         NSAssert(_scrollView != nil, @"%@ 设置下拉刷新 scrollView 不能为nil", NSStringFromClass([self class]));
 #endif
-        _enableDropDown = enableDropDown;
-        if(_enableDropDown)
+        _refreshEnable = refreshEnable;
+        if(_refreshEnable)
         {
-            __weak SeaScrollViewController *blockSelf = self;
+            WeakSelf(self);
             [self.scrollView addRefreshControlUsingBlock:^(void){
                 
-                [blockSelf reloadTableViewDataSource];
+                [weakSelf reloadDataSource];
             }];
         }
         else
@@ -51,22 +58,22 @@
 }
 
 //设置是否可以上拉加载数据
-- (void)setEnablePullUp:(BOOL)enablePullUp
+- (void)setLoadMoreEnable:(BOOL)loadMoreEnable
 {
-    if(_enablePullUp != enablePullUp)
+    if(_loadMoreEnable != loadMoreEnable)
     {
 #if SeaDebug
         NSAssert(_scrollView != nil, @"%@ 设置上拉加载 scrollView 不能为nil", NSStringFromClass([self class]));
 #endif
-        _enablePullUp = enablePullUp;
+        _loadMoreEnable = loadMoreEnable;
         
-        if(_enablePullUp)
+        if(_loadMoreEnable)
         {
-            __weak SeaScrollViewController *blockSelf = self;
+            WeakSelf(self);
             [self.scrollView addLoadMoreControlUsingBlock:^(void){
                 
-                blockSelf.loadMore = YES;
-                [blockSelf beginPullUpLoading];
+                [weakSelf setLoadingMore:YES];
+                [weakSelf onLoadMore];
             }];
         }
         else
@@ -76,6 +83,10 @@
     }
 }
 
+- (void)setLoadingMore:(BOOL)loadingMore
+{
+    _loadingMore = loadingMore;
+}
 
 //获取下拉属性控制视图
 - (SeaRefreshControl*)refreshControl
@@ -130,40 +141,43 @@
 
 ///以下的两个方法默认不做任何事，子类按需实现
 
-/**开始下拉刷新
+/**触发下拉刷新
  */
-- (void)beginDropDownRefresh{}
+- (void)onRefesh{}
 
-/**开始上拉加载
+/**触发上拉加载
  */
-- (void)beginPullUpLoading{}
+- (void)onLoadMore{}
 
 ///以下的两个方法，刷新结束或加载结束时调用，如果子类重写，必须调用 super方法
+
+- (void)stopRefresh
+{
+    [self stopRefreshWithMsg:nil];
+}
 
 /**结束下拉刷新
  *@param msg 提示的信息，nil则提示 “刷新成功”
  */
-- (void)endDropDownRefreshWithMsg:(NSString*) msg
+- (void)stopRefreshWithMsg:(NSString*) msg
 {
     if(msg == nil)
     msg = @"刷新成功";
     self.refreshControl.finishText = msg;
-    [self tableViewDataSourceDidFinishLoading];
+    _refreshing = NO;
+    self.loadMoreControl.hidden = NO;
+    [self.refreshControl didFinishedLoading];
 }
 
 /**结束上拉加载
  *@param flag 是否还有更多信息
  */
-- (void)endPullUpLoadingWithMoreInfo:(BOOL) flag
+- (void)stopLoadMoreWithMore:(BOOL) flag
 {
-    self.loadMore = NO;
-    
-    if(flag)
-    {
+    _loadingMore = NO;
+    if(flag){
         [self.loadMoreControl didFinishedLoading];
-    }
-    else
-    {
+    }else{
         
         [self.loadMoreControl noMoreInfo];
     }
@@ -172,18 +186,10 @@
 #pragma mark- 刷新数据
 
 // 加载数据
-- (void)reloadTableViewDataSource
+- (void)reloadDataSource
 {
-    self.refreshing = YES;
-    [self beginDropDownRefresh];
-}
-
-//数据加载完成
-- (void)tableViewDataSourceDidFinishLoading
-{
-    self.refreshing = NO;
-    self.loadMoreControl.hidden = NO;
-    [self.refreshControl didFinishedLoading];
+    _refreshing = YES;
+    [self onRefesh];
 }
 
 #pragma mark- manually
@@ -272,11 +278,14 @@
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [btn setImage:image forState:UIControlStateNormal];
-        [btn setFrame:CGRectMake(self.scrollView.width - 40.0 - margin, self.scrollView.bottom - 40.0 - margin, 40.0, 40.0)];
         [btn addTarget:self action:@selector(scrollToTop:) forControlEvents:UIControlEventTouchUpInside];
         
         btn.hidden = YES;
         [self.view addSubview:btn];
+        
+        [btn sea_rightToView:_scrollView margin:margin];
+        [btn sea_bottomToView:_scrollView margin:margin];
+        
         _scrollToTopButton = btn;
     }
     return _scrollToTopButton;

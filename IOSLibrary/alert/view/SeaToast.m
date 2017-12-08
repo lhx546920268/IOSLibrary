@@ -21,10 +21,6 @@
  */
 @property(nonatomic,strong) UIView *translucentView;
 
-/**位置 default is 'SeaToastGravityCenterVertical'
- */
-@property(nonatomic,assign) SeaToastGravity gravity;
-
 @end
 
 @implementation SeaToast
@@ -128,13 +124,23 @@
         
         switch (_gravity) {
             case SeaToastGravityTop :
-                
+                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_centerYLayoutConstraint];
+                [_translucentView sea_topToSuperview:_superEdgeInsets.top];
                 break;
             case SeaToastGravityBottom :
-                
+                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_centerYLayoutConstraint];
+                [_translucentView sea_bottomToSuperview:_superEdgeInsets.bottom];
                 break;
             case SeaToastGravityCenterVertical :
-                
+                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
+                [_translucentView sea_centerYInSuperview];
+                [_translucentView sea_topToView:_translucentView.superview margin:_superEdgeInsets.top relation:NSLayoutRelationGreaterThanOrEqual];
+                [_translucentView sea_bottomToView:_translucentView.superview margin:_superEdgeInsets.bottom relation:NSLayoutRelationGreaterThanOrEqual];
                 break;
             default:
                 break;
@@ -145,6 +151,12 @@
 - (void)setText:(NSString *)text
 {
     self.textLabel.text = text;
+}
+
+// 显示提示框 2秒后消失
+- (void)show
+{
+    [self showAndHideDelay:2.0];
 }
 
 /**显示提示框并设置多少秒后消失

@@ -4,7 +4,6 @@
 //
 
 #import "SeaCollectionViewController.h"
-#import "SeaBasic.h"
 
 @interface SeaCollectionViewController ()
 
@@ -51,19 +50,13 @@
 {
     if(_collectionView == nil)
     {
-        CGRect frame = CGRectMake(0, 0, SeaScreenWidth, self.contentHeight);
-        
-        _collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:self.layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.alwaysBounceVertical = YES;
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.backgroundView = nil;
         _collectionView.sea_emptyViewDelegate = self;
-        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
-        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer"];
-        
         self.scrollView = _collectionView;
     }
 }
