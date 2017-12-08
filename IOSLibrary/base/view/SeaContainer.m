@@ -67,8 +67,8 @@
         if(_topView){
             if(_topView.superview != self){
                 [_topView removeFromSuperview];
+                [self addSubview:_topView];
             }
-            [self addSubview:_topView];
             
             [_topView sea_topToSuperview];
             [_topView sea_leftToSuperview];
@@ -110,8 +110,8 @@
         if(_contentView){
             if(_contentView.superview != self){
                 [_contentView removeFromSuperview];
+                [self addSubview:_contentView];
             }
-            [self addSubview:_contentView];
             
             [_contentView sea_leftToSuperview];
             [_contentView sea_rightToSuperview];
@@ -154,8 +154,8 @@
         if(_bottomView){
             if(_bottomView.superview != self){
                 [_bottomView removeFromSuperview];
+                [self addSubview:_bottomView];
             }
-            [self addSubview:_bottomView];
     
             [_bottomView sea_leftToSuperview];
             [_bottomView sea_rightToSuperview];

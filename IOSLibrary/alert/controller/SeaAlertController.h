@@ -6,7 +6,7 @@
 //  Copyright (c) 2016年 qianseit. All rights reserved.
 //
 
-#import "SeaViewController.h"
+#import <UIKit/UIKit.h>
 
 ///弹窗样式
 typedef NS_ENUM(NSInteger, SeaAlertControllerStyle)
@@ -42,8 +42,8 @@ typedef NS_ENUM(NSInteger, SeaAlertControllerStyle)
 
 @end
 
-///弹窗控制器 SeaAlertView 和 SeaActionSheet的整合
-@interface SeaAlertController : SeaViewController
+///弹窗控制器 AlertView 和 ActionSheet的整合
+@interface SeaAlertController : UIViewController
 
 ///样式
 @property(nonatomic,readonly) SeaAlertControllerStyle style;

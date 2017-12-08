@@ -1,21 +1,21 @@
 //
-//  SeaLoadingIndicator.m
+//  SeaPageLoadingView.m
 
 //
 //
 
-#import "SeaLoadingIndicator.h"
+#import "SeaPageLoadingView.h"
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
 
-@interface SeaLoadingIndicator ()
+@interface SeaPageLoadingView ()
 
 //内容视图
 @property(nonatomic,strong) UIView *contentView;
 
 @end
 
-@implementation SeaLoadingIndicator
+@implementation SeaPageLoadingView
 
 - (instancetype)init
 {
@@ -78,19 +78,17 @@
 
 #pragma mark- property
 
-- (void)setLoading:(BOOL)loading
+- (void)setHidden:(BOOL)hidden
 {
-    if(_loading != loading)
+    [super setHidden:hidden];
+    
+    if(!hidden)
     {
-        _loading = loading;
-        if(_loading)
-        {
-            [self.activityIndicatorView startAnimating];
-        }
-        else
-        {
-            [self.activityIndicatorView stopAnimating];
-        }
+        [self.activityIndicatorView startAnimating];
+    }
+    else
+    {
+        [self.activityIndicatorView stopAnimating];
     }
 }
 

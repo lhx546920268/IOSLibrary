@@ -12,6 +12,8 @@
 #import "NSAttributedString+Utlities.h"
 #import "UIViewController+Utils.h"
 #import "SeaBasic.h"
+#import "UIColor+colorUtilities.h"
+#import "UIFont+Utilities.h"
 
 //系统默认的蓝色
 #define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]

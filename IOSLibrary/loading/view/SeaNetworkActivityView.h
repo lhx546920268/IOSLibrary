@@ -13,12 +13,4 @@
  */
 @property(nonatomic,copy) NSString *msg;
 
-/**开始动画
- */
-- (void)stopAnimating;
-
-/**停止动画
- */
-- (void)startAnimating;
-
 @end

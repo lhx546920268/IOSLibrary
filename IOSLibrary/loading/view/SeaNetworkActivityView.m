@@ -18,13 +18,16 @@
 //内容视图
 @property(nonatomic,strong) UIView *contentView;
 
+//黑色半透明背景视图
+@property(nonatomic,strong) UIView *translucentView;
+
 @end
 
 @implementation SeaNetworkActivityView
 
 - (instancetype)init
 {
-    return [self initWithFrame:CGRectMake(0, 0, 120, 120)];
+    return [self initWithFrame:CGRectZero];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -50,12 +53,14 @@
 ///初始化
 - (void)initialization
 {
-    self.layer.cornerRadius = 8.0;
-    self.layer.masksToBounds = YES;
-    self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
+    _translucentView = [[UIView alloc] init];
+    _translucentView.layer.cornerRadius = 8.0;
+    _translucentView.layer.masksToBounds = YES;
+    _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
+    [self addSubview:_translucentView];
     
     _contentView = [[UIView alloc] init];
-    [self addSubview:_contentView];
+    [_translucentView addSubview:_contentView];
     
     _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [_contentView addSubview:_activityIndicatorView];
@@ -67,6 +72,10 @@
     _textLabel.textColor = [UIColor whiteColor];
     _textLabel.text = @"加载中...";
     [_contentView addSubview:_textLabel];
+    
+    [_translucentView sea_widthToSelf:120.0];
+    [_translucentView sea_heightToSelf:120.0];
+    [_translucentView sea_centerInSuperview];
     
     [_contentView sea_leftToSuperview:10.0];
     [_contentView sea_rightToSuperview:10.0];
@@ -89,9 +98,7 @@
 
 - (void)setMsg:(NSString *)msg
 {
-    if([msg isEqualToString:_msgLabel.text])
-        return;
-    _msgLabel.text = msg;
+    _textLabel.text = msg;
 }
 
 - (void)setHidden:(BOOL)hidden
@@ -112,12 +119,12 @@
 
 - (void)stopAnimating
 {
-    [self.actView stopAnimating];
+    [self.activityIndicatorView stopAnimating];
 }
 
 - (void)startAnimating
 {
-    [self.actView startAnimating];
+    [self.activityIndicatorView startAnimating];
 }
 
 @end

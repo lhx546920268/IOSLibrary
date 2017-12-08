@@ -518,6 +518,16 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  */
 @property (nonatomic,readonly) NSLayoutConstraint *sea_bottomLayoutConstraint;
 
+/**
+ 获取水平居中约束 返回当前优先级最高的
+ */
+@property (nonatomic,readonly) NSLayoutConstraint *sea_centerXLayoutConstraint;
+
+/**
+ 获取垂直居中约束 返回当前优先级最高的
+ */
+@property (nonatomic,readonly) NSLayoutConstraint *sea_centerYLayoutConstraint;
+
 #pragma mark- AutoLayout 计算大小
 
 /**根据给定的 size 计算当前view的大小，要使用auto layout

@@ -804,6 +804,16 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
     return [self sea_layoutConstraintForAttribute:NSLayoutAttributeBottom];
 }
 
+- (NSLayoutConstraint*)sea_centerXLayoutConstraint
+{
+    return [self sea_layoutConstraintForAttribute:NSLayoutAttributeCenterX];
+}
+
+- (NSLayoutConstraint*)sea_centerYLayoutConstraint
+{
+    return [self sea_layoutConstraintForAttribute:NSLayoutAttributeCenterY];
+}
+
 /**通过约束类型获取对应的约束
  *@param attribute 约束类型
  *@return 如果存在，则返回优先级最高的约束，否则返回nil
@@ -867,6 +877,16 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
                 if(constraint.firstItem == self && constraint.firstAttribute == attribute && constraint.constant <= 0){
                     [matchs addObject:constraint];
                 }else if (constraint.secondItem == self && constraint.secondAttribute == attribute && constraint.constant >= 0){
+                    [matchs addObject:constraint];
+                }
+            }
+            break;
+        case NSLayoutAttributeCenterX :
+        case NSLayoutAttributeCenterY :
+            //居中约束 必定在父视图
+            constraints = self.superview.constraints;
+            for(NSLayoutConstraint *constraint in constraints){
+                if(constraint.firstItem == self && constraint.firstAttribute == attribute){
                     [matchs addObject:constraint];
                 }
             }

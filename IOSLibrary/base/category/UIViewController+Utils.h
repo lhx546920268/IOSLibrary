@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SeaButton.h"
 
-@class SeaBadNetworkRemindView,SeaLoadingIndicator,SeaNavigationController,SeaTabBarController,SeaNetworkActivityView,SeaToast;
+@class Sea,SeaPageLoadingView,SeaNavigationController,SeaTabBarController,SeaNetworkActivityView,SeaToast;
 
 
 /**导航条按钮位置
@@ -48,11 +48,11 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 
 /**加载失败
  */
-@property(nonatomic,strong) SeaBadNetworkRemindView *badNetworkRemindView;
+@property(nonatomic,strong) Sea *badNetworkRemindView;
 
 /**加载指示
  */
-@property(nonatomic,strong) SeaLoadingIndicator *loadingIndicator;
+@property(nonatomic,strong) SeaPageLoadingView *loadingIndicator;
 
 /**活动指示
  */

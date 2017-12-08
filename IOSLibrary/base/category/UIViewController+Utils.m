@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+Utils.h"
-#import "SeaLoadingIndicator.h"
+#import "Sea"
 #import "SeaNavigationController.h"
 #import "SeaBadNetworkRemindView.h"
 #import "SeaNetworkActivityView.h"
@@ -364,7 +364,7 @@ static char SeaTransitioningDelegateKey;
                 
                 // CGFloat y = ([self contentHeight] - _SeaLoadingIndicatorHeight_) / 2.0;
 //                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight] - self.view.top) title:@"正在载入..."];
-                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight]) title:@"正在载入..."];
+                SeaPageLoadingView *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight]) title:@"正在载入..."];
                 [self.view addSubview:indicator];
                 self.loadingIndicator = indicator;
             }
@@ -387,12 +387,12 @@ static char SeaTransitioningDelegateKey;
 }
 
 //全屏载入视图
-- (void)setLoadingIndicator:(SeaLoadingIndicator *)loadingIndicator
+- (void)setLoadingIndicator:(SeaPageLoadingView *)loadingIndicator
 {
     objc_setAssociatedObject(self, &SeaLoadingIndicatorKey, loadingIndicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (SeaLoadingIndicator*)loadingIndicator
+- (SeaPageLoadingView*)loadingIndicator
 {
     return objc_getAssociatedObject(self, &SeaLoadingIndicatorKey);
 }
@@ -820,7 +820,7 @@ static char SeaTransitioningDelegateKey;
     self.loading = NO;
     if(!self.badNetworkRemindView)
     {
-        SeaBadNetworkRemindView *view = [[SeaBadNetworkRemindView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) message:nil];
+        Sea *view = [[SeaBadNetworkRemindView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) message:nil];
         view.delegate = self;
         [self.view addSubview:view];
         self.badNetworkRemindView = view;
@@ -831,7 +831,7 @@ static char SeaTransitioningDelegateKey;
     self.badNetworkRemindView.hidden = NO;
 }
 
-- (void)badNetworkRemindViewDidReloadData:(SeaBadNetworkRemindView *)view
+- (void)badNetworkRemindViewDidReloadData:(Sea *)view
 {
     self.loading = YES;
     [self reloadDataFromNetwork];
@@ -844,12 +844,12 @@ static char SeaTransitioningDelegateKey;
 
 /**加载失败
  */
-- (void)setBadNetworkRemindView:(SeaBadNetworkRemindView *)badNetworkRemindView
+- (void)setBadNetworkRemindView:(Sea *)badNetworkRemindView
 {
     objc_setAssociatedObject(self, &SeaBadNetworkRemindViewKey, badNetworkRemindView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (SeaBadNetworkRemindView*)badNetworkRemindView
+- (Sea*)badNetworkRemindView
 {
     return objc_getAssociatedObject(self, &SeaBadNetworkRemindViewKey);
 }

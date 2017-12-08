@@ -46,7 +46,7 @@
 
 - (void)loadView
 {
-    self.container = [[SeaContainer alloc] init];
+    _container = [[SeaContainer alloc] init];
     self.view = self.container;
 }
 

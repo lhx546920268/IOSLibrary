@@ -1,13 +1,13 @@
 //
-//  SeaBadNetworkRemindView.m
+//  SeaFailPageView.m
 
 //
 
-#import "SeaBadNetworkRemindView.h"
+#import "SeaFailPageView.h"
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
 
-@interface SeaBadNetworkRemindView ()
+@interface SeaFailPageView ()
 
 ///图标
 @property(nonatomic,strong) UIImageView *imageView;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation SeaBadNetworkRemindView
+@implementation SeaFailPageView
 
 - (instancetype)init
 {
@@ -75,23 +75,13 @@
     
     [_imageView sea_centerXInSuperview];
     [_imageView sea_topToSuperview:10.0];
-    [_imageView sea_leftToView:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_imageView sea_rightToViewLeft:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_leftToView:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_rightToViewLeft:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
     
     [_textLabel sea_leftToView:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_rightToSuperview:10.0];
     [_textLabel sea_topToViewBottom:_imageView margin:10.0];
     [_textLabel sea_bottomToSuperview:10.0];
-
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reload:)];
-    [self addGestureRecognizer:tap];
-}
-
-//重新加载数据
-- (void)reload:(id) sender
-{
-    !self.reloadDataHandler ?: self.reloadDataHandler();
 }
 
 @end
