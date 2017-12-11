@@ -128,7 +128,7 @@
         
         switch (_gravity) {
             case SeaToastGravityTop :
-                
+        
                 break;
             case SeaToastGravityBottom :
                 
