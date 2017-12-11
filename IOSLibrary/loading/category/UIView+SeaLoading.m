@@ -19,7 +19,7 @@ static char SeaShowNetworkActivityKey;
 static char SeaNetworkActivityKey;
 static char SeaShowFailPageKey;
 static char SeaFailPageViewKey;
-static char SeaReloadDataHandler;
+static char SeaReloadDataHandlerKey;
 
 @implementation UIView (SeaLoading)
 
@@ -154,6 +154,7 @@ static char SeaReloadDataHandler;
             [self addSubview:sea_failPageView];
         }
         
+        [sea_failPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlerTapFailPage:)]];
         [sea_failPageView sea_insetsInSuperview:UIEdgeInsetsZero];
         sea_failPageView.hidden = !self.sea_showFailPage;
     }
@@ -162,6 +163,25 @@ static char SeaReloadDataHandler;
 - (UIView*)sea_failPageView
 {
     return objc_getAssociatedObject(self, &SeaFailPageViewKey);
+}
+
+#pragma mark- handler
+
+- (void)setSea_reloadDataHandler:(void (^)(void))sea_reloadDataHandler
+{
+    objc_setAssociatedObject(self, &SeaReloadDataHandlerKey, sea_reloadDataHandler, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void (^)(void))sea_reloadDataHandler
+{
+    return objc_getAssociatedObject(self, &SeaReloadDataHandlerKey);
+}
+
+//点击失败视图
+- (void)handlerTapFailPage:(UITapGestureRecognizer*) tap
+{
+    void(^)(void) handler = self.sea_reloadDataHandler;
+    !handler ?: handler();
 }
 
 @end

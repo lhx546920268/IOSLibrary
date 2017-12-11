@@ -1,11 +1,11 @@
 //
-//  UITableViewCell+Utilities.m
+//  UITableViewCell+Utils.m
 
 //
 
-#import "UITableViewCell+Utilities.h"
+#import "UITableViewCell+Utils.h"
 
-@implementation UITableViewCell (Utilities)
+@implementation UITableViewCell (Utils)
 
 /**设置箭头
  */

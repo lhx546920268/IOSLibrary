@@ -7,6 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ item 可以为 UIView, UILayoutGuide, id<UILayoutSupport>， 比如 UIViewController 中的 topLayoutGuide
+ */
+
 ///autoLayout 计算大小方式
 typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 {
@@ -43,11 +47,11 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSArray<NSLayoutConstraint*>*)sea_centerInSuperviewWithConstants:(CGPoint) constants;
 
 /**
- 相对于某个view居中
- @param view 对应的view
+ 相对于某个item居中
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_centerInView:(UIView*) view;
+- (NSArray<NSLayoutConstraint*>*)sea_centerInItem:(id) item;
 
 /**
  相对于父视水平图居中
@@ -63,27 +67,27 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_centerXInSuperviewWithConstant:(CGFloat) constant;
 
 /**
- 相对于某个view水平居中
- @param view 对应的view
+ 相对于某个item水平居中
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerXInView:(UIView*) view;
+- (NSLayoutConstraint*)sea_centerXInItem:(id) item;
 
 /**
- 相对于某个view居中
- @param view 对应的view
+ 相对于某个item居中
+ @param item 对应的item
  @param constants x,y 轴增量
  @return 生成的约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_centerInView:(UIView*) view constants:(CGPoint) constants;
+- (NSArray<NSLayoutConstraint*>*)sea_centerInItem:(id) item constants:(CGPoint) constants;
 
 /**
- 相对于某个view水平居中
- @param view 对应的view
+ 相对于某个item水平居中
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerXInView:(UIView*) view constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_centerXInItem:(id) item constant:(CGFloat) constant;
 
 /**
  相对于父视图垂直居中
@@ -99,19 +103,19 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_centerYInSuperview;
 
 /**
- 相对于某个view垂直居中
- @param view 对应的view
+ 相对于某个item垂直居中
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerYInView:(UIView *)view;
+- (NSLayoutConstraint*)sea_centerYInItem:(id)item;
 
 /**
- 相对于某个view垂直居中
- @param view 对应的view
+ 相对于某个item垂直居中
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerYInView:(UIView*) view constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_centerYInItem:(id) item constant:(CGFloat) constant;
 
 #pragma mark- insets
 
@@ -123,12 +127,12 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSArray<NSLayoutConstraint*>*)sea_insetsInSuperview:(UIEdgeInsets) insets;
 
 /**
- 设置在某个视图中的 上左下右约束
+ 设置在某个item中的 上左下右约束
  @param insets 上左下右约束值
- @param view 对应的视图
+ @param item 对应的item
  @return 生成的约束，约束index与 insets对应，即 top，left, bottom, right 约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_insets:(UIEdgeInsets) insets inView:(UIView*) view;
+- (NSArray<NSLayoutConstraint*>*)sea_insets:(UIEdgeInsets) insets inItem:(id) item;
 
 #pragma mark- top
 
@@ -146,52 +150,52 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_topToSuperview:(CGFloat) margin;
 
 /**
- 设置与某个视图的top一样
- @param view 对应的视图
+ 设置与某个item的top一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToView:(UIView*) view;
+- (NSLayoutConstraint*)sea_topToItem:(id) item;
 
 /**
- 设置与某个视图的top一样
- @param view 对应的视图
+ 设置与某个item的top一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToView:(UIView*) view margin:(CGFloat) margin;
+- (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin;
 
 /**
- 设置与某个视图的top一样
- @param view 对应的视图
- @param margin 间距
- @param relation >=、=、<=
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_topToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
-
-/**
- 设置在某个视图下面，即两个视图间的垂直距离为0
- @param view 对应的视图
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_topToViewBottom:(UIView*) view;
-
-/**
- 设置上面距离某个视图下面的约束，即两个视图间的垂直距离
- @param view 对应的视图
- @param margin 间距
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_topToViewBottom:(UIView*) view margin:(CGFloat) margin;
-
-/**
- 设置上面距离某个视图下面的约束，即两个视图间的垂直距离
- @param view 对应的视图
+ 设置与某个item的top一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToViewBottom:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+- (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+
+/**
+ 设置在某个item下面，即两个item间的垂直距离为0
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_topToItemBottom:(id) item;
+
+/**
+ 设置上面距离某个item下面的约束，即两个item间的垂直距离
+ @param item 对应的item
+ @param margin 间距
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin;
+
+/**
+ 设置上面距离某个item下面的约束，即两个item间的垂直距离
+ @param item 对应的item
+ @param margin 间距
+ @param relation >=、=、<=
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
 
 #pragma mark- left
 
@@ -209,52 +213,52 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_leftToSuperview:(CGFloat) margin;
 
 /**
- 设置与某个视图的left一样
- @param view 对应的视图
+ 设置与某个item的left一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToView:(UIView*) view;
+- (NSLayoutConstraint*)sea_leftToItem:(id) item;
 
 /**
- 设置与某个视图的left一样
- @param view 对应的视图
+ 设置与某个item的left一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToView:(UIView*) view margin:(CGFloat) margin;
+- (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin;
 
 /**
- 设置与某个视图的left一样
- @param view 对应的视图
- @param margin 间距
- @param relation >=、=、<=
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_leftToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
-
-/**
- 设置在某个视图右边，即两个视图间的水平距离为0
- @param view 对应的视图
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_leftToViewRight:(UIView*) view;
-
-/**
- 设置左边距离某个视图右边的约束，即两个视图间的水平距离
- @param view 对应的视图
- @param margin 间距
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_leftToViewRight:(UIView*) view margin:(CGFloat) margin;
-
-/**
- 设置左边距离某个视图右边的约束，即两个视图间的水平距离
- @param view 对应的视图
+ 设置与某个item的left一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToViewRight:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+- (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+
+/**
+ 设置在某个item右边，即两个item间的水平距离为0
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_leftToItemRight:(id) item;
+
+/**
+ 设置左边距离某个item右边的约束，即两个item间的水平距离
+ @param item 对应的item
+ @param margin 间距
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin;
+
+/**
+ 设置左边距离某个item右边的约束，即两个item间的水平距离
+ @param item 对应的item
+ @param margin 间距
+ @param relation >=、=、<=
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
 
 #pragma mark- bottom
 
@@ -272,52 +276,52 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_bottomToSuperview:(CGFloat) margin;
 
 /**
- 设置与某个视图的bottom一样
- @param view 对应的视图
+ 设置与某个item的bottom一样
+ @param item 对应的 item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToView:(UIView*) view;
+- (NSLayoutConstraint*)sea_bottomToItem:(id) item;
 
 /**
- 设置与某个视图的bottom一样
- @param view 对应的视图
+ 设置与某个item的bottom一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToView:(UIView*) view margin:(CGFloat) margin;
+- (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin;
 
 /**
- 设置与某个视图的bottom一样
- @param view 对应的视图
- @param margin 间距
- @param relation >=、=、<=
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_bottomToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
-
-/**
- 设置在某个视图上面，即两个视图间的垂直距离为0
- @param view 对应的视图
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_bottomToViewTop:(UIView*) view;
-
-/**
- 设置下面距离某个视图上面的约束，即两个视图间的垂直距离
- @param view 对应的视图
- @param margin 间距
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_bottomToViewTop:(UIView*) view margin:(CGFloat) margin;
-
-/**
- 设置下面距离某个视图上面的约束，即两个视图间的垂直距离
- @param view 对应的视图
+ 设置与某个item的bottom一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToViewTop:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+- (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+
+/**
+ 设置在某个item上面，即两个item间的垂直距离为0
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_bottomToItemTop:(id) item;
+
+/**
+ 设置下面距离某个item上面的约束，即两个item间的垂直距离
+ @param item 对应的item
+ @param margin 间距
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin;
+
+/**
+ 设置下面距离某个item上面的约束，即两个item间的垂直距离
+ @param item 对应的item
+ @param margin 间距
+ @param relation >=、=、<=
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
 
 #pragma mark- right
 
@@ -335,52 +339,52 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_rightToSuperview:(CGFloat) margin;
 
 /**
- 设置与某个视图的right一样
- @param view 对应的视图
+ 设置与某个item的right一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToView:(UIView*) view;
+- (NSLayoutConstraint*)sea_rightToItem:(id) item;
 
 /**
- 设置与某个视图的right一样
- @param view 对应的视图
+ 设置与某个item的right一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToView:(UIView*) view margin:(CGFloat) margin;
+- (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin;
 
 /**
- 设置与某个视图的right一样
- @param view 对应的视图
- @param margin 间距
- @param relation >=、=、<=
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_rightToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
-
-/**
- 设置在某个视图左边，即两个视图间的水平距离为0
- @param view 对应的视图
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_rightToViewLeft:(UIView*) view;
-
-/**
- 设置右边距离某个视图左边的约束，即两个视图间的水平距离
- @param view 对应的视图
- @param margin 间距
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_rightToViewLeft:(UIView*) view margin:(CGFloat) margin;
-
-/**
- 设置右边距离某个视图左边的约束，即两个视图间的水平距离
- @param view 对应的视图
+ 设置与某个item的right一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToViewLeft:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+- (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+
+/**
+ 设置在某个item左边，即两个item间的水平距离为0
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_rightToItemLeft:(id) item;
+
+/**
+ 设置右边距离某个item左边的约束，即两个item间的水平距离
+ @param item 对应的item
+ @param margin 间距
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin;
+
+/**
+ 设置右边距离某个item左边的约束，即两个item间的水平距离
+ @param item 对应的item
+ @param margin 间距
+ @param relation >=、=、<=
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
 
 #pragma mark- size
 
@@ -406,68 +410,68 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (NSLayoutConstraint*)sea_heightToSelf:(CGFloat) height;
 
 /**
- 设置宽度约束等于某个视图
- @param view 对应的视图
+ 设置宽度约束等于某个item
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view;
+- (NSLayoutConstraint*)sea_widthToItem:(id) item;
 
 /**
- 设置高度约束等于某个视图
- @param view 对应的视图
+ 设置高度约束等于某个item
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view;
+- (NSLayoutConstraint*)sea_heightToItem:(id) item;
 
 /**
- 设置相对于某个视图的宽度约束
- @param view 对应的视图
+ 设置相对于某个item的宽度约束
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_widthToItem:(id) item constant:(CGFloat) constant;
 
 /**
- 设置相对于某个视图的高度约束
- @param view 对应的视图
+ 设置相对于某个item的高度约束
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_heightToItem:(id) item constant:(CGFloat) constant;
 
 /**
- 设置相对于某个视图的宽度约束
- @param view 对应的视图
+ 设置相对于某个item的宽度约束
+ @param item 对应的item
  @param multiplier 比值
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view multiplier:(CGFloat) multiplier;
+- (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier;
 
 /**
- 设置相对于某个视图的高度约束
- @param view 对应的视图
+ 设置相对于某个item的高度约束
+ @param item 对应的item
  @param multiplier 比值
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view multiplier:(CGFloat) multiplier;
+- (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier;
 
 /**
- 设置相对于某个视图的宽度约束
- @param view 对应的视图
- @param multiplier 比值
- @param constant 增量
- @return 生成的约束
- */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view multiplier:(CGFloat) multiplier constant:(CGFloat) constant;
-
-/**
- 设置相对于某个视图的高度约束
- @param view 对应的视图
+ 设置相对于某个item的宽度约束
+ @param item 对应的item
  @param multiplier 比值
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view multiplier:(CGFloat) multiplier constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant;
+
+/**
+ 设置相对于某个item的高度约束
+ @param item 对应的item
+ @param multiplier 比值
+ @param constant 增量
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant;
 
 /**
  设置宽高比例

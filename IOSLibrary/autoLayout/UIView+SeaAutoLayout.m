@@ -15,11 +15,11 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 /**
  适配自动布局
  */
-- (void)sea_adjustAutoLayoutWithView:(UIView*) view
+- (void)sea_adjustAutoLayoutWithItem:(id) item
 {
     //父视图不需要设置 translatesAutoresizingMaskIntoConstraints
-    if(![view isEqual:self.superview]){
-        view.translatesAutoresizingMaskIntoConstraints = NO;
+    if([item isKindOfClass:[UIView class]] && ![item isEqual:self.superview]){
+        [(UIView*)item setTranslatesAutoresizingMaskIntoConstraints:NO];
     }
     self.translatesAutoresizingMaskIntoConstraints = NO;
 }
@@ -32,7 +32,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSArray<NSLayoutConstraint*>*)sea_centerInSuperview
 {
-    return [self sea_centerInView:self.superview];
+    return [self sea_centerInItem:self.superview];
 }
 
 /**
@@ -42,28 +42,28 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSArray<NSLayoutConstraint*>*)sea_centerInSuperviewWithConstants:(CGPoint) constants
 {
-    return [self sea_centerInView:self.superview constants:constants];
+    return [self sea_centerInItem:self.superview constants:constants];
 }
 
 /**
  相对于某个view居中
- @param view 对应的view
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_centerInView:(UIView*) view
+- (NSArray<NSLayoutConstraint*>*)sea_centerInItem:(id) item
 {
-    return [self sea_centerInView:view constants:CGPointZero];
+    return [self sea_centerInItem:item constants:CGPointZero];
 }
 
 /**
  相对于某个view居中
- @param view 对应的view
+ @param item 对应的item
  @param constants x,y 轴增量
  @return 生成的约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_centerInView:(UIView*) view constants:(CGPoint) constants
+- (NSArray<NSLayoutConstraint*>*)sea_centerInItem:(id) item constants:(CGPoint) constants
 {
-    return @[[self sea_centerXInView:view constant:constants.x], [self sea_centerYInView:view constant:constants.y]];
+    return @[[self sea_centerXInItem:item constant:constants.x], [self sea_centerYInItem:item constant:constants.y]];
 }
 
 /**
@@ -72,7 +72,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_centerXInSuperview
 {
-    return [self sea_centerXInView:self.superview];
+    return [self sea_centerXInItem:self.superview];
 }
 
 /**
@@ -82,31 +82,31 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_centerXInSuperviewWithConstant:(CGFloat) constant
 {
-    return [self sea_centerXInView:self.superview constant:constant];
+    return [self sea_centerXInItem:self.superview constant:constant];
 }
 
 /**
  相对于某个view水平居中
- @param view 对应的view
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerXInView:(UIView*) view
+- (NSLayoutConstraint*)sea_centerXInItem:(id) item
 {
-    return [self sea_centerXInView:view constant:0];
+    return [self sea_centerXInItem:item constant:0];
 }
 
 /**
  相对于某个view水平居中
- @param view 对应的view
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerXInView:(UIView*) view constant:(CGFloat) constant
+- (NSLayoutConstraint*)sea_centerXInItem:(id) item constant:(CGFloat) constant
 {
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:constant];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:constant];
     
     constraint.priority = SeaAutoLayoutPriorityDefault;
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
     [self.superview addConstraint:constraint];
     
@@ -121,7 +121,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_centerYInSuperviewWithConstant:(CGFloat) constant
 {
-    return [self sea_centerYInView:self.superview constant:constant];
+    return [self sea_centerYInItem:self.superview constant:constant];
 }
 
 /**
@@ -135,24 +135,24 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 
 /**
  相对于某个view垂直居中
- @param view 对应的view
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerYInView:(UIView *)view
+- (NSLayoutConstraint*)sea_centerYInItem:(id) item
 {
-    return [self sea_centerYInView:view constant:0];
+    return [self sea_centerYInItem:item constant:0];
 }
 
 /**
  相对于某个view垂直居中
- @param view 对应的view
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerYInView:(UIView*) view constant:(CGFloat) constant
+- (NSLayoutConstraint*)sea_centerYInItem:(id) item constant:(CGFloat) constant
 {
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:constant];
-    [self sea_adjustAutoLayoutWithView:view];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:constant];
+    [self sea_adjustAutoLayoutWithItem:item];
     
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
@@ -169,26 +169,26 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSArray<NSLayoutConstraint*>*)sea_insetsInSuperview:(UIEdgeInsets) insets
 {
-    return [self sea_insets:insets inView:self.superview];
+    return [self sea_insets:insets inItem:self.superview];
 }
 
 /**
- 设置在某个视图中的 上左下右约束
+ 设置在某个item中的 上左下右约束
  @param insets 上左下右约束值
- @param view 对应的视图
+ @param item 对应的item
  @return 生成的约束，约束index与 insets对应，即 top，left, bottom, right 约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_insets:(UIEdgeInsets) insets inView:(UIView*) view
+- (NSArray<NSLayoutConstraint*>*)sea_insets:(UIEdgeInsets) insets inItem:(id) item
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *topConstraint = [self sea_topToView:view margin:insets.top];
+    NSLayoutConstraint *topConstraint = [self sea_topToItem:item margin:insets.top];
     
-    NSLayoutConstraint *leftConstraint = [self sea_leftToView:view margin:insets.left];
+    NSLayoutConstraint *leftConstraint = [self sea_leftToItem:item margin:insets.left];
     
-    NSLayoutConstraint *bottomConstraint = [self sea_bottomToView:view margin:insets.bottom];
+    NSLayoutConstraint *bottomConstraint = [self sea_bottomToItem:item margin:insets.bottom];
     
-    NSLayoutConstraint *rightConstraint = [self sea_rightToView:view margin:insets.right];
+    NSLayoutConstraint *rightConstraint = [self sea_rightToItem:item margin:insets.right];
     
     [self.superview addConstraint:topConstraint];
     [self.superview addConstraint:leftConstraint];
@@ -216,42 +216,42 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_topToSuperview:(CGFloat) margin
 {
-    return [self sea_topToView:self.superview margin:margin];
+    return [self sea_topToItem:self.superview margin:margin];
 }
 
 /**
- 设置与某个视图的top一样
- @param view 对应的视图
+ 设置与某个item的top一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToView:(UIView*) view
+- (NSLayoutConstraint*)sea_topToItem:(id) item
 {
-    return [self sea_topToView:view margin:0];
+    return [self sea_topToItem:item margin:0];
 }
 
 /**
- 设置与某个视图的top一样
- @param view 对应的视图
+ 设置与某个item的top一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToView:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin
 {
-    return [self sea_topToView:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_topToItem:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置与某个视图的top一样
- @param view 对应的视图
+ 设置与某个item的top一样
+ @param item 对应的item
  @param margin 间距
  @paran relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:view attribute:NSLayoutAttributeTop multiplier:1.0 constant:margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:item attribute:NSLayoutAttributeTop multiplier:1.0 constant:margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     
     [self.superview addConstraint:constraint];
@@ -260,38 +260,38 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 }
 
 /**
- 设置在某个视图下面，即两个视图间的垂直距离为0
- @param view 对应的视图
+ 设置在某个item下面，即两个视图间的垂直距离为0
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToViewBottom:(UIView*) view
+- (NSLayoutConstraint*)sea_topToItemBottom:(id) item
 {
-    return [self sea_topToViewBottom:view margin:0];
+    return [self sea_topToItemBottom:item margin:0];
 }
 
 /**
- 设置上面距离某个视图下面的约束，即两个视图间的垂直距离
- @param view 对应的视图
+ 设置上面距离某个item下面的约束，即两个视图间的垂直距离
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToViewBottom:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin
 {
-    return [self sea_topToViewBottom:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_topToItemBottom:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置上面距离某个视图下面的约束，即两个视图间的垂直距离
- @param view 对应的视图
+ 设置上面距离某个item下面的约束，即两个视图间的垂直距离
+ @param item 对应的item
  @param margin 间距
  @paran relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_topToViewBottom:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:item attribute:NSLayoutAttributeBottom multiplier:1.0 constant:margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -316,42 +316,42 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_leftToSuperview:(CGFloat) margin
 {
-    return [self sea_leftToView:self.superview margin:margin];
+    return [self sea_leftToItem:self.superview margin:margin];
 }
 
 /**
- 设置与某个视图的left一样
- @param view 对应的视图
+ 设置与某个item的left一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToView:(UIView*) view
+- (NSLayoutConstraint*)sea_leftToItem:(id) item
 {
-    return [self sea_leftToView:view margin:0];
+    return [self sea_leftToItem:item margin:0];
 }
 
 /**
- 设置与某个视图的left一样
- @param view 对应的视图
+ 设置与某个item的left一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToView:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin
 {
-    return [self sea_leftToView:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_leftToItem:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置与某个视图的left一样
- @param view 对应的视图
+ 设置与某个item的left一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:item attribute:NSLayoutAttributeLeading multiplier:1.0 constant:margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -359,38 +359,38 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 }
 
 /**
- 设置在某个视图右边，即两个视图间的水平距离为0
- @param view 对应的视图
+ 设置在某个item右边，即两个视图间的水平距离为0
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToViewRight:(UIView*) view
+- (NSLayoutConstraint*)sea_leftToItemRight:(id) item
 {
-    return [self sea_leftToViewRight:view margin:0];
+    return [self sea_leftToItemRight:item margin:0];
 }
 
 /**
- 设置左边距离某个视图右边的约束，即两个视图间的水平距离
- @param view 对应的视图
+ 设置左边距离某个item右边的约束，即两个视图间的水平距离
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToViewRight:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin
 {
-    return [self sea_leftToViewRight:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_leftToItemRight:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置左边距离某个视图右边的约束，即两个视图间的水平距离
- @param view 对应的视图
+ 设置左边距离某个item右边的约束，即两个视图间的水平距离
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_leftToViewRight:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -415,42 +415,42 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_bottomToSuperview:(CGFloat) margin
 {
-    return [self sea_bottomToView:self.superview margin:0];
+    return [self sea_bottomToItem:self.superview margin:0];
 }
 
 /**
- 设置与某个视图的bottom一样
- @param view 对应的视图
+ 设置与某个item的bottom一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToView:(UIView*) view
+- (NSLayoutConstraint*)sea_bottomToItem:(id) item
 {
-    return [self sea_bottomToView:view margin:0];
+    return [self sea_bottomToItem:item margin:0];
 }
 
 /**
- 设置与某个视图的bottom一样
- @param view 对应的视图
+ 设置与某个item的bottom一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToView:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin
 {
-    return [self sea_bottomToView:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_bottomToItem:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置与某个视图的bottom一样
- @param view 对应的视图
+ 设置与某个item的bottom一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:item attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -458,38 +458,38 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 }
 
 /**
- 设置在某个视图上面，即两个视图间的垂直距离为0
- @param view 对应的视图
+ 设置在某个item上面，即两个视图间的垂直距离为0
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToViewTop:(UIView*) view
+- (NSLayoutConstraint*)sea_bottomToItemTop:(id) item
 {
-    return [self sea_bottomToViewTop:view margin:0];
+    return [self sea_bottomToItemTop:item margin:0];
 }
 
 /**
- 设置下面距离某个视图上面的约束，即两个视图间的垂直距离
- @param view 对应的视图
+ 设置下面距离某个item上面的约束，即两个视图间的垂直距离
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToViewTop:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin
 {
-    return [self sea_bottomToViewTop:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_bottomToItemTop:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置下面距离某个视图上面的约束，即两个视图间的垂直距离
- @param view 对应的视图
+ 设置下面距离某个item上面的约束，即两个视图间的垂直距离
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_bottomToViewTop:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:view attribute:NSLayoutAttributeTop multiplier:1.0 constant:-margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:item attribute:NSLayoutAttributeTop multiplier:1.0 constant:-margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -514,42 +514,43 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_rightToSuperview:(CGFloat) margin
 {
-    return [self sea_rightToView:self.superview margin:margin];
+    return [self sea_rightToItem:self.superview margin:margin];
 }
 
 /**
- 设置与某个视图的right一样
- @param view 对应的视图
+ 设置与某个item的right一样
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToView:(UIView*) view
+- (NSLayoutConstraint*)sea_rightToItem:(id) item
 {
-    return [self sea_rightToView:view margin:0];
+    return [self sea_rightToItem:item margin:0];
 }
 
 /**
- 设置与某个视图的right一样
- @param view 对应的视图
+ 设置与某个item的right一样
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToView:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin
 {
-    return [self sea_rightToView:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_rightToItem:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置与某个视图的right一样
- @param view 对应的视图
+ 设置与某个item的right一样
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToView:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-margin];
+    
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -557,38 +558,38 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 }
 
 /**
- 设置在某个视图左边，即两个视图间的水平距离为0
- @param view 对应的视图
+ 设置在某个item左边，即两个视图间的水平距离为0
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToViewLeft:(UIView*) view
+- (NSLayoutConstraint*)sea_rightToItemLeft:(id) item
 {
-    return [self sea_rightToViewLeft:view margin:0];
+    return [self sea_rightToItemLeft:item margin:0];
 }
 
 /**
- 设置右边距离某个视图左边的约束，即两个视图间的水平距离
- @param view 对应的视图
+ 设置右边距离某个item左边的约束，即两个视图间的水平距离
+ @param item 对应的item
  @param margin 间距
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToViewLeft:(UIView*) view margin:(CGFloat) margin
+- (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin
 {
-    return [self sea_rightToViewLeft:view margin:margin relation:NSLayoutRelationEqual];
+    return [self sea_rightToItemLeft:item margin:margin relation:NSLayoutRelationEqual];
 }
 
 /**
- 设置右边距离某个视图左边的约束，即两个视图间的水平距离
- @param view 对应的视图
+ 设置右边距离某个item左边的约束，即两个视图间的水平距离
+ @param item 对应的item
  @param margin 间距
  @param relation >=、=、<=
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_rightToViewLeft:(UIView*) view margin:(CGFloat) margin relation:(NSLayoutRelation) relation
+- (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-margin];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:item attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
     [self.superview addConstraint:constraint];
     
@@ -614,7 +615,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_widthToSelf:(CGFloat) width
 {
-    return [self sea_widthToView:nil constant:width];
+    return [self sea_widthToItem:nil constant:width];
 }
 
 /**
@@ -624,87 +625,87 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_heightToSelf:(CGFloat) height
 {
-    return [self sea_heightToView:nil constant:height];
+    return [self sea_heightToItem:nil constant:height];
 }
 
 /**
- 设置宽度约束等于某个视图
- @param view 对应的视图
+ 设置宽度约束等于某个item
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view
+- (NSLayoutConstraint*)sea_widthToItem:(id) item
 {
-    return [self sea_widthToView:view constant:0];
+    return [self sea_widthToItem:item constant:0];
 }
 
 /**
- 设置高度约束等于某个视图
- @param view 对应的视图
+ 设置高度约束等于某个item
+ @param item 对应的item
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view
+- (NSLayoutConstraint*)sea_heightToItem:(id) item
 {
-    return [self sea_heightToView:view constant:0];
+    return [self sea_heightToItem:item constant:0];
 }
 
 /**
- 设置相对于某个视图的宽度约束
- @param view 对应的视图
+ 设置相对于某个item的宽度约束
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view constant:(CGFloat) constant
+- (NSLayoutConstraint*)sea_widthToItem:(id) item constant:(CGFloat) constant
 {
-    return [self sea_widthToView:view multiplier:1.0 constant:constant];
+    return [self sea_widthToItem:item multiplier:1.0 constant:constant];
 }
 
 /**
- 设置相对于某个视图的高度约束
- @param view 对应的视图
+ 设置相对于某个item的高度约束
+ @param item 对应的item
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view constant:(CGFloat) constant
+- (NSLayoutConstraint*)sea_heightToItem:(id) item constant:(CGFloat) constant
 {
-    return [self sea_heightToView:view multiplier:1.0 constant:constant];
+    return [self sea_heightToItem:item multiplier:1.0 constant:constant];
 }
 
 /**
- 设置相对于某个视图的宽度约束
- @param view 对应的视图
+ 设置相对于某个item的宽度约束
+ @param item 对应的item
  @param multiplier 比值
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view multiplier:(CGFloat) multiplier
+- (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier
 {
-    return [self sea_widthToView:view multiplier:multiplier constant:0];
+    return [self sea_widthToItem:item multiplier:multiplier constant:0];
 }
 
 /**
- 设置相对于某个视图的高度约束
- @param view 对应的视图
+ 设置相对于某个item的高度约束
+ @param item 对应的item
  @param multiplier 比值
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view multiplier:(CGFloat) multiplier
+- (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier
 {
-    return [self sea_heightToView:view multiplier:multiplier constant:0];
+    return [self sea_heightToItem:item multiplier:multiplier constant:0];
 }
 
 /**
- 设置相对于某个视图的宽度约束
- @param view 对应的视图
+ 设置相对于某个item的宽度约束
+ @param item 对应的item
  @param multiplier 比值
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_widthToView:(UIView*) view multiplier:(CGFloat) multiplier constant:(CGFloat) constant
+- (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:!view ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeWidth multiplier:multiplier constant:constant];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:item attribute:!item ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeWidth multiplier:multiplier constant:constant];
     constraint.priority = SeaAutoLayoutPriorityDefault;
-    if(view == nil){
+    if(item == nil){
         [self addConstraint:constraint];
     }else{
         [self.superview addConstraint:constraint];
@@ -714,19 +715,19 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 }
 
 /**
- 设置相对于某个视图的高度约束
- @param view 对应的视图
+ 设置相对于某个item的高度约束
+ @param item 对应的item
  @param multiplier 比值
  @param constant 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_heightToView:(UIView*) view multiplier:(CGFloat) multiplier constant:(CGFloat) constant
+- (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
-    [self sea_adjustAutoLayoutWithView:view];
+    [self sea_adjustAutoLayoutWithItem:item];
     
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:view attribute:!view ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeHeight multiplier:multiplier constant:constant];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:item attribute:!item ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeHeight multiplier:multiplier constant:constant];
     constraint.priority = SeaAutoLayoutPriorityDefault;
-    if(view == nil){
+    if(item == nil){
         [self addConstraint:constraint];
     }else{
         [self.superview addConstraint:constraint];
@@ -742,7 +743,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_aspectRatio:(CGFloat) ratio
 {
-    [self sea_adjustAutoLayoutWithView:nil];
+    [self sea_adjustAutoLayoutWithItem:nil];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:ratio constant:0];
     constraint.priority = SeaAutoLayoutPriorityDefault;
@@ -829,7 +830,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
         case NSLayoutAttributeWidth :
         case NSLayoutAttributeHeight :
             
-            //宽高约束主要有 固定值，纵横比，等于某个视图的宽高
+            //宽高约束主要有 固定值，纵横比，等于某个item的宽高
             constraints = self.constraints;
             for(NSLayoutConstraint *constraint in constraints){
                 //固定值，纵横比 放在本身
@@ -840,7 +841,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
             }
             
             if(matchs.count == 0){
-                //等于某个视图的宽高 放在父视图
+                //等于某个item的宽高 放在父视图
                 constraints = self.superview.constraints;
                 for(NSLayoutConstraint *constraint in constraints){
                     if((constraint.firstAttribute == attribute && constraint.firstItem == self) || (constraint.secondAttribute == attribute && constraint.secondItem == self)){

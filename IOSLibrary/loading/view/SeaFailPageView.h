@@ -9,4 +9,11 @@
  */
 @interface SeaFailPageView : UIView
 
+///图标
+@property(nonatomic,strong) UIImageView *imageView;
+
+/**提示信息
+ */
+@property(nonatomic,strong) UILabel *textLabel;
+
 @end

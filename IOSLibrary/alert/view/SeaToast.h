@@ -44,6 +44,9 @@ typedef NS_ENUM(NSInteger, SeaToastGravity){
  */
 @property(nonatomic,assign) SeaToastGravity gravity;
 
+// 显示提示框 2秒后消失
+- (void)show;
+
 /**显示提示框并设置多少秒后消失
  *@param delay 消失延时时间
  */

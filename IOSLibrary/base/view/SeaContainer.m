@@ -80,7 +80,7 @@
             
             if(self.contentView){
                 self.contentView.sea_topLayoutConstraint.priority = UILayoutPriorityDefaultLow;
-                [self.contentView sea_topToViewBottom:_topView].priority = UILayoutPriorityDefaultHigh;
+                [self.contentView sea_topToItemBottom:_topView].priority = UILayoutPriorityDefaultHigh;
             }
         }
     }
@@ -119,11 +119,11 @@
             [_contentView sea_bottomToSuperview].priority = UILayoutPriorityDefaultLow;
             
             if(_topView){
-                [_contentView sea_topToViewBottom:_topView].priority = UILayoutPriorityDefaultHigh;
+                [_contentView sea_topToItemBottom:_topView].priority = UILayoutPriorityDefaultHigh;
             }
             
             if(_bottomView){
-                [_contentView sea_bottomToViewTop:_bottomView].priority = UILayoutPriorityDefaultHigh;
+                [_contentView sea_bottomToItemTop:_bottomView].priority = UILayoutPriorityDefaultHigh;
             }
         }
     }
@@ -167,7 +167,7 @@
             
             if(self.contentView){
                 self.contentView.sea_bottomLayoutConstraint.priority = UILayoutPriorityDefaultLow;
-                [self.contentView sea_bottomToViewTop:_bottomView].priority = UILayoutPriorityDefaultHigh;
+                [self.contentView sea_bottomToItemTop:_bottomView].priority = UILayoutPriorityDefaultHigh;
             }
         }
     }

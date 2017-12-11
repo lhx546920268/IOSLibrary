@@ -9,6 +9,11 @@
 
 @implementation SeaCheckBox
 
+- (instancetype)init
+{
+    return [self initWithFrame:CGRectZero];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -50,14 +55,6 @@
         self.normalImage = [SeaImageGenerator untickIconWithColor:[UIColor grayColor]];
         self.selectedImage = [SeaImageGenerator tickingIconWithBackgroundColor:SeaAppMainColor tickColor:SeaTintColor];
     }
-}
-
-
-#pragma mark- dealloc
-
-- (void)dealloc
-{
-    
 }
 
 #pragma mark- property

@@ -23,7 +23,7 @@
 
 /**是否可以下拉刷新数据
  */
-@property(nonatomic,assign) BOOL enableDropDown;
+@property(nonatomic,assign) BOOL refreshEnable;
 
 /**下拉刷新视图 如果 enableDropDown = NO，nil
  */
@@ -31,7 +31,7 @@
 
 /**是否可以上拉加载数据 default is 'NO'
  */
-@property(nonatomic,assign) BOOL enablePullUp;
+@property(nonatomic,assign) BOOL loadMoreEnable;
 
 /**上拉加载时的指示视图 如果 enablePullUp = NO，nil
  */
@@ -45,13 +45,13 @@
  */
 @property(nonatomic,assign) long long totalCount;
 
-/**刷新数据
+/**是否正在刷新数据
  */
-@property(nonatomic,assign) BOOL refreshing;
+@property(nonatomic,readonly) BOOL refreshing;
 
-/**是否要加载更多
+/**是否正在加载更多
  */
-@property(nonatomic,assign) BOOL loadMore;
+@property(nonatomic,readonly) BOOL loadingMore;
 
 /**显示回到顶部的按钮，滚动超过两屏后显示，否则隐藏
  */
@@ -61,7 +61,7 @@
  */
 @property(nonatomic,assign) BOOL shouldShowScrollToTopButton;
 
-/**回到顶部按钮
+/**回到顶部按钮 图标 scroll_to_top
  */
 @property(nonatomic,strong) UIButton *scrollToTopButton;
 
@@ -71,33 +71,35 @@
 
 ///以下的两个方法默认不做任何事，子类按需实现
 
-/**开始下拉刷新
+/**触发下拉刷新
  */
-- (void)beginDropDownRefresh;
+- (void)onRefesh;
 
-/**开始上拉加载
+/**触发上拉加载
  */
-- (void)beginPullUpLoading;
+- (void)onLoadMore;
 
 ///以下的两个方法，刷新结束或加载结束时调用，如果子类重写，必须调用 super方法
+
+- (void)stopRefresh;
 
 /**结束下拉刷新
  *@param msg 提示的信息，nil则提示 “刷新成功”
  */
-- (void)endDropDownRefreshWithMsg:(NSString*) msg;
+- (void)stopRefreshWithMsg:(NSString*) msg NS_REQUIRES_SUPER;
 
 /**结束上拉加载
  *@param flag 是否还有更多信息
  */
-- (void)endPullUpLoadingWithMoreInfo:(BOOL) flag;
+- (void)stopLoadMoreWithMore:(BOOL) flag NS_REQUIRES_SUPER;
 
 /**手动调用下拉刷新，会有下拉动画
  */
-- (void)refreshManually;
+- (void)refreshManually NS_REQUIRES_SUPER;
 
 /**手动上拉加载，会有上拉动画
  */
-- (void)loadMoreManually;
+- (void)loadMoreManually NS_REQUIRES_SUPER;
 
 
 #pragma mark- 键盘

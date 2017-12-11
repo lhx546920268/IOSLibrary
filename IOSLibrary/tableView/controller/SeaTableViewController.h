@@ -35,6 +35,7 @@
 - (void)registerClass:(Class) cellClas;
 - (void)registerClass:(Class) cellClass forCellReuseIdentifier:(NSString*) identifier;
 
+///注册header footer
 - (void)registerNibForHeaderFooterView:(Class) clazz;
 - (void)registerNib:(UINib*) nib forHeaderFooterViewReuseIdentifier:(NSString*) identifier;
 - (void)registerClassForHeaderFooterView:(Class) clazz;

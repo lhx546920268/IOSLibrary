@@ -21,10 +21,6 @@
  */
 @property(nonatomic,strong) UIView *translucentView;
 
-/**位置 default is 'SeaToastGravityCenterVertical'
- */
-@property(nonatomic,assign) SeaToastGravity gravity;
-
 @end
 
 @implementation SeaToast
@@ -56,7 +52,7 @@
 
 - (void)initialization
 {
-    
+    self.userInteractionEnabled = NO;
     _gravity = SeaToastGravityCenterVertical;
     _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
     _contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
@@ -78,20 +74,20 @@
     _textLabel.textColor = [UIColor whiteColor];
     [self addSubview:_textLabel];
     
-    [_translucentView sea_leftToView:_translucentView.superview margin:_superEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_rightToView:_translucentView.superview margin:_superEdgeInsets.right relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_bottomToView:_translucentView.superview margin:_superEdgeInsets.bottom relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_topToView:_translucentView.superview margin:_superEdgeInsets.top relation:NSLayoutRelationGreaterThanOrEqual];
+    [_translucentView sea_leftToItem:_translucentView.superview margin:_superEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
+    [_translucentView sea_rightToItem:_translucentView.superview margin:_superEdgeInsets.right relation:NSLayoutRelationGreaterThanOrEqual];
+    [_translucentView sea_bottomToItem:_translucentView.superview margin:_superEdgeInsets.bottom relation:NSLayoutRelationGreaterThanOrEqual];
+    [_translucentView sea_topToItem:_translucentView.superview margin:_superEdgeInsets.top relation:NSLayoutRelationGreaterThanOrEqual];
     [_translucentView sea_centerInSuperview];
     
     [_imageView sea_centerXInSuperview];
     [_imageView sea_topToSuperview:_contentEdgeInsets.top];
-    [_imageView sea_leftToView:_imageView.superview margin:_contentEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
-    [_imageView sea_rightToViewLeft:_imageView.superview margin:_contentEdgeInsets.right relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_leftToItem:_imageView.superview margin:_contentEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_rightToItemLeft:_imageView.superview margin:_contentEdgeInsets.right relation:NSLayoutRelationGreaterThanOrEqual];
     
-    [_textLabel sea_leftToView:_textLabel.superview margin:_contentEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
+    [_textLabel sea_leftToItem:_textLabel.superview margin:_contentEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_rightToSuperview:_contentEdgeInsets.right];
-    [_textLabel sea_topToViewBottom:_imageView margin:0];
+    [_textLabel sea_topToItemBottom:_imageView margin:0];
     [_textLabel sea_bottomToSuperview:_contentEdgeInsets.bottom];
 }
 
@@ -128,13 +124,24 @@
         
         switch (_gravity) {
             case SeaToastGravityTop :
-        
+
+                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_centerYLayoutConstraint];
+                [_translucentView sea_topToSuperview:_superEdgeInsets.top];
                 break;
             case SeaToastGravityBottom :
-                
+                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_centerYLayoutConstraint];
+                [_translucentView sea_bottomToSuperview:_superEdgeInsets.bottom];
                 break;
             case SeaToastGravityCenterVertical :
-                
+                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
+                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
+                [_translucentView sea_centerYInSuperview];
+                [_translucentView sea_topToItem:_translucentView.superview margin:_superEdgeInsets.top relation:NSLayoutRelationGreaterThanOrEqual];
+                [_translucentView sea_bottomToItem:_translucentView.superview margin:_superEdgeInsets.bottom relation:NSLayoutRelationGreaterThanOrEqual];
                 break;
             default:
                 break;
@@ -145,6 +152,12 @@
 - (void)setText:(NSString *)text
 {
     self.textLabel.text = text;
+}
+
+// 显示提示框 2秒后消失
+- (void)show
+{
+    [self showAndHideDelay:2.0];
 }
 
 /**显示提示框并设置多少秒后消失

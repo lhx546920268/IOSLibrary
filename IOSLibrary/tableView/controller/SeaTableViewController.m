@@ -5,6 +5,8 @@
 
 #import "SeaTableViewController.h"
 #import "UIViewController+Utils.h"
+#import "UIView+SeaAutoLayout.h"
+#import "NSString+Utilities.h"
 
 @interface SeaTableViewController ()
 
@@ -52,14 +54,21 @@
 {
     if(!_tableView)
     {
-        CGRect frame = CGRectMake(0, 0, SeaScreenWidth, self.contentHeight);
-        
-        _tableView = [[UITableView alloc] initWithFrame:frame style:_style];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:_style];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundView = nil;
         _tableView.sea_emptyViewDelegate = self;
         self.scrollView = _tableView;
+    }
+}
+
+- (void)emptyViewWillAppear:(SeaEmptyView *)view
+{
+    if(![NSString isEmpty:self.title]){
+        view.textLabel.text = [NSString stringWithFormat:@"暂无%@信息", self.title];
+    }else{
+        view.textLabel.text = @"暂无信息";
     }
 }
 
@@ -123,6 +132,16 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

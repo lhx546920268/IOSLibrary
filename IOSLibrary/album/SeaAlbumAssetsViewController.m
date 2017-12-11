@@ -47,7 +47,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.present = YES;
         self.target = SeaAlbumAssetsViewControllerTargetSelected;
         self.maxSelectedCount = 1;
         self.numberOfItemsPerRow = 3;

@@ -303,7 +303,7 @@ static char SeaTransitioningDelegateKey;
             }
             
             [self.view bringSubviewToFront:self.networkActivityView];
-            self.networkActivityView.msg = @"请稍后..";
+            self.networkActivityView.msg = @"请稍后...";
             self.networkActivityView.hidden = NO;
         }
         else

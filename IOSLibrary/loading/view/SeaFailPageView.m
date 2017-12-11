@@ -9,13 +9,6 @@
 
 @interface SeaFailPageView ()
 
-///图标
-@property(nonatomic,strong) UIImageView *imageView;
-
-/**提示信息
- */
-@property(nonatomic,strong) UILabel *textLabel;
-
 //内容视图
 @property(nonatomic,strong) UIView *contentView;
 
@@ -75,12 +68,12 @@
     
     [_imageView sea_centerXInSuperview];
     [_imageView sea_topToSuperview:10.0];
-    [_imageView sea_leftToView:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_imageView sea_rightToViewLeft:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_leftToItem:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_rightToItemLeft:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
     
-    [_textLabel sea_leftToView:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_textLabel sea_leftToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_rightToSuperview:10.0];
-    [_textLabel sea_topToViewBottom:_imageView margin:10.0];
+    [_textLabel sea_topToItemBottom:_imageView margin:10.0];
     [_textLabel sea_bottomToSuperview:10.0];
 }
 

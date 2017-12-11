@@ -65,12 +65,12 @@
     [_activityIndicatorView sea_centerYInSuperview];
     [_activityIndicatorView sea_leftToSuperview:10.0];
 
-    [_activityIndicatorView sea_topToView:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_activityIndicatorView sea_bottomToView:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_activityIndicatorView sea_topToItem:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_activityIndicatorView sea_bottomToItem:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
     
-    [_textLabel sea_topToView:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_textLabel sea_topToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_bottomToSuperview:10.0];
-    [_textLabel sea_leftToViewRight:_activityIndicatorView margin:10.0];
+    [_textLabel sea_leftToItemRight:_activityIndicatorView margin:10.0];
     [_textLabel sea_rightToSuperview:10.0];
     
     self.loading = YES;
