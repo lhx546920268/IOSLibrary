@@ -16,8 +16,14 @@
 ///固定在顶部的视图
 @property(nonatomic, strong) UIView *topView;
 
+///顶部视图原始高度
+@property(nonatomic, readonly) CGFloat topViewOriginalHeight;
+
 ///固定在底部的视图
 @property(nonatomic, strong) UIView *bottomView;
+
+///底部视图原始高度
+@property(nonatomic, readonly) CGFloat bottomViewOriginalHeight;
 
 ///内容视图
 @property(nonatomic, strong) UIView *contentView;
@@ -41,5 +47,21 @@
  @param height 视图高度
  */
 - (void)setContentView:(UIView *)contentView height:(CGFloat) height;
+
+/**
+ 设置顶部视图隐藏 视图必须有高度约束
+
+ @param hidden 是否隐藏
+ @param animate 是否动画
+ */
+- (void)setTopViewHidden:(BOOL) hidden animate:(BOOL) animate;
+
+/**
+ 设置底部视图隐藏 视图必须有高度约束
+
+ @param hidden 是否隐藏
+ @param animate 是否动画
+ */
+- (void)setBottomViewHidden:(BOOL) hidden animate:(BOOL) animate;
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SeaButton.h"
 
-@class Sea,SeaPageLoadingView,SeaNavigationController,SeaTabBarController,SeaNetworkActivityView,SeaToast;
+@class SeaFailPageView, SeaPageLoadingView,SeaNavigationController,SeaTabBarController,SeaNetworkActivityView,SeaToast;
 
 
 /**导航条按钮位置
@@ -22,80 +22,55 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 
 @interface UIViewController (Utils)
 
-/**设置返回按钮
- */
-@property(nonatomic,assign) BOOL backItem;
+///是否使用系统返回按钮 default is '【SeaBasicInitialization sea_useSystemBackItem]'
+@property(nonatomic, assign) BOOL sea_useSystemBackItem;
 
-/**导航栏按钮或按钮字体颜色
- */
-@property(nonatomic,strong) UIColor *iconTintColor;
+///显示返回按钮 图片名称 back_icon
+@property(nonatomic, assign) BOOL sea_showBackItem;
 
-/**是否正在加载数据
- */
-@property(nonatomic,assign) BOOL loading;
+///导航栏按钮或按钮字体颜色
+@property(nonatomic, strong) UIColor *sea_iconTintColor;
 
-/**是否正在网络请求
- */
-@property(nonatomic,assign) BOOL requesting;
+///页面第一次加载显示
+@property(nonatomic, assign) BOOL sea_showPageLoading;
 
-/**是否加载失败
- */
-@property(nonatomic,readonly) BOOL loadDidFail;
+///页面第一次加载视图 默认 SeaLoadingIndicator
+@property(nonatomic, strong) UIView *sea_pageLoadingView;
 
-/**是否显示网络活动指示器
- */
-@property(nonatomic,assign) BOOL showNetworkActivity;
+///显示菊花
+@property(nonatomic, assign) BOOL sea_showNetworkActivity;
 
-/**加载失败
- */
-@property(nonatomic,strong) Sea *badNetworkRemindView;
+///菊花 默认SeaNetworkActivityView
+@property(nonatomic, strong) UIView *sea_networkActivity;
 
-/**加载指示
- */
-@property(nonatomic,strong) SeaPageLoadingView *loadingIndicator;
+///显示加载失败页面
+@property(nonatomic, assign) BOOL sea_showFailPage;
 
-/**活动指示
- */
-@property(nonatomic,strong) SeaNetworkActivityView *networkActivityView;
+///失败页面 默认 SeaFailPageView
+@property(nonatomic, strong) UIView *sea_failPageView;
 
-/**提示信息
- */
-@property(nonatomic,strong) SeaToast *toast;
+///点击失败页面回调
+@property(nonatomic, copy) void(^sea_reloadDataHandler)(void);
 
-/**用于 present ViewController 的 statusBar 隐藏状态控制 default is 'NO' ，不隐藏
- */
-@property(nonatomic,assign) BOOL statusBarHidden;
+///statusBar 隐藏状态控制 default is 'NO' ，不隐藏
+@property(nonatomic,assign) BOOL sea_statusBarHidden;
 
-/**状态栏高度
- */
-@property(nonatomic,readonly) CGFloat statusBarHeight;
+///状态栏高度
+@property(nonatomic,readonly) CGFloat sea_statusBarHeight;
 
-/**导航栏高度
- */
+///导航栏高度
 @property(nonatomic,readonly) CGFloat sea_navigationBarHeight;
 
-/**选项卡高度
- */
-@property(nonatomic,readonly) CGFloat tabBarHeight;
+///选项卡高度
+@property(nonatomic,readonly) CGFloat sea_tabBarHeight;
 
-/**工具条高度
- */
-@property(nonatomic,readonly) CGFloat toolBarHeight;
+///工具条高度
+@property(nonatomic,readonly) CGFloat sea_toolBarHeight;
 
-/**内容高度
- */
-@property(nonatomic,readonly) CGFloat contentHeight;
-
-/**内容起始y 会判断导航栏是否透明
- */
-@property(nonatomic,readonly) CGFloat contentY;
-
-/**自定义的导航栏
- */
+///自定义的导航栏
 @property(nonatomic,readonly) SeaNavigationController *sea_navigationController;
 
-/**过渡动画代理 设置这个可防止 transitioningDelegate 提前释放，不要设置为 self，否则会抛出异常
- */
+///过渡动画代理 设置这个可防止 transitioningDelegate 提前释放，不要设置为 self，否则会抛出异常
 @property(nonatomic,strong) id<UIViewControllerTransitioningDelegate> sea_transitioningDelegate;
 
 /**没有数据时显示的内容 default is 'SeaTextInsetLabel',灰色背景
@@ -131,7 +106,7 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 /**返回根视图，支持present和push出来的视图
  *@param flag 是否动画
  */
-- (void)backToRootViewControllerWithAnimated:(BOOL) flag;
+- (void)backToRootViewControllerAnimated:(BOOL) flag;
 
 /**获取最上层的 presentedViewController
  */
@@ -282,7 +257,8 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
  *@param backgroundColor 背景颜色
  *@param titleColor 标题颜色
  *@param font 标题字体
+ *@param tintColor 着色，如返回按钮颜色
  */
-+ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font;
++ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor;
 
 @end

@@ -18,9 +18,12 @@ static NSString *shareAlertMsgWhenBadNetwork = nil;
 static UIColor *shareSeparatorLineColor = nil;
 static CGFloat shareSeparatorLineWidth = 0;
 static UIColor *shareNavigationBarColor = nil;
+static UIColor *shareNavigationBarTitleColor = nil;
+static UIFont *shareNavigationBarTitleFont = nil;
 static UIColor *shareTintColor = nil;
 static UIStatusBarStyle shareStatusBarStyle;
 static UIColor *shareButtonTitleColor = nil;
+static BOOL shareUseSystemBackItem = YES;
 
 @implementation SeaBasicInitialization
 
@@ -122,6 +125,28 @@ static UIColor *shareButtonTitleColor = nil;
     return shareNavigationBarColor;
 }
 
+///导航栏标题颜色
++ (void)sea_setNavigationBarTitleColor:(UIColor*) color
+{
+    shareNavigationBarTitleColor = color;
+}
+
++ (UIColor*)sea_navigationBarTitleColor
+{
+    return shareNavigationBarTitleColor;
+}
+
+///导航栏标题字体
++ (void)sea_setNavigationBarTitleFont:(UIFont*) font
+{
+    shareNavigationBarTitleFont = font;
+}
+
++ (UIFont*)sea_navigationBarTitleFont
+{
+    return shareNavigationBarTitleFont;
+}
+
 ///按钮字体颜色
 + (void)sea_setButtonTitleColor:(UIColor*) color
 {
@@ -155,6 +180,17 @@ static UIColor *shareButtonTitleColor = nil;
     return shareTintColor;
 }
 
+///是否使用系统返回按钮 default is 'YES'
++ (void)sea_setUseSystemBackItem:(BOOL) use
+{
+    return shareUseSystemBackItem;
+}
+
++ (BOOL)sea_useSystemBackItem
+{
+    return shareUseSystemBackItem;
+}
+
 /**初始化
  */
 + (void)initialize
@@ -166,13 +202,13 @@ static UIColor *shareButtonTitleColor = nil;
     shareBackgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     //app主色调
-    shareAppMainColor = [UIColor colorFromHexadecimal:@"9D1202"];
+    shareAppMainColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
 
     
     ///按钮颜色
-    shareButtonBackgroundColor = [UIColor colorFromHexadecimal:@"9D1202"];
+    shareButtonBackgroundColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
     
-    shareButtonTitleColor = [UIColor blackColor];
+    shareButtonTitleColor = [UIColor whiteColor];
     
         //主要字体名称
     shareSeaMainFontName = [UIFont systemFontOfSize:14].fontName;//
@@ -187,7 +223,10 @@ static UIColor *shareButtonTitleColor = nil;
     shareSeparatorLineColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     shareSeparatorLineWidth = 1.0 / [UIScreen mainScreen].scale;
     
-    shareNavigationBarColor = [UIColor colorFromHexadecimal:@"9D1202"];
+    shareNavigationBarColor = [UIColor whiteColor];
+    shareNavigationBarTitleColor = [UIColor blackColor];
+    shareNavigationBarTitleFont = [UIFont fontWithName:shareSeaMainFontName size:17.0];
+    
     shareTintColor = [UIColor whiteColor];
     
     shareStatusBarStyle = UIStatusBarStyleDefault;

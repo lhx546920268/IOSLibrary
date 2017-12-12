@@ -18,10 +18,53 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 - (void)sea_adjustAutoLayoutWithItem:(id) item
 {
     //父视图不需要设置 translatesAutoresizingMaskIntoConstraints
+    if([item isKindOfClass:[UIViewController class]]){
+        item = [(UIViewController*)item view];
+    }
+    
     if([item isKindOfClass:[UIView class]] && ![item isEqual:self.superview]){
         [(UIView*)item setTranslatesAutoresizingMaskIntoConstraints:NO];
     }
     self.translatesAutoresizingMaskIntoConstraints = NO;
+}
+
+/**
+ 获取合适的item
+ */
+- (id)sea_fitItem:(id) item attribute:(NSLayoutAttribute) attribute
+{
+    if([item isKindOfClass:[UIViewController class]]){
+        UIViewController *viewController = (UIViewController*)item;
+        if(@available(iOS 11.0, *)){
+            switch (attribute) {
+                case NSLayoutAttributeTop :
+                case NSLayoutAttributeLeft :
+                case NSLayoutAttributeLeading :
+                case NSLayoutAttributeRight :
+                case NSLayoutAttributeTrailing :
+                case NSLayoutAttributeBottom :
+                    item = viewController.view.safeAreaLayoutGuide;
+                    break;
+                default:
+                    item = viewController.view;
+                    break;
+            }
+        }else{
+            switch (attribute) {
+                case NSLayoutAttributeTop :
+                    item = viewController.topLayoutGuide;
+                    break;
+                case NSLayoutAttributeBottom :
+                    item = viewController.bottomLayoutGuide;
+                    break;
+                default:
+                    item = viewController.view;
+                    break;
+            }
+        }
+    }
+    
+    return item;
 }
 
 #pragma mark- center
@@ -103,6 +146,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_centerXInItem:(id) item constant:(CGFloat) constant
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeCenterX];
+    
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:constant];
     
     constraint.priority = SeaAutoLayoutPriorityDefault;
@@ -151,6 +196,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_centerYInItem:(id) item constant:(CGFloat) constant
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeCenterY];
+    
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:constant];
     [self sea_adjustAutoLayoutWithItem:item];
     
@@ -183,17 +230,9 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *topConstraint = [self sea_topToItem:item margin:insets.top];
-    
     NSLayoutConstraint *leftConstraint = [self sea_leftToItem:item margin:insets.left];
-    
     NSLayoutConstraint *bottomConstraint = [self sea_bottomToItem:item margin:insets.bottom];
-    
     NSLayoutConstraint *rightConstraint = [self sea_rightToItem:item margin:insets.right];
-    
-    [self.superview addConstraint:topConstraint];
-    [self.superview addConstraint:leftConstraint];
-    [self.superview addConstraint:bottomConstraint];
-    [self.superview addConstraint:rightConstraint];
     
     return @[topConstraint, leftConstraint, bottomConstraint, rightConstraint];
 }
@@ -249,6 +288,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeTop];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:item attribute:NSLayoutAttributeTop multiplier:1.0 constant:margin];
@@ -289,6 +329,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeNotAnAttribute];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:item attribute:NSLayoutAttributeBottom multiplier:1.0 constant:margin];
@@ -349,6 +390,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeLeading];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:item attribute:NSLayoutAttributeLeading multiplier:1.0 constant:margin];
@@ -388,6 +430,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeNotAnAttribute];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:relation toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:margin];
@@ -448,6 +491,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeBottom];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:item attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-margin];
@@ -487,6 +531,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeNotAnAttribute];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:item attribute:NSLayoutAttributeTop multiplier:1.0 constant:-margin];
@@ -547,8 +592,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeTrailing];
     [self sea_adjustAutoLayoutWithItem:item];
-    
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-margin];
     constraint.priority = SeaAutoLayoutPriorityDefault;
@@ -587,6 +632,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeNotAnAttribute];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:relation toItem:item attribute:NSLayoutAttributeLeading multiplier:1.0 constant:-margin];
@@ -701,6 +747,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeWidth];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:item attribute:!item ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeWidth multiplier:multiplier constant:constant];
@@ -723,6 +770,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeHeight];
     [self sea_adjustAutoLayoutWithItem:item];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:item attribute:!item ? NSLayoutAttributeNotAnAttribute : NSLayoutAttributeHeight multiplier:multiplier constant:constant];
@@ -743,6 +791,7 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 - (NSLayoutConstraint*)sea_aspectRatio:(CGFloat) ratio
 {
+    item = [self sea_fitItem:item attribute:NSLayoutAttributeNotAnAttribute];
     [self sea_adjustAutoLayoutWithItem:nil];
     
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:ratio constant:0];

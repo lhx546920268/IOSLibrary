@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- item 可以为 UIView, UILayoutGuide, id<UILayoutSupport>， 比如 UIViewController 中的 topLayoutGuide
+ item 可以为 UIView, UILayoutGuide, UIViewController, id<UILayoutSupport>， 比如 UIViewController 中的 topLayoutGuide
  */
 
 ///autoLayout 计算大小方式

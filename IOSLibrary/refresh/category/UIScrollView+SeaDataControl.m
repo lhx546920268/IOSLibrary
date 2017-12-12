@@ -6,6 +6,8 @@
 #import "UIScrollView+SeaDataControl.h"
 #import <objc/runtime.h>
 #import "SeaEmptyView.h"
+#import "SeaRefreshControl.h"
+#import "SeaLoadMoreControl.h"
 
 //下拉刷新控制器的key
 static char SeaRefreshControlKey;

@@ -1000,24 +1000,20 @@ static char SeaTransitioningDelegateKey;
  *@param backgroundColor 背景颜色
  *@param titleColor 标题颜色
  *@param font 标题字体
+ *@param tintColor 着色，如返回按钮颜色
  */
-+ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font
++ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 
     if(!titleColor)
-        titleColor = SeaTintColor;
+        titleColor = SeaNavigationBarTitleColor;
     if(!font)
-        font = [UIFont fontWithName:SeaMainFontName size:17.0];
+        font = SeaNavigationBarTitleFont;
+    if(!tintColor)
+        tintColor = SeaTintColor;
 
-    if([titleColor isEqualToColor:[UIColor whiteColor]])
-    {
-        [dic setObject:titleColor forKey:NSForegroundColorAttributeName];
-    }
-    else
-    {
-        [dic setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
-    }
+    [dic setObject:titleColor forKey:NSForegroundColorAttributeName];
     [dic setObject:font forKey:NSFontAttributeName];
 
     [navigationBar setTitleTextAttributes:dic];

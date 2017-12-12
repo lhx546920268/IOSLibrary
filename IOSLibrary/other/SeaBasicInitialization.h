@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+///主题初始化
 @interface SeaBasicInitialization : NSObject
 
 ///viewController背景颜色
@@ -54,8 +55,20 @@
 + (void)sea_setTintColor:(UIColor*) color;
 + (UIColor*)sea_tintColor;
 
+///导航栏标题颜色
++ (void)sea_setNavigationBarTitleColor:(UIColor*) color;
++ (UIColor*)sea_navigationBarTitleColor;
+
+///导航栏标题字体
++ (void)sea_setNavigationBarTitleFont:(UIFont*) font;
++ (UIFont*)sea_navigationBarTitleFont;
+
 ///状态栏样式
 + (void)sea_setStatusBarStyle:(UIStatusBarStyle) statusBarStyle;
 + (UIStatusBarStyle)sea_statusBarStyle;
+
+///是否使用系统返回按钮 default is 'YES'
++ (void)sea_setUseSystemBackItem:(BOOL) use;
++ (BOOL)sea_useSystemBackItem;
 
 @end

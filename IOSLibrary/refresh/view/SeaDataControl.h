@@ -5,7 +5,8 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^SeaDataControlBlock)(void);
+///刷新回调
+typedef void(^SeaDataControlHandler)(void);
 
 /**UIScrollView 的滚动位置
  */
@@ -36,7 +37,7 @@ typedef NS_ENUM(NSInteger, SeaDataControlState)
 
 /**刷新回调
  */
-@property(nonatomic,copy) SeaDataControlBlock refreshBlock;
+@property(nonatomic,copy) SeaDataControlHandler handler;
 
 /**加载延迟 default is '0.25'
  */

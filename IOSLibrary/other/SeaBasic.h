@@ -59,11 +59,17 @@ dispatch_async(dispatch_get_main_queue(), block);\
  */
 #define SeaButtonDisableBackgroundColor [UIColor colorFromHexadecimal:@"b3b3b3"]
 
-//app主色调
+///app主色调
 #define SeaAppMainColor [SeaBasicInitialization sea_appMainColor]
 
-//导航栏背景颜色
+///导航栏背景颜色
 #define SeaNavigationBarBackgroundColor [SeaBasicInitialization sea_navigationBarColor]
+
+///导航栏标题颜色
+#define SeaNavigationBarTitleColor [SeaBasicInitialization sea_navigationBarTitleColor]
+
+///导航栏标题字体
+#define SeaNavigationBarTitleFont [SeaBasicInitialization sea_navigationBarTitleFont]
 
 ///状态栏样式
 #define SeaStatusBarStyle [SeaBasicInitialization sea_statusBarStyle]

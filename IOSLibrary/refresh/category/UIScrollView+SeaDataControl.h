@@ -4,17 +4,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SeaRefreshControl.h"
-#import "SeaLoadMoreControl.h"
+#import "SeaDataControl.h"
 
-/**下拉刷新方便创建的 方法
- */
+@class SeaRefreshControl, SeaLoadMoreControl;
+
+///刷新 类目
 @interface UIScrollView (SeaDataControl)
 
 /**添加下拉刷新功能
  *@param block 刷新回调方法
  */
-- (void)addRefreshControlUsingBlock:(SeaDataControlBlock) block;
+- (void)sea_addRefreshUsingBlock:(SeaDataControlBlock) block;
 
 /**删除下拉刷新功能
  */

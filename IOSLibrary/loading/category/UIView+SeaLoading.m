@@ -130,6 +130,9 @@ static char SeaReloadDataHandlerKey;
             failPageView.hidden = !sea_showFailPage;
         }
         [self bringSubviewToFront:failPageView];
+        if(sea_showFailPage){
+            self.sea_showPageLoading = NO;
+        }
     }
 }
 
@@ -181,6 +184,7 @@ static char SeaReloadDataHandlerKey;
 - (void)handlerTapFailPage:(UITapGestureRecognizer*) tap
 {
     void(^)(void) handler = self.sea_reloadDataHandler;
+    self.sea_showFailPage = NO;
     !handler ?: handler();
 }
 

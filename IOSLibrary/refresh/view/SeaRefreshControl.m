@@ -392,10 +392,7 @@ static const CGFloat SeaRefreshControlCriticalPoint = 60.0f;
 //开始加载
 - (void)startRefresh
 {
-    if(self.refreshBlock)
-    {
-        self.refreshBlock();
-    }
+    !self.handler ?: self.handler();
 }
 
 @end

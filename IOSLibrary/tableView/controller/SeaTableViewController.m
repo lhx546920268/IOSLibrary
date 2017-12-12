@@ -58,6 +58,9 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundView = nil;
+        if (@available(iOS 11.0, *)) {
+            [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+        }
         _tableView.sea_emptyViewDelegate = self;
         self.scrollView = _tableView;
     }

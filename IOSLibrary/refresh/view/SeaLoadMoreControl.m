@@ -320,10 +320,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     _remindLabel.userInteractionEnabled = NO;
     _remindLabel.text = @"加载中...";
     [_activityIndicatorView startAnimating];
-    if(self.refreshBlock)
-    {
-        self.refreshBlock();
-    }
+    !self.handler ?: self.handler();
 }
 
 #pragma mark- private method

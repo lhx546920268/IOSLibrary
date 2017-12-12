@@ -32,5 +32,4 @@
 ///点击失败页面回调
 @property(nonatomic, copy) void(^sea_reloadDataHandler)(void);
 
-
 @end
