@@ -55,7 +55,7 @@
         if([tmp isKindOfClass:[SeaViewController class]])
         {
             SeaViewController *vc = (SeaViewController*)viewController;
-            vc.Sea_TabBarController = tmp.Sea_TabBarController;
+            vc.sea_tabBarController = tmp.sea_tabBarController;
         }
     }
     
@@ -164,7 +164,7 @@
     if([vc isKindOfClass:[SeaViewController class]] && [viewController isKindOfClass:[SeaViewController class]])
     {
         SeaViewController *tmp = (SeaViewController*)viewController;
-        tmp.Sea_TabBarController = vc.Sea_TabBarController;
+        tmp.sea_tabBarController = vc.sea_tabBarController;
     }
     
     [super presentViewController:viewControllerToPresent animated:flag completion:completion];

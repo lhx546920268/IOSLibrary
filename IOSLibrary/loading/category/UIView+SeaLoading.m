@@ -29,13 +29,15 @@ static char SeaReloadDataHandlerKey;
 {
     if(sea_showPageLoading != self.sea_showPageLoading){
         objc_setAssociatedObject(self, &SeaShowPageLoadingKey, @(sea_showPageLoading), OBJC_ASSOCIATION_RETAIN);
-        UIView *pageLoadingView = self.sea_pageLoadingView;
-        if(!pageLoadingView){
-            self.sea_pageLoadingView = [SeaPageLoadingView new];
+        if(sea_showPageLoading){
+            UIView *pageLoadingView = self.sea_pageLoadingView;
+            if(!pageLoadingView){
+                self.sea_pageLoadingView = [SeaPageLoadingView new];
+            }
+            [self bringSubviewToFront:pageLoadingView];
         }else{
-            pageLoadingView.hidden = !sea_showPageLoading;
+            self.sea_pageLoadingView = nil;
         }
-        [self bringSubviewToFront:pageLoadingView];
     }
 }
 
@@ -55,13 +57,8 @@ static char SeaReloadDataHandlerKey;
     objc_setAssociatedObject(self, &SeaPageLoadingViewKey, sea_pageLoadingView, OBJC_ASSOCIATION_RETAIN);
     
     if(sea_pageLoadingView){
-        if(sea_pageLoadingView.superview != self){
-            [sea_pageLoadingView removeFromSuperview];
-            [self addSubview:sea_pageLoadingView];
-        }
-        
+        [self addSubview:sea_pageLoadingView];
         [sea_pageLoadingView sea_insetsInSuperview:UIEdgeInsetsZero];
-        sea_pageLoadingView.hidden = !self.sea_showPageLoading;
     }
 }
 
@@ -76,13 +73,15 @@ static char SeaReloadDataHandlerKey;
 {
     if(sea_showNetworkActivity != self.sea_showNetworkActivity){
         objc_setAssociatedObject(self, &SeaShowNetworkActivityKey, @(sea_showNetworkActivity), OBJC_ASSOCIATION_RETAIN);
-        UIView *networkActivity = self.sea_networkActivity;
-        if(!networkActivity){
-            self.sea_networkActivity = [SeaNetworkActivityKey new];
+        if(sea_showNetworkActivity){
+            UIView *networkActivity = self.sea_networkActivity;
+            if(!networkActivity){
+                self.sea_networkActivity = [SeaNetworkActivityKey new];
+            }
+            [self bringSubviewToFront:networkActivity];
         }else{
-            networkActivity.hidden = !sea_showNetworkActivity;
+            self.sea_showNetworkActivity = nil;
         }
-        [self bringSubviewToFront:networkActivity];
     }
 }
 
@@ -102,13 +101,8 @@ static char SeaReloadDataHandlerKey;
     objc_setAssociatedObject(self, &SeaNetworkActivityKey, networkActivity, OBJC_ASSOCIATION_RETAIN);
     
     if(sea_networkActivity){
-        if(sea_networkActivity.superview != self){
-            [sea_networkActivity removeFromSuperview];
-            [self addSubview:sea_networkActivity];
-        }
-        
+        [self addSubview:sea_networkActivity];
         [sea_networkActivity sea_insetsInSuperview:UIEdgeInsetsZero];
-        sea_networkActivity.hidden = !self.sea_showNetworkActivity;
     }
 }
 
@@ -123,15 +117,16 @@ static char SeaReloadDataHandlerKey;
 {
     if(sea_showFailPage != self.sea_showFailPage){
         objc_setAssociatedObject(self, &SeaShowFailPageKey, @(sea_showFailPage), OBJC_ASSOCIATION_RETAIN);
-        UIView *failPageView = self.sea_failPageView;
-        if(!failPageView){
-            self.sea_failPageView = [SeaFailPageView new];
-        }else{
-            failPageView.hidden = !sea_showFailPage;
-        }
-        [self bringSubviewToFront:failPageView];
+        
         if(sea_showFailPage){
             self.sea_showPageLoading = NO;
+            UIView *failPageView = self.sea_failPageView;
+            if(!failPageView){
+                self.sea_failPageView = [SeaFailPageView new];
+            }
+            [self bringSubviewToFront:failPageView];
+        }else{
+            self.sea_failPageView = nil;
         }
     }
 }
@@ -152,10 +147,7 @@ static char SeaReloadDataHandlerKey;
     objc_setAssociatedObject(self, &SeaFailPageViewKey, sea_failPageView, OBJC_ASSOCIATION_RETAIN);
     
     if(sea_failPageView){
-        if(sea_failPageView.superview != self){
-            [sea_failPageView removeFromSuperview];
-            [self addSubview:sea_failPageView];
-        }
+        [self addSubview:sea_failPageView];
         
         [sea_failPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlerTapFailPage:)]];
         [sea_failPageView sea_insetsInSuperview:UIEdgeInsetsZero];

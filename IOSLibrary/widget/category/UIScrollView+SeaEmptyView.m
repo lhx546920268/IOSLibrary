@@ -34,7 +34,6 @@ static char SeaEmptyViewInsetsKey;
         else
         {
             [self.sea_emptyView removeFromSuperview];
-            self.sea_emptyView = nil;
         }
     }
 }
@@ -70,11 +69,6 @@ static char SeaEmptyViewInsetsKey;
     if([self isEmptyData])
     {
         SeaEmptyView *emptyView = self.sea_emptyView;
-        if(!emptyView)
-        {
-            emptyView = [[SeaEmptyView alloc] init];
-            self.sea_emptyView = emptyView;
-        }
         
         [self layoutIfNeeded];
         UIEdgeInsets insets = self.sea_emptyViewInsets;

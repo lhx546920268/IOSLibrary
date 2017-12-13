@@ -9,7 +9,7 @@
 #import "UIView+SeaEmptyView.h"
 #import <objc/runtime.h>
 #import "SeaWeakObjectContainer.h"
-
+#import "UIView+SeaAutoLayout.h"
 
 ///空视图key
 static char SeaEmptyViewKey;
@@ -17,16 +17,40 @@ static char SeaEmptyViewKey;
 ///代理
 static char SeaEmptyViewDelegateKey;
 
+///显示空视图
+static char SeaShowEmptyViewKey;
+
 @implementation UIView (SeaEmptyView)
 
 - (SeaEmptyView*)sea_emptyView
 {
-    return objc_getAssociatedObject(self, &SeaEmptyViewKey);
+    SeaEmptyView *emptyView = objc_getAssociatedObject(self, &SeaEmptyViewKey);
+    if(!emptyView)
+    {
+        emptyView = [[SeaEmptyView alloc] init];
+        objc_setAssociatedObject(self, &SeaEmptyViewKey, emptyView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return emptyView;
 }
 
-- (void)setSea_emptyView:(SeaEmptyView *)sea_emptyView
+
+- (void)setSea_showEmptyView:(BOOL)sea_showEmptyView
 {
-    objc_setAssociatedObject(self, &SeaEmptyViewKey, sea_emptyView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if(sea_showEmptyView != self.sea_showEmptyView){
+        objc_setAssociatedObject(self, &SeaShowEmptyViewKey, @(sea_showEmptyView), OBJC_ASSOCIATION_RETAIN);
+        UIView *emptyView = self.sea_emptyView;
+        if(sea_showEmptyView){
+            [self addSubview:emptyView];
+            [self layoutEmtpyView];
+        }else{
+            [emptyView removeFromSuperview];
+        }
+    }
+}
+
+- (BOOL)sea_showEmptyView
+{
+    return [objc_getAssociatedObject(self, &SeaShowEmptyViewKey) boolValue];
 }
 
 - (void)setSea_emptyViewDelegate:(id<SeaEmptyViewDelegate>)sea_emptyViewDelegate
@@ -45,6 +69,15 @@ static char SeaEmptyViewDelegateKey;
 {
     SeaWeakObjectContainer *container = objc_getAssociatedObject(self, &SeaEmptyViewDelegateKey);
     return container.weakObject;
+}
+
+
+///调整emptyView
+- (void)layoutEmtpyView
+{
+    if(self.sea_showEmptyView){
+        [self.sea_emptyView sea_insetsInSuperview:UIEdgeInsetsZero];
+    }
 }
 
 @end

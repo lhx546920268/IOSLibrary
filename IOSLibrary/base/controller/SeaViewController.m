@@ -24,7 +24,7 @@
     if (self)
     {
         self.statusBarHidden = NO;
-        self.hideTabBar = YES;
+        self.sea_hideTabBar = YES;
         self.iconTintColor = SeaTintColor;
     }
     return self;
@@ -37,10 +37,10 @@
 {
     [super viewWillAppear:animated];
     
-    SeaTabBarController *tabBarController = self.Sea_TabBarController;
+    SeaTabBarController *tabBarController = self.sea_tabBarController;
     if(tabBarController)
     {
-        [tabBarController setTabBarHidden:self.hideTabBar animated:YES];
+        [tabBarController setTabBarHidden:self.sea_hideTabBar animated:YES];
     }
 }
 
@@ -48,6 +48,36 @@
 {
     _container = [[SeaContainer alloc] init];
     self.view = self.container;
+}
+
+- (void)setTopView:(UIView *)topView
+{
+    [_container setTopView:topView];
+}
+
+- (UIView*)topView
+{
+    return _container.topView;
+}
+
+- (void)setBottomView:(UIView *)bottomView
+{
+    [_container setBottomView:bottomView];
+}
+
+- (UIView*)bottomView
+{
+    return _container.bottomView;
+}
+
+- (void)setContentView:(UIView *)contentView
+{
+    [_container setContentView:contentView];
+}
+
+- (UIView*)contentView
+{
+    return _container.contentView;
 }
 
 - (void)viewDidLoad
@@ -65,7 +95,7 @@
  */
 - (BOOL)prefersStatusBarHidden
 {
-    return self.statusBarHidden;
+    return self.sea_statusBarHidden;
 }
 
 @end

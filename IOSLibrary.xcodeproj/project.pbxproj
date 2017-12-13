@@ -47,6 +47,8 @@
 		101B8B2F1FB5A58900D333DB /* UIView+SeaAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */; };
 		1045CE5F1FDA1D38003506BA /* UIView+SeaLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 1045CE5D1FDA1D38003506BA /* UIView+SeaLoading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1045CE601FDA1D38003506BA /* UIView+SeaLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */; };
+		104662021FE1230400A88D3C /* UIView+SeaToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 104662001FE1230400A88D3C /* UIView+SeaToast.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 104662011FE1230400A88D3C /* UIView+SeaToast.m */; };
 		1052CAE01FD78EA900F6F01F /* UITableView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADC1FD78DB200F6F01F /* UITableView+Utils.m */; };
 		1052CAE11FD78EA900F6F01F /* UITableViewCell+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADD1FD78DB200F6F01F /* UITableViewCell+Utils.m */; };
 		1052CAE21FD78EA900F6F01F /* SeaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADE1FD78E6A00F6F01F /* SeaTableViewController.m */; };
@@ -321,6 +323,8 @@
 		1032E3E71FA2E3C200709FDC /* SeaAlbumAssetsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumAssetsCell.h; sourceTree = "<group>"; };
 		1045CE5D1FDA1D38003506BA /* UIView+SeaLoading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaLoading.h"; sourceTree = "<group>"; };
 		1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaLoading.m"; sourceTree = "<group>"; };
+		104662001FE1230400A88D3C /* UIView+SeaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaToast.h"; sourceTree = "<group>"; };
+		104662011FE1230400A88D3C /* UIView+SeaToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaToast.m"; sourceTree = "<group>"; };
 		1052CADA1FD78DB200F6F01F /* UITableViewCell+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utils.h"; sourceTree = "<group>"; };
 		1052CADB1FD78DB200F6F01F /* UITableView+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+Utils.h"; sourceTree = "<group>"; };
 		1052CADC1FD78DB200F6F01F /* UITableView+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Utils.m"; sourceTree = "<group>"; };
@@ -658,6 +662,8 @@
 			children = (
 				100EC6EF1FDA2A1B001CCE74 /* UIAlertController+Utils.h */,
 				100EC6F01FDA2A1B001CCE74 /* UIAlertController+Utils.m */,
+				104662001FE1230400A88D3C /* UIView+SeaToast.h */,
+				104662011FE1230400A88D3C /* UIView+SeaToast.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -757,10 +763,8 @@
 		108E6E1F1FDF834700F1B121 /* widget */ = {
 			isa = PBXGroup;
 			children = (
-				108E6E201FDF834700F1B121 /* scrollView */,
 				108E6E211FDF834700F1B121 /* textView */,
 				108E6E241FDF834700F1B121 /* password */,
-				108E6E271FDF834700F1B121 /* collectionView */,
 				108E6E281FDF834700F1B121 /* progress */,
 				108E6E2B1FDF834700F1B121 /* category */,
 				108E6E2C1FDF834700F1B121 /* other */,
@@ -775,13 +779,6 @@
 				108E6E721FDF834700F1B121 /* tableViewCell */,
 			);
 			path = widget;
-			sourceTree = "<group>";
-		};
-		108E6E201FDF834700F1B121 /* scrollView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = scrollView;
 			sourceTree = "<group>";
 		};
 		108E6E211FDF834700F1B121 /* textView */ = {
@@ -800,13 +797,6 @@
 				108E6E261FDF834700F1B121 /* SeaGridPasswordLabel.m */,
 			);
 			path = password;
-			sourceTree = "<group>";
-		};
-		108E6E271FDF834700F1B121 /* collectionView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = collectionView;
 			sourceTree = "<group>";
 		};
 		108E6E281FDF834700F1B121 /* progress */ = {
@@ -1289,6 +1279,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				104662021FE1230400A88D3C /* UIView+SeaToast.h in Headers */,
 				100EC6FA1FDA2A39001CCE74 /* UIAlertController+Utils.h in Headers */,
 				108E6EF81FDF844100F1B121 /* UICollectionView+SeaEmptyView.h in Headers */,
 				100EC6FB1FDA2A39001CCE74 /* SeaAlertController.h in Headers */,
@@ -1560,6 +1551,7 @@
 				10F6A33D1FD8F0C700F2B30E /* SeaViewController.m in Sources */,
 				10F6A3171FD8DEE500F2B30E /* UIView+Utils.m in Sources */,
 				10F6A3181FD8DEE500F2B30E /* SeaContainer.m in Sources */,
+				104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */,
 				1052CAE01FD78EA900F6F01F /* UITableView+Utils.m in Sources */,
 				1052CAE11FD78EA900F6F01F /* UITableViewCell+Utils.m in Sources */,
 				1052CAE21FD78EA900F6F01F /* SeaTableViewController.m in Sources */,

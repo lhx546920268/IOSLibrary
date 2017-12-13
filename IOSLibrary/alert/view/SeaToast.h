@@ -44,8 +44,19 @@ typedef NS_ENUM(NSInteger, SeaToastGravity){
  */
 @property(nonatomic,assign) SeaToastGravity gravity;
 
+/**是否需要移除父视图 当提示框消失后 default is 'YES'
+ */
+@property(nonatomic,assign) BOOL shouldRemoveOnDismiss;
+
+/**提示隐藏回调
+ */
+@property(nonatomic,copy) void(^dismissHanlder)(void);
+
 // 显示提示框 2秒后消失
 - (void)show;
+
+// 隐藏
+- (void)dismiss;
 
 /**显示提示框并设置多少秒后消失
  *@param delay 消失延时时间

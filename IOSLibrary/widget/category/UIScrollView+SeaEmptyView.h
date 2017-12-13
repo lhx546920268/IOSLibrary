@@ -17,9 +17,6 @@
 ///空视图偏移量 default is UIEdgeInsetZero
 @property(nonatomic,assign) UIEdgeInsets sea_emptyViewInsets;
 
-///调整emptyView
-- (void)layoutEmtpyView;
-
 ///当前是空数据 UIScrollView 一定是空的，其他的不一定
 - (BOOL)isEmptyData;
 

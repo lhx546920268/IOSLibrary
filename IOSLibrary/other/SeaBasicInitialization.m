@@ -10,6 +10,7 @@
 #import "UIColor+colorUtilities.h"
 
 static UIColor *shareAppMainColor = nil;
+static UIColor *shareAppMainTintColor = nil;
 static UIColor *shareBackgroundColor = nil;
 static UIColor *shareButtonBackgroundColor = nil;
 static NSString *shareSeaMainFontName = nil;
@@ -44,8 +45,17 @@ static BOOL shareUseSystemBackItem = YES;
 
 + (UIColor*)sea_appMainColor
 {
-
     return shareAppMainColor;
+}
+
++ (void)sea_setAppMainTintColor:(UIColor*) color
+{
+    shareAppMainTintColor = color;
+}
+
++ (UIColor*)sea_appMainTintColor
+{
+    return shareAppMainTintColor;
 }
 
 ///字体
@@ -203,7 +213,7 @@ static BOOL shareUseSystemBackItem = YES;
     
     //app主色调
     shareAppMainColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
-
+    shareAppMainTintColor = [UIColor whiteColor];
     
     ///按钮颜色
     shareButtonBackgroundColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];

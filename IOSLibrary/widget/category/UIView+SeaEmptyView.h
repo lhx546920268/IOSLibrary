@@ -13,9 +13,15 @@
 @interface UIView (SeaEmptyView)
 
 ///空视图
-@property(nonatomic,strong) SeaEmptyView *sea_emptyView;
+@property(nonatomic,readonly) SeaEmptyView *sea_emptyView;
+
+///设置显示空视图
+@property(nonatomic,assign) BOOL sea_showEmptyView;
 
 ///空视图代理
 @property(nonatomic,weak) id<SeaEmptyViewDelegate> sea_emptyViewDelegate;
+
+///调整emptyView
+- (void)layoutEmtpyView;
 
 @end

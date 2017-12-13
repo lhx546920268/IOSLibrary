@@ -52,6 +52,7 @@
 
 - (void)initialization
 {
+    self.shouldRemoveOnDismiss = YES;
     self.userInteractionEnabled = NO;
     _gravity = SeaToastGravityCenterVertical;
     _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
@@ -160,30 +161,29 @@
     [self showAndHideDelay:2.0];
 }
 
+// 隐藏
+- (void)dismiss
+{
+    self.hidden = YES;
+    if(self.shouldRemoveOnDismiss){
+        [self removeFromSuperview];
+    }
+    !self.dismissHanlder ?: self.dismissHanlder();
+}
+
 /**显示提示框并设置多少秒后消失
  *@param delay 消失延时时间
  */
 - (void)showAndHideDelay:(NSTimeInterval) delay
 {
-    [self canPerformAction:@selector(toastHidden) withSender:self];
-    
-   
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        
-        self.hidden = NO;
-        
-        [self performSelector:@selector(toastHidden) withObject:nil afterDelay:delay];
-    });
+    [self canPerformAction:@selector(dismiss) withSender:self];
+    self.hidden = NO;
+    [self performSelector:@selector(dismiss) withObject:nil afterDelay:delay];
 }
 
-//提示框隐藏
-- (void)toastHidden
+- (void)dealloc
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        
-        self.hidden = YES;
-        [self removeFromSuperview];
-    });
+    [self canPerformAction:@selector(dismiss) withSender:self];
 }
 
 @end

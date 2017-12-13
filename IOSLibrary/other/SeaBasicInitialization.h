@@ -19,6 +19,9 @@
 + (void)sea_setAppMainColor:(UIColor*) color;
 + (UIColor*)sea_appMainColor;
 
++ (void)sea_setAppMainTintColor:(UIColor*) color;
++ (UIColor*)sea_appMainTintColor;
+
 ///字体
 + (void)sea_setSeaMainFontName:(NSString*) name;
 + (NSString*)sea_SeaMainFontName;

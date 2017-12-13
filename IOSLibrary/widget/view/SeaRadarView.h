@@ -19,7 +19,7 @@
 
 @end
 
-///雷达
+///雷达图
 @interface SeaRadarView : UIView
 
 //雷达线条颜色

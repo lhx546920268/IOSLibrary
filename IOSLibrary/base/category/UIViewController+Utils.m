@@ -7,15 +7,12 @@
 //
 
 #import "UIViewController+Utils.h"
-#import "Sea"
 #import "SeaNavigationController.h"
-#import "SeaBadNetworkRemindView.h"
-#import "SeaNetworkActivityView.h"
-#import "SeaToast.h"
+#import "UIView+SeaToast.h"
+#import "UIView+SeaLoading.h"
 #import "SeaTabBar.h"
 #import "SeaTabBarController.h"
 #import <objc/runtime.h>
-#import "SeaTextInsetLabel.h"
 #import "SeaBasic.h"
 
 #define _barButtonItemSpace_ 6.0
@@ -25,32 +22,7 @@
 
 /**状态栏隐藏
  */
-static char SeastatusBarHiddenKey;
-
-/**是否网络加载指示器
- */
-static char SeaShowNetworkActivityKey;
-
-/**网络加载指示器
- */
-static char SeaNetworkActivityViewKey;
-
-/**是否网络请求
- */
-static char SeaRequestingKey;
-
-/**是否正在全屏加载
- */
-static char SeaLoadingKey;
-
-/**全屏加载视图
- */
-static char SeaLoadingIndicatorKey;
-
-/**没有数据
- */
-static char SeaHasNoMsgViewkey;
-
+static char SeaStatusBarHiddenKey;
 /**按钮标题颜色
  */
 static char SeaIconTintColorKey;
@@ -65,7 +37,7 @@ static char SeaToastKey;
 
 /**自定义tabBar
  */
-static char Sea_TabBarControllerKey;
+static char SeaTabBarControllerKey;
 
 /**是否隐藏
  */
@@ -77,11 +49,55 @@ static char SeaTransitioningDelegateKey;
 
 @implementation UIViewController (Utils)
 
+#pragma mark- loading
+
+- (void)setSea_showPageLoading:(BOOL)sea_showPageLoading
+{
+    [self.view setSea_showPageLoading:sea_showPageLoading];
+}
+
+- (BOOL)sea_showPageLoading
+{
+    return [self.view sea_showPageLoading];
+}
+
+- (void)setSea_showNetworkActivity:(BOOL)sea_showNetworkActivity
+{
+    [self.view setSea_showNetworkActivity:sea_showNetworkActivity];
+}
+
+- (BOOL)sea_showNetworkActivity
+{
+    return [self.view sea_showNetworkActivity];
+}
+
+- (void)setSea_showFailPage:(BOOL)sea_showFailPage
+{
+    [self.view setSea_showFailPage:sea_showFailPage];
+    if(sea_showFailPage){
+        WeakSelf(self);
+        self.view.sea_reloadDataHandler() = ^(void){
+            [weakSelf reloadDataFromNetwork];
+        };
+    }
+}
+
+- (BOOL)sea_showFailPage
+{
+    return [self.view sea_showFailPage];
+}
+
+/**重新加载数据 默认不做任何事，子类可以重写该方法
+ */
+- (void)reloadDataFromNetwork{
+    
+}
+
 #pragma mark- property readonly
 
 /**状态栏高度
  */
-- (CGFloat)statusBarHeight
+- (CGFloat)sea_statusBarHeight
 {
     if([UIApplication sharedApplication].statusBarHidden)
     {
@@ -97,23 +113,16 @@ static char SeaTransitioningDelegateKey;
  */
 - (CGFloat)sea_navigationBarHeight
 {
-    if(self.navigationController.navigationBarHidden)
-    {
-        return 44.0;
-    }
-    else
-    {
-        return self.navigationController.navigationBar.height;
-    }
+    return self.navigationController.navigationBar.height;
 }
 
 /**选项卡高度
  */
-- (CGFloat)tabBarHeight
+- (CGFloat)sea_tabBarHeight
 {
-    if(self.Sea_TabBarController)
+    if(self.sea_tabBarController)
     {
-        return self.Sea_TabBarController.tabBar.height;
+        return self.sea_tabBarController.tabBar.height;
     }
     else
     {
@@ -128,54 +137,6 @@ static char SeaTransitioningDelegateKey;
     CGFloat height = self.navigationController.toolbar.height;
     
     return MAX(height, SeaToolBarHeight);
-}
-
-//获取可显示内容的高度
-- (CGFloat)contentHeight
-{
-    CGFloat contentHeight = SeaScreenHeight;
-    
-    BOOL existNav = self.navigationController.navigationBar && !self.navigationController.navigationBar.translucent && !self.navigationController.navigationBarHidden;
-    
-    if(existNav)
-    {
-        contentHeight -= self.sea_navigationBarHeight;
-    }
-    
-    if(self.tabBarController && !self.tabBarController.tabBar.hidden && !self.hidesBottomBarWhenPushed)
-    {
-        contentHeight -= self.tabBarController.tabBar.height;
-    }
-    
-    if(self.Sea_TabBarController && !self.Sea_TabBarController.tabBar.hidden && !self.hideTabBar)
-    {
-        contentHeight -= self.Sea_TabBarController.tabBar.height;
-    }
-    
-    if(!self.navigationController.toolbar.hidden && !self.hidesBottomBarWhenPushed && !self.navigationController.toolbar.translucent)
-    {
-        contentHeight -= self.toolBarHeight;
-    }
-    //
-    if(![UIApplication sharedApplication].statusBarHidden && !self.navigationController.navigationBar.translucent)
-    {
-        contentHeight -= self.statusBarHeight;
-    }
-    
-    return contentHeight;
-}
-
-/**内容起始y 会判断导航栏是否透明
- */
-- (CGFloat)contentY
-{
-    CGFloat y = 0;
-    if(self.navigationController.navigationBar.translucent)
-    {
-        y += self.sea_navigationBarHeight + self.statusBarHeight;
-    }
-    
-    return y;
 }
 
 /**自定义的导航栏
@@ -196,29 +157,30 @@ static char SeaTransitioningDelegateKey;
 
 /**导航栏按钮或按钮字体颜色
  */
-- (void)setIconTintColor:(UIColor *)iconTintColor
+- (void)setSea_iconTintColor:(UIColor *)sea_iconTintColor
 {
-    if(![self.iconTintColor isEqualToColor:iconTintColor])
+    if(![self.sea_iconTintColor isEqualToColor:sea_iconTintColor])
     {
-        objc_setAssociatedObject(self, &SeaIconTintColorKey, iconTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if(iconTintColor)
+        objc_setAssociatedObject(self, &SeaIconTintColorKey, sea_iconTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        if(!sea_iconTintColor)
         {
-            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:self.navigationController.navigationBar.titleTextAttributes];
-            [dic setObject:iconTintColor forKey:NSForegroundColorAttributeName];
-            self.navigationController.navigationBar.titleTextAttributes = dic;
-            self.navigationController.navigationBar.tintColor = iconTintColor;
-            
-            UIBarButtonItem *item = self.leftBarButtonItem;
-            item.tintColor = iconTintColor;
-            item.customView.tintColor = iconTintColor;
-            item = self.rightBarButtonItem;
-            item.tintColor = iconTintColor;
-            item.customView.tintColor = iconTintColor;
+            sea_iconTintColor = [SeaBasicInitialization sea_tintColor];
         }
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:self.navigationController.navigationBar.titleTextAttributes];
+        [dic setObject:sea_iconTintColor forKey:NSForegroundColorAttributeName];
+        self.navigationController.navigationBar.titleTextAttributes = dic;
+        self.navigationController.navigationBar.tintColor = sea_iconTintColor;
+        
+        UIBarButtonItem *item = self.sea_leftBarButtonItem;
+        item.tintColor = sea_iconTintColor;
+        item.customView.tintColor = sea_iconTintColor;
+        item = self.sea_rightBarButtonItem;
+        item.tintColor = sea_iconTintColor;
+        item.customView.tintColor = sea_iconTintColor;
     }
 }
 
-- (UIColor*)iconTintColor
+- (UIColor*)sea_iconTintColor
 {
     UIColor *color = objc_getAssociatedObject(self, &SeaIconTintColorKey);
     if(color == nil)
@@ -229,28 +191,25 @@ static char SeaTransitioningDelegateKey;
 
 /**用于 present ViewController 的 statusBar 隐藏状态控制 default is 'NO' ，不隐藏
  */
-- (void)setStatusBarHidden:(BOOL)statusBarHidden
+- (void)setSea_statusBarHidden:(BOOL)sea_statusBarHidden
 {
-    if(self.statusBarHidden != statusBarHidden)
+    if(self.sea_statusBarHeight != sea_statusBarHidden)
     {
-        objc_setAssociatedObject(self, &SeastatusBarHiddenKey, [NSNumber numberWithBool:statusBarHidden], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &SeaStatusBarHiddenKey, [NSNumber numberWithBool:sea_statusBarHidden], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 
-- (BOOL)statusBarHidden
+- (BOOL)sea_statusBarHidden
 {
-    return [objc_getAssociatedObject(self, &SeastatusBarHiddenKey) boolValue];
+    return [objc_getAssociatedObject(self, &SeaStatusBarHiddenKey) boolValue];
 }
 
 //设置返回按钮
-- (void)setBackItem:(BOOL)backItem
+- (void)setSea_showBackItem:(BOOL)sea_showBackItem
 {
-    if(backItem)
+    if(sea_showBackItem)
     {
-        //        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""  style:UIBarButtonItemStylePlain  target:self  action:@selector(back)];
-        //        self.navigationItem.backBarButtonItem = backButton;
-
         UIImage *image = [UIImage imageNamed:@"back_icon"];
         ///ios7 的 imageAssets 不支持 Template
         if(image.renderingMode != UIImageRenderingModeAlwaysTemplate)
@@ -280,122 +239,13 @@ static char SeaTransitioningDelegateKey;
     }
 }
 
-- (BOOL)backItem
+- (BOOL)sea_showBackItem
 {
-    return [self.leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
+    return [self.sea_leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
 }
 
-//设置网络活动指示
-- (void)setShowNetworkActivity:(BOOL)showNetworkActivity
-{
-    if(self.showNetworkActivity != showNetworkActivity)
-    {
-        objc_setAssociatedObject(self, &SeaShowNetworkActivityKey, [NSNumber numberWithBool:showNetworkActivity], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if(showNetworkActivity)
-        {
-            if(!self.networkActivityView)
-            {
-                CGFloat width = SeaNetworkActivityViewWidth;
-                CGFloat height = SeaNetworkActivityViewHeight;
-                SeaNetworkActivityView *view = [[SeaNetworkActivityView alloc] initWithFrame:CGRectMake((SeaScreenWidth - width) / 2.0, ([self contentHeight] - height) / 2.0, width, height)];
-                [self.view addSubview:view];
-                self.networkActivityView = view;
-            }
-            
-            [self.view bringSubviewToFront:self.networkActivityView];
-            self.networkActivityView.msg = @"请稍后...";
-            self.networkActivityView.hidden = NO;
-        }
-        else
-        {
-            self.networkActivityView.hidden = YES;
-        }
-    }
-}
 
-- (BOOL)showNetworkActivity
-{
-    return [objc_getAssociatedObject(self, &SeaShowNetworkActivityKey) boolValue];
-}
-
-//设置网络加载指示器
-- (void)setNetworkActivityView:(SeaNetworkActivityView *)networkActivityView
-{
-    objc_setAssociatedObject(self, &SeaNetworkActivityViewKey, networkActivityView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (SeaNetworkActivityView*)networkActivityView
-{
-    return objc_getAssociatedObject(self, &SeaNetworkActivityViewKey);
-}
-
-//设置网络请求
-- (void)setRequesting:(BOOL)requesting
-{
-    if(self.requesting != requesting)
-    {
-        objc_setAssociatedObject(self, &SeaRequestingKey, [NSNumber numberWithBool:requesting], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if(!requesting)
-        {
-            self.showNetworkActivity = NO;
-        }
-        self.view.userInteractionEnabled = !requesting;
-    }
-}
-
-- (BOOL)requesting
-{
-    return [objc_getAssociatedObject(self, &SeaRequestingKey) boolValue];
-}
-
-- (void)setLoading:(BOOL)loading
-{
-    if(self.loading != loading)
-    {
-        objc_setAssociatedObject(self, &SeaLoadingKey, [NSNumber numberWithBool:loading], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if(loading)
-        {
-            [self.badNetworkRemindView removeFromSuperview];
-            self.badNetworkRemindView = nil;
-            
-            //创建载入视图
-            if(!self.loadingIndicator)
-            {
-                
-                // CGFloat y = ([self contentHeight] - _SeaLoadingIndicatorHeight_) / 2.0;
-//                SeaLoadingIndicator *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight] - self.view.top) title:@"正在载入..."];
-                SeaPageLoadingView *indicator = [[SeaLoadingIndicator alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, [self contentHeight]) title:@"正在载入..."];
-                [self.view addSubview:indicator];
-                self.loadingIndicator = indicator;
-            }
-            
-            self.loadingIndicator.loading = YES;
-            [self.view bringSubviewToFront:self.loadingIndicator];
-        }
-        else
-        {
-            self.loadingIndicator.loading = NO;
-            [self.loadingIndicator removeFromSuperview];
-            self.loadingIndicator = nil;
-        }
-    }
-}
-
-- (BOOL)loading
-{
-    return [objc_getAssociatedObject(self, &SeaLoadingKey) boolValue];
-}
-
-//全屏载入视图
-- (void)setLoadingIndicator:(SeaPageLoadingView *)loadingIndicator
-{
-    objc_setAssociatedObject(self, &SeaLoadingIndicatorKey, loadingIndicator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (SeaPageLoadingView*)loadingIndicator
-{
-    return objc_getAssociatedObject(self, &SeaLoadingIndicatorKey);
-}
+#pragma mark- triansition
 
 - (void)setSea_transitioningDelegate:(id<UIViewControllerTransitioningDelegate>)sea_transitioningDelegate
 {
@@ -411,71 +261,36 @@ static char SeaTransitioningDelegateKey;
     return objc_getAssociatedObject(self, &SeaTransitioningDelegateKey);
 }
 
-#pragma mark- loadView
-
-/**显示没有数据时的视图
- *@param hidden 是否显示
- *@param msg 提示的信息
- */
-- (void)setHasNoMsgViewHidden:(BOOL) hidden msg:(NSString*) msg
-{
-    if(!hidden && !self.hasNoMsgView)
-    {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.view.height)];
-        label.backgroundColor = self.view.backgroundColor;
-        label.font = [UIFont fontWithName:SeaMainFontName size:18.0];
-        label.textColor = [UIColor grayColor];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.numberOfLines = 0;
-        
-        self.hasNoMsgView = label;
-        [self.view addSubview:self.hasNoMsgView];
-    }
-
-    if([self.hasNoMsgView isKindOfClass:[UILabel class]])
-    {
-        UILabel *label = (UILabel*)self.hasNoMsgView;
-        label.text = msg;
-    }
-
-    self.hasNoMsgView.hidden = hidden;
-    [self.hasNoMsgView.superview bringSubviewToFront:self.hasNoMsgView];
-}
-
-/**设置没有信息时的视图
- */
-- (void)setHasNoMsgView:(UIView *)hasNoMsgView
-{
-    objc_setAssociatedObject(self, &SeaHasNoMsgViewkey, hasNoMsgView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UIView*)hasNoMsgView
-{
-    return objc_getAssociatedObject(self, &SeaHasNoMsgViewkey);
-}
-
 #pragma mark- back
 
 //返回方法
-- (void)back
+- (void)sea_back
+{
+    [self sea_backAnimated:YES];
+}
+
+/**返回方法 支持present和push出来的视图
+ *@param flag 是否动画
+ */
+- (void)sea_backAnimated:(BOOL) flag
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
     
     if(self.navigationController.viewControllers.count == 1)
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:flag completion:nil];
     }
     else
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:flag];
     }
 }
 
 /**返回根视图，支持present和push出来的视图
  *@param flag 是否动画
  */
-- (void)backToRootViewControllerWithAnimated:(BOOL) flag
+- (void)sea_backToRootViewControllerAnimated:(BOOL) flag
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
@@ -534,22 +349,16 @@ static char SeaTransitioningDelegateKey;
 {
     if(longPress.state == UIGestureRecognizerStateBegan)
     {
-        [[UIApplication sharedApplication].keyWindow endEditing:YES];
-        [self backToRootViewControllerWithAnimated:YES];
+        [self sea_backToRootViewControllerAnimated:YES];
     }
 }
 
-//dismss
-- (void)dismiss
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 #pragma mark- navigation
 
 /**左边导航栏图标 返回非 UIBarButtonSystemItemFixedSpace类型的
  */
-- (UIBarButtonItem*)leftBarButtonItem
+- (UIBarButtonItem*)sea_leftBarButtonItem
 {
     if(self.navigationItem.leftBarButtonItems.count > 0)
     {
@@ -567,7 +376,7 @@ static char SeaTransitioningDelegateKey;
 
 /**右边导航栏图标 返回非 UIBarButtonSystemItemFixedSpace类型的
  */
-- (UIBarButtonItem*)rightBarButtonItem
+- (UIBarButtonItem*)sea_rightBarButtonItem
 {
     if(self.navigationItem.rightBarButtonItems.count > 0)
     {
@@ -811,54 +620,6 @@ static char SeaTransitioningDelegateKey;
     return nav;
 }
 
-#pragma mark- reload data
-
-/**加载数据失败
- */
-- (void)failToLoadData
-{
-    self.loading = NO;
-    if(!self.badNetworkRemindView)
-    {
-        Sea *view = [[SeaBadNetworkRemindView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) message:nil];
-        view.delegate = self;
-        [self.view addSubview:view];
-        self.badNetworkRemindView = view;
-    }
-    
-    [self.view bringSubviewToFront:self.badNetworkRemindView];
-    
-    self.badNetworkRemindView.hidden = NO;
-}
-
-- (void)badNetworkRemindViewDidReloadData:(Sea *)view
-{
-    self.loading = YES;
-    [self reloadDataFromNetwork];
-}
-
-- (BOOL)loadDidFail
-{
-    return self.badNetworkRemindView != nil && self.badNetworkRemindView.hidden != YES;
-}
-
-/**加载失败
- */
-- (void)setBadNetworkRemindView:(Sea *)badNetworkRemindView
-{
-    objc_setAssociatedObject(self, &SeaBadNetworkRemindViewKey, badNetworkRemindView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (Sea*)badNetworkRemindView
-{
-    return objc_getAssociatedObject(self, &SeaBadNetworkRemindViewKey);
-}
-
-/**重新加载数据 默认不做任何事，子类可以重写该方法
- */
-- (void)reloadDataFromNetwork{};
-
-
 #pragma mark- alert
 
 /**网络请求指示器信息
@@ -913,12 +674,12 @@ static char SeaTransitioningDelegateKey;
 
 /**关联的选项卡 default is 'nil'
  */
-- (void)setSea_TabBarController:(SeaTabBarController *)Sea_TabBarController
+- (void)setSea_tabBarController:(SeaTabBarController *)Sea_TabBarController
 {
     objc_setAssociatedObject(self, &Sea_TabBarControllerKey, Sea_TabBarController, OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (SeaTabBarController*)Sea_TabBarController
+- (SeaTabBarController*)sea_tabBarController
 {
     return objc_getAssociatedObject(self, &Sea_TabBarControllerKey);
 }
