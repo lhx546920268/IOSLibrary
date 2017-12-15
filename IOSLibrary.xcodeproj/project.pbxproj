@@ -49,6 +49,8 @@
 		1045CE601FDA1D38003506BA /* UIView+SeaLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */; };
 		104662021FE1230400A88D3C /* UIView+SeaToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 104662001FE1230400A88D3C /* UIView+SeaToast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 104662011FE1230400A88D3C /* UIView+SeaToast.m */; };
+		1051BB2B1FE3768900658772 /* SeaAutoLayoutBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1051BB291FE3768900658772 /* SeaAutoLayoutBuilder.h */; };
+		1051BB2C1FE3768900658772 /* SeaAutoLayoutBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1051BB2A1FE3768900658772 /* SeaAutoLayoutBuilder.m */; };
 		1052CAE01FD78EA900F6F01F /* UITableView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADC1FD78DB200F6F01F /* UITableView+Utils.m */; };
 		1052CAE11FD78EA900F6F01F /* UITableViewCell+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADD1FD78DB200F6F01F /* UITableViewCell+Utils.m */; };
 		1052CAE21FD78EA900F6F01F /* SeaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CADE1FD78E6A00F6F01F /* SeaTableViewController.m */; };
@@ -325,6 +327,8 @@
 		1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaLoading.m"; sourceTree = "<group>"; };
 		104662001FE1230400A88D3C /* UIView+SeaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaToast.h"; sourceTree = "<group>"; };
 		104662011FE1230400A88D3C /* UIView+SeaToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaToast.m"; sourceTree = "<group>"; };
+		1051BB291FE3768900658772 /* SeaAutoLayoutBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAutoLayoutBuilder.h; sourceTree = "<group>"; };
+		1051BB2A1FE3768900658772 /* SeaAutoLayoutBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaAutoLayoutBuilder.m; sourceTree = "<group>"; };
 		1052CADA1FD78DB200F6F01F /* UITableViewCell+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utils.h"; sourceTree = "<group>"; };
 		1052CADB1FD78DB200F6F01F /* UITableView+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+Utils.h"; sourceTree = "<group>"; };
 		1052CADC1FD78DB200F6F01F /* UITableView+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Utils.m"; sourceTree = "<group>"; };
@@ -691,6 +695,8 @@
 			children = (
 				101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */,
 				101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */,
+				1051BB291FE3768900658772 /* SeaAutoLayoutBuilder.h */,
+				1051BB2A1FE3768900658772 /* SeaAutoLayoutBuilder.m */,
 			);
 			path = autoLayout;
 			sourceTree = "<group>";
@@ -1402,6 +1408,7 @@
 				108E6EAD1FDF835700F1B121 /* SeaLetterSearchMenu.h in Headers */,
 				108E6EAE1FDF835700F1B121 /* SeaViewHeaders.h in Headers */,
 				108E6EAF1FDF835700F1B121 /* SeaEmptyView.h in Headers */,
+				1051BB2B1FE3768900658772 /* SeaAutoLayoutBuilder.h in Headers */,
 				108E6EB01FDF835700F1B121 /* SeaRadarView.h in Headers */,
 				108E6EB11FDF835700F1B121 /* SeaTextCell.h in Headers */,
 				108E6EB21FDF835700F1B121 /* SeaTitleContentCell.h in Headers */,
@@ -1598,6 +1605,7 @@
 				10E7B19D1F9F2D38006A83D8 /* NSArray+Utilities.m in Sources */,
 				10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */,
 				10E7B1A01F9F2D38006A83D8 /* UIImagePickerController+Utilities.m in Sources */,
+				1051BB2C1FE3768900658772 /* SeaAutoLayoutBuilder.m in Sources */,
 				100B1C8F1FDA97BE00FBCD62 /* SeaCollectionViewWaterLayout.m in Sources */,
 				10E7B1A11F9F2D38006A83D8 /* SeaHttpRequestParam.m in Sources */,
 				10E7B1A21F9F2D38006A83D8 /* SeaHttpOperation.m in Sources */,
