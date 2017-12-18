@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SeaAutoLayoutBuilder.h"
 
 /**
  item 可以为 UIView, UILayoutGuide, UIViewController, id<UILayoutSupport>， 比如 UIViewController 中的 topLayoutGuide
@@ -41,10 +42,10 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 
 /**
  相对于父视图居中
- @param constants x,y 轴增量
+ @param offset x,y 轴增量
  @return 生成的约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_centerInSuperviewWithConstants:(CGPoint) constants;
+- (NSArray<NSLayoutConstraint*>*)sea_centerInSuperviewWithOffset:(CGPoint) offset;
 
 /**
  相对于某个item居中
@@ -61,10 +62,10 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 
 /**
  相对于父视水平图居中
- @param constant 增量
+ @param offset 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerXInSuperviewWithConstant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_centerXInSuperviewWithOffset:(CGFloat) offset;
 
 /**
  相对于某个item水平居中
@@ -76,25 +77,25 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 /**
  相对于某个item居中
  @param item 对应的item
- @param constants x,y 轴增量
+ @param offset x,y 轴增量
  @return 生成的约束
  */
-- (NSArray<NSLayoutConstraint*>*)sea_centerInItem:(id) item constants:(CGPoint) constants;
+- (NSArray<NSLayoutConstraint*>*)sea_centerInItem:(id) item offset:(CGPoint) offset;
 
 /**
  相对于某个item水平居中
  @param item 对应的item
- @param constant 增量
+ @param offset 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerXInItem:(id) item constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_centerXInItem:(id) item offset:(CGFloat) offset;
 
 /**
  相对于父视图垂直居中
- @param constant 增量
+ @param offset 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerYInSuperviewWithConstant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_centerYInSuperviewWithOffset:(CGFloat) offset;
 
 /**
  相对于父视图垂直居中
@@ -112,10 +113,10 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 /**
  相对于某个item垂直居中
  @param item 对应的item
- @param constant 增量
+ @param offset 增量
  @return 生成的约束
  */
-- (NSLayoutConstraint*)sea_centerYInItem:(id) item constant:(CGFloat) constant;
+- (NSLayoutConstraint*)sea_centerYInItem:(id) item offset:(CGFloat) offset;
 
 #pragma mark- insets
 
@@ -479,6 +480,13 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  @return 生成的约束
  */
 - (NSLayoutConstraint*)sea_aspectRatio:(CGFloat) ratio;
+
+#pragma mark- AutoLayout Builder
+
+/**
+ 自动布局 构造器
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder *sea_autoLayoutBuilder;
 
 #pragma mark- 获取约束 constraint
 
