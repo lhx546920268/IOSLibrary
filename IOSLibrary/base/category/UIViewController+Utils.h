@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SeaButton.h"
 
 @class SeaFailPageView,
 SeaPageLoadingView,
@@ -17,14 +16,6 @@ SeaNetworkActivityView,
 SeaToast,
 SeaEmptyView;
 
-
-/**导航条按钮位置
- */
-typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
-{
-    SeaNavigationItemPositionLeft = 0, //左边
-    SeaNavigationItemPositionRight = 1 //右边
-};
 
 @interface UIViewController (Utils)
 
@@ -90,13 +81,9 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
  */
 @property(nonatomic,assign) BOOL sea_hideTabBar;
 
-/**左边导航栏图标 返回非 UIBarButtonSystemItemFixedSpace类型的
+/**重新加载数据 默认不做任何事，子类可以重写该方法
  */
-@property(nonatomic,readonly) UIBarButtonItem *sea_leftBarButtonItem;
-
-/**右边导航栏图标 返回非 UIBarButtonSystemItemFixedSpace类型的
- */
-@property(nonatomic,readonly) UIBarButtonItem *sea_rightBarButtonItem;
+- (void)sea_reloadData;
 
 
 /**返回方法 支持present和push出来的视图
@@ -121,127 +108,112 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
  */
 - (UIViewController*)sea_rootPresentingViewController;
 
-/**获取导航栏按钮 标题和图标只需设置一个
- *@param title 标题
- *@param icon 按钮图标
- *@param action 按钮点击方法
+/**
+ 设置导航栏左边按钮
+
+ @param title 按钮标题
+ @param action 点击方法
+ @return 按钮
  */
-- (UIBarButtonItem*)barButtonItemWithTitle:(NSString*) title icon:(UIImage*) icon action:(SEL) action;
+- (UIBarButtonItem*)sea_setLeftItemWithTitle:(NSString*) title action:(SEL) action;
 
-/**获取系统导航栏按钮
- *@param style 系统barButtonItem 样式
- *@param action 按钮点击方法
- *@return 一个根据style 初始化的 UIBarButtonItem 对象，颜色是 iconTintColor
+/**
+ 设置导航栏左边按钮
+ 
+ @param image 按钮图标
+ @param action 点击方法
+ @return 按钮
  */
-- (UIBarButtonItem*)systemBarButtonItemWithStyle:(UIBarButtonSystemItem) style action:(SEL) action;
+- (UIBarButtonItem*)sea_setLeftItemWithImage:(UIImage*) image action:(SEL) action;
 
-/**获取自定义按钮的导航栏按钮
- *@param type 自定义按钮类型
- *@param action 按钮点击方法
- *@return 一个初始化的 UIBarButtonItem
+/**
+ 设置导航栏左边按钮
+ 
+ @param systemItem 系统按钮图标
+ @param action 点击方法
+ @return 按钮
  */
-- (UIBarButtonItem*)itemWithButtonWithType:(SeaButtonType) type action:(SEL) action;
+- (UIBarButtonItem*)sea_setLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
 
-/**设置导航条左边按钮 标题和图标只需设置一个
- *@param title 标题
- *@param icon 按钮图标
- *@param action 按钮点击方法
- *@param position 按钮位置
+/**
+ 设置导航栏左边按钮
+
+ @param customView 自定义视图
+ @return 按钮
  */
-- (void)setBarItemsWithTitle:(NSString*) title icon:(UIImage*) icon action:(SEL) action position:(SeaNavigationItemPosition) position;
+- (UIBarButtonItem*)sea_setLeftItemWithCustomView:(UIView*) customView;
 
-/**通过系统barButtonItem 设置导航条左边按钮
- *@param style 系统barButtonItem 样式
- *@param action 按钮点击方法
- *@param position 按钮位置
+/**
+ 设置导航栏右边按钮
+ 
+ @param title 按钮标题
+ @param action 点击方法
+ @return 按钮
  */
-- (void)setBarItemsWithStyle:(UIBarButtonSystemItem) style action:(SEL) action position:(SeaNavigationItemPosition) position;
+- (UIBarButtonItem*)sea_setRightItemWithTitle:(NSString*) title action:(SEL) action;
 
-/**通过自定的按钮类型 设置导航条左边按钮
- *@param buttonType 自定义按钮类型
- *@param action 按钮点击方法
- *@param position 按钮位置
+/**
+ 设置导航栏右边按钮
+ 
+ @param image 按钮图标
+ @param action 点击方法
+ @return 按钮
  */
-- (void)setBarItemWithButtonType:(SeaButtonType) buttonType action:(SEL) action position:(SeaNavigationItemPosition) position;
+- (UIBarButtonItem*)sea_setRightItemWithImage:(UIImage*) image action:(SEL) action;
 
-/**通过自定义视图 设置导航条右边按钮
- *@param customView 自定义视图
+/**
+ 设置导航栏右边按钮
+ 
+ @param systemItem 系统按钮图标
+ @param action 点击方法
+ @return 按钮
  */
-- (void)setBarItemWithCustomView:(UIView*) customView position:(SeaNavigationItemPosition) position;
+- (UIBarButtonItem*)sea_setRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action;
 
-/**设置dismiss 按钮
- *@param position 按钮位置
+/**
+ 设置导航栏右边按钮
+ 
+ @param customView 自定义视图
+ @return 按钮
  */
-- (void)setDismissBarItemWithPosition:(SeaNavigationItemPosition) position;
+- (UIBarButtonItem*)sea_setRightItemWithCustomView:(UIView*) customView;
 
-///设置item
-- (void)setBarItem:(UIBarButtonItem*) item position:(SeaNavigationItemPosition) position;
-
-///设置items
-- (void)setBarItems:(NSArray*) items position:(SeaNavigationItemPosition) position;
 
 /**设置导航条样式 默认不透明
  *@param backgroundColor 背景颜色
  *@param titleColor 标题颜色
  *@param font 标题字体
+ *@param tintColor 着色
  */
-- (void)setupNavigationBarWithBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font;
+- (void)sea_setNavigationBarWithBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor;
 
 /**设置默认导航栏样式
  */
-- (void)setupDefaultNavigationBar;
-
-/**通过添加navigationBar展现
- *@param viewController 用于 presentViewController:self
- *@param animated 是否动画展示
- *@param completion 视图出现完成回调
- */
-- (void)showInViewController:(UIViewController*) viewController animated:(BOOL) animated completion:(void(^)(void)) completion;
-
-/**直接展现 没有导航条
- *@param viewController 用于 presentViewController:self
- *@param animated 是否动画展示
- *@param completion 视图出现完成回调
- */
-- (void)showInViewControllerWithoutNavigationBar:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)sea_setDefaultNavigationBar;
 
 /**创建导航栏并返回 UINavigationController
  */
-- (UINavigationController*)createdInNavigationController;
-
-
-/**重新加载数据 默认不做任何事，子类可以重写该方法
- */
-- (void)reloadDataFromNetwork;
+- (UINavigationController*)sea_createWithNavigationController;
 
 #pragma mark- alert
-
-/**网络请求指示器信息
- *@param msg 提示的信息
- */
-- (void)setShowNetworkActivityWithMsg:(NSString*) msg;
 
 /**提示信息
  *@param msg 要提示的信息
  */
-- (void)alertMsg:(NSString*) msg;
+- (void)sea_alertMsg:(NSString*) msg;
 
 /**网络不佳的提示信息
  *@param msg 要提示的信息
  */
-- (void)alerBadNetworkMsg:(NSString*) msg;
+- (void)sea_alerBadNetworkMsg:(NSString*) msg;
 
 
 #pragma mark- Class Method
 
-/**获取导航栏按钮 标题和图标只需设置一个
- *@param title 标题
- *@param icon 按钮图标
- *@param target 方法执行者
- *@param action 按钮点击方法
- *@param tintColor 主题颜色
- */
-+ (UIBarButtonItem*)barButtonItemWithTitle:(NSString*) title icon:(UIImage*) icon target:(id) target action:(SEL) action tintColor:(UIColor*) tintColor;
++ (UIBarButtonItem*)sea_barItemWithImage:(UIImage*) image target:(id) target action:(SEL) action;
++ (UIBarButtonItem*)sea_barItemWithTitle:(NSString*) title target:(id) target action:(SEL) action;
++ (UIBarButtonItem*)sea_barItemWithCustomView:(UIView*) customView;
++ (UIBarButtonItem*)sea_barItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action;
 
 /**设置导航条样式 默认不透明
  *@param navigationBar 要设置的导航栏

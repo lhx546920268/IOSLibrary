@@ -237,7 +237,7 @@
         self.sea_item2 = item;
         self.sea_attr2 = NSLayoutAttributeWidth;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder* (^)(CGFloat))height
@@ -246,7 +246,7 @@
         self.sea_attr1 = NSLayoutAttributeHeight;
         self.sea_constant = height;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder* (^)(id))heightTo
@@ -256,7 +256,7 @@
         self.sea_item2 = item;
         self.sea_attr2 = NSLayoutAttributeHeight;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder* (^)(CGFloat))aspectRatio
@@ -267,7 +267,7 @@
         self.sea_attr2 = NSLayoutAttributeHeight;
         self.sea_multiplier = ratio;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder* (^)(NSLayoutRelation))relation
@@ -275,7 +275,7 @@
     return ^ SeaAutoLayoutBuilder* (NSLayoutRelation relation){
         self.sea_relation = relation;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder*)equal
@@ -301,7 +301,7 @@
     return ^ SeaAutoLayoutBuilder* (CGFloat multiplier){
         self.sea_multiplier = multiplier;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder* (^)(CGFloat))margin
@@ -309,7 +309,7 @@
     return ^ SeaAutoLayoutBuilder* (CGFloat margin){
         self.sea_constant = margin;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder* (^)(UILayoutPriority))priority
@@ -317,7 +317,7 @@
     return ^ SeaAutoLayoutBuilder* (UILayoutPriority priority){
         self.sea_priority = priority;
         return self;
-    }
+    };
 }
 
 - (SeaAutoLayoutBuilder*)priorityRequired

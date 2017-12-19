@@ -334,7 +334,7 @@
 
 - (void)showInViewController:(UIViewController *)viewController
 {
-    UINavigationController *nav = [self createdInNavigationController];
+    UINavigationController *nav = [self sea_createWithNavigationController];
     
     ///设置使背景透明
     if(_ios8_0_)

@@ -14,26 +14,26 @@
 #import "SeaTabBarController.h"
 #import <objc/runtime.h>
 #import "SeaBasic.h"
+#import "UIView+Utils.h"
+#import "UINavigationItem+Utils.h"
 
-#define _barButtonItemSpace_ 6.0
-
+/**导航条按钮位置
+ */
+typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
+{
+    SeaNavigationItemPositionLeft = 0, //左边
+    SeaNavigationItemPositionRight = 1 //右边
+};
 
 /**objc rutime 属性，key **/
 
 /**状态栏隐藏
  */
 static char SeaStatusBarHiddenKey;
+
 /**按钮标题颜色
  */
 static char SeaIconTintColorKey;
-
-/**重新加载视图
- */
-static char SeaBadNetworkRemindViewKey;
-
-/**提示信息框
- */
-static char SeaToastKey;
 
 /**自定义tabBar
  */
@@ -77,7 +77,7 @@ static char SeaTransitioningDelegateKey;
     if(sea_showFailPage){
         WeakSelf(self);
         self.view.sea_reloadDataHandler() = ^(void){
-            [weakSelf reloadDataFromNetwork];
+            [weakSelf sea_reloadData];
         };
     }
 }
@@ -89,7 +89,7 @@ static char SeaTransitioningDelegateKey;
 
 /**重新加载数据 默认不做任何事，子类可以重写该方法
  */
-- (void)reloadDataFromNetwork{
+- (void)sea_reloadData{
     
 }
 
@@ -356,269 +356,107 @@ static char SeaTransitioningDelegateKey;
 
 #pragma mark- navigation
 
-/**左边导航栏图标 返回非 UIBarButtonSystemItemFixedSpace类型的
- */
-- (UIBarButtonItem*)sea_leftBarButtonItem
+- (void)setNavigationBarItem:(UIBarButtonItem*) item posiiton:(SeaNavigationItemPosition) position
 {
-    if(self.navigationItem.leftBarButtonItems.count > 0)
-    {
-        for(UIBarButtonItem *item in self.navigationItem.leftBarButtonItems)
-        {
-            if(item.width == 0)
-            {
-                return item;
-            }
-        }
-    }
-    
-    return self.navigationItem.leftBarButtonItem;
-}
-
-/**右边导航栏图标 返回非 UIBarButtonSystemItemFixedSpace类型的
- */
-- (UIBarButtonItem*)sea_rightBarButtonItem
-{
-    if(self.navigationItem.rightBarButtonItems.count > 0)
-    {
-        for(UIBarButtonItem *item in self.navigationItem.rightBarButtonItems)
-        {
-            if(item.width == 0)
-            {
-                return item;
-            }
-        }
-    }
-    
-    return self.navigationItem.rightBarButtonItem;
-}
-
-/**获取导航栏按钮 标题和图标只需设置一个
- *@param title 标题
- *@param icon 按钮图标
- *@param action 按钮点击方法
- */
-- (UIBarButtonItem*)barButtonItemWithTitle:(NSString*) title icon:(UIImage*) icon action:(SEL) action
-{
-    return [[self class] barButtonItemWithTitle:title icon:icon target:self action:action tintColor:self.iconTintColor];
-}
-
-/**获取系统导航栏按钮
- *@param style 系统barButtonItem 样式
- *@param action 按钮点击方法
- *@return 一个根据style 初始化的 UIBarButtonItem 对象，颜色是 iconTintColor
- */
-- (UIBarButtonItem*)systemBarButtonItemWithStyle:(UIBarButtonSystemItem) style action:(SEL) action
-{
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:style target:self action:action];
-    item.tintColor = self.iconTintColor;
-    return item;
-}
-
-/**获取自定义按钮的导航栏按钮
- *@param type 自定义按钮类型
- *@param action 按钮点击方法
- *@return 一个初始化的 UIBarButtonItem
- */
-- (UIBarButtonItem*)itemWithButtonWithType:(SeaButtonType) type action:(SEL) action
-{
-    SeaButton *button = [[SeaButton alloc] initWithFrame:CGRectMake(0, 0, 25, 35) buttonType:type];
-    button.lineColor = self.iconTintColor;
-    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
-    
-    return item;
-}
-
-/**设置导航条左边按钮 标题和图标只需设置一个
- *@param title 标题
- *@param icon 按钮图标
- *@param action 按钮点击方法
- *@param position 按钮位置
- */
-- (void)setBarItemsWithTitle:(NSString*) title icon:(UIImage*) icon action:(SEL) action position:(SeaNavigationItemPosition) position
-{
-    UIBarButtonItem *item = [self barButtonItemWithTitle:title icon:icon action:action];
-    [self setBarItem:item position:position];
-}
-
-/**通过系统barButtonItem 设置导航条左边按钮
- *@param style 系统barButtonItem 样式
- *@param action 按钮点击方法
- *@param position 按钮位置
- */
-- (void)setBarItemsWithStyle:(UIBarButtonSystemItem) style action:(SEL) action position:(SeaNavigationItemPosition) position
-{
-    [self setBarItem:[self systemBarButtonItemWithStyle:style action:action] position:position];
-}
-
-/**通过自定的按钮类型 设置导航条左边按钮
- *@param buttonType 自定义按钮类型
- *@param action 按钮点击方法
- *@param position 按钮位置
- */
-- (void)setBarItemWithButtonType:(SeaButtonType) buttonType action:(SEL) action position:(SeaNavigationItemPosition) position
-{
-    [self setBarItem:[self itemWithButtonWithType:buttonType action:action] position:position];
-}
-
-/**通过自定义视图 设置导航条右边按钮
- *@param customView 自定义视图
- */
-- (void)setBarItemWithCustomView:(UIView*) customView position:(SeaNavigationItemPosition) position
-{
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:customView];
-    [self setBarItem:item position:position];
-}
-
-///设置item
-- (void)setBarItem:(UIBarButtonItem*) item position:(SeaNavigationItemPosition) position
-{
-    item.tintColor = self.iconTintColor;
-    UIBarButtonItem *spaceItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceItem1.width = -5.0;
-    
-    UIBarButtonItem *spaceItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceItem2.width = 10.0;
-
-    switch (position)
-    {
+    switch (position) {
         case SeaNavigationItemPositionLeft :
-        {
-            self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:spaceItem1, item, spaceItem2,nil];
-        }
-            break;
-        case SeaNavigationItemPositionRight :
-        {
-            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:spaceItem1, item, spaceItem2, nil];
-        }
-            break;
-        default:
-            break;
-    }
-}
-
-///设置items
-- (void)setBarItems:(NSArray*) items position:(SeaNavigationItemPosition) position
-{
-    UIBarButtonItem *spaceItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceItem1.width = -5.0;
-    
-    UIBarButtonItem *spaceItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spaceItem2.width = 10.0;
-    
-    NSMutableArray *items2 = [NSMutableArray arrayWithArray:items];
-    [items2 insertObject:spaceItem1 atIndex:0];
-    [items2 addObject:spaceItem2];
-    
-    switch (position)
-    {
-        case SeaNavigationItemPositionLeft :
-        {
-            self.navigationItem.leftBarButtonItems = items2;
-        }
-            break;
-        case SeaNavigationItemPositionRight :
-        {
-            self.navigationItem.rightBarButtonItems = items2;
-        }
-            break;
-        default:
-            break;
-    }
-}
-
-/**设置dismiss 按钮
- *@param position 按钮位置
- */
-- (void)setDismissBarItemWithPosition:(SeaNavigationItemPosition) position
-{
-    SeaButton *button = [[SeaButton alloc] initWithFrame:CGRectMake(0, 0, 25, 35) buttonType:SeaButtonTypeClose];
-    button.lineColor = self.iconTintColor;
-    [button addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-    
-    switch (position)
-    {
-        case SeaNavigationItemPositionLeft :
-            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-            break;
-        case SeaNavigationItemPositionRight :
-            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-            break;
-        default:
-            break;
-    }
-    
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
-    
-    switch (position)
-    {
-        case SeaNavigationItemPositionLeft :
-        {
             self.navigationItem.leftBarButtonItem = item;
-        }
             break;
         case SeaNavigationItemPositionRight :
-        {
             self.navigationItem.rightBarButtonItem = item;
-        }
             break;
         default:
             break;
     }
 }
 
-/**设置导航条样式 默认不透明
- *@param backgroundColor 背景颜色
- *@param titleColor 标题颜色
- *@param font 标题字体
- */
-- (void)setupNavigationBarWithBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font
+- (UIBarButtonItem*)sea_setLeftItemWithTitle:(NSString*) title action:(SEL) action
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithTitle:title target:self action:action]];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setLeftItemWithImage:(UIImage*) image action:(SEL) action
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithImage:image target:self action:action]];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setLeftItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithSystemItem:systemItem target:self action:action];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setLeftItemWithCustomView:(UIView*) customView
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithCustomView:customView];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setRightItemWithTitle:(NSString*) title action:(SEL) action
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithTitle:title target:self action:action]];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionRight];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setRightItemWithImage:(UIImage*) image action:(SEL) action
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithImage:image target:self action:action]];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionRight];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setRightItemWithSystemItem:(UIBarButtonSystemItem) systemItem action:(SEL) action
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithSystemItem:systemItem target:self action:action];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionRight];
+    
+    return item;
+}
+
+- (UIBarButtonItem*)sea_setRightItemWithCustomView:(UIView*) customView
+{
+    UIBarButtonItem *item = [[self class] sea_barItemWithCustomView:customView];
+    [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionRight];
+    
+    return item;
+}
+
+- (void)sea_setNavigationBarWithBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor
 {
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:backgroundColor titleColor:titleColor titleFont:font];
+    [[self class] setupNavigationBar:navigationBar withBackgroundColor:backgroundColor titleColor:titleColor titleFont:font tintColor:tintColor];
 }
 
-- (void)setupDefaultNavigationBar
+- (void)sea_setDefaultNavigationBar
 {
     //设置默认导航条
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
    // navigationBar.translucent = NO;
-    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:SeaNavigationBarBackgroundColor titleColor:SeaTintColor titleFont:[UIFont fontWithName:SeaMainFontName size:17.0]];
-}
-
-#pragma mark- 显示
-
-/**通过添加navigationBar展现
- *@param viewController 用于 presentViewController:self
- *@param animated 是否动画展示
- *@param completion 视图出现完成回调
- */
-- (void)showInViewController:(UIViewController*) viewController animated:(BOOL) animated completion:(void (^)(void))completion
-{
-    SeaNavigationController *nav = [[SeaNavigationController alloc] initWithRootViewController:self];
-    
-    nav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [viewController presentViewController:nav animated:animated completion:completion];
-}
-
-/**直接展现 没有导航条
- *@param viewController 用于 presentViewController:self
- *@param animated 是否动画展示
- *@param completion 视图出现完成回调
- */
-- (void)showInViewControllerWithoutNavigationBar:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion
-{
-    [viewController presentViewController:self animated:animated completion:completion];
+    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:SeaNavigationBarBackgroundColor titleColor:SeaNavigationBarTitleColor titleFont:[UIFont fontWithName:SeaMainFontName size:17.0] tintColor:SeaTintColor];
 }
 
 /**创建导航栏并返回 UINavigationController
  */
-- (UINavigationController*)createdInNavigationController
+- (UINavigationController*)sea_createWithNavigationController
 {
     SeaNavigationController *nav = [[SeaNavigationController alloc] initWithRootViewController:self];
     return nav;
 }
+
+
 
 #pragma mark- alert
 
@@ -634,39 +472,18 @@ static char SeaTransitioningDelegateKey;
 /**提示信息
  *@param msg 要提示的信息
  */
-- (void)alertMsg:(NSString*) msg
+- (void)sea_alertMsg:(NSString*) msg
 {
-    if(!self.toast)
-    {
-        SeaToast *toast = [[SeaToast alloc] init];
-        [self.view addSubview:toast];
-        toast.removeFromSuperViewAfterHidden = NO;
-        self.toast = toast;
-    }
-    
-    self.toast.text = msg;
-    [self.view bringSubviewToFront:self.toast];
-    [self.toast showAndHideDelay:2.0];
+    [self.view sea_alertMessage:msg];
 }
 
-- (void)setToast:(SeaToast *)toast
-{
-    objc_setAssociatedObject(self, &SeaToastKey, toast, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-/**提示信息
- */
-- (SeaToast*)toast
-{
-    return objc_getAssociatedObject(self, &SeaToastKey);
-}
 
 /**网络不佳的提示信息
  *@param msg 要提示的信息
  */
-- (void)alerBadNetworkMsg:(NSString*) msg
+- (void)sea_alerBadNetworkMsg:(NSString*) msg
 {
-    [self alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaAlertMsgWhenBadNetwork, msg]];
+    [self sea_alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaAlertMsgWhenBadNetwork, msg]];
 }
 
 
@@ -686,74 +503,36 @@ static char SeaTransitioningDelegateKey;
 
 /**当viewWillAppear时是否隐藏选项卡 default is 'YES'
  */
-- (void)setHideTabBar:(BOOL)hideTabBar
+- (void)setSea_hideTabBar:(BOOL)sea_hideTabBar
 {
-    objc_setAssociatedObject(self, &SeaHideTabBarKey, [NSNumber numberWithBool:hideTabBar], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &SeaHideTabBarKey, @(sea_hideTabBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)hideTabBar
+- (BOOL)sea_hideTabBar
 {
     return [objc_getAssociatedObject(self, &SeaHideTabBarKey) boolValue];
 }
 
 #pragma mark- Class Method
 
-/**获取导航栏按钮 标题和图标只需设置一个
- *@param title 标题
- *@param icon 按钮图标
- *@param target 方法执行者
- *@param action 按钮点击方法
- *@param tintColor 主题颜色
- */
-+ (UIBarButtonItem*)barButtonItemWithTitle:(NSString*) title icon:(UIImage*) icon target:(id) target action:(SEL) action tintColor:(UIColor*) tintColor
++ (UIBarButtonItem*)sea_barItemWithImage:(UIImage*) image target:(id) target action:(SEL) action
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    ///ios7 的 imageAssets 不支持 Template
-    if(icon.renderingMode != UIImageRenderingModeAlwaysTemplate)
-    {
-        icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }
-    
-    if(action && target)
-    {
-        [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-        //[button setShowsTouchWhenHighlighted:YES];
-    }
-    else
-    {
-        //[button setAdjustsImageWhenDisabled:NO];
-        [button setAdjustsImageWhenHighlighted:NO];
-    }
-    
-    if(title)
-    {
-        button.titleLabel.font = [UIFont fontWithName:SeaMainFontName size:16.0];
-        CGSize size = [title stringSizeWithFont:button.titleLabel.font contraintWith:CGFLOAT_MAX];
-        [button setFrame:CGRectMake(0, 0, size.width, size.height)];
-        [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-        [button setTitle:title forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-        
-        UIColor *titleColor = tintColor;
-        if(titleColor == nil)
-            titleColor = [UIColor whiteColor];
-        
-        [button setTitleColor:titleColor forState:UIControlStateNormal];
-    }
-    else if(icon)
-    {
-        [button setImage:icon forState:UIControlStateNormal];
-        [button setFrame:CGRectMake(0, 0, icon.size.width, icon.size.height)];
-    }
-    
-    button.tintColor = tintColor;
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    backBarButtonItem.tintColor = tintColor;
-    
-    return backBarButtonItem;
-    
+    return [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:target action:action];
+}
+
++ (UIBarButtonItem*)sea_barItemWithTitle:(NSString*) title target:(id) target action:(SEL) action
+{
+    return [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:target action:action];
+}
+
++ (UIBarButtonItem*)sea_barItemWithCustomView:(UIView*) customView
+{
+    return [[UIBarButtonItem alloc] initWithCustomView:customView];
+}
+
++ (UIBarButtonItem*)sea_barItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action
+{
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:target action:action];
 }
 
 /**设置导航条样式 默认不透明
@@ -779,7 +558,7 @@ static char SeaTransitioningDelegateKey;
 
     [navigationBar setTitleTextAttributes:dic];
 
-    navigationBar.tintColor = titleColor;
+    navigationBar.tintColor = tintColor;
 
     if(backgroundColor)
     {

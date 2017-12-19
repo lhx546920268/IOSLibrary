@@ -202,7 +202,8 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         @selector(deleteSections:withRowAnimation:)
     };
     
-    for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++)
+    int count = sizeof(selectors) / sizeof(SEL);
+    for(NSInteger i = 0;i < count;i ++)
     {
         SEL selector1 = selectors[i];
         SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"sea_empty_%@", NSStringFromSelector(selector1)]);

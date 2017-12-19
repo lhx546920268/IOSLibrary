@@ -149,7 +149,7 @@
     SeaPresentTransitionDelegate *delegate = [[SeaPresentTransitionDelegate alloc] init];
     if(flag)
     {
-        UINavigationController *nav = [vc createdInNavigationController];
+        UINavigationController *nav = [vc sea_createWithNavigationController];
         nav.sea_transitioningDelegate = delegate;
         [parentedViewConttroller presentViewController:nav animated:YES completion:^(void){
             

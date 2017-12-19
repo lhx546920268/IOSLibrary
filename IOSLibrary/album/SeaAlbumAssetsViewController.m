@@ -292,7 +292,7 @@
 {
     if(self.selectedAssetInfos.count == 0)
     {
-        [self alertMsg:@"请选择图片"];
+        [self sea_alertMsg:@"请选择图片"];
         return;
     }
     
