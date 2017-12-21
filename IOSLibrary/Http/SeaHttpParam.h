@@ -5,21 +5,21 @@
 
 #import <Foundation/Foundation.h>
 
-/**post请求参数类型
+/**请求参数类型
  */
-typedef NS_ENUM(NSInteger, SeaHttpRequestParamType)
+typedef NS_ENUM(NSInteger, SeaHttpParamType)
 {
     /// 字符串
-    SeaHttpRequestParamTypeDefault = 0,
+    SeaHttpParamTypeDefault = 0,
     
     /// 文件
-    SeaHttpRequestParamTypeFile = 1,
+    SeaHttpParamTypeFile = 1,
 };
 
 
-/**post请求参数
+/**请求参数
  */
-@interface SeaHttpRequestParam : NSObject
+@interface SeaHttpParam : NSObject
 
 /**参数值 NSString 、 NSNumber、 NSSData
  */
@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, SeaHttpRequestParamType)
 
 /**参数类型
  */
-@property(nonatomic,assign) SeaHttpRequestParamType paramType;
+@property(nonatomic,assign) SeaHttpParamType paramType;
 
 /**参数是否有效
  */
@@ -41,19 +41,19 @@ typedef NS_ENUM(NSInteger, SeaHttpRequestParamType)
  */
 @property(nonatomic,readonly) NSData *NSDataValue;
 
-/**构造方法 paramType 为SeaHttpRequestParamTypeDefault
+/**构造方法 paramType 为SeaHttpParamTypeDefault
  *@param value 参数值 NSString 或 NSNumber
  *@param key 参数
  *@return 一个实例
  */
-+ (id)requestParamWithValue:(id) value key:(NSString*) key;
++ (instancetype)paramWithValue:(id) value key:(NSString*) key;
 
 /**构造方法 paramType 为SeaHttpRequestParamTypeFile
  *@param filePath 参数值,文件全路径
  *@param key 参数
  *@return 一个实例
  */
-+ (id)requestParamWithFilePath:(NSString*) filePath key:(NSString*) key;
++ (instancetype)paramWithFilePath:(NSString*) filePath key:(NSString*) key;
 
 /**构造方法
  *@param value 参数值 NSString 或 NSNumber
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, SeaHttpRequestParamType)
  *@param type 参数类型
  *@return 一个实例
  */
-+ (id)requestParamWithValue:(id) value key:(NSString*) key paramType:(SeaHttpRequestParamType) type;
++ (instancetype)paramWithValue:(id) value key:(NSString*) key paramType:(SeaHttpParamType) type;
 
 
 

@@ -3,25 +3,18 @@
 
 //
 
-#import "SeaHttpRequestParam.h"
+#import "SeaHttpParam.h"
 
-@implementation SeaHttpRequestParam
+@implementation SeaHttpParam
 
 - (id)init
 {
     self = [super init];
     if(self)
     {
-        self.paramType = SeaHttpRequestParamTypeDefault;
+        self.paramType = SeaHttpParamTypeDefault;
     }
     return self;
-}
-
-#pragma mark- dealloc
-
-- (void)dealloc
-{
-    
 }
 
 /**参数是否有效
@@ -50,14 +43,14 @@
     }
 }
 
-/**构造方法 paramType 为SeaHttpRequestParamTypeDefault
+/**构造方法 paramType 为SeaHttpParamTypeDefault
  *@param value 参数值 NSString 或 NSNumber
  *@param key 参数
  *@return 一个实例
  */
-+ (id)requestParamWithValue:(id) value key:(NSString*) key
++ (instancetype)paramWithValue:(id) value key:(NSString*) key
 {
-    SeaHttpRequestParam *param = [[SeaHttpRequestParam alloc] init];
+    SeaHttpParam *param = [[SeaHttpParam alloc] init];
     param.value = value;
     param.key = key;
     
@@ -69,12 +62,12 @@
  *@param key 参数
  *@return 一个实例
  */
-+ (id)requestParamWithFilePath:(NSString*) filePath key:(NSString*) key
++ (instancetype)paramWithFilePath:(NSString*) filePath key:(NSString*) key
 {
-    SeaHttpRequestParam *param = [[SeaHttpRequestParam alloc] init];
+    SeaHttpParam *param = [[SeaHttpParam alloc] init];
     param.value = filePath;
     param.key = key;
-    param.paramType = SeaHttpRequestParamTypeFile;
+    param.paramType = SeaHttpParamTypeFile;
     
     return param;
 }
@@ -85,9 +78,9 @@
  *@param type 参数类型
  *@return 一个实例
  */
-+ (id)requestParamWithValue:(id) value key:(NSString*) key paramType:(SeaHttpRequestParamType) type
++ (instancetype)paramWithValue:(id) value key:(NSString*) key paramType:(SeaHttpParamType) type
 {
-    SeaHttpRequestParam *param = [[SeaHttpRequestParam alloc] init];
+    SeaHttpParam *param = [[SeaHttpParam alloc] init];
     param.value = value;
     param.key = key;
     param.paramType = type;

@@ -13,4 +13,6 @@
 
 @property(nonatomic,weak) id weakObject;
 
++ (instancetype)containerWithObject:(id) object;
+
 @end

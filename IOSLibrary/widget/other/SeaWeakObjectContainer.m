@@ -10,4 +10,12 @@
 
 @implementation SeaWeakObjectContainer
 
++ (instancetype)containerWithObject:(id) object
+{
+    SeaWeakObjectContainer *container = [[SeaWeakObjectContainer alloc] init];
+    container.weakObject = object;
+    
+    return container;
+}
+
 @end

@@ -6,35 +6,37 @@
 //
 
 #import "SeaImageCacheTool.h"
-#import "SeaURLConnection.h"
+#import "SeaURLSessionManager.h"
+#import "SeaHttpTaskDelegate.h"
 #import "SeaFileManager.h"
 #import "SeaBasic.h"
 #import "SeaMovieCacheTool.h"
+#import "SeaHttpTask.h"
 
 //图片文件后缀
 static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
 
 //缓存的文件夹
-#define _cahceImageDirectory_ @"cacheImage"
+static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 
 
-@interface SeaImageCacheTool ()<SeaURLConnectionDelegate>
+@interface SeaImageCacheTool ()<SeaHttpTaskDelegate>
 {
     //获取图片队列
     dispatch_queue_t _cacheQueue;
-    
-    //正在下载的请求 key是 url value是 SeaURLConnection对象
-    NSMutableDictionary *_downloadProgressDic;
     
     //文件管理器,不能在其他线程中使用defaultManager
     NSFileManager *_fileManager;
 }
 
 //下载队列
-@property(nonatomic,strong) NSOperationQueue *queue;
+@property(nonatomic,strong) SeaURLSessionManager *sessionManager;
 
 ///失败的URL 数组元素是 NSString
 @property(nonatomic,strong) NSMutableSet *badURLs;
+
+///正在下载的任务
+@property(nonatomic,strong) NSMutableDictionary<NSString*, SeaImageCacheToolOperation*> *downloadTasks;
 
 @end
 
@@ -47,18 +49,18 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
     {
         self.timeoutSeconds = 25.0;
         
-        _cacheQueue = dispatch_queue_create("cacheImage", DISPATCH_QUEUE_CONCURRENT);
+        _cacheQueue = dispatch_queue_create("SeaImageCahce", DISPATCH_QUEUE_CONCURRENT);
         
         _fileManager = [[NSFileManager alloc] init];
         _cachePath = [[self getCachePath] copy];
         
-        _downloadProgressDic = [[NSMutableDictionary alloc] init];
+        self.sessionManager = [[SeaURLSessionManager alloc] initWithConfiguration:[self defaultURLSessionConfiguration]];
+        
+        self.downloadTasks = [NSMutableDictionary dictionary];
         
         _diskCacheExpirationTimeInterval = 60 * 60 * 24 * 7;
         
         self.badURLs = [NSMutableSet set];
-        self.queue = [[NSOperationQueue alloc] init];
-        self.queue.maxConcurrentOperationCount = 6;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
@@ -69,6 +71,21 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
     }
     return self;
+}
+
+//默认配置
+- (NSURLSessionConfiguration*)defaultURLSessionConfiguration
+{
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.requestCachePolicy = NSURLRequestUseProtocolCachePolicy;
+    configuration.timeoutIntervalForRequest = 30;
+    configuration.timeoutIntervalForResource = 30;
+    configuration.networkServiceType = NSURLNetworkServiceTypeDefault;
+    configuration.allowsCellularAccess = YES;
+    configuration.HTTPShouldSetCookies = NO;
+    configuration.HTTPShouldUsePipelining = NO;
+    
+    return configuration;
 }
 
 #pragma mark- single instance
@@ -87,8 +104,8 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
     return tool;
 }
 
-//连你圈内存图片
-+ (NSCache*) defaultCache
+//内存图片
++ (NSCache*)defaultCache
 {
     static NSCache *cache = nil;
     if(cache == nil)
@@ -109,8 +126,7 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
 ///收到内存警告
 - (void)receiveMemoryWarning:(NSNotification*) notification
 {
-    [_downloadProgressDic removeAllObjects];
-    [self.queue cancelAllOperations];
+    [self cancelAllTasks];
     
     if([self.delegate respondsToSelector:@selector(imageCacheToolDidReceiveMemoryWarning:)])
     {
@@ -153,7 +169,7 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
     dispatch_release(_getImageQueue);
 #endif
 
-    [_queue cancelAllOperations];
+    [self cancelAllTasks];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -167,12 +183,12 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
 {
     for(NSString *url in urls)
     {
-        SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
+        SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
         if(operation != nil)
         {
             operation.requirements = nil;
-            [operation.conn cancel];
-            [_downloadProgressDic removeObjectForKey:url];
+            [operation.downloadTask cancel];
+            [self.downloadTasks removeObjectForKey:url];
         }
     }
 }
@@ -207,10 +223,21 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
         }
         if(operation.requirements.count == 0)
         {
-            [operation.conn cancel];
-            [_downloadProgressDic removeObjectForKey:url];
+            [operation.downloadTask cancel];
+            [self.downloadTasks removeObjectForKey:url];
         }
     }
+}
+
+///取消所有任务
+- (void)cancelAllTasks
+{
+    [self.downloadTasks enumerateKeysAndObjectsUsingBlock:^(SeaImageCacheToolOperation *operaton, NSString *url, BOOL *stop){
+       
+        [operaton.downloadTask cancel];
+    }];
+    
+    [self.downloadTasks removeAllObjects];
 }
 
 /**添加下载完成回调
@@ -245,10 +272,10 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
     if([NSString isEmpty:url] || progressHandler == nil)
         return;
     
-    SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
+    SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
     if(operation != nil)
     {
-        operation.conn.showDownloadProgress = YES;
+        [self.sessionManager setShowUploadProgress:YES forTask:operation.downloadTask];
         for(SeaImageCacheToolRequirement *req in operation.requirements)
         {
             if([req.target isEqual:target])
@@ -265,28 +292,42 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
  */
 - (BOOL)isRequestingWithURL:(NSString*) url
 {
-    return [_downloadProgressDic objectForKey:url] != nil;
+    return [self.downloadTasks objectForKey:url] != nil;
 }
 
-#pragma mark- SeaURLConnection delegate
+#pragma mark- SeaHttpTaskDelegate
 
 //下载完成
-- (void)connectionDidFinishLoading:(SeaURLConnection *)conn
+- (void)URLSessionDownloadTask:(NSURLSessionDownloadTask *)downloadTask didCompleteWithURL:(NSURL *)URL error:(NSInteger)error
 {
-    dispatch_async(_cacheQueue, ^(void){
-        
-        NSString *url = conn.URL;
-        
-        NSData *data = conn.responseData;
-        
-        UIImage *image = [UIImage imageWithData:data];
-        if(!image && conn.downloadDestinationPath)
-        {
-            [SeaFileManager deleteOneFile:conn.downloadDestinationPath];
-        }
-        
-        ///链接不是图片
-        if(!image)
+    NSString *url = [downloadTask.originalRequest.URL absoluteString];
+    if(error == SeaHttpErrorCodeNoError){
+        dispatch_async(_cacheQueue, ^(void){
+            
+            NSData *data = [NSData dataWithContentsOfURL:URL];
+            UIImage *image = [UIImage imageWithData:data];
+            
+            ///链接不是图片
+            if(!image)
+            {
+                @synchronized (self.badURLs)
+                {
+                    [self.badURLs addObject:url];
+                }
+            }
+            
+            [self executeWithImage:image url:url fromNetwork:NO];
+        });
+    }else{
+        ///添加无效的URL，防止继续加载
+        if(error != NSURLErrorCancelled
+           && error != NSURLErrorTimedOut
+           && error != NSURLErrorCannotFindHost
+           && error != NSURLErrorCannotConnectToHost
+           && error != NSURLErrorNetworkConnectionLost
+           && error != NSURLErrorNotConnectedToInternet
+           && error != NSURLErrorDataNotAllowed
+           && error != NSURLErrorInternationalRoamingOff)
         {
             @synchronized (self.badURLs)
             {
@@ -294,43 +335,22 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
             }
         }
         
-        [self executeWithImage:image url:url fromNetwork:NO];
-    });
-}
-
-//下载失败
-- (void)connectionDidFail:(SeaURLConnection *)conn
-{
-    ///添加无效的URL，防止继续加载
-    if(conn.errorCode != NSURLErrorCancelled
-       && conn.errorCode != NSURLErrorTimedOut
-       && conn.errorCode != NSURLErrorCannotFindHost
-       && conn.errorCode != NSURLErrorCannotConnectToHost
-       && conn.errorCode != NSURLErrorNetworkConnectionLost
-       && conn.errorCode != NSURLErrorNotConnectedToInternet
-       && conn.errorCode != NSURLErrorDataNotAllowed
-       && conn.errorCode != NSURLErrorInternationalRoamingOff)
-    {
-        @synchronized (self.badURLs)
-        {
-            [self.badURLs addObject:conn.URL];
-        }
+        NSString *url = conn.URL;
+        [self executeWithImage:nil url:url fromNetwork:NO];
     }
-    
-    NSString *url = conn.URL;
-    [self executeWithImage:nil url:url fromNetwork:NO];
 }
 
-- (void)connectionDidUpdateProgress:(SeaURLConnection *)conn
+
+- (void)URLSessionTask:(NSURLSessionTask *)task didUpdateDownloadProgress:(NSProgress *)progress
 {
-    NSString *url = conn.URL;
+    NSString *url = [task.originalRequest.URL absoluteString];
     
-    SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
+    SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
     for(SeaImageCacheToolRequirement *req in operation.requirements)
     {
         if(req.progressHandler != nil)
         {
-            req.progressHandler(conn.downloadProgress);
+            req.progressHandler(progress.fractionCompleted);
         }
     }
 }
@@ -361,7 +381,7 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
         return;
     dispatch_main_async_safe(^(void){
         
-        SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
+        SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
         if(operation != nil)
         {
             for(SeaImageCacheToolRequirement *req in operation.requirements)
@@ -383,7 +403,7 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
                 }
             }
         }
-        [_downloadProgressDic removeObjectForKey:url];
+        [self.downloadTasks removeObjectForKey:url];
     });
 }
 
@@ -394,18 +414,13 @@ static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
  */
 - (void)downloadImageWithURL:(NSString*) url
 {
-    SeaURLRequest *request = [SeaURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData imeoutInterval:self.timeoutSeconds];
+    SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
     
-    SeaURLConnection *conn = [[SeaURLConnection alloc] initWithDelegate:self request:request];
+    NSURLSessionDownloadTask *downloadTask = [self.sessionManager downloadTaskWithURL:url destinationPath:[self pathForURL:url] completion:nil];
+    operation.downloadTask = downloadTask;
+    [self.sessionManager addDelegate:self forTask:downloadTask];
     
-    SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
-    
-    operation.conn = conn;
-  
-    conn.downloadTemporayPath = [SeaFileManager getTemporaryFile];
-    conn.downloadDestinationPath = [self pathForURL:url];
- 
-    [self.queue addOperation:conn];
+    [downloadTask resume];
 }
 
 /**通过图片路径获取本地缓存图片，如果没有则返回nil

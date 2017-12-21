@@ -63,10 +63,6 @@ static char SeaImageCacheToolLoading;
  */
 @property(nonatomic,weak) id<SeaImageCacheToolDelegate> delegate;
 
-/**图片加载超时时间 default is '25.0'
- */
-@property(nonatomic,assign) NSTimeInterval timeoutSeconds;
-
 /**缓存路径
  */
 @property(nonatomic,copy,readonly) NSString *cachePath;

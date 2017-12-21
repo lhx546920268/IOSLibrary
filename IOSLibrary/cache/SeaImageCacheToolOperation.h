@@ -5,8 +5,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class SeaURLConnection;
-
 /**图片异步加载完成回调块
  *@param image 下载完成的图片
  *@param fromNetwork 是否是从网络上加载
@@ -22,9 +20,9 @@ typedef void(^SeaImageCacheToolProgressHandler)(float progress);
  */
 @interface SeaImageCacheToolOperation : NSObject
 
-/**网络请求，如果只是在本地文件中寻找时为nil
+/**下载任务，如果只是在本地文件中寻找时为nil
  */
-@property(nonatomic,strong) SeaURLConnection *conn;
+@property(nonatomic,strong) NSURLSessionDownloadTask *downloadTask;
 
 /**片缓存要求 数组元素是 SeaImageCacheToolRequirement
  */
