@@ -410,10 +410,10 @@
         self.needShowWithAnimate = NO;
 
         NSString *url = [self.source objectAtIndex:indexPath.item];
-        UIImage *image = [[SeaImageCacheTool sharedInstance] imageFromMemoryWithURL:url thumbnailSize:CGSizeZero];
+        UIImage *image = [[SeaImageCacheTool sharedInstance] imageFromMemoryForURL:url thumbnailSize:CGSizeZero];
         if(!image)
         {
-            image = [[SeaImageCacheTool sharedInstance] imageFromCacheWithURL:url thumbnailSize:CGSizeZero];
+            image = [[SeaImageCacheTool sharedInstance] imageFromDiskForURL:url thumbnailSize:CGSizeZero];
         }
         
         SeaImageBrowserCell *cell1 = (SeaImageBrowserCell*)cell;

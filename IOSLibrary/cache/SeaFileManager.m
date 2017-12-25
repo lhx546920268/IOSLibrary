@@ -6,6 +6,8 @@
 #import "SeaImageCacheTool.h"
 #import <sys/xattr.h>
 #import "SeaBasic.h"
+#import "NSString+Utilities.h"
+#import "NSDate+Utilities.h"
 
 
 @implementation SeaFileManager
@@ -161,7 +163,7 @@
 //获取临时文件
 + (NSString*)getTemporaryFile
 {
-    return [SeaFileManager getTemporaryFileWithSuffix:@""];
+    return [SeaFileManager getTemporaryFileWithSuffix:@"tmp"];
 }
 
 /**获取临时文件，添加后缀

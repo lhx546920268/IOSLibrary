@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100197BF1FF0F2D30078051C /* UIImageView+SeaMovieCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 100197BD1FF0F2D30078051C /* UIImageView+SeaMovieCache.h */; };
+		100197C01FF0F2D30078051C /* UIImageView+SeaMovieCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 100197BE1FF0F2D30078051C /* UIImageView+SeaMovieCache.m */; };
 		100B1C741FDA913A00FBCD62 /* SeaScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 100B1C6B1FDA913A00FBCD62 /* SeaScrollViewController.m */; };
 		100B1C751FDA913A00FBCD62 /* SeaScrollViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 100B1C6C1FDA913A00FBCD62 /* SeaScrollViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		100B1C781FDA913A00FBCD62 /* SeaAutoScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 100B1C701FDA913A00FBCD62 /* SeaAutoScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -46,6 +48,10 @@
 		101B8B2E1FB5A56C00D333DB /* UIView+SeaAutoLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101B8B2F1FB5A58900D333DB /* UIView+SeaAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */; };
 		103B43EE1FE7C76600853EBC /* SeaAutoLayoutBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1051BB291FE3768900658772 /* SeaAutoLayoutBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1044C01A1FEC9495006BC8CA /* SeaImageCacheOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1044C0181FEC9495006BC8CA /* SeaImageCacheOptions.h */; };
+		1044C01B1FEC9495006BC8CA /* SeaImageCacheOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1044C0191FEC9495006BC8CA /* SeaImageCacheOptions.m */; };
+		1044C01E1FEC9995006BC8CA /* SeaImageCacheTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 1044C01C1FEC9995006BC8CA /* SeaImageCacheTask.h */; };
+		1044C01F1FEC9995006BC8CA /* SeaImageCacheTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1044C01D1FEC9995006BC8CA /* SeaImageCacheTask.m */; };
 		1045CE5F1FDA1D38003506BA /* UIView+SeaLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 1045CE5D1FDA1D38003506BA /* UIView+SeaLoading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1045CE601FDA1D38003506BA /* UIView+SeaLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */; };
 		104662021FE1230400A88D3C /* UIView+SeaToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 104662001FE1230400A88D3C /* UIView+SeaToast.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -65,6 +71,12 @@
 		1052CAE51FD78EC700F6F01F /* SeaTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1052CADF1FD78E6A00F6F01F /* SeaTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1052CAEB1FD790BA00F6F01F /* UITableView+SeaRowHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1052CAE91FD790BA00F6F01F /* UITableView+SeaRowHeight.m */; };
 		1052CAEC1FD790D300F6F01F /* UITableView+SeaRowHeight.h in Headers */ = {isa = PBXBuildFile; fileRef = 1052CAEA1FD790BA00F6F01F /* UITableView+SeaRowHeight.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		105FEC5D1FF0D8D500EBD7CB /* SeaMovieCacheTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 105FEC5B1FF0D8D500EBD7CB /* SeaMovieCacheTask.h */; };
+		105FEC5E1FF0D8D500EBD7CB /* SeaMovieCacheTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 105FEC5C1FF0D8D500EBD7CB /* SeaMovieCacheTask.m */; };
+		10602F9F1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 10602F9D1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.h */; };
+		10602FA01FEC9D6800CFCC0E /* UIImageView+SeaImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 10602F9E1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.m */; };
+		10602FA31FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10602FA11FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.h */; };
+		10602FA41FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10602FA21FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.m */; };
 		10614B421FEBA8CC00A0BAA9 /* SeaHttpBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 10614B3D1FEBA8BA00A0BAA9 /* SeaHttpBuilder.m */; };
 		10614B431FEBA8CC00A0BAA9 /* SeaHttpParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 10614B411FEBA8BA00A0BAA9 /* SeaHttpParam.m */; };
 		10614B441FEBA8CC00A0BAA9 /* SeaHttpTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 10614B381FEBA8B900A0BAA9 /* SeaHttpTask.m */; };
@@ -177,16 +189,16 @@
 		108E6F0A1FDF860700F1B121 /* SeaRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 108E6EFF1FDF85F400F1B121 /* SeaRefreshControl.m */; };
 		108E6F0B1FDF860700F1B121 /* SeaLoadMoreControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 108E6F001FDF85F400F1B121 /* SeaLoadMoreControl.m */; };
 		108E6F0C1FDF860700F1B121 /* SeaDataControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 108E6F031FDF85F400F1B121 /* SeaDataControl.m */; };
+		109D16291FF0A2B2005E01C7 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 109D16281FF0A2B2005E01C7 /* libsqlite3.0.tbd */; };
+		109D162D1FF0A352005E01C7 /* SeaDataBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 109D162B1FF0A352005E01C7 /* SeaDataBase.h */; };
+		109D162E1FF0A352005E01C7 /* SeaDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 109D162C1FF0A352005E01C7 /* SeaDataBase.m */; };
 		10BB623D1FA0293100E1EA40 /* SeaImageGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BB623B1FA0293100E1EA40 /* SeaImageGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10BB623E1FA0293100E1EA40 /* SeaImageGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BB623C1FA0293100E1EA40 /* SeaImageGenerator.m */; };
+		10C78BEE1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 10C78BEC1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.h */; };
+		10C78BEF1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 10C78BED1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.m */; };
 		10E7B17D1F9F2D38006A83D8 /* SeaMovieCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1031F9F2D13006A83D8 /* SeaMovieCacheTool.m */; };
-		10E7B17E1F9F2D38006A83D8 /* UIImageView+SeaMovieCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1061F9F2D13006A83D8 /* UIImageView+SeaMovieCacheTool.m */; };
 		10E7B17F1F9F2D38006A83D8 /* SeaUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1081F9F2D13006A83D8 /* SeaUserDefaults.m */; };
-		10E7B1801F9F2D38006A83D8 /* SeaImageCacheToolOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1091F9F2D13006A83D8 /* SeaImageCacheToolOperation.m */; };
-		10E7B1811F9F2D38006A83D8 /* UIButton+SeaImageCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B10B1F9F2D13006A83D8 /* UIButton+SeaImageCacheTool.m */; };
 		10E7B1821F9F2D38006A83D8 /* SeaFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B10C1F9F2D13006A83D8 /* SeaFileManager.m */; };
-		10E7B1831F9F2D38006A83D8 /* UIImageView+SeaImageCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B10D1F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.m */; };
-		10E7B1841F9F2D38006A83D8 /* UIImageView+SeaCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B10E1F9F2D13006A83D8 /* UIImageView+SeaCache.m */; };
 		10E7B1851F9F2D38006A83D8 /* SeaImageCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1101F9F2D13006A83D8 /* SeaImageCacheTool.m */; };
 		10E7B1861F9F2D38006A83D8 /* SeaMovieCacheToolOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1111F9F2D13006A83D8 /* SeaMovieCacheToolOperation.m */; };
 		10E7B1871F9F2D38006A83D8 /* UITabBarController+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */; };
@@ -221,15 +233,10 @@
 		10E7B1B41F9F2D38006A83D8 /* SeaPresentTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0F51F9F2D12006A83D8 /* SeaPresentTransitionDelegate.m */; };
 		10E7B1B51F9F2D38006A83D8 /* SeaDetectVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0FA1F9F2D12006A83D8 /* SeaDetectVersion.m */; };
 		10E7B1FC1F9F2D38006A83D8 /* SeaWebDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B0FC1F9F2D12006A83D8 /* SeaWebDetailController.m */; };
-		10E7B1FE1F9F2D48006A83D8 /* SeaImageCacheToolOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B0FF1F9F2D13006A83D8 /* SeaImageCacheToolOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B1FF1F9F2D48006A83D8 /* UIImageView+SeaImageCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1001F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2001F9F2D48006A83D8 /* SeaFileManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1011F9F2D13006A83D8 /* SeaFileManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2011F9F2D48006A83D8 /* UIButton+SeaImageCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1021F9F2D13006A83D8 /* UIButton+SeaImageCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2021F9F2D48006A83D8 /* SeaMovieCacheToolOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1041F9F2D13006A83D8 /* SeaMovieCacheToolOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2031F9F2D48006A83D8 /* SeaImageCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1051F9F2D13006A83D8 /* SeaImageCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2041F9F2D48006A83D8 /* UIImageView+SeaCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1071F9F2D13006A83D8 /* UIImageView+SeaCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2051F9F2D48006A83D8 /* SeaMovieCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B10A1F9F2D13006A83D8 /* SeaMovieCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2061F9F2D48006A83D8 /* UIImageView+SeaMovieCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B10F1F9F2D13006A83D8 /* UIImageView+SeaMovieCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2071F9F2D48006A83D8 /* SeaUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1121F9F2D13006A83D8 /* SeaUserDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2081F9F2D48006A83D8 /* UITabBarItem+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11B1F9F2D13006A83D8 /* UITabBarItem+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2091F9F2D48006A83D8 /* UISearchBar+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11C1F9F2D13006A83D8 /* UISearchBar+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -290,6 +297,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		100197BD1FF0F2D30078051C /* UIImageView+SeaMovieCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+SeaMovieCache.h"; sourceTree = "<group>"; };
+		100197BE1FF0F2D30078051C /* UIImageView+SeaMovieCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+SeaMovieCache.m"; sourceTree = "<group>"; };
 		100B1C6B1FDA913A00FBCD62 /* SeaScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeaScrollViewController.m; sourceTree = "<group>"; };
 		100B1C6C1FDA913A00FBCD62 /* SeaScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeaScrollViewController.h; sourceTree = "<group>"; };
 		100B1C701FDA913A00FBCD62 /* SeaAutoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeaAutoScrollView.h; sourceTree = "<group>"; };
@@ -327,6 +336,10 @@
 		1032E3E51FA2E3C200709FDC /* SeaAlbumGroupListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumGroupListCell.h; sourceTree = "<group>"; };
 		1032E3E61FA2E3C200709FDC /* SeaAlbumGroupListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumGroupListView.h; sourceTree = "<group>"; };
 		1032E3E71FA2E3C200709FDC /* SeaAlbumAssetsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumAssetsCell.h; sourceTree = "<group>"; };
+		1044C0181FEC9495006BC8CA /* SeaImageCacheOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageCacheOptions.h; sourceTree = "<group>"; };
+		1044C0191FEC9495006BC8CA /* SeaImageCacheOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageCacheOptions.m; sourceTree = "<group>"; };
+		1044C01C1FEC9995006BC8CA /* SeaImageCacheTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageCacheTask.h; sourceTree = "<group>"; };
+		1044C01D1FEC9995006BC8CA /* SeaImageCacheTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageCacheTask.m; sourceTree = "<group>"; };
 		1045CE5D1FDA1D38003506BA /* UIView+SeaLoading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaLoading.h"; sourceTree = "<group>"; };
 		1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaLoading.m"; sourceTree = "<group>"; };
 		104662001FE1230400A88D3C /* UIView+SeaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaToast.h"; sourceTree = "<group>"; };
@@ -347,6 +360,12 @@
 		1052CADF1FD78E6A00F6F01F /* SeaTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTableViewController.h; sourceTree = "<group>"; };
 		1052CAE91FD790BA00F6F01F /* UITableView+SeaRowHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SeaRowHeight.m"; sourceTree = "<group>"; };
 		1052CAEA1FD790BA00F6F01F /* UITableView+SeaRowHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+SeaRowHeight.h"; sourceTree = "<group>"; };
+		105FEC5B1FF0D8D500EBD7CB /* SeaMovieCacheTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaMovieCacheTask.h; sourceTree = "<group>"; };
+		105FEC5C1FF0D8D500EBD7CB /* SeaMovieCacheTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaMovieCacheTask.m; sourceTree = "<group>"; };
+		10602F9D1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+SeaImageCache.h"; sourceTree = "<group>"; };
+		10602F9E1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+SeaImageCache.m"; sourceTree = "<group>"; };
+		10602FA11FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaActivityIndicatorView.h"; sourceTree = "<group>"; };
+		10602FA21FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaActivityIndicatorView.m"; sourceTree = "<group>"; };
 		10614B351FEBA8B900A0BAA9 /* SeaURLSessionTaskDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaURLSessionTaskDelegate.m; sourceTree = "<group>"; };
 		10614B361FEBA8B900A0BAA9 /* SeaURLSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaURLSessionManager.m; sourceTree = "<group>"; };
 		10614B371FEBA8B900A0BAA9 /* SeaMultiTasks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaMultiTasks.m; sourceTree = "<group>"; };
@@ -463,9 +482,25 @@
 		108E6F021FDF85F400F1B121 /* SeaRefreshControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaRefreshControl.h; sourceTree = "<group>"; };
 		108E6F031FDF85F400F1B121 /* SeaDataControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaDataControl.m; sourceTree = "<group>"; };
 		108E6F041FDF85F400F1B121 /* SeaLoadMoreControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaLoadMoreControl.h; sourceTree = "<group>"; };
+		109D161C1FF0A25B005E01C7 /* FMDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		109D161D1FF0A25B005E01C7 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		109D161E1FF0A25B005E01C7 /* FMResultSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		109D161F1FF0A25B005E01C7 /* FMDatabasePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		109D16201FF0A25B005E01C7 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		109D16211FF0A25B005E01C7 /* FMDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		109D16221FF0A25B005E01C7 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		109D16231FF0A25B005E01C7 /* FMDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		109D16241FF0A25B005E01C7 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		109D16251FF0A25B005E01C7 /* FMDatabasePool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		109D16261FF0A25B005E01C7 /* FMResultSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		109D16281FF0A2B2005E01C7 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		109D162B1FF0A352005E01C7 /* SeaDataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaDataBase.h; sourceTree = "<group>"; };
+		109D162C1FF0A352005E01C7 /* SeaDataBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaDataBase.m; sourceTree = "<group>"; };
 		10BB62371FA024B700E1EA40 /* IOSLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSLibrary.h; sourceTree = "<group>"; };
 		10BB623B1FA0293100E1EA40 /* SeaImageGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageGenerator.h; sourceTree = "<group>"; };
 		10BB623C1FA0293100E1EA40 /* SeaImageGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageGenerator.m; sourceTree = "<group>"; };
+		10C78BEC1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+SeaImageCache.h"; sourceTree = "<group>"; };
+		10C78BED1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SeaImageCache.m"; sourceTree = "<group>"; };
 		10E7B0461F9F2CAD006A83D8 /* IOSLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IOSLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		10E7B04A1F9F2CAD006A83D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10E7B0E61F9F2D12006A83D8 /* SeaObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaObject.m; sourceTree = "<group>"; };
@@ -488,23 +523,13 @@
 		10E7B0FA1F9F2D12006A83D8 /* SeaDetectVersion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaDetectVersion.m; sourceTree = "<group>"; };
 		10E7B0FC1F9F2D12006A83D8 /* SeaWebDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaWebDetailController.m; sourceTree = "<group>"; };
 		10E7B0FD1F9F2D12006A83D8 /* SeaWebDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaWebDetailController.h; sourceTree = "<group>"; };
-		10E7B0FF1F9F2D13006A83D8 /* SeaImageCacheToolOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageCacheToolOperation.h; sourceTree = "<group>"; };
-		10E7B1001F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+SeaImageCacheTool.h"; sourceTree = "<group>"; };
 		10E7B1011F9F2D13006A83D8 /* SeaFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaFileManager.h; sourceTree = "<group>"; };
-		10E7B1021F9F2D13006A83D8 /* UIButton+SeaImageCacheTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+SeaImageCacheTool.h"; sourceTree = "<group>"; };
 		10E7B1031F9F2D13006A83D8 /* SeaMovieCacheTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaMovieCacheTool.m; sourceTree = "<group>"; };
 		10E7B1041F9F2D13006A83D8 /* SeaMovieCacheToolOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaMovieCacheToolOperation.h; sourceTree = "<group>"; };
 		10E7B1051F9F2D13006A83D8 /* SeaImageCacheTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageCacheTool.h; sourceTree = "<group>"; };
-		10E7B1061F9F2D13006A83D8 /* UIImageView+SeaMovieCacheTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+SeaMovieCacheTool.m"; sourceTree = "<group>"; };
-		10E7B1071F9F2D13006A83D8 /* UIImageView+SeaCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+SeaCache.h"; sourceTree = "<group>"; };
 		10E7B1081F9F2D13006A83D8 /* SeaUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaUserDefaults.m; sourceTree = "<group>"; };
-		10E7B1091F9F2D13006A83D8 /* SeaImageCacheToolOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageCacheToolOperation.m; sourceTree = "<group>"; };
 		10E7B10A1F9F2D13006A83D8 /* SeaMovieCacheTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaMovieCacheTool.h; sourceTree = "<group>"; };
-		10E7B10B1F9F2D13006A83D8 /* UIButton+SeaImageCacheTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SeaImageCacheTool.m"; sourceTree = "<group>"; };
 		10E7B10C1F9F2D13006A83D8 /* SeaFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaFileManager.m; sourceTree = "<group>"; };
-		10E7B10D1F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+SeaImageCacheTool.m"; sourceTree = "<group>"; };
-		10E7B10E1F9F2D13006A83D8 /* UIImageView+SeaCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+SeaCache.m"; sourceTree = "<group>"; };
-		10E7B10F1F9F2D13006A83D8 /* UIImageView+SeaMovieCacheTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+SeaMovieCacheTool.h"; sourceTree = "<group>"; };
 		10E7B1101F9F2D13006A83D8 /* SeaImageCacheTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageCacheTool.m; sourceTree = "<group>"; };
 		10E7B1111F9F2D13006A83D8 /* SeaMovieCacheToolOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaMovieCacheToolOperation.m; sourceTree = "<group>"; };
 		10E7B1121F9F2D13006A83D8 /* SeaUserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaUserDefaults.h; sourceTree = "<group>"; };
@@ -583,6 +608,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				109D16291FF0A2B2005E01C7 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1041,11 +1067,55 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		109D161A1FF0A25B005E01C7 /* vendors */ = {
+			isa = PBXGroup;
+			children = (
+				109D161B1FF0A25B005E01C7 /* FMDB */,
+			);
+			path = vendors;
+			sourceTree = "<group>";
+		};
+		109D161B1FF0A25B005E01C7 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				109D161C1FF0A25B005E01C7 /* FMDatabase.h */,
+				109D16211FF0A25B005E01C7 /* FMDatabase.m */,
+				109D16241FF0A25B005E01C7 /* FMDatabaseAdditions.h */,
+				109D16201FF0A25B005E01C7 /* FMDatabaseAdditions.m */,
+				109D161F1FF0A25B005E01C7 /* FMDatabasePool.h */,
+				109D16251FF0A25B005E01C7 /* FMDatabasePool.m */,
+				109D16221FF0A25B005E01C7 /* FMDatabaseQueue.h */,
+				109D161D1FF0A25B005E01C7 /* FMDatabaseQueue.m */,
+				109D16231FF0A25B005E01C7 /* FMDB.h */,
+				109D161E1FF0A25B005E01C7 /* FMResultSet.h */,
+				109D16261FF0A25B005E01C7 /* FMResultSet.m */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
+		109D16271FF0A2B2005E01C7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				109D16281FF0A2B2005E01C7 /* libsqlite3.0.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		109D162A1FF0A32D005E01C7 /* database */ = {
+			isa = PBXGroup;
+			children = (
+				109D162B1FF0A352005E01C7 /* SeaDataBase.h */,
+				109D162C1FF0A352005E01C7 /* SeaDataBase.m */,
+			);
+			path = database;
+			sourceTree = "<group>";
+		};
 		10E7B03C1F9F2CAD006A83D8 = {
 			isa = PBXGroup;
 			children = (
 				10E7B0481F9F2CAD006A83D8 /* IOSLibrary */,
 				10E7B0471F9F2CAD006A83D8 /* Products */,
+				109D16271FF0A2B2005E01C7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1060,6 +1130,8 @@
 		10E7B0481F9F2CAD006A83D8 /* IOSLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				109D162A1FF0A32D005E01C7 /* database */,
+				109D161A1FF0A25B005E01C7 /* vendors */,
 				10509CA81FE8F28D003468EB /* navigationBar */,
 				108E6EFA1FDF85F400F1B121 /* refresh */,
 				108E6E1F1FDF834700F1B121 /* widget */,
@@ -1141,22 +1213,26 @@
 				10E7B10C1F9F2D13006A83D8 /* SeaFileManager.m */,
 				10E7B1051F9F2D13006A83D8 /* SeaImageCacheTool.h */,
 				10E7B1101F9F2D13006A83D8 /* SeaImageCacheTool.m */,
-				10E7B0FF1F9F2D13006A83D8 /* SeaImageCacheToolOperation.h */,
-				10E7B1091F9F2D13006A83D8 /* SeaImageCacheToolOperation.m */,
 				10E7B10A1F9F2D13006A83D8 /* SeaMovieCacheTool.h */,
 				10E7B1031F9F2D13006A83D8 /* SeaMovieCacheTool.m */,
 				10E7B1041F9F2D13006A83D8 /* SeaMovieCacheToolOperation.h */,
 				10E7B1111F9F2D13006A83D8 /* SeaMovieCacheToolOperation.m */,
 				10E7B1121F9F2D13006A83D8 /* SeaUserDefaults.h */,
 				10E7B1081F9F2D13006A83D8 /* SeaUserDefaults.m */,
-				10E7B1021F9F2D13006A83D8 /* UIButton+SeaImageCacheTool.h */,
-				10E7B10B1F9F2D13006A83D8 /* UIButton+SeaImageCacheTool.m */,
-				10E7B1071F9F2D13006A83D8 /* UIImageView+SeaCache.h */,
-				10E7B10E1F9F2D13006A83D8 /* UIImageView+SeaCache.m */,
-				10E7B1001F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.h */,
-				10E7B10D1F9F2D13006A83D8 /* UIImageView+SeaImageCacheTool.m */,
-				10E7B10F1F9F2D13006A83D8 /* UIImageView+SeaMovieCacheTool.h */,
-				10E7B1061F9F2D13006A83D8 /* UIImageView+SeaMovieCacheTool.m */,
+				1044C0181FEC9495006BC8CA /* SeaImageCacheOptions.h */,
+				1044C0191FEC9495006BC8CA /* SeaImageCacheOptions.m */,
+				1044C01C1FEC9995006BC8CA /* SeaImageCacheTask.h */,
+				1044C01D1FEC9995006BC8CA /* SeaImageCacheTask.m */,
+				10602F9D1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.h */,
+				10602F9E1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.m */,
+				10602FA11FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.h */,
+				10602FA21FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.m */,
+				10C78BEC1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.h */,
+				10C78BED1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.m */,
+				105FEC5B1FF0D8D500EBD7CB /* SeaMovieCacheTask.h */,
+				105FEC5C1FF0D8D500EBD7CB /* SeaMovieCacheTask.m */,
+				100197BD1FF0F2D30078051C /* UIImageView+SeaMovieCache.h */,
+				100197BE1FF0F2D30078051C /* UIImageView+SeaMovieCache.m */,
 			);
 			path = cache;
 			sourceTree = "<group>";
@@ -1322,11 +1398,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				108E6EF81FDF844100F1B121 /* UICollectionView+SeaEmptyView.h in Headers */,
+				10602FA31FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.h in Headers */,
 				100B1C971FDA97BE00FBCD62 /* SeaCollectionViewController.h in Headers */,
 				100B1C951FDA97BE00FBCD62 /* SeaCollectionViewDraggableLayout.h in Headers */,
 				100B1C931FDA97BE00FBCD62 /* SeaCollectionViewFlowLayout.h in Headers */,
 				108E6EF41FDF843000F1B121 /* UITableView+SeaEmptyView.h in Headers */,
 				108E6EF01FDF840D00F1B121 /* UIScrollView+SeaEmptyView.h in Headers */,
+				10C78BEE1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.h in Headers */,
 				100B1C921FDA97BE00FBCD62 /* SeaCollectionViewWaterLayout.h in Headers */,
 				100B1C781FDA913A00FBCD62 /* SeaAutoScrollView.h in Headers */,
 				108E6EEC1FDF83CC00F1B121 /* UIView+SeaEmptyView.h in Headers */,
@@ -1347,6 +1425,7 @@
 				108E6E8F1FDF835700F1B121 /* SeaTextView.h in Headers */,
 				108E6E901FDF835700F1B121 /* SeaGridPasswordLabel.h in Headers */,
 				108E6E911FDF835700F1B121 /* SeaProgressView.h in Headers */,
+				100197BF1FF0F2D30078051C /* UIImageView+SeaMovieCache.h in Headers */,
 				108E6E921FDF835700F1B121 /* SeaMagnifyingGlass.h in Headers */,
 				108E6E931FDF835700F1B121 /* SeaWeakObjectContainer.h in Headers */,
 				108E6E941FDF835700F1B121 /* SeaDashView.h in Headers */,
@@ -1394,6 +1473,7 @@
 				100EC6FA1FDA2A39001CCE74 /* UIAlertController+Utils.h in Headers */,
 				100EC6FB1FDA2A39001CCE74 /* SeaAlertController.h in Headers */,
 				100EC6FC1FDA2A39001CCE74 /* SeaToast.h in Headers */,
+				1044C01E1FEC9995006BC8CA /* SeaImageCacheTask.h in Headers */,
 				100EC6E11FDA2961001CCE74 /* UIViewController+Utils.h in Headers */,
 				1045CE5F1FDA1D38003506BA /* UIView+SeaLoading.h in Headers */,
 				10F6A35E1FD9328000F2B30E /* SeaNetworkActivityView.h in Headers */,
@@ -1402,6 +1482,7 @@
 				10F6A32D1FD8F0B400F2B30E /* SeaSearchDisplayViewController.h in Headers */,
 				10F6A32F1FD8F0B400F2B30E /* SeaViewController.h in Headers */,
 				10F6A3301FD8F0B400F2B30E /* SeaSlideViewController.h in Headers */,
+				10602F9F1FEC9D6800CFCC0E /* UIImageView+SeaImageCache.h in Headers */,
 				10F6A3321FD8F0B400F2B30E /* SeaWebViewController.h in Headers */,
 				10F6A3331FD8F0B400F2B30E /* SeaDialogViewController.h in Headers */,
 				10F6A3351FD8F0B400F2B30E /* SeaViewControllerHeaders.h in Headers */,
@@ -1409,6 +1490,7 @@
 				10F6A31A1FD8DEEF00F2B30E /* SeaContainer.h in Headers */,
 				1052CAEC1FD790D300F6F01F /* UITableView+SeaRowHeight.h in Headers */,
 				1052CAE31FD78EC700F6F01F /* UITableView+Utils.h in Headers */,
+				109D162D1FF0A352005E01C7 /* SeaDataBase.h in Headers */,
 				1052CAE41FD78EC700F6F01F /* UITableViewCell+Utils.h in Headers */,
 				1052CAE51FD78EC700F6F01F /* SeaTableViewController.h in Headers */,
 				101B8B2E1FB5A56C00D333DB /* UIView+SeaAutoLayout.h in Headers */,
@@ -1420,15 +1502,11 @@
 				101AB8C71FA2E45100711095 /* SeaAlbumGroupListView.h in Headers */,
 				101AB8C81FA2E45100711095 /* SeaSystemSound.h in Headers */,
 				101AB8CA1FA2E45100711095 /* IOSLibrary.h in Headers */,
-				10E7B1FE1F9F2D48006A83D8 /* SeaImageCacheToolOperation.h in Headers */,
-				10E7B1FF1F9F2D48006A83D8 /* UIImageView+SeaImageCacheTool.h in Headers */,
 				10E7B2001F9F2D48006A83D8 /* SeaFileManager.h in Headers */,
-				10E7B2011F9F2D48006A83D8 /* UIButton+SeaImageCacheTool.h in Headers */,
 				10E7B2021F9F2D48006A83D8 /* SeaMovieCacheToolOperation.h in Headers */,
+				1044C01A1FEC9495006BC8CA /* SeaImageCacheOptions.h in Headers */,
 				10E7B2031F9F2D48006A83D8 /* SeaImageCacheTool.h in Headers */,
-				10E7B2041F9F2D48006A83D8 /* UIImageView+SeaCache.h in Headers */,
 				10E7B2051F9F2D48006A83D8 /* SeaMovieCacheTool.h in Headers */,
-				10E7B2061F9F2D48006A83D8 /* UIImageView+SeaMovieCacheTool.h in Headers */,
 				10E7B2071F9F2D48006A83D8 /* SeaUserDefaults.h in Headers */,
 				10E7B2081F9F2D48006A83D8 /* UITabBarItem+Utilities.h in Headers */,
 				10E7B2091F9F2D48006A83D8 /* UISearchBar+Utilities.h in Headers */,
@@ -1446,6 +1524,7 @@
 				10E7B21B1F9F2D48006A83D8 /* NSString+Utilities.h in Headers */,
 				10E7B21C1F9F2D48006A83D8 /* NSDate+Utilities.h in Headers */,
 				10E7B21D1F9F2D48006A83D8 /* UIWebView+Utilities.h in Headers */,
+				105FEC5D1FF0D8D500EBD7CB /* SeaMovieCacheTask.h in Headers */,
 				10E7B21E1F9F2D48006A83D8 /* NSDictionary+Utilities.h in Headers */,
 				10E7B21F1F9F2D48006A83D8 /* NSJSONSerialization+Utilities.h in Headers */,
 				10E7B2201F9F2D48006A83D8 /* UITextView+Utilities.h in Headers */,
@@ -1575,6 +1654,7 @@
 				108E6ED31FDF836600F1B121 /* SeaWebToolBar.m in Sources */,
 				108E6ED41FDF836600F1B121 /* SeaLetterSearchMenu.m in Sources */,
 				108E6ED51FDF836600F1B121 /* SeaBubbleMenu.m in Sources */,
+				100197C01FF0F2D30078051C /* UIImageView+SeaMovieCache.m in Sources */,
 				108E6ED61FDF836600F1B121 /* SeaImageTitleMenuItem.m in Sources */,
 				108E6ED71FDF836600F1B121 /* SeaGridronMenu.m in Sources */,
 				108E6ED81FDF836600F1B121 /* SeaMenuBarItem.m in Sources */,
@@ -1582,6 +1662,7 @@
 				108E6EDA1FDF836600F1B121 /* SeaMenuItemInfo.m in Sources */,
 				108E6EDB1FDF836600F1B121 /* SeaImageTitleMenu.m in Sources */,
 				108E6EDC1FDF836600F1B121 /* SeaRadarView.m in Sources */,
+				105FEC5E1FF0D8D500EBD7CB /* SeaMovieCacheTask.m in Sources */,
 				108E6EDD1FDF836600F1B121 /* SeaEmptyView.m in Sources */,
 				108E6EDE1FDF836600F1B121 /* SeaTextLoadingListCell.m in Sources */,
 				108E6EDF1FDF836600F1B121 /* SeaTextSwitchListCell.m in Sources */,
@@ -1593,8 +1674,10 @@
 				108E6EE51FDF836600F1B121 /* SeaTextListCell.m in Sources */,
 				100EC6F71FDA2A30001CCE74 /* UIAlertController+Utils.m in Sources */,
 				100EC6F81FDA2A30001CCE74 /* SeaAlertController.m in Sources */,
+				10C78BEF1FECDDEC00A5A5C1 /* UIButton+SeaImageCache.m in Sources */,
 				100EC6F91FDA2A30001CCE74 /* SeaToast.m in Sources */,
 				10F6A35B1FD9327700F2B30E /* SeaNetworkActivityView.m in Sources */,
+				10602FA41FECA27A00CFCC0E /* UIView+SeaActivityIndicatorView.m in Sources */,
 				10F6A35C1FD9327700F2B30E /* SeaPageLoadingView.m in Sources */,
 				10F6A35D1FD9327700F2B30E /* SeaFailPageView.m in Sources */,
 				10F6A3371FD8F0C700F2B30E /* SeaSlideViewController.m in Sources */,
@@ -1605,26 +1688,23 @@
 				10F6A3171FD8DEE500F2B30E /* UIView+Utils.m in Sources */,
 				10F6A3181FD8DEE500F2B30E /* SeaContainer.m in Sources */,
 				104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */,
+				10602FA01FEC9D6800CFCC0E /* UIImageView+SeaImageCache.m in Sources */,
 				1052CAE01FD78EA900F6F01F /* UITableView+Utils.m in Sources */,
 				1052CAE11FD78EA900F6F01F /* UITableViewCell+Utils.m in Sources */,
 				1052CAE21FD78EA900F6F01F /* SeaTableViewController.m in Sources */,
 				101B8B2F1FB5A58900D333DB /* UIView+SeaAutoLayout.m in Sources */,
+				1044C01B1FEC9495006BC8CA /* SeaImageCacheOptions.m in Sources */,
 				101AB8CB1FA2E46800711095 /* SeaAlbumAssetsCell.m in Sources */,
 				101AB8CC1FA2E46800711095 /* SeaAlbumAssetsViewController.m in Sources */,
 				101AB8CD1FA2E46800711095 /* SeaAlbumGroupListCell.m in Sources */,
 				101AB8CE1FA2E46800711095 /* SeaAlbumGroupListView.m in Sources */,
 				101AB8CF1FA2E46800711095 /* SeaSystemSound.m in Sources */,
 				10E7B17D1F9F2D38006A83D8 /* SeaMovieCacheTool.m in Sources */,
-				10E7B17E1F9F2D38006A83D8 /* UIImageView+SeaMovieCacheTool.m in Sources */,
 				10E7B17F1F9F2D38006A83D8 /* SeaUserDefaults.m in Sources */,
-				10E7B1801F9F2D38006A83D8 /* SeaImageCacheToolOperation.m in Sources */,
-				10E7B1811F9F2D38006A83D8 /* UIButton+SeaImageCacheTool.m in Sources */,
 				108E6EF91FDF844100F1B121 /* UICollectionView+SeaEmptyView.m in Sources */,
 				100B1C961FDA97BE00FBCD62 /* SeaCollectionViewController.m in Sources */,
 				10E7B1821F9F2D38006A83D8 /* SeaFileManager.m in Sources */,
-				10E7B1831F9F2D38006A83D8 /* UIImageView+SeaImageCacheTool.m in Sources */,
 				100B1C911FDA97BE00FBCD62 /* SeaCollectionViewDraggableLayout.m in Sources */,
-				10E7B1841F9F2D38006A83D8 /* UIImageView+SeaCache.m in Sources */,
 				10E7B1851F9F2D38006A83D8 /* SeaImageCacheTool.m in Sources */,
 				10E7B1861F9F2D38006A83D8 /* SeaMovieCacheToolOperation.m in Sources */,
 				10E7B1871F9F2D38006A83D8 /* UITabBarController+Utilities.m in Sources */,
@@ -1645,8 +1725,10 @@
 				10E7B1951F9F2D38006A83D8 /* UISearchBar+Utilities.m in Sources */,
 				10E7B1961F9F2D38006A83D8 /* UITabBarItem+Utilities.m in Sources */,
 				10E7B1971F9F2D38006A83D8 /* NSAttributedString+Utlities.m in Sources */,
+				109D162E1FF0A352005E01C7 /* SeaDataBase.m in Sources */,
 				10E7B1981F9F2D38006A83D8 /* UIColor+colorUtilities.m in Sources */,
 				10E7B19A1F9F2D38006A83D8 /* UIImage+Utilities.m in Sources */,
+				1044C01F1FEC9995006BC8CA /* SeaImageCacheTask.m in Sources */,
 				10E7B19C1F9F2D38006A83D8 /* UITextField+Utilities.m in Sources */,
 				10E7B19D1F9F2D38006A83D8 /* NSArray+Utilities.m in Sources */,
 				10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */,

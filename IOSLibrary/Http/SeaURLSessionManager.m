@@ -10,6 +10,7 @@
 #import "SeaURLSessionTaskDelegate.h"
 #import "SeaHttpTask.h"
 
+
 @interface SeaURLSessionManager()<NSURLSessionTaskDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate>
 
 @property(nonatomic, strong) NSURLSession *session;

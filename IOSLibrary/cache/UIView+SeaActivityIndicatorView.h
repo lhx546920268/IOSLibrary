@@ -10,4 +10,14 @@
 
 @interface UIView (SeaActivityIndicatorView)
 
+/**
+ 显示 加载指示器
+ */
+@property(nonatomic, assign) BOOL sea_showActivityIndicator;
+
+/**
+ 当前加载指示器
+ */
+@property(nonatomic, readonly) UIActivityIndicatorView *sea_activityIndicatorView;
+
 @end

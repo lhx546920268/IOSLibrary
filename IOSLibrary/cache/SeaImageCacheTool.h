@@ -6,40 +6,21 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SeaImageCacheToolOperation.h"
 
-///图片路径属性
-static char SeaImageCacheToolImageURL;
+/**
+ 图片加载完成回调
+ 
+ @param image 成功后的图片，失败则为nil
+ */
+typedef void(^SeaImageCacheCompletionHandler)(UIImage *image);
 
-///图片路径字典，object是图片路径 NSString ，key是 NSNumber UIControlState
-static char SeaImageCacheToolImageURLDictionary;
+/**
+ 图片加载进度回调
+ 
+ @param progress 加载进度，使用 fractionCompleted 显示进度
+ */
+typedef void(^SeaImageCacheProgressHandler)(NSProgress *progress);
 
-///背景图片路径字典 object是图片路径 NSString ，key是 NSNumber UIControlState
-static char SeaImageCacheToolBackgroundImageURLDictionary;
-
-///图片缩略图
-static char SeaImageCacheToolThumbnailSize;
-
-///是否显示加载指示器
-static char SeaImageCacheToolShowLoadingActivity;
-
-///预载背景颜色
-static char SeaImageCacheToolPlaceHolderColor;
-
-///本来的背景颜色
-static char SeaImageCacheToolOriginBackgroundColor;
-
-///预载图
-static char SeaImageCacheToolPlaceHolderImage;
-
-///加载指示器
-static char SeaImageCacheToolActivity;
-
-///加载指示器样式
-static char SeaImageCacheToolActivityStyle;
-
-///是否正在加载
-static char SeaImageCacheToolLoading;
 
 @class SeaImageCacheTool;
 
@@ -77,80 +58,78 @@ static char SeaImageCacheToolLoading;
  */
 + (SeaImageCacheTool*)sharedInstance;
 
-/**保存在内存中的图片 key 是图片路径，value 是UIImage对象
- */
-+ (NSCache*)defaultCache;
+#pragma mark- download
 
 /**相关下载是否正在进行中
- *@param url 正在请求的url
+ *@param URL 正在的URL
  */
-- (BOOL)isRequestingWithURL:(NSString*) url;
+- (BOOL)isDownloadingForURL:(NSString*) URL;
 
 /**批量取消相关下载
- *@param urls 数组元素是url, NSString 对象
+ *@param URLs 图片URL
  */
-- (void)cancelDownloadWithURLs:(NSArray*) urls;
+- (void)cancelDownloadForURLs:(NSArray<NSString*>*) URLs;
 
 /**取消单个下载
- *@param url 正在请求的url
+ *@param URL 正在下载的图片URL
  *@param target 下载图片的对象，如UIImageView
  */
-- (void)cancelDownloadWithURL:(NSString *)url target:(id) target;
+- (void)cancelDownloadForURL:(NSString*)URL target:(id) target;
 
 /**添加下载完成回调
  *@param completion 下载完成回调
  *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
  *@param target 下载图片的对象，如UIImageView
- *@param url 图片路径
+ *@param URL 图片路径
  */
-- (void)addCompletion:(SeaImageCacheToolCompletionHandler) completion thumbnailSize:(CGSize) size target:(id) target forURL:(NSString*) url;
+- (void)addCompletion:(SeaImageCacheCompletionHandler) completion thumbnailSize:(CGSize) size target:(id) target forURL:(NSString*) URL;
 
 /**添加下载进度回调
  *@param progressHandler 进度回调
- *@param url 图片路径
+ *@param URL 图片路径
  *@param target 下载图片的对象，如UIImageView
  */
-- (void)addProgressHandler:(SeaImageCacheToolProgressHandler) progressHandler forURL:(NSString *)url target:(id) target;
+- (void)addProgressHandler:(SeaImageCacheProgressHandler) progressHandler forURL:(NSString *)URL target:(id) target;
 
-/**获取图片 先在内存中获取，没有则在缓存文件中查找，没有才通过http请求下载图片
- *@param url 图片路径
- *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
- *@param completion 图片加载完成回调
- *@param target 下载图片的对象，如UIImageView
- */
-- (void)getImageWithURL:(NSString*) url thumbnailSize:(CGSize) size completion:(SeaImageCacheToolCompletionHandler) completion target:(id) target;
-
-/**缓存图片
+/**保存图片到硬盘
  *@param image 要缓存的图片
- *@param url 图片路径
+ *@param URL 图片路径
  *@param size 缩略图大小，如果值为CGSizeZero 表明不缓存缩略图
  *@param flag 是否需要保存到内存中
  *@return 如果保存在内存，则返回对应的图片，否则返回nil
  */
-- (UIImage*)cacheImage:(UIImage*) image withURL:(NSString*) url thumbnailSize:(CGSize) size saveToMemory:(BOOL) flag;
+- (UIImage*)saveImageToDisk:(UIImage*) image forURL:(NSString*) URL thumbnailSize:(CGSize) size saveToMemory:(BOOL) flag;
 
-/**缓存图片文件
+/**保存图片文件到硬盘
  *@param imageFile 要缓存的图片文件
- *@param url 图片路径
+ *@param URL 图片路径
  */
-- (void)cacheImageFile:(NSString*) imageFile withURL:(NSString*) url;
+- (void)saveImageFileToDisk:(NSString*) imageFile forURL:(NSString*) URL;
 
 /**通过图片路径获取本地缓存图片，如果没有则返回nil
- *@param url 图片路径
+ *@param URL 图片路径
  *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
  */
-- (UIImage*)imageFromCacheWithURL:(NSString*) url thumbnailSize:(CGSize) size;
+- (UIImage*)imageFromDiskForURL:(NSString*) URL thumbnailSize:(CGSize) size;
 
 /**通过图片路径获取内存图片，如果没有则返回nil
- *@param url 图片路径
+ *@param URL 图片路径
  *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
  */
-- (UIImage*)imageFromMemoryWithURL:(NSString*) url thumbnailSize:(CGSize) size;
+- (UIImage*)imageFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size;
+
+/**获取图片 先在缓存文件中查找，没有才通过http下载图片
+ *@param URL 图片路径
+ *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
+ *@param completion 图片加载完成回调
+ *@param target 下载图片的对象，如UIImageView
+ */
+- (void)imageForURL:(NSString*) URL thumbnailSize:(CGSize) size completion:(SeaImageCacheCompletionHandler) completion target:(id) target;
 
 /**删除图片缓存
- *@param urls 数组元素是 网络图片路径 NSString对象
+ *@param URLs 数组元素是 网络图片路径 NSString对象
  */
-- (void)removeCacheImageWithURL:(NSArray*) urls;
+- (void)removeCacheImageForURLs:(NSArray<NSString*>*) URLs;
 
 /**获取图片缓存文件路径
  *@return 图片缓存路径

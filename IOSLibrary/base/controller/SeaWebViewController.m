@@ -1008,11 +1008,11 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
             if([imageURL isKindOfClass:[NSString class]] && ![NSString isEmpty:imageURL])
             {
                 SeaImageCacheTool *imageCache = [SeaImageCacheTool sharedInstance];
-                [imageCache getImageWithURL:imageURL thumbnailSize:CGSizeZero completion:^(UIImage *image, BOOL fromNetwork){
+                [imageCache imageForURL:imageURL thumbnailSize:CGSizeZero completion:^(UIImage *image, BOOL fromNetwork){
                     if(image)
                     {
                         UIImageWriteToSavedPhotosAlbum(image, nil, NULL, NULL);
-                        [imageCache removeCacheImageWithURL:[NSArray arrayWithObject:imageURL]];
+                        [imageCache removeCacheImageForURLs:[NSArray arrayWithObject:imageURL]];
                     }
                 } target:self];
             }

@@ -1,14 +1,14 @@
 //
-//  SeaImageCacheTask.m
+//  SeaMovieCacheTask.m
 //  IOSLibrary
 //
-//  Created by 罗海雄 on 2017/12/22.
+//  Created by 罗海雄 on 2017/12/25.
 //  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
-#import "SeaImageCacheTask.h"
+#import "SeaMovieCacheTask.h"
 
-@implementation SeaImageCacheTask
+@implementation SeaMovieCacheTask
 
 - (instancetype)init
 {
@@ -20,10 +20,10 @@
     return self;
 }
 
-- (SeaImageCacheHandler*)handlerForTarget:(id) target
+- (SeaMovieCacheHandler*)handlerForTarget:(id) target
 {
-    SeaImageCacheHandler *handler = nil;
-    for(SeaImageCacheHandler *tmp in self.handlers){
+    SeaMovieCacheHandler *handler = nil;
+    for(SeaMovieCacheHandler *tmp in self.handlers){
         if([tmp.target isEqual:target]){
             handler = tmp;
             break;
@@ -31,7 +31,7 @@
     }
     
     if(!handler){
-        handler = [SeaImageCacheHandler new];
+        handler = [SeaMovieCacheHandler new];
         handler.target = target;
         [self.handlers addObject:handler];
     }
@@ -40,7 +40,6 @@
 
 @end
 
-
-@implementation SeaImageCacheHandler
+@implementation SeaMovieCacheHandler
 
 @end

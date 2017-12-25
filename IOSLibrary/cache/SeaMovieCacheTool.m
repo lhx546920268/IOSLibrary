@@ -11,31 +11,48 @@
 #import "SeaImageCacheTool.h"
 #import "NSString+Utilities.h"
 #import "SeaBasic.h"
+#import "SeaDataBase.h"
+#import "FMDB.h"
+#import "NSDate+Utilities.h"
+#import "SeaMovieCacheTask.h"
+#import "UIImage+Utilities.h"
+
+@implementation SeaMovieCacheInfo
+
+- (NSString*)formatDuration
+{
+    return [SeaMovieCacheTool fo]
+}
+
+- (instancetype)infoWithDuration:(long long)duration image:(UIImage *)image
+{
+    _duration = duration;
+    _firstImage = image;
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    SeaMovieCacheInfo *info = [SeaMovieCacheInfo infoWithDuration:self.duration image:self.firstImage];
+    
+    return info;
+}
+
+@end
 
 @interface SeaMovieCacheTool ()
 {
     //队列
     dispatch_queue_t _cacheQueue;
-    
-    //文件管理器,不能在其他线程中使用defaultManager
-    NSFileManager *_fileManager;
 }
 
-///正在请求的 key 是 URL，value是 SeaMovieCacheToolOperation
-@property(nonatomic,strong) NSMutableDictionary *downloadProgressDic;
+///下载任务
+@property(nonatomic,strong) NSMutableDictionary<NSString*, SeaMovieCacheTask*> *downloadTasks;
 
-///请求队列
+///下载队列队列
 @property(nonatomic,strong) NSOperationQueue *queue;
 
-/**时间缓存路径
- */
-@property(nonatomic,copy) NSString *cachePath;
-
-/**缓存图片保存在本地的最大时间，default is '60 * 60 * 24 * 7'，一周
- */
-@property(nonatomic,assign) NSTimeInterval diskCacheExpirationTimeInterval;
-
-
+///失败的URL
+@property(nonatomic,strong) NSMutableSet<NSString*> *badURLs;
 
 @end
 
@@ -44,21 +61,12 @@
 - (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
-        self.downloadProgressDic = [NSMutableDictionary dictionary];
-        self.queue = [[NSOperationQueue alloc] init];
+    if(self){
+        self.downloadTasks = [NSMutableDictionary dictionary];
+        self.queue = [NSOperationQueue new];
+        self.badURLs = [NSMutableSet set];
         
         _cacheQueue = dispatch_queue_create("cacheMovie", DISPATCH_QUEUE_CONCURRENT);
-        
-        _fileManager = [[NSFileManager alloc] init];
-        _diskCacheExpirationTimeInterval = 60 * 60 * 24 * 7;
-        self.cachePath = [self getCachePath];
-        
-        //添加进入后台和程序终止通知，用于清除已经过时的缓存文件
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
     }
     
     return self;
@@ -66,6 +74,9 @@
 
 - (void)dealloc
 {
+#if !OS_OBJECT_USE_OBJC
+    dispatch_release(_cacheQueue);
+#endif
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -80,19 +91,18 @@
     
     dispatch_once(&once, ^(void){
        
-        tool = [[SeaMovieCacheTool alloc] init];
+        tool = [SeaMovieCacheTool new];
     });
     
     return tool;
 }
 
-/**保存在内存中的时间 key 是视频路径，value 是NSString对象
+/**保存在内存中视频缓存信息
  */
-+ (NSCache*)defaultCache
++ (NSCache<NSString*, SeaMovieCacheInfo*>*)defaultCache
 {
     static NSCache *cache = nil;
-    if(cache == nil)
-    {
+    if(cache == nil){
         cache = [[NSCache alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -104,142 +114,106 @@
     return cache;
 }
 
-#pragma mark- 通知
+#pragma mark- task
 
-- (void)applicationDidEnterBackground:(NSNotification*) notification
+- (BOOL)isDownloadingForURL:(NSString *)URL
 {
-    UIApplication *application = [UIApplication sharedApplication];
-    
-    //使用后台长时间任务
-    __block UIBackgroundTaskIdentifier taskIdentifier = [application beginBackgroundTaskWithExpirationHandler:^(void){
-        
-        [application endBackgroundTask:taskIdentifier];
-    }];
-    
-    if(taskIdentifier != UIBackgroundTaskInvalid)
-    {
-        [self clearExpirationCacheMovieInfoWithCompletion:^(void){
-            
-            [application endBackgroundTask:taskIdentifier];
-        }];
-    }
-}
-
-- (void)applicationWillTerminate:(NSNotification*) notification
-{
-    [self clearExpirationCacheMovieInfoWithCompletion:nil];
-}
-
-/**判断某个请求是否已存在
- *@param URL 视频路径
- *@return 是否已存在
- */
-- (BOOL)isRequestingWithURL:(NSString*) URL
-{
-    if(!URL)
+    if([NSString isEmpty:URL])
         return NO;
     
-    return [self.downloadProgressDic objectForKey:URL] != nil;
+    return [self.downloadTasks objectForKey:URL] != nil;
 }
 
-/**取消某个请求
- *@param URL 视频路径
- *@param target 获取视频信息的对象，如UIImageView
- */
-- (void)cancelRequestWithURL:(NSString*) URL target:(id) target
+- (void)cancelDownloadForURL:(NSString *)URL target:(id)target
 {
-    if(!URL)
+    if([NSString isEmpty:URL])
         return;
     
-    SeaMovieCacheToolOperation *operation = [self.downloadProgressDic objectForKey:URL];
+    SeaMovieCacheTask *task = [self.downloadTasks objectForKey:URL];
     
-    if(operation != nil)
-    {
-        SeaMovieCacheToolRequirement *requirement = nil;
-        for(SeaMovieCacheToolRequirement *req in operation.requirements)
-        {
-            if([req.target isEqual:target])
-            {
-                requirement = req;
+    if(task){
+        SeaMovieCacheHandler *handler = nil;
+        for(SeaMovieCacheHandler *tmp in task.handlers){
+            if([tmp.target isEqual:target]){
+                handler = tmp;
                 break;
             }
         }
-        
-        requirement.completion = nil;
-        if(requirement != nil)
-        {
-            [operation.requirements removeObject:requirement];
+
+        if(!handler){
+            [task.handlers removeObject:handler];
         }
-        if(operation.requirements.count == 0)
-        {
-            [operation.blockOperation cancel];
-            [self.downloadProgressDic removeObjectForKey:URL];
+        if(task.handlers.count == 0){
+            [task.operation cancel];
+            [self.downloadTasks removeObjectForKey:URL];
         }
     }
 }
 
-/**添加下载完成回调
- *@param requirement 要求
- *@param URL 视频路径
- */
-- (void)addRequirement:(SeaMovieCacheToolRequirement*) requirement forURL:(NSString*) URL
+- (void)addCompletion:(SeaMovieCacheCompletionHandler) completion thumbnailSize:(CGSize) size target:(id) target forURL:(NSString*) URL
 {
-    if([NSString isEmpty:URL] || requirement == nil)
+    if([NSString isEmpty:URL] || !completion)
         return;
     
-    SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:URL];
-    if(operation != nil)
-    {
-        [operation.requirements addObject:requirement];
+    SeaMovieCacheTask *task = [self.downloadTasks objectForKey:URL];
+    if(task){
+        SeaMovieCacheHandler *handler = [task handlerForTarget:target];
+        handler.completionHandler = completion;
+        handler.thumbnailSize = size;
     }
 }
 
-/**获取视频信息
- *@param URL 视频路径
- *@param requirement 要求
- */
-- (void)getMovieWithURL:(NSString*) URL requirement:(SeaMovieCacheToolRequirement*) requirement
+- (void)movieInfoForURL:(NSString*) URL thumbnailSize:(CGSize) size completion:(SeaMovieCacheCompletionHandler) completion target:(id) target
 {
-    if([NSString isEmpty:URL] || [self isRequestingWithURL:URL])
+    if([NSString isEmpty:URL] || [self isDownloadingForURL:URL])
         return;
     
-    SeaMovieCacheToolOperation *operation = [[SeaMovieCacheToolOperation alloc] init];
-    if(requirement)
-    {
-        [operation.requirements addObject:requirement];
+    //该图片正在下载，合并下载任务
+    if([self isDownloadingForURL:URL]){
+        [self addCompletion:completion thumbnailSize:size target:target forURL:URL];
+        return;
     }
     
-    [self.downloadProgressDic setObject:operation forKey:URL];
+    ///无效的URL不重新加载
+    @synchronized (self.badURLs){
+        if([self.badURLs containsObject:URL]){
+            !completion ?: completion(nil);
+            return;
+        }
+    }
+    
+    
+    SeaMovieCacheTask *task = [SeaMovieCacheTask new];
+    SeaMovieCacheHandler *handler = [SeaMovieCacheHandler new];
+    handler.target = target;
+    handler.completionHandler = completion;
+    handler.thumbnailSize = size;
+    [task.handlers addObject:handler];
+    
+    [self.downloadTasks setObject:task forKey:URL];
     
     dispatch_async(_cacheQueue, ^(void){
         
-        ///从内存获取
-        NSString *time = [[SeaMovieCacheTool defaultCache] objectForKey:URL];
-        if(!time)
-        {
-            NSString *path = [self pathForURL:URL];
-            
-            //获取本地缓存时间
-            NSError *error = nil;
-            time = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+        //获取本地缓存时间
+        BOOL exist = NO;
+        long long duration = [[SeaMovieDurationDataBase sharedInstance] durationForURL:URL];
+        if(duration > 0){
+            UIImage *image = [[SeaImageCacheTool sharedInstance] imageFromDiskForURL:URL thumbnailSize:CGSizeZero];
+            if(image){
+                SeaMovieCacheInfo *info = [SeaMovieCacheInfo new];
+                info.firstImage = image;
+                info.duration = duration;
+                
+                [self executeWithInfo:info URL:URL];
+                exist = YES;
+            }
         }
         
-        if(time)
-        {
-            UIImage *image = [[SeaImageCacheTool sharedInstance] imageFromMemoryWithURL:URL thumbnailSize:requirement.thumbnailSize];
-            if(!image)
-            {
-                image = [[SeaImageCacheTool sharedInstance] imageFromCacheWithURL:URL thumbnailSize:requirement.thumbnailSize];
-            }
-            
-            [self executeWithImage:image time:time URL:URL];
-        }
-        else
-        {
+        if(!exist){
             //从网络上加载
             dispatch_main_async_safe(^(void){
                 
-                [self getMovieInfoWithURL:URL requirement:requirement];
+                [self downloadMovieInfoForURL:URL];
             });
         }
     });
@@ -248,153 +222,123 @@
 /**获取视频信息
  *@param URL 视频路径
  */
-- (void)getMovieInfoWithURL:(NSString*) URL requirement:(SeaMovieCacheToolRequirement*) requirement
+- (void)downloadMovieInfoForURL:(NSString*) URL
 {
+    SeaMovieCacheTask *task = [self.downloadTasks objectForKey:URL];
     NSBlockOperation *operaton = [NSBlockOperation blockOperationWithBlock:^(void){
        
-        NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+        NSDictionary *opts = [NSDictionary dictionaryWithObject:@(NO) forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
 
-        NSURL *url = [[NSURL alloc] initWithString:URL];
+        NSURL *url = [NSURL URLWithString:URL];
+        if(!url){
+            @synchronized (self.badURLs){
+                [self.badURLs addObject:url];
+            }
+            [self executeWithImage:nil duration:0 URL:URL];
+            return;
+        }
         AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:opts];
         
         ///获取第一帧图片
         AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
         generator.appliesPreferredTrackTransform = YES;
-        generator.maximumSize = requirement.firstImageMaxSize;
+        generator.maximumSize = CGSizeZero;
         
+
+        SeaMovieCacheInfo *info = nil;
         NSError *error = nil;
         CGImageRef img = [generator copyCGImageAtTime:CMTimeMake(1, 2) actualTime:NULL error:&error];
-        UIImage *image = [UIImage imageWithCGImage: img];
+        UIImage *image = [UIImage imageWithCGImage:img];
         
-        NSString *time = nil;
-        if(image)
-        {
-            image = [[SeaImageCacheTool sharedInstance] cacheImage:image withURL:URL thumbnailSize:requirement.thumbnailSize saveToMemory:YES];
+        NSString *duration = nil;
+        if(image){
+            
+            image = [[SeaImageCacheTool sharedInstance] saveImageToDisk:image forURL:URL thumbnailSize:CGSizeZero saveToMemory:NO];
             
             ///获取视频时长
-            time = [NSString stringWithFormat:@"%lld", asset.duration.value / asset.duration.timescale];
-            [[SeaMovieCacheTool defaultCache] setObject:time forKey:URL];
-            
-            NSString *path = [self pathForURL:URL];
-            
-            NSData *data = [time dataUsingEncoding:NSUTF8StringEncoding];
-            [_fileManager createFileAtPath:path contents:data attributes:nil];
+            long long duration = asset.duration.value / asset.duration.timescale;
+
+            info = [SeaMovieCacheInfo infoWithDuration:duration image:image];
+            [[SeaMovieCacheTool defaultCache] setObject:info forKey:URL];
+            [[SeaMovieDurationDataBase sharedInstance] insertDuration:duration URL:URL];
         }
-        
-        [self executeWithImage:image time:time URL:URL];
+        [self executeWithInfo:info URL:URL];
     }];
+    task.operation = operaton;
     
     [self.queue addOperation:operaton];
 }
 
 //执行加载完回调
-- (void)executeWithImage:(UIImage*) image time:(NSString*) time URL:(NSString*) URL
+- (void)executeWithInfo:(SeaMovieCacheInfo*) info URL:(NSString*) URL
 {
     if(!URL)
         return;
     dispatch_main_async_safe(^(void){
         
-        SeaMovieCacheToolOperation *operation = [_downloadProgressDic objectForKey:URL];
-        if(operation != nil)
-        {
-            for(SeaMovieCacheToolRequirement *req in operation.requirements)
-            {
-                !req.completion ?: req.completion([time doubleValue], image);
+        SeaMovieCacheTask *task = [self.downloadTasks objectForKey:URL];
+        if(task){
+            for(SeaMovieCacheHandler *handler in task.handlers){
+                if(info){
+                    __block SeaMovieCacheInfo *cacheInfo = nil;
+                    [self movieInfoFromMemoryForURL:URL thumbnailSize:handler.thumbnailSize completion:^(SeaMovieCacheInfo *movieCacheInfo){
+                        cacheInfo = movieCacheInfo;
+                    }];
+                    if(cacheInfo == nil){
+                        cacheInfo = [self saveInfoToMemory:info thumbnailSize:handler.thumbnailSize forURL:URL];
+                    }
+                    
+                    !handler.completionHandler ?: handler.completionHandler(cacheInfo);
+                }else{
+                    NSLog(@"%@  图片读取失败", url);
+                    !handler.completionHandler ?: handler.completionHandler(nil);
+                }
             }
         }
-        [_downloadProgressDic removeObjectForKey:URL];
+        [self.downloadTasks removeObjectForKey:URL];
     });
 }
 
-#pragma mark- path
-
-/**获取缓存文件路径
- *@return 缓存路径
- */
-- (NSString*)getCachePath
+- (void)movieInfoFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size completion:(SeaMovieCacheCompletionHandler) completion
 {
-    NSString *cache = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *circle = [cache stringByAppendingPathComponent:@"cacheMovieInfo"];
-    
-    BOOL isDir;
-    BOOL exist = [_fileManager fileExistsAtPath:circle isDirectory:&isDir];
-    
-    if(!(exist && isDir))
-    {
-        NSError *error = nil;
-        if(![_fileManager createDirectoryAtPath:circle withIntermediateDirectories:YES attributes:nil error:&error])
-        {
-            NSLog(@"创建视频时间缓存文件夹失败 %@",error);
-            return nil;
-        }
+    NSCache *cache = [SeaMovieCacheTool defaultCache];
+    if(!CGSizeEqualToSize(size, CGSizeZero)){
+        URL = [self thumbnailKeyInMemoryForURL:URL size:size];
     }
     
-    return circle;
+    return [cache objectForKey:URL];
 }
 
-//MD5 处理url
-- (NSString*)pathForURL:(NSString*) url
-{
-    NSString *fileName = [SeaFileManager fileNameForURL:url suffix:@"txt"];
-    
-    return [self.cachePath stringByAppendingPathComponent:fileName];
-}
-
-#pragma mark- 清除缓存信息
-
-/**清除已过期的缓存视频信息
- *@param completion 清除完成回调
+/**缩略图在内存中的key
  */
-- (void)clearExpirationCacheMovieInfoWithCompletion:(void(^)(void)) completion
+- (NSString*)thumbnailKeyInMemoryForURL:(NSString*) url size:(CGSize) size
 {
-    dispatch_block_t block = ^(void)
-    {
-        NSError *error = nil;
-        
-        NSString *path = [[SeaMovieCacheTool sharedInstance] getCachePath];
-        
-        NSArray *resourceKeys = [NSArray arrayWithObjects:NSURLContentModificationDateKey, nil];
-        NSDirectoryEnumerator *enumerator = [_fileManager enumeratorAtURL:[NSURL fileURLWithPath:path isDirectory:YES] includingPropertiesForKeys:resourceKeys options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:NULL];
-        
-        
-        //要删除的图片
-        NSMutableArray *urlsToDelete = [NSMutableArray array];
-        
-        //过期时间
-        NSDate *expirationDate = [NSDate dateWithTimeIntervalSinceNow:- _diskCacheExpirationTimeInterval];
-        
-        //获取已过期的图片
-        for(NSURL *url in enumerator)
-        {
-            NSDictionary *dic = [url resourceValuesForKeys:resourceKeys error:nil];
-            // NSLog(@"%@", url);
-            
-            if([[expirationDate laterDate:[dic objectForKey:NSURLContentModificationDateKey]] isEqualToDate:expirationDate])
-            {
-                [urlsToDelete addObject:url];
-            }
-        }
-        
-        NSLog(@"begin delete");
-        //删除已过期的图片
-        for(NSURL *url in urlsToDelete)
-        {
-            //  NSLog(@"%@", url);
-            [_fileManager removeItemAtURL:url error:nil];
-        }
-        
-        if(error)
-        {
-            NSLog(@"清空缓存视频信息失败");
-        }
-        
-        if(completion)
-        {
-            dispatch_main_async_safe(completion);
-        }
-    };
+    url = [url stringByAppendingFormat:@"-w%.f-h%.f", size.width, size.height];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
+    return url;
+}
+
+- (SeaMovieCacheInfo*)saveInfoToMemory:(SeaMovieCacheInfo*) info thumbnailSize:(CGSize) size forURL:(NSString*) URL
+{
+    if(!info || [NSString isEmpty:URL])
+        return nil;
+   
+    NSCache *cache = [SeaMovieCacheTool defaultCache];
+    if(!CGSizeEqualToSize(size, CGSizeZero)){
+        //缓存缩略图
+        URL = [self thumbnailKeyInMemoryForURL:URL size:size];
+        
+        UIImage *thumbnail = [info.firstImage aspectFillThumbnailWithSize:size];
+        
+        if(thumbnail){
+            info = [SeaMovieCacheInfo infoWithDuration:info.duration image:info.firstImage];
+            [cache setObject:info forKey:URL];
+        }
+    }
+    else{
+        [cache setObject:info forKey:URL];
+    }
+    return info;
 }
 
 #pragma mark- format
@@ -403,7 +347,7 @@
  *@param timeInterval 视频时间长度
  *@return 类似 01:30:30 的视频时长
  */
-+ (NSString*)formatMovieTime:(NSTimeInterval) timeInterval
++ (NSString*)format:(NSTimeInterval) timeInterval
 {
     long long result = timeInterval / 60;
     int second = (int)((long long)timeInterval % 60);
@@ -413,43 +357,109 @@
     return hour > 0 ? [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, second] : [NSString stringWithFormat:@"%02d:%02d", minute, second];
 }
 
-#pragma mark- clear
+@end
 
-/**清除视频缓存
- *@param completion 清除完成回调
+
+@implementation SeaMovieDurationDataBase
+
+/**
+ 单例
  */
-- (void)clearMovieCacheWithCompletion:(void(^)(void)) completion
++ (instancetype)sharedInstance
 {
-    dispatch_block_t block = ^(void)
-    {
-        NSError *error = nil;
-        
-        NSString *path = [[SeaMovieCacheTool sharedInstance] getCachePath];
-        [_fileManager removeItemAtPath:path error:&error];
-        
-        if(error)
-        {
-            NSLog(@"清空缓存视频失败");
-        }
-        
-        //重新创建缓存文件夹
-        [self getCachePath];
-        
-        if(completion)
-        {
-            dispatch_main_async_safe(completion);
-        }
-    };
+    static dispatch_once_t once = 0;
+    static SeaMovieDurationDataBase *dataBase = nil;
     
-    if([[NSThread currentThread] isMainThread])
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
-    }
-    else
-    {
-        block();
+    dispatch_once(&once, ^(void){
+        
+        dataBase = [SeaMovieDurationDataBase new];
+    });
+    
+    return dataBase;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if(self){
+        
+        [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
+            
+            //创建视频数据表
+            if(![db executeUpdate:@"create table if not exists video_cache(id integer primary key autoincrement,url text,duration integer,cache_time TIMESTAMP default (datetime('now','localtime')))"]){
+                NSLog(@"创建视频缓存表失败");
+            }
+        }];
     }
     
+    return self;
+}
+
+/**
+ 插入一条数据
+
+ @param duration 视频时长
+ @param URL 视频链接
+ @return 是否成功
+ */
+- (BOOL)insertDuration:(long long) duration URL:(NSString*) URL
+{
+    if([NSString isEmpty:URL])
+        return NO;
+    __block BOOL result = NO;
+    [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
+       
+        result = [db executeUpdateWithFormat:@"insert into video_cache(duration, url) values(?,?)", @(duration), URL];
+    }];
+    
+    return result;
+}
+
+/**
+ 删除小于或等于对应时间的视频数据
+
+ @param date 要小于等于的时间
+ @return 是否成功
+ */
+- (BOOL)deleteCachesEarlierOrEqualDate:(NSDate*) date
+{
+    if(!date)
+        return NO;
+    
+    __block BOOL result = NO;
+    [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
+       
+        result = [db executeUpdateWithFormat:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate timeFromDate:date format:DateFormatYMdHms]];
+    }];
+    
+    return result;
+}
+
+/**
+ 获取对应视频链接的时长
+
+ @param URL 视频链接
+ @return 视频时长
+ */
+- (long long)durationForURL:(NSString*) URL
+{
+    if([NSString isEmpty:URL])
+        return -1;
+    
+    __block long long duration = -1;
+    
+    [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
+       
+        FMResultSet *rs = [db executeQueryWithFormat:@"select duration from video_cache where url='%@'", URL];
+        while ([rs next]) {
+            duration = [rs longLongIntForColumn:@"duration"];
+            break;
+        }
+    }];
+    
+    return duration;
 }
 
 @end
+
+

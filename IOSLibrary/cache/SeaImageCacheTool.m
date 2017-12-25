@@ -12,9 +12,13 @@
 #import "SeaBasic.h"
 #import "SeaMovieCacheTool.h"
 #import "SeaHttpTask.h"
+#import "NSString+Utilities.h"
+#import "UIImage+Utilities.h"
+#import "SeaImageCacheTask.h"
+#import "SeaMovieCacheTool.m"
 
 //图片文件后缀
-static NSString *const SeaImageCacheToolImageJPGType = @"jpg";
+static NSString *const SeaImageCacheToolImageJPG = @"jpg";
 
 //缓存的文件夹
 static NSString *const SeaImageCacheDirectory @"SeaImageCache";
@@ -32,11 +36,11 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 //下载队列
 @property(nonatomic,strong) SeaURLSessionManager *sessionManager;
 
-///失败的URL 数组元素是 NSString
-@property(nonatomic,strong) NSMutableSet *badURLs;
+///失败的URL
+@property(nonatomic,strong) NSMutableSet<NSString*> *badURLs;
 
 ///正在下载的任务
-@property(nonatomic,strong) NSMutableDictionary<NSString*, SeaImageCacheToolOperation*> *downloadTasks;
+@property(nonatomic,strong) NSMutableDictionary<NSString*, SeaImageCacheTask*> *downloadTasks;
 
 @end
 
@@ -47,8 +51,6 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
     self = [super init];
     if(self)
     {
-        self.timeoutSeconds = 25.0;
-        
         _cacheQueue = dispatch_queue_create("SeaImageCahce", DISPATCH_QUEUE_CONCURRENT);
         
         _fileManager = [[NSFileManager alloc] init];
@@ -105,7 +107,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 }
 
 //内存图片
-+ (NSCache*)defaultCache
++ (NSCache<NSString*,UIImage*>*)defaultCache
 {
     static NSCache *cache = nil;
     if(cache == nil)
@@ -176,55 +178,38 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 
 #pragma mark- cancel
 
-/**取消相关下载
- *@param urls 数组元素是url, NSString 对象
- */
-- (void)cancelDownloadWithURLs:(NSArray*) urls
+- (void)cancelDownloadForURLs:(NSArray<NSString*>*) URLs
 {
-    for(NSString *url in urls)
-    {
-        SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
-        if(operation != nil)
-        {
-            operation.requirements = nil;
-            [operation.downloadTask cancel];
-            [self.downloadTasks removeObjectForKey:url];
+    for(NSString *URL in URLs){
+        SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
+        if(task){
+            [task.downloadTask cancel];
+            [self.downloadTasks removeObjectForKey:URL];
         }
     }
 }
 
-
-/**取消单个下载
- *@param url 正在请求的url
- *@param target 下载图片的对象，如UIImageView
- */
-- (void)cancelDownloadWithURL:(NSString *)url target:(id) target
+- (void)cancelDownloadForURL:(NSString *)URL target:(id) target
 {
-    if([NSString isEmpty:url])
+    if([NSString isEmpty:URL])
         return;
 
-    SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
-    if(operation != nil)
-    {
-        SeaImageCacheToolRequirement *requirement = nil;
-        for(SeaImageCacheToolRequirement *req in operation.requirements)
-        {
-            if([req.target isEqual:target])
-            {
-                requirement = req;
+    SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
+    if(task){
+        SeaImageCacheHandler *handler = nil;
+        for(SeaImageCacheHandler *tmp in task.handlers){
+            if([tmp.target isEqual:target]){
+                handler = tmp;
                 break;
             }
         }
         
-        requirement.completion = nil;
-        if(requirement != nil)
-        {
-            [operation.requirements removeObject:requirement];
+        if(handler != nil){
+            [task.handlers removeObject:handler];
         }
-        if(operation.requirements.count == 0)
-        {
-            [operation.downloadTask cancel];
-            [self.downloadTasks removeObjectForKey:url];
+        if(task.handlers.count == 0){
+            [task.downloadTask cancel];
+            [self.downloadTasks removeObjectForKey:URL];
         }
     }
 }
@@ -232,67 +217,42 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 ///取消所有任务
 - (void)cancelAllTasks
 {
-    [self.downloadTasks enumerateKeysAndObjectsUsingBlock:^(SeaImageCacheToolOperation *operaton, NSString *url, BOOL *stop){
+    [self.downloadTasks enumerateKeysAndObjectsUsingBlock:^(SeaImageCacheTask *task, NSString *URL, BOOL *stop){
        
-        [operaton.downloadTask cancel];
+        [task.downloadTask cancel];
     }];
     
     [self.downloadTasks removeAllObjects];
 }
 
-/**添加下载完成回调
- *@param completion 下载完成回调
- *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
- *@param target 下载图片的对象，如UIImageView
- *@param url 图片路径
- */
-- (void)addCompletion:(SeaImageCacheToolCompletionHandler) completion thumbnailSize:(CGSize) size target:(id) target forURL:(NSString*) url
+- (void)addCompletion:(SeaImageCacheCompletionHandler) completion thumbnailSize:(CGSize) size target:(id) target forURL:(NSString*) URL
 {
-    if([NSString isEmpty:url] || completion == nil)
+    if([NSString isEmpty:URL] || completion == nil)
         return;
 
-    SeaImageCacheToolOperation *operation = [_downloadProgressDic objectForKey:url];
-    if(operation != nil)
-    {
-        SeaImageCacheToolRequirement *req = [[SeaImageCacheToolRequirement alloc] init];
-        req.completion = completion;
-        req.thumbnailSize = size;
-        req.target = target;
-        [operation.requirements addObject:req];
+    SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
+    if(task != nil){
+        SeaImageCacheHandler *handler = [task handlerForTarget:target];
+        handler.completionHandler = completion;
+        handler.thumbnailSize = size;
     }
 }
 
-/**添加下载进度回调
- *@param progressHandler 进度回调
- *@param url 图片路径
- *@param target 下载图片的对象，如UIImageView
- */
-- (void)addProgressHandler:(SeaImageCacheToolProgressHandler) progressHandler forURL:(NSString *)url target:(id) target
+- (void)addProgressHandler:(SeaImageCacheProgressHandler) progressHandler forURL:(NSString *)URL target:(id) target
 {
-    if([NSString isEmpty:url] || progressHandler == nil)
+    if([NSString isEmpty:URL] || progressHandler == nil)
         return;
     
-    SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
-    if(operation != nil)
-    {
-        [self.sessionManager setShowUploadProgress:YES forTask:operation.downloadTask];
-        for(SeaImageCacheToolRequirement *req in operation.requirements)
-        {
-            if([req.target isEqual:target])
-            {
-                req.progressHandler = progressHandler;
-                break;
-            }
-        }
+    SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
+    if(task != nil){
+        SeaImageCacheHandler *handler = [task handlerForTarget:target];
+        handler.progressHandler = progressHandler;
     }
 }
 
-/**相关下载是否正在进行中
- *@param url 正在请求的url
- */
-- (BOOL)isRequestingWithURL:(NSString*) url
+- (BOOL)isDownloadingForURL:(NSString*) URL
 {
-    return [self.downloadTasks objectForKey:url] != nil;
+    return [self.downloadTasks objectForKey:URL] != nil;
 }
 
 #pragma mark- SeaHttpTaskDelegate
@@ -304,19 +264,17 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
     if(error == SeaHttpErrorCodeNoError){
         dispatch_async(_cacheQueue, ^(void){
             
-            NSData *data = [NSData dataWithContentsOfURL:URL];
+            NSData *data = [NSData dataWithContentsOfURL:URL options:NSDataReadingUncached error:nil];
             UIImage *image = [UIImage imageWithData:data];
             
             ///链接不是图片
-            if(!image)
-            {
-                @synchronized (self.badURLs)
-                {
+            if(!image){
+                @synchronized (self.badURLs){
                     [self.badURLs addObject:url];
                 }
             }
             
-            [self executeWithImage:image url:url fromNetwork:NO];
+            [self executeWithImage:image URL:url];
         });
     }else{
         ///添加无效的URL，防止继续加载
@@ -327,40 +285,32 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
            && error != NSURLErrorNetworkConnectionLost
            && error != NSURLErrorNotConnectedToInternet
            && error != NSURLErrorDataNotAllowed
-           && error != NSURLErrorInternationalRoamingOff)
-        {
-            @synchronized (self.badURLs)
-            {
+           && error != NSURLErrorInternationalRoamingOff){
+            @synchronized (self.badURLs){
                 [self.badURLs addObject:url];
             }
         }
-        
-        NSString *url = conn.URL;
-        [self executeWithImage:nil url:url fromNetwork:NO];
+
+        [self executeWithImage:nil URL:url];
     }
 }
 
 
 - (void)URLSessionTask:(NSURLSessionTask *)task didUpdateDownloadProgress:(NSProgress *)progress
 {
-    NSString *url = [task.originalRequest.URL absoluteString];
+    NSString *URL = [task.originalRequest.URL absoluteString];
     
-    SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
-    for(SeaImageCacheToolRequirement *req in operation.requirements)
-    {
-        if(req.progressHandler != nil)
-        {
-            req.progressHandler(progress.fractionCompleted);
-        }
-    }
-}
+    SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
+    for(SeaImageCacheHandler *handler in task.handlers){
+        !handler.progressHandler ?: handler.progressHandler(progress.fractionCompleted);
+    }}
 
 #pragma mark- private method
 
-//MD5 处理url
-- (NSString*)pathForURL:(NSString*) url
+//MD5 处理
+- (NSString*)pathForURL:(NSString*) URL
 {
-    NSString *fileName = [SeaFileManager fileNameForURL:url suffix:SeaImageCacheToolImageJPGType];
+    NSString *fileName = [SeaFileManager fileNameForURL:URL suffix:SeaImageCacheToolImageJPG];
     
     return [self.cachePath stringByAppendingPathComponent:fileName];
 }
@@ -375,70 +325,61 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 }
 
 //执行图片加载完回调
-- (void)executeWithImage:(UIImage*) image url:(NSString*) url fromNetwork:(BOOL) fromNetwork
+- (void)executeWithImage:(UIImage*) image URL:(NSString*) URL
 {
     if(!url)
         return;
     dispatch_main_async_safe(^(void){
         
-        SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
-        if(operation != nil)
-        {
-            for(SeaImageCacheToolRequirement *req in operation.requirements)
-            {
-                if(image)
-                {
-                    UIImage *ret = [self imageFromMemoryWithURL:url thumbnailSize:req.thumbnailSize];
-                    if(ret == nil)
-                    {
-                        ret = [self cacheImage:image thumbnailSize:req.thumbnailSize forURL:url];
+        SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
+        if(task != nil){
+            for(SeaImageCacheHandler *handler in task.handlers){
+                if(image){
+                    UIImage *ret = [self imageFromMemoryForURL:URL thumbnailSize:handler.thumbnailSize];
+                    if(ret == nil){
+                        ret = [self saveImageToMemory:image thumbnailSize:handler.thumbnailSize forURL:URL];
                     }
                     
-                    req.completion(ret, fromNetwork);
-                }
-                else
-                {
+                    !handler.completionHandler ?: handler.completionHandler(ret);
+                }else{
                     NSLog(@"%@  图片读取失败", url);
-                    req.completion(nil,fromNetwork);
+                    !handler.completionHandler ?: handler.completionHandler(nil);
                 }
             }
         }
-        [self.downloadTasks removeObjectForKey:url];
+        [self.downloadTasks removeObjectForKey:URL];
     });
 }
 
 #pragma mark- 获取图片
 
-/**下载图片
- *@param url 图片路径
+/**
+ 下载图片
+
+ @param URL 图片路径
  */
-- (void)downloadImageWithURL:(NSString*) url
+- (void)downloadImageWithURL:(NSString*) URL
 {
-    SeaImageCacheToolOperation *operation = [self.downloadTasks objectForKey:url];
+    SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
     
-    NSURLSessionDownloadTask *downloadTask = [self.sessionManager downloadTaskWithURL:url destinationPath:[self pathForURL:url] completion:nil];
-    operation.downloadTask = downloadTask;
+    NSURLSessionDownloadTask *downloadTask = [self.sessionManager downloadTaskWithURL:URL destinationPath:[self pathForURL:URL] completion:nil];
+    task.downloadTask = downloadTask;
     [self.sessionManager addDelegate:self forTask:downloadTask];
     
     [downloadTask resume];
 }
 
-/**通过图片路径获取本地缓存图片，如果没有则返回nil
- *@param url 图片路径
- *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
- */
-- (UIImage*)imageFromCacheWithURL:(NSString*) url thumbnailSize:(CGSize) size
+- (UIImage*)imageFromDiskForURL:(NSString*) URL thumbnailSize:(CGSize) size
 {
     NSString *imagePath = nil;
     NSString *thumbnailKey = nil;
     
     UIImage *image = nil;
     
-    imagePath = [self pathForURL:url];
+    imagePath = [self pathForURL:URL];
     //判断是否使用缩略图
-    if(!CGSizeEqualToSize(size, CGSizeZero))
-    {
-        thumbnailKey = [self thumbnailKeyInMemoryForURL:url size:size];
+    if(!CGSizeEqualToSize(size, CGSizeZero)){
+        thumbnailKey = [self thumbnailKeyInMemoryForURL:URL size:size];
     }
     
     //获取本地缓存图片
@@ -451,15 +392,13 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
     image = [UIImage imageWithData:data];
     
     //使用缩略图
-    if(thumbnailKey)
-    {
+    if(thumbnailKey){
         //生成缩略图
         image = [image aspectFillThumbnailWithSize:size];
     }
     
     //保存在内存
-    if(image)
-    {
+    if(image){
         NSCache *cache = [SeaImageCacheTool defaultCache];
         if(thumbnailKey)
         {
@@ -467,174 +406,138 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
         }
         else if(imagePath)
         {
-            [cache setObject:image forKey:url];
+            [cache setObject:image forKey:URL];
         }
     }
     
     return image;
 }
 
-/**通过图片路径获取内存图片，如果没有则返回nil
- *@param url 图片路径
- *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
- */
-- (UIImage*)imageFromMemoryWithURL:(NSString*) url thumbnailSize:(CGSize) size
+- (UIImage*)imageFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size
 {
     NSCache *cache = [SeaImageCacheTool defaultCache];
-    NSString *key = url;
+    NSString *key = URL;
     
     //判断是否使用缩略图
-    if(!CGSizeEqualToSize(size, CGSizeZero))
-    {
-        key = [self thumbnailKeyInMemoryForURL:url size:size];
+    if(!CGSizeEqualToSize(size, CGSizeZero)){
+        key = [self thumbnailKeyInMemoryForURL:URL size:size];
     }
     
     return [cache objectForKey:key];
 }
 
-/**获取图片 先在内存中获取，没有则在缓存文件中查找，没有才通过http请求下载图片
- *@param url 图片路径
- *@param size 缩略图大小，如果值为CGSizeZero 表明不使用缩略图
- *@param completion 图片加载完成回调
- *@param target 下载图片的对象，如UIImageView
- */
-- (void)getImageWithURL:(NSString*) url thumbnailSize:(CGSize) size completion:(SeaImageCacheToolCompletionHandler) completion target:(id) target
+- (void)imageForURL:(NSString*) URL thumbnailSize:(CGSize) size completion:(SeaImageCacheCompletionHandler) completion target:(id) target
 {
-    if([NSString isEmpty:url] || [_downloadProgressDic objectForKey:url])
+    if([NSString isEmpty:URL]){
+        !completion ?: completion(nil);
         return;
+    }
+    
+    //该图片正在下载，合并下载任务
+    if([self isDownloadingForURL:URL]){
+        [self addCompletion:completion thumbnailSize:size target:target forURL:URL];
+        return;
+    }
     
     ///无效的URL不重新加载
-    @synchronized (self.badURLs)
-    {
-        if([self.badURLs containsObject:url])
-        {
-            !completion ?: completion(nil, NO);
+    @synchronized (self.badURLs){
+        if([self.badURLs containsObject:URL]){
+            !completion ?: completion(nil);
             return;
         }
     }
     
-    SeaImageCacheToolOperation *operation = [[SeaImageCacheToolOperation alloc] init];
-    SeaImageCacheToolRequirement *requirement = [[SeaImageCacheToolRequirement alloc] init];
-    requirement.thumbnailSize = size;
-    requirement.completion = completion;
-    requirement.target = target;
-    [operation.requirements addObject:requirement];
+    SeaImageCacheTask *task = [SeaImageCacheTask new];
+    SeaImageCacheHandler *handler = [SeaImageCacheHandler new];
+    handler.thumbnailSize = size;
+    handler.completionHandler = completion;
+    handler.target = target;
+    [task.handlers addObject:handler];
     
-    [_downloadProgressDic setObject:operation forKey:url];
+    [self.downloadTasks setObject:task forKey:URL];
     
     dispatch_async(_cacheQueue, ^(void){
 
-        NSString *imagePath = [self pathForURL:url];
+        NSString *imagePath = [self pathForURL:URL];
         
         //获取本地缓存图片
         NSError *error = nil;
         NSData *data = [NSData dataWithContentsOfFile:imagePath options:NSDataReadingUncached error:&error];
 
         UIImage *image = [UIImage imageWithData:data];
-        if(image)
-        {
-            [self executeWithImage:image url:url fromNetwork:NO];
+        if(image){
+            [self executeWithImage:image URL:URL];
         }
-        else
-        {
+        else{
             //从网络上加载
-            [self downloadImageWithURL:url];
+            [self downloadImageWithURL:URL];
         }
     });
 }
 
-/**缓存图片
- *@param image 要缓存的图片
- *@param url 图片路径
- *@param size 缩略图大小，如果值为CGSizeZero 表明不缓存缩略图
- *@param flag 是否需要保存到内存中
- *@return 如果保存在内存，则返回对应的图片，否则返回nil
- */
-- (UIImage*)cacheImage:(UIImage*) image withURL:(NSString*) url thumbnailSize:(CGSize) size saveToMemory:(BOOL) flag
+- (UIImage*)saveImageToDisk:(UIImage*) image forURL:(NSString*) URL thumbnailSize:(CGSize) size saveToMemory:(BOOL) flag
 {
-    if(image == nil || [NSString isEmpty:url])
+    if(image == nil || [NSString isEmpty:URL])
         return nil;
     
     UIImage *ret = nil;
-    if(flag)
-    {
-       ret = [self cacheImage:image thumbnailSize:size forURL:url];
+    if(flag){
+       ret = [self saveImageToMemory:image thumbnailSize:size forURL:URL];
     }
     
-    dispatch_block_t block = ^(void)
-    {
+    dispatch_async(_cacheQueue,  ^(void){
         NSString *imagePath = [self pathForURL:url];
         
         //获取图片的透明通道，判断图片是否是png
         CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(image.CGImage);
         BOOL imageIsPng = !(alphaInfo == kCGImageAlphaNone ||
-                                           alphaInfo == kCGImageAlphaNoneSkipFirst ||
-                                           alphaInfo == kCGImageAlphaNoneSkipLast);
+                            alphaInfo == kCGImageAlphaNoneSkipFirst ||
+                            alphaInfo == kCGImageAlphaNoneSkipLast);
         
         NSData *data = nil;
         //缓存原图
-        if(imageIsPng)
-        {
+        if(imageIsPng){
             data = UIImagePNGRepresentation(image);
         }
-        else
-        {
+        else{
             data = UIImageJPEGRepresentation(image, 1.0);
         }
         
         [_fileManager createFileAtPath:imagePath contents:data attributes:nil];
-    };
-    
-    dispatch_async(_cacheQueue, block);
+    });
     
     return ret;
 }
 
-/**缓存图片文件
- *@param imageFile 要缓存的图片文件
- *@param url 图片路径
- */
-- (void)cacheImageFile:(NSString*) imageFile withURL:(NSString*) url
+- (void)saveImageFileToDisk:(NSString*) imageFile forURL:(NSString*) URL
 {
-    if(![imageFile isKindOfClass:[NSString class]] || [NSString isEmpty:url])
+    if(![imageFile isKindOfClass:[NSString class]] || [NSString isEmpty:URL])
         return;
     
-    
-    dispatch_block_t block = ^(void)
-    {
-        NSString *imagePath = [self pathForURL:url];
+    dispatch_async(_cacheQueue, ^(void){
+        NSString *imagePath = [self pathForURL:URL];
         [_fileManager moveItemAtPath:imageFile toPath:imagePath error:nil];
-    };
-    
-    dispatch_async(_cacheQueue, block);
+    });
 }
 
-/**保存图片到内存
- *@param image 要保存的图片
- *@param size 缩略图大小
- *@param url 图片路径
- *@return 保存后的图片
- */
-- (UIImage*)cacheImage:(UIImage*) image thumbnailSize:(CGSize) size forURL:(NSString*) url
+- (UIImage*)saveImageToMemory:(UIImage*) image thumbnailSize:(CGSize) size forURL:(NSString*) URL
 {
+    if(!image || [NSString isEmpty:URL])
+        return nil;
      NSCache *cache = [SeaImageCacheTool defaultCache];
-    if(!CGSizeEqualToSize(size, CGSizeZero))
-    {
+    if(!CGSizeEqualToSize(size, CGSizeZero)){
         //缓存缩略图
-        url = [self thumbnailKeyInMemoryForURL:url size:size];
+        URL = [self thumbnailKeyInMemoryForURL:URL size:size];
         
         UIImage *thumbnail = [image aspectFillThumbnailWithSize:size];
         
-        
-        if(thumbnail)
-        {
-            [cache setObject:thumbnail forKey:url];
+        if(thumbnail){
+            [cache setObject:thumbnail forKey:URL];
         }
         image = thumbnail;
     }
-    else
-    {
-        [cache setObject:image forKey:url];
+    else{
+        [cache setObject:image forKey:URL];
     }
     
     return image;
@@ -644,17 +547,14 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
  *@param imageData 要缓存的图片数据
  *@path 缓存路径
  */
-- (void)cacheImageData:(NSData*) imageData withPath:(NSString*) path
+- (void)saveImageData:(NSData*) imageData withPath:(NSString*) path
 {
     if(imageData.length == 0)
         return;
     
-    dispatch_block_t block = ^(void)
-    {
-        [_fileManager createFileAtPath:path contents:imageData attributes:nil];
-    };
-    
-    dispatch_async(_cacheQueue, block);
+    dispatch_async(_cacheQueue, ^(void){
+         [_fileManager createFileAtPath:path contents:imageData attributes:nil];
+    });
 }
 
 /**获取图片缓存文件路径
@@ -663,57 +563,42 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 - (NSString*)getCachePath
 {
     NSString *cache = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *circle = [cache stringByAppendingPathComponent:_cahceImageDirectory_];
+    cache = [cache stringByAppendingPathComponent:SeaImageCacheDirectory];
     
     BOOL isDir;
-    BOOL exist = [_fileManager fileExistsAtPath:circle isDirectory:&isDir];
+    BOOL exist = [_fileManager fileExistsAtPath:cache isDirectory:&isDir];
     
-    // NSLog(@"%@ 存在%d,%d", circle, exist, isDir);
-    
-    if(!(exist && isDir))
-    {
+    if(!(exist && isDir)){
         NSError *error = nil;
-        if(![_fileManager createDirectoryAtPath:circle withIntermediateDirectories:YES attributes:nil error:&error])
-        {
+        if(![_fileManager createDirectoryAtPath:cache withIntermediateDirectories:YES attributes:nil error:&error]){
             NSLog(@"创建缓存文件夹失败 %@",error);
             return nil;
         }
     }
     
-    return circle;
+    return cache;
 }
 
 #pragma mark- clear cache
 
-/**删除图片缓存
- *@param urls 数组元素是 网络图片路径 NSString对象
- */
-- (void)removeCacheImageWithURL:(NSArray*) urls
+- (void)removeCacheImageForURLs:(NSArray<NSString*>*) URLs
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         
-        for(NSString *url in urls)
-        {
-            NSString *imagePath = [self pathForURL:url];
-            if(imagePath)
-            {
+        for(NSString *URL in URLs){
+            NSString *imagePath = [self pathForURL:URL];
+            if(imagePath){
                 [_fileManager removeItemAtPath:imagePath error:nil];
             }
             NSCache *cache = [SeaImageCacheTool defaultCache];
-            [cache removeObjectForKey:url];
+            [cache removeObjectForKey:URL];
         }
     });
 }
 
-
-/**清除所有的缓存图片
- *@param completion 清除完成回调
- */
-
 - (void)clearCacheImageWithCompletion:(void (^)(void))completion
 {
-    dispatch_block_t block = ^(void)
-    {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
         NSError *error = nil;
         
         [[SeaMovieCacheTool sharedInstance] clearMovieCacheWithCompletion:nil];
@@ -721,21 +606,17 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
         NSString *path = [[SeaImageCacheTool sharedInstance] getCachePath];
         [_fileManager removeItemAtPath:path error:&error];
         
-        if(error)
-        {
+        if(error){
             NSLog(@"清空缓存图片失败");
         }
         
         //重新创建缓存文件夹
         [self getCachePath];
         
-        if(completion)
-        {
+        if(completion){
             dispatch_main_async_safe(completion);
         }
-    };
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block);
+    });
 }
 
 /**清除已过期的缓存图片
@@ -743,8 +624,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
  */
 - (void)clearExpirationCacheImageWithCompletion:(void(^)(void)) completion
 {
-    dispatch_block_t block = ^(void)
-    {
+    dispatch_block_t block = ^(void){
         NSError *error = nil;
 
         NSString *path = [[SeaImageCacheTool sharedInstance] getCachePath];
@@ -754,38 +634,33 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
         
         
         //要删除的图片
-        NSMutableArray *urlsToDelete = [NSMutableArray array];
+        NSMutableArray *URLsToDelete = [NSMutableArray array];
         
         //过期时间
         NSDate *expirationDate = [NSDate dateWithTimeIntervalSinceNow:- _diskCacheExpirationTimeInterval];
         
         //获取已过期的图片
-        for(NSURL *url in enumerator)
-        {
+        for(NSURL *URL in enumerator){
             NSDictionary *dic = [url resourceValuesForKeys:resourceKeys error:nil];
-           // NSLog(@"%@", url);
             
-            if([[expirationDate laterDate:[dic objectForKey:NSURLContentModificationDateKey]] isEqualToDate:expirationDate])
-            {
-                [urlsToDelete addObject:url];
+            if([[expirationDate laterDate:[dic objectForKey:NSURLContentModificationDateKey]] isEqualToDate:expirationDate]){
+                [URLsToDelete addObject:URL];
             }
         }
-        
-        NSLog(@"begin delete");
+
         //删除已过期的图片
-        for(NSURL *url in urlsToDelete)
-        {
+        for(NSURL *URL in URLsToDelete){
           //  NSLog(@"%@", url);
-            [_fileManager removeItemAtURL:url error:nil];
+            [_fileManager removeItemAtURL:URL error:nil];
         }
         
-        if(error)
-        {
+        [[SeaMovieDurationDataBase sharedInstance] deleteCachesEarlierOrEqualDate:expirationDate];
+        
+        if(error){
             NSLog(@"清空缓存图片失败");
         }
         
-        if(completion)
-        {
+        if(completion){
             dispatch_main_async_safe(completion);
         }
     };
@@ -800,31 +675,22 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
  */
 - (void)caculateCacheSizeWithCompletion:(void(^)(unsigned long long size)) completion
 {
-    dispatch_block_t block = ^(void)
-    {
+    dispatch_block_t block = ^(void){
         NSString *path = [[SeaImageCacheTool sharedInstance] getCachePath];
 
         unsigned long long fileSize = 0;
         
-        
-        if([_fileManager fileExistsAtPath:path])
-        {
+        if([_fileManager fileExistsAtPath:path]){
             NSArray *subPaths = [_fileManager subpathsAtPath:path];
             
-            for(NSString *subPath in subPaths)
-            {
+            for(NSString *subPath in subPaths){
                 NSDictionary *dic = [_fileManager attributesOfItemAtPath:[path stringByAppendingPathComponent:subPath] error:nil];
-
                 fileSize += [dic fileSize];
             }
         }
         
-        NSLog(@"缓存大小%lld", fileSize);
-        
-        if(completion)
-        {
-            dispatch_main_async_safe(^(void)
-            {
+        if(completion){
+            dispatch_main_async_safe(^(void){
                 completion(fileSize);
             });
         }
@@ -842,36 +708,26 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
  */
 + (NSString*)formatBytes:(long long) bytes
 {
-    if(bytes > 1024)
-    {
+    if(bytes > 1024){
         long long kb = bytes / 1024;
-        if(kb > 1024)
-        {
+        if(kb > 1024){
             long long mb = kb / 1024;
-            if(mb > 1024)
-            {
+            if(mb > 1024){
                 long long gb = mb / 1024;
-                if(gb > 1024)
-                {
+                if(gb > 1024){
                     return [NSString stringWithFormat:@"%0.2LfT", (long double)gb / 1024.0];
-                }
-                else
-                {
+                }else{
                     return [NSString stringWithFormat:@"%0.2LfG", (long double)mb / 1024.0];
                 }
             }
-            else
-            {
+            else{
                 return [NSString stringWithFormat:@"%0.2LfM", (long double)kb / 1024.0];
             }
         }
-        else
-        {
+        else{
             return [NSString stringWithFormat:@"%lldK", kb];
         }
-    }
-    else
-    {
+    }else{
         return [NSString stringWithFormat:@"%lld字节", bytes];
     }
 }
