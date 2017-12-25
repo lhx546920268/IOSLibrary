@@ -21,7 +21,7 @@
 
 - (NSString*)formatDuration
 {
-    return [SeaMovieCacheTool fo]
+    return [SeaMovieCacheTool format:self.duration]
 }
 
 - (instancetype)infoWithDuration:(long long)duration image:(UIImage *)image
@@ -343,11 +343,7 @@
 
 #pragma mark- format
 
-/**格式化视频时间
- *@param timeInterval 视频时间长度
- *@return 类似 01:30:30 的视频时长
- */
-+ (NSString*)format:(NSTimeInterval) timeInterval
++ (NSString*)format:(long long) duration
 {
     long long result = timeInterval / 60;
     int second = (int)((long long)timeInterval % 60);

@@ -138,10 +138,10 @@ typedef void(^SeaMovieCacheCompletionHandler)(SeaMovieCacheInfo *cacheInfo);
 #pragma mark- format
 
 /**格式化视频时长
- *@param timeInterval 视频时间长度
+ *@param duration 视频时间长度
  *@return 类似 01:30:30 的视频时长
  */
-+ (NSString*)format:(NSTimeInterval) timeInterval;
++ (NSString*)format:(long long) duration;
 
 
 @end
