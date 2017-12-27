@@ -80,6 +80,8 @@
     return builder;
 }
 
+#pragma mark- left
+
 - (SeaAutoLayoutBuilder*)leftToSuperview
 {
     return self.left([self superview]);
@@ -88,7 +90,7 @@
 - (SeaAutoLayoutBuilder* (^)(id))left
 {
     return ^ SeaAutoLayoutBuilder* (id item){
-      
+        
         self.sea_item2 = item;
         self.sea_attr1 = NSLayoutAttributeLeading;
         self.sea_attr2 = NSLayoutAttributeLeading;
@@ -106,6 +108,24 @@
         return self;
     };
 }
+
+- (SeaAutoLayoutBuilder*)leftToSuperviewCenterX
+{
+    return self.leftToCenterX([self superview]);
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))leftToCenterX
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeLeading;
+        self.sea_attr2 = NSLayoutAttributeCenterX;
+        return self;
+    };
+}
+
+#pragma mark- top
 
 - (SeaAutoLayoutBuilder*)topToSuperview
 {
@@ -134,6 +154,24 @@
     };
 }
 
+- (SeaAutoLayoutBuilder*)topToSuperviewCenterY
+{
+    return self.topToCenterY([self superview]);
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))topToCenterY
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeTop;
+        self.sea_attr2 = NSLayoutAttributeCenterY;
+        return self;
+    };
+}
+
+#pragma mark- right
+
 - (SeaAutoLayoutBuilder*)rightToSuperview
 {
     return self.right([self superview]);
@@ -160,6 +198,24 @@
         return self;
     };
 }
+
+- (SeaAutoLayoutBuilder*)rightToSuperviewCenterX
+{
+    return self.rightToCenterX([self superview]);
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))rightToCenterX
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeTrailing;
+        self.sea_attr2 = NSLayoutAttributeCenterX;
+        return self;
+    };
+}
+
+#pragma mark- bottom
 
 - (SeaAutoLayoutBuilder*)bottomToSuperview
 {
@@ -188,6 +244,24 @@
     };
 }
 
+- (SeaAutoLayoutBuilder*)bottomToSuperviewCenterY
+{
+    return self.bottomToCenterY([self superview]);
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))bottomToCenterY
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeBottom;
+        self.sea_attr2 = NSLayoutAttributeCenterY;
+        return self;
+    };
+}
+
+#pragma mark- center
+
 - (SeaAutoLayoutBuilder*)centerXInSuperview
 {
     return self.centerX([self superview]);
@@ -201,6 +275,28 @@
         self.sea_item2 = item;
         self.sea_attr1 = NSLayoutAttributeCenterX;
         self.sea_attr2 = NSLayoutAttributeCenterX;
+        return self;
+    };
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))centerXToLeft
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeCenterX;
+        self.sea_attr2 = NSLayoutAttributeLeading;
+        return self;
+    };
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))centerXToRight
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeCenterX;
+        self.sea_attr2 = NSLayoutAttributeTrailing;
         return self;
     };
 }
@@ -221,6 +317,30 @@
     };
 }
 
+- (SeaAutoLayoutBuilder* (^)(id))centerYToTop
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeCenterY;
+        self.sea_attr2 = NSLayoutAttributeTop;
+        return self;
+    };
+}
+
+- (SeaAutoLayoutBuilder* (^)(id))centerYToBottom
+{
+    return ^ SeaAutoLayoutBuilder* (id item){
+        
+        self.sea_item2 = item;
+        self.sea_attr1 = NSLayoutAttributeCenterY;
+        self.sea_attr2 = NSLayoutAttributeBottom;
+        return self;
+    };
+}
+
+#pragma mark- width
+
 - (SeaAutoLayoutBuilder* (^)(CGFloat))width
 {
     return ^ SeaAutoLayoutBuilder* (CGFloat width){
@@ -239,6 +359,8 @@
         return self;
     };
 }
+
+#pragma mark- height
 
 - (SeaAutoLayoutBuilder* (^)(CGFloat))height
 {
@@ -259,6 +381,8 @@
     };
 }
 
+#pragma mark- ratio
+
 - (SeaAutoLayoutBuilder* (^)(CGFloat))aspectRatio
 {
     return ^ SeaAutoLayoutBuilder* (CGFloat ratio){
@@ -269,6 +393,8 @@
         return self;
     };
 }
+
+#pragma mark- relation
 
 - (SeaAutoLayoutBuilder* (^)(NSLayoutRelation))relation
 {
@@ -296,6 +422,8 @@
     return self;
 }
 
+#pragma mark- constant
+
 - (SeaAutoLayoutBuilder* (^)(CGFloat))multiplier
 {
     return ^ SeaAutoLayoutBuilder* (CGFloat multiplier){
@@ -311,6 +439,8 @@
         return self;
     };
 }
+
+#pragma mark- priority
 
 - (SeaAutoLayoutBuilder* (^)(UILayoutPriority))priority
 {
@@ -393,30 +523,39 @@
 - (UIView*)superview
 {
     UIView *superview = self.sea_item1.superview;
-
+    
 #if  SeaDebug
-    NSAssert(view != nil, @"添加约束前，必须把view添加到父视图");
+    NSAssert(superview != nil, @"添加约束前，必须把view添加到父视图");
 #endif
     
-    return view;
+    return superview;
 }
 
 /**
  构建约束
  */
-- (NSLayoutConstraint*)build
+- (NSLayoutConstraint *(^)(void))build
 {
-    [self adjustAutoLayout];
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.sea_item1 attribute:self.sea_attr1 relatedBy:NSLayoutRelationEqual toItem:[self fitItem:self.sea_item2 attribute:self.sea_attr2] attribute:self.sea_attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
-    constraint.priority = self.sea_priority;
-    
-    if(self.sea_item2){
-        [[self superview] addConstraint:constraint];
-    }else{
-        [self.sea_item1 addConstraint:constraint];
-    }
-    
-    return constraint;
+    return ^(void){
+        
+        [self adjustAutoLayout];
+        
+        if((self.sea_attr1 == NSLayoutAttributeTrailing && self.sea_attr2 == NSLayoutAttributeTrailing) || (self.sea_attr1 == NSLayoutAttributeBottom && self.sea_attr2 == NSLayoutAttributeBottom)){
+            self.sea_constant = -self.sea_constant;
+        }
+        
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.sea_item1 attribute:self.sea_attr1 relatedBy:self.sea_relation toItem:[self fitItem:self.sea_item2 attribute:self.sea_attr2] attribute:self.sea_attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
+        constraint.priority = self.sea_priority;
+        
+        if(self.sea_item2){
+            [[self superview] addConstraint:constraint];
+        }else{
+            [self.sea_item1 addConstraint:constraint];
+        }
+        
+        return constraint;
+    };
 }
 
 @end
+

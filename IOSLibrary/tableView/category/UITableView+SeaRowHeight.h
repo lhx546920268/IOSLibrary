@@ -1,9 +1,8 @@
 //
 //  UITableView+SeaRowHeight.h
-//  BeautifulLife
 //
 //  Created by 罗海雄 on 17/9/2.
-//  Copyright © 2017年 qianseit. All rights reserved.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -82,3 +81,4 @@ typedef void(^SeaTableHeaderFooterConfiguration)(__kindof UIView *headerOrFooter
 - (CGFloat)sea_heightForFooter:(UIView*) footer section:(NSInteger) section configuration:(SeaTableHeaderFooterConfiguration) configuration;
 
 @end
+

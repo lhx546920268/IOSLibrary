@@ -9,8 +9,8 @@
 #define Sea_SeaUtlities_h
 
 #import "NSArray+Utilities.h"
-#import "NSAttributedString+Utlities.h"
-#import "NSDate+Utilities.h"
+#import "NSAttributedString+Utils.h"
+#import "NSDate+Utils.h"
 #import "NSDictionary+Utilities.h"
 #import "NSIndexPath+Utilities.h"
 #import "NSJSONSerialization+Utilities.h"

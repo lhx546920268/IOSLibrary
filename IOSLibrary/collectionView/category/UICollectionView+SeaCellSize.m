@@ -3,12 +3,12 @@
 //  Sea
 //
 //  Created by 罗海雄 on 17/8/23.
-//  Copyright © 2017年 lhx. All rights reserved.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import "UICollectionView+SeaCellSize.h"
 #import <objc/runtime.h>
-#import "UIView+Utils.h"
+#import "UIView+SeaAutoLayout.h"
 
 @implementation UICollectionView (SeaCellSize)
 
@@ -29,10 +29,7 @@
         @selector(registerClass:forSupplementaryViewOfKind:withReuseIdentifier:),
     };
     
-    
-
-    for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++)
-    {
+    for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
         
         SEL selector1 = selectors[i];
         SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"sea_cellSize_%@", NSStringFromSelector(selector1)]);
@@ -49,26 +46,25 @@
 - (void)sea_cellSize_registerClass:(Class) clazz forCellWithReuseIdentifier:(NSString *) identifier
 {
     [self sea_cellSize_registerClass:clazz forCellWithReuseIdentifier:identifier];
-    
-    [[self sea_cells] setObject:[[clazz alloc] initWithFrame:CGRectZero] forKey:identifier];
+    [[self sea_registerObjects] setObject:NSStringFromClass(clazz) forKey:identifier];
 }
 
 - (void)sea_cellSize_registerNib:(UINib *) nib forCellWithReuseIdentifier:(NSString *) identifier
 {
     [self sea_cellSize_registerNib:nib forCellWithReuseIdentifier:identifier];
-    [[self sea_cells] setObject:[[nib instantiateWithOwner:nil options:nil] firstObject] forKey:identifier];
+    [[self sea_registerObjects] setObject:nib forKey:identifier];
 }
 
 - (void)sea_cellSize_registerClass:(Class) clazz forSupplementaryViewOfKind:(NSString *) kind withReuseIdentifier:(NSString *)identifier
 {
     [self sea_cellSize_registerClass:clazz forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
-    [[self sea_cells] setObject:[[clazz alloc] initWithFrame:CGRectZero] forKey:identifier];
+    [[self sea_registerObjects] setObject:NSStringFromClass(clazz) forKey:identifier];
 }
 
 - (void)sea_cellSize_registerNib:(UINib *) nib forSupplementaryViewOfKind:(NSString *) kind withReuseIdentifier:(NSString *)identifier
 {
     [self sea_cellSize_registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
-    [[self sea_cells] setObject:[[nib instantiateWithOwner:nib options:nil] firstObject] forKey:identifier];
+    [[self sea_registerObjects] setObject:nib forKey:identifier];
 }
 
 #pragma mark - data change
@@ -76,8 +72,7 @@
 - (void)sea_cellSize_reloadSections:(NSIndexSet *) sections
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0)    {
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             
             [caches removeObjectForKey:@(section)];
@@ -89,8 +84,7 @@
 - (void)sea_cellSize_deleteSections:(NSIndexSet *) sections
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             
             [caches removeObjectForKey:@(section)];
@@ -102,22 +96,16 @@
 - (void)sea_cellSize_moveSection:(NSInteger) section toSection:(NSInteger) newSection
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         NSMutableDictionary *dic = [caches objectForKey:@(section)];
         NSMutableDictionary *newDic = [caches objectForKey:@(newSection)];
         
-        if(dic != nil && newDic != nil)
-        {
+        if(dic != nil && newDic != nil){
             [caches setObject:dic forKey:@(newSection)];
             [caches setObject:newDic forKey:@(section)];
-        }
-        else if(dic != nil)
-        {
+        }else if(dic != nil){
             [caches setObject:dic forKey:@(newSection)];
-        }
-        else if (newDic != nil)
-        {
+        }else if (newDic != nil){
             [caches setObject:newDic forKey:@(section)];
         }
     }
@@ -128,36 +116,28 @@
 - (void)sea_cellSize_moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *) newIndexPath
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         NSValue *value = [self sea_cachedSizeForIndexPath:indexPath];
         NSValue *toValue = [self sea_cachedSizeForIndexPath:newIndexPath];
         
-        if(value != nil && toValue != nil)
-        {
+        if(value != nil && toValue != nil){
             [self sea_setCellSize:value forIndexPath:indexPath];
             [self sea_setCellSize:toValue forIndexPath:newIndexPath];
-        }
-        else if(value != nil)
-        {
+        }else if(value != nil){
             [self sea_setCellSize:value forIndexPath:indexPath];
-        }
-        else if (toValue != nil)
-        {
+        }else if (toValue != nil){
             [self sea_setCellSize:toValue forIndexPath:newIndexPath];
         }
     }
-
+    
     [self sea_cellSize_moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
 
 - (void)sea_cellSize_deleteItemsAtIndexPaths:(NSArray *)indexPaths
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
-    if(caches.count > 0)
-    {
-        for(NSIndexPath *indexPath in indexPaths)
-        {
+    if(caches.count > 0){
+        for(NSIndexPath *indexPath in indexPaths){
             [self sea_setCellSize:nil forIndexPath:indexPath];
         }
     }
@@ -168,10 +148,8 @@
 - (void)sea_cellSize_reloadItemsAtIndexPaths:(NSArray *)indexPaths
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
-    if(caches.count > 0)
-    {
-        for(NSIndexPath *indexPath in indexPaths)
-        {
+    if(caches.count > 0){
+        for(NSIndexPath *indexPath in indexPaths){
             [self sea_setCellSize:nil forIndexPath:indexPath];
         }
     }
@@ -191,7 +169,7 @@
 
 - (CGSize)sea_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath configuration:(SeaCellConfiguration) configuration
 {
-   return [self sea_cellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeZero configuration:configuration];
+    return [self sea_cellSizeForIdentifier:identifier indexPath:indexPath constraintSize:CGSizeZero configuration:configuration];
 }
 
 - (CGSize)sea_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize configuration:(SeaCellConfiguration) configuration
@@ -212,18 +190,16 @@
 - (CGSize)sea_cellSizeForIdentifier:(NSString*) identifier indexPath:(NSIndexPath*) indexPath constraintSize:(CGSize) constraintSize type:(SeaAutoLayoutCalculateType) type configuration:(SeaCellConfiguration) configuration
 {
     NSValue *value = [self sea_cachedSizeForIndexPath:indexPath];
-    if (value != nil && !CGSizeEqualToSize(CGSizeZero, [value CGSizeValue]))
-    {
+    if (value != nil && !CGSizeEqualToSize(CGSizeZero, [value CGSizeValue])){
         return [value CGSizeValue];
     }
     
     //计算大小
-    UICollectionReusableView *cell = [[self sea_cells] objectForKey:identifier];
+    UICollectionReusableView *cell = [self sea_cellForIdentifier:identifier];
     configuration(cell);
     
     UIView *contentView = cell;
-    if([cell isKindOfClass:[UICollectionViewCell class]])
-    {
+    if([cell isKindOfClass:[UICollectionViewCell class]]){
         contentView = [(UICollectionViewCell*)cell contentView];
     }
     CGSize size = [contentView sea_sizeThatFits:constraintSize type:type];
@@ -240,8 +216,7 @@
 - (NSMutableDictionary<NSNumber*, NSMutableDictionary<NSNumber*, NSValue*>* >*)sea_cellSizeCaches
 {
     NSMutableDictionary *caches = objc_getAssociatedObject(self, _cmd);
-    if(caches == nil)
-    {
+    if(caches == nil){
         caches = [NSMutableDictionary dictionary];
         objc_setAssociatedObject(self, _cmd, caches, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
@@ -263,39 +238,59 @@
 {
     NSMutableDictionary *caches = [self sea_cellSizeCaches];
     NSMutableDictionary *dic = [caches objectForKey:@(indexPath.section)];
-    if(dic == nil)
-    {
+    if(dic == nil){
         dic = [NSMutableDictionary dictionary];
         [caches setObject:dic forKey:@(indexPath.section)];
     }
     
-    if(size != nil)
-    {
+    if(size != nil){
         [dic setObject:size forKey:@(indexPath.item)];
-    }
-    else
-    {
+    }else{
         [dic removeObjectForKey:@(indexPath.item)];
     }
 }
 
 #pragma mark- 注册的 cells
 
-///注册的cells header footer 用来计算
-- (NSMutableDictionary *)sea_cells
+///注册的 class nib
+- (NSMutableDictionary*)sea_registerObjects
 {
+    NSMutableDictionary *objects = objc_getAssociatedObject(self, _cmd);
+    if (objects == nil){
+        objects = [NSMutableDictionary dictionary];
+        objc_setAssociatedObject(self, _cmd, objects, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return objects;
+}
+
+///注册的cells header footer 用来计算
+- (__kindof UICollectionReusableView*)sea_cellForIdentifier:(NSString *)identifier
+{
+    NSAssert(identifier != nil, @"identifier 不能为 nil");
+    
     NSMutableDictionary<NSString*, UICollectionReusableView*> *cells = objc_getAssociatedObject(self, _cmd);
-    if (cells == nil)
-    {
+    if (cells == nil){
         cells = [NSMutableDictionary dictionary];
         objc_setAssociatedObject(self, _cmd, cells, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    return cells;
-}
-
-- (__kindof UICollectionReusableView*)cellForIdentifier:(NSString *)identifier
-{
-    return [[self sea_cells] objectForKey:identifier];
+    
+    UICollectionReusableView *view = [cells objectForKey:identifier];
+    if(view == nil){
+        NSObject *obj = [[self sea_registerObjects] objectForKey:identifier];
+        if([obj isKindOfClass:[UINib class]]){
+            UINib *nib = (UINib*)obj;
+            view = [[nib instantiateWithOwner:nil options:nil] firstObject];
+            [cells setObject:view forKey:identifier];
+        }else if([obj isKindOfClass:[NSString class]]){
+            Class clazz = NSClassFromString((NSString*)obj);
+            view = [clazz new];
+            [cells setObject:view forKey:identifier];
+        }
+    }
+    
+    NSAssert(view != nil, @"必须注册 %@ 对应的 cell header footer", identifier);
+    
+    return view;
 }
 
 
@@ -312,3 +307,4 @@
 }
 
 @end
+

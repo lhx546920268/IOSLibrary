@@ -18,6 +18,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 ///自动布局 构造器
 @interface SeaAutoLayoutBuilder : NSObject
 
+#pragma mark- left
+
 /**
  左边距离父视图
  */
@@ -32,6 +34,18 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  左边和某个item的水平间距
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^leftToRight)(id item);
+
+/**
+ 左边父视图中间的水平间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder *leftToSuperviewCenterX;
+
+/**
+ 左边和某个item中间水平间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^leftToCenterX)(id item);
+
+#pragma mark- top
 
 /**
  顶部距离父视图
@@ -49,6 +63,18 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^topToBottom)(id item);
 
 /**
+ 顶部父视图中间的垂直间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder *topToSuperviewCenterY;
+
+/**
+ 顶部和某个item中间垂直间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^topToCenterY)(id item);
+
+#pragma mark- right
+
+/**
  右边距离父视图
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder *rightToSuperview;
@@ -62,6 +88,18 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  右边和某个item的水平间距
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^rightToLeft)(id item);
+
+/**
+ 右边父视图中间的水平间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder *rightToSuperviewCenterX;
+
+/**
+ 右边和某个item中间水平间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^rightToCenterX)(id item);
+
+#pragma mark- bottom
 
 /**
  底部距离父视图
@@ -79,6 +117,18 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^bottomToTop)(id item);
 
 /**
+ 底部父视图中间的垂直间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder *bottomToSuperviewCenterY;
+
+/**
+ 底部和某个item中间垂直间距
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^bottomToCenterY)(id item);
+
+#pragma mark- center
+
+/**
  相对于父视图水平居中
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder *centerXInSuperview;
@@ -87,6 +137,16 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  水平居中于某个item
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^centerX)(id item);
+
+/**
+ 水平居中于某个item的左边
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^centerXToLeft)(id item);
+
+/**
+ 水平居中于某个item的右边
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^centerXToRight)(id item);
 
 /**
  相对于父视图垂直居中
@@ -99,6 +159,18 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^centerY)(id item);
 
 /**
+ 垂直居中于某个item顶部
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^centerYToTop)(id item);
+
+/**
+ 垂直居中于某个item底部
+ */
+@property(nonatomic, readonly) SeaAutoLayoutBuilder* (^centerYToBottom)(id item);
+
+#pragma mark- width
+
+/**
  设置自身宽度
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^width)(CGFloat width);
@@ -107,6 +179,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  设置宽度等于某个item
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^widthTo)(id item);
+
+#pragma mark- height
 
 /**
  设置自身高度
@@ -118,10 +192,14 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^heightTo)(id item);
 
+#pragma mark- ratio
+
 /**
  设置宽高比例 比如 宽是高的2倍 值就为2
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^aspectRatio)(CGFloat ratio);
+
+#pragma mark- relation
 
 /**
  >= = <=
@@ -143,6 +221,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder *greaterThanOrEqual;
 
+#pragma mark- constant
+
 /**
  比值，约束为 item1.value = item2.value * multiplier + margin
  */
@@ -152,6 +232,8 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  间距 当使用底部和右边约束时，如果要超出父视图，margin使用负数
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder* (^margin)(CGFloat margin);
+
+#pragma mark- priority
 
 /**
  优先级
@@ -173,11 +255,10 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder *priorityLow;
 
-
 /**
  构建约束
  */
-- (NSLayoutConstraint*)build;
+@property(nonatomic, readonly) NSLayoutConstraint* (^build)(void);
 
 /**
  重置
@@ -193,3 +274,4 @@ static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityReq
 + (instancetype)builderWithView:(UIView*) view;
 
 @end
+

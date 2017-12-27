@@ -3,7 +3,7 @@
 //  Sea
 //
 //  Created by 罗海雄 on 16/1/19.
-//  Copyright (c) 2016年 LHX. All rights reserved.
+//  Copyright (c) 2016年 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

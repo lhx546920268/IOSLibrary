@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
 
 /**请求失败错误码，成功 SeaHttpErrorCodeNoError 可能有 SeaHttpErrorCodeApiError
  */
-@property(nonatomic, assign) NSInteger errorCode;
+@property(nonatomic, readonly) NSInteger errorCode;
 
 /**
  获取 SeaURLSessionManager, 默认为 [SeaURLSessionManager shareInstance]

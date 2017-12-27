@@ -1,5 +1,5 @@
 //
-//  SeaUtilities.h
+//  SeaTools.h
 //  Sea
 
 //
@@ -14,7 +14,7 @@
  *@param radius 圆半径
  *@param arc 要获取坐标的弧度
  */
-UIKIT_EXTERN CGPoint PointInCircle(CGPoint center, CGFloat radius, CGFloat arc);
+UIKIT_EXTERN CGPoint pointInCircle(CGPoint center, CGFloat radius, CGFloat arc);
 
 /**获取app名称
  */
@@ -40,25 +40,10 @@ UIKIT_EXTERN void unregisterRemoteNotification(void);
  */
 UIKIT_EXTERN void openSystemSettings(void);
 
-
 /**拨打电话
- *@param phoneNumber 电话号码
+ *@param mobile 电话号码
  *@param flag 是否有弹窗提示
  */
-UIKIT_EXTERN void makePhoneCall(NSString *phoneNumber, BOOL flag);
+UIKIT_EXTERN void makePhoneCall(NSString *mobile, BOOL flag);
 
-/**商品价格格式化
- */
-UIKIT_EXTERN NSString* formatFloatPrice(float price);
 
-/**商品价格格式化
- */
-UIKIT_EXTERN NSString* formatStringPrice(NSString* price);
-
-/**从格式化的价格中获取商品价格
- */
-UIKIT_EXTERN NSString* priceFromFormatStringPrice(NSString* price);
-
-/**前往商城首页
- */
-UIKIT_EXTERN void goToMallHome(void);

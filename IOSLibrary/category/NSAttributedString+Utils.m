@@ -1,20 +1,22 @@
 //
-//  NSAttributedString+Utlities.m
-
+//  NSAttributedString+Utils.m
+//  IOSLibrary
 //
+//  Created by 罗海雄 on 2017/12/27.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
-#import "NSAttributedString+Utlities.h"
+#import "NSAttributedString+Utils.h"
 #import <CoreText/CoreText.h>
 #import "NSString+Utilities.h"
 
-@implementation NSAttributedString (Utlities)
+@implementation NSAttributedString (Utils)
 
 /**获取富文本框大小
  *@param width 每行最大宽度
  *@return 富文本框大小
  */
-- (CGSize)boundsWithConstraintWidth:(CGFloat) width
+- (CGSize)sea_boundsWithConstraintWidth:(CGFloat) width
 {
     return [self boundingRectWithSize:CGSizeMake(width, 8388608.0) options:NSStringDrawingTruncatesLastVisibleLine |
             NSStringDrawingUsesLineFragmentOrigin |
@@ -25,7 +27,7 @@
  *@param width 文本框宽度限制
  *@return 文本框大小
  */
-- (CGSize)coreTextBoundsWithConstraintWidth:(CGFloat)width
+- (CGSize)sea_coreTextBoundsWithConstraintWidth:(CGFloat)width
 {
     NSString *string = self.string;
     if([NSString isEmpty:string])
@@ -78,7 +80,7 @@
     CFRelease(frame);
     
     return CGSizeMake(totalWidth, totalHeight);
-
+    
 }
 
 @end

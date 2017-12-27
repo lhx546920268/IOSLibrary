@@ -3,7 +3,7 @@
 //  SeaBasic
 //
 //  Created by 罗海雄 on 15/11/4.
-//  Copyright © 2015年 qianseit. All rights reserved.
+//  Copyright © 2015年 罗海雄. All rights reserved.
 //
 
 #ifndef SeaViewControllerHeaders_h

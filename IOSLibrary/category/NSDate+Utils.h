@@ -1,32 +1,28 @@
 //
-//  NSDate+timeIntreval.h
-
+//  NSDate+Utils.h
+//  IOSLibrary
+//
+//  Created by 罗海雄 on 2017/12/27.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-///大小的Y会导致时间多出一年
+///大写的Y会导致时间多出一年
 
 //yyyy-MM-dd HH:mm:ss
-static NSString *const DateFormatYMdHms = @"yyyy-MM-dd HH:mm:ss";
+static NSString *const SeaDateFormatYMdHms = @"yyyy-MM-dd HH:mm:ss";
 
 //yyyy-MM-dd HH:mm
-static NSString *const DateFormatYMdHm = @"yyyy-MM-dd HH:mm";
+static NSString *const SeaDateFormatYMdHm = @"yyyy-MM-dd HH:mm";
 
 //yyyy-MM-dd
-static NSString *const DateFormatYMd = @"yyyy-MM-dd";
-
-//
-
-//yyyy/MM/dd HH:mm:ss
-static NSString *const DateFormatYMdHmsSlash = @"yyyy/MM/dd HH:mm:ss";
+static NSString *const SeaDateFormatYMd = @"yyyy-MM-dd";
 
 //北京时区
-static NSString *const BeiJingTimeZone = @"Asia/BeiJing";
+static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
 
-@interface NSDate (Utilities)
-
-#pragma mark- 单例
+@interface NSDate (Utils)
 
 /**NSDateFormatter 的单例 因为频繁地创建 NSDateFormatter 是非常耗资源的、耗时的
  */
@@ -34,83 +30,84 @@ static NSString *const BeiJingTimeZone = @"Asia/BeiJing";
 
 #pragma mark- 单个时间
 
-///当前时间的年月日
+///获取当前时间的 日期
 - (int)sea_day;
+
+///获取当前时间的 月份
 - (int)sea_month;
+
+///获取当前时间的 年份
 - (int)sea_year;
-- (NSString*)sea_weekDay;
+
+///获取当前时间的 星期几字符串
+- (NSString*)sea_weekdayString;
+
+///获取当前时间的 星期几 1-7 星期日 到星期六
+- (NSInteger)sea_weekday;
 
 #pragma mark- 时间获取
 
-/**通过给定 timeInterval 返回一个距离当前时间的 时间组合
- */
-+ (NSDateComponents *)componetsWithTimeInterval:(NSTimeInterval)timeInterval;
-
-/**通过给定时间 返回一个距离当前时间长度的字符串, 01:02:28
- */
-+ (NSString *)timeDescriptionOfTimeInterval:(NSTimeInterval)timeInterval;
-
 /**通过日期获取星期
  */
-+ (NSString*)getWeekday:(NSInteger) weekday;
++ (NSString*)sea_stringFromWeekDay:(NSInteger) weekday;
 
 /**获取中文月份
  */
-+ (NSString*)getChineseMonthFormNum:(NSInteger) num;
++ (NSString*)sea_stringFromMonth:(NSInteger) month;
 
 /**获取当前时间格式为 YYYY-MM-dd HH:mm:ss
  *@return 当前时间
  */
-+ (NSString*)getCurrentTime;
++ (NSString*)sea_currentTime;
 
 /**通过给的格式获取当前时间
  *@param format 时间格式， 如 YYYY-MM-dd HH:mm:ss
  *@return 当前时间
  */
-+ (NSString*)getCurrentTimeWithFormat:(NSString*) format;
++ (NSString*)sea_currentTimeWithFormat:(NSString*) format;
 
 /**以当前时间为准，获取以后或以前的时间 时间格式为YYYY-MM-dd HH:mm:ss
  *@param timeInterval 时间间隔 大于0时，获取以后的时间,小于0时，获取以前的时间
  *@return 时间
  */
-+ (NSString*)getTimeWithTimeInterval:(NSTimeInterval) timeInterval;
++ (NSString*)sea_timeWithTimeInterval:(NSTimeInterval) timeInterval;
 
 /**以当前时间为准，获取以后或以前的时间
  *@param timeInterval 时间间隔 大于0时，获取以后的时间,小于0时，获取以前的时间
  *@param format 时间格式为，如YYYY-MM-dd HH:mm:ss
  *@return 时间
  */
-+ (NSString*)getTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format;
++ (NSString*)sea_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString*) format;
 
 /**通过给定时间，获取以后或以前的时间
  *@param timeInterval 时间间隔 大于0时，获取以后的时间,小于0时，获取以前的时间
  *@param format 时间格式为，如YYYY-MM-dd HH:mm:ss
- *@param time 时间基准
+ *@param fromTime 以该时间为准
  *@return 时间
  */
-+ (NSString*)getTimeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format time:(NSString*) time;
++ (NSString*)sea_timeWithTimeInterval:(NSTimeInterval)timeInterval format:(NSString *)format fromTime:(NSString*) fromTime;
 
 #pragma mark- 时间转换
 
 /**把时间转换成其他形式 如 当天的不显示日期，08:00 同一个星期内的显示星期几
- *@param datetime 要格式化的时间
- *@Param formatString 时间格式 和 dateTime对应， 如 YYYY-MM-dd HH:mm:ss
+ *@param time 要格式化的时间
+ *@Param format 时间格式 和 time对应， 如 YYYY-MM-dd HH:mm:ss
  *@return 格式化后的时间，或nil，如果时间格式和时间不对应
  */
-+ (NSString*)datetime:(NSString*) datetime formatString:(NSString*) formatString;
++ (NSString*)sea_convertTime:(NSString*) time format:(NSString*) format;
 
 /**转换时间成---秒，分 前 如1小时前
  *@param time 要转换的时间
- *@param formatString 时间格式 和 dateTime对应， 如 YYYY-MM-dd HH:mm:ss
-*@return 转换后的时间，或nil，如果时间格式和时间不对应
+ *@param format 时间格式 和 time对应， 如 YYYY-MM-dd HH:mm:ss
+ *@return 转换后的时间，或nil，如果时间格式和时间不对应
  */
-+ (NSString*)previousDateWithTime:(NSString*) time formatString:(NSString*) formatString;
++ (NSString*)sea_convertTimeToAgo:(NSString*) time format:(NSString*) format;
 
 /**转换时间成---秒，分 前 如1小时前
  *@param timeInterval 要转换的时间戳
  *@return 转换后的时间，或nil，如果时间格式和时间不对应
  */
-+ (NSString*)previousDateWithTimeInterval:(NSTimeInterval) timeInterval;
++ (NSString*)sea_convertTimeIntervalToAgo:(NSTimeInterval) timeInterval;
 
 /**通过给定秒数 返回 秒，分 前 如1小时前，富文本
  */
@@ -186,10 +183,10 @@ static NSString *const BeiJingTimeZone = @"Asia/BeiJing";
 + (NSTimeInterval)timeIntervalFromNowWithDate:(NSString*) date;
 
 /**通过时间戳获取具体时间
-*@param time 时间戳，是距离1970年到当前的秒
-*@param format 要返回的时间格式
-*@return 具体时间
-*/
+ *@param time 时间戳，是距离1970年到当前的秒
+ *@param format 要返回的时间格式
+ *@return 具体时间
+ */
 + (NSString*)formatTimeInterval:(NSString*) time format:(NSString*) format;
 
 /**通过时间获取时间戳

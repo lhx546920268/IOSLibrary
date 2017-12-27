@@ -118,6 +118,34 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  */
 - (NSLayoutConstraint*)sea_centerYInItem:(id) item offset:(CGFloat) offset;
 
+/**
+ 相对于某个item的左边水平居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerXInItemLeft:(id) item;
+
+/**
+ 相对于某个item的右边水平居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerXInItemRight:(id) item;
+
+/**
+ 相对于某个item的顶部垂直居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerYInItemTop:(id) item;
+
+/**
+ 相对于某个item的底部垂直居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerYInItemBottom:(id) item;
+
 #pragma mark- insets
 
 /**
@@ -198,6 +226,13 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  */
 - (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
 
+/**
+ 设置在某个item中间位置的下面
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_topToItemCenterY:(id) item;
+
 #pragma mark- left
 
 /**
@@ -260,6 +295,13 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  @return 生成的约束
  */
 - (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+
+/**
+ 设置在某个item中间位置的右边
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_leftToItemCenterX:(id) item;
 
 #pragma mark- bottom
 
@@ -324,6 +366,13 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  */
 - (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
 
+/**
+ 设置在某个item中间位置的上面
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_bottomToItemCenterY:(id) item;
+
 #pragma mark- right
 
 /**
@@ -386,6 +435,13 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  @return 生成的约束
  */
 - (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation;
+
+/**
+ 设置在某个item中间位置的左边
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_rightToItemCenterX:(id) item;
 
 #pragma mark- size
 
@@ -550,3 +606,4 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 - (CGSize)sea_sizeThatFits:(CGSize) fitsSize type:(SeaAutoLayoutCalculateType) type;
 
 @end
+

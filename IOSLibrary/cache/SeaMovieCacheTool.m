@@ -3,7 +3,7 @@
 //  SuYan
 //
 //  Created by 罗海雄 on 16/4/25.
-//  Copyright © 2016年 qianseit. All rights reserved.
+//  Copyright © 2016年 罗海雄. All rights reserved.
 //
 
 #import "SeaMovieCacheTool.h"
@@ -13,7 +13,7 @@
 #import "SeaBasic.h"
 #import "SeaDataBase.h"
 #import "FMDB.h"
-#import "NSDate+Utilities.h"
+#import "NSDate+Utils.h"
 #import "SeaMovieCacheTask.h"
 #import "UIImage+Utilities.h"
 
@@ -425,7 +425,7 @@
     __block BOOL result = NO;
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        result = [db executeUpdateWithFormat:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate timeFromDate:date format:DateFormatYMdHms]];
+        result = [db executeUpdateWithFormat:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate timeFromDate:date format:SeaDateFormatYMdHms]];
     }];
     
     return result;

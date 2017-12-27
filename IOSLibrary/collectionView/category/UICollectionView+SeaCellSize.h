@@ -3,7 +3,7 @@
 //  Sea
 //
 //  Created by 罗海雄 on 17/8/23.
-//  Copyright © 2017年 lhx. All rights reserved.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -53,3 +53,4 @@ typedef void(^SeaCellConfiguration)(__kindof UICollectionReusableView *cell);
 - (NSIndexPath*)sea_footerIndexPathForSection:(NSInteger) section;
 
 @end
+

@@ -88,7 +88,7 @@
  */
 - (NSLayoutConstraint*)sea_centerXInItem:(id) item offset:(CGFloat) offset
 {
-    return self.sea_autoLayoutBuilder.centerX(item).margin(offset).build;
+    return self.sea_autoLayoutBuilder.centerX(item).margin(offset).build();
 }
 
 
@@ -129,7 +129,47 @@
  */
 - (NSLayoutConstraint*)sea_centerYInItem:(id) item offset:(CGFloat) offset
 {
-    return self.sea_autoLayoutBuilder.centerY(item).margin(offset).build;
+    return self.sea_autoLayoutBuilder.centerY(item).margin(offset).build();
+}
+
+/**
+ 相对于某个item的左边水平居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerXInItemLeft:(id) item
+{
+    return self.sea_autoLayoutBuilder.centerXToLeft(item).build();
+}
+
+/**
+ 相对于某个item的右边水平居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerXInItemRight:(id) item
+{
+    return self.sea_autoLayoutBuilder.centerXToRight(item).build();
+}
+
+/**
+ 相对于某个item的顶部垂直居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerYInItemTop:(id) item
+{
+    return self.sea_autoLayoutBuilder.centerYToTop(item).build();
+}
+
+/**
+ 相对于某个item的底部垂直居中
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_centerYInItemBottom:(id) item
+{
+    return self.sea_autoLayoutBuilder.centerYToBottom(item).build();
 }
 
 #pragma mark- insets
@@ -211,7 +251,7 @@
  */
 - (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.top(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.top(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -244,7 +284,17 @@
  */
 - (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.topToBottom(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.topToBottom(item).margin(margin).relation(relation).build();
+}
+
+/**
+ 设置在某个item中间位置的下面
+ @param item 对应的item
+ @return 生成的约束
+ */
+- (NSLayoutConstraint*)sea_topToItemCenterY:(id) item
+{
+    return self.sea_autoLayoutBuilder.topToCenterY(item).build();
 }
 
 #pragma mark- left
@@ -298,7 +348,7 @@
  */
 - (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.left(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.left(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -331,7 +381,12 @@
  */
 - (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.leftToRight(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.leftToRight(item).margin(margin).relation(relation).build();
+}
+
+- (NSLayoutConstraint*)sea_leftToItemCenterX:(id) item
+{
+    return self.sea_autoLayoutBuilder.leftToCenterX(item).build();
 }
 
 #pragma mark- bottom
@@ -385,7 +440,7 @@
  */
 - (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.bottom(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.bottom(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -418,7 +473,12 @@
  */
 - (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.bottomToTop(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.bottomToTop(item).margin(margin).relation(relation).build();
+}
+
+- (NSLayoutConstraint*)sea_bottomToItemCenterY:(id) item
+{
+    return self.sea_autoLayoutBuilder.bottomToCenterY(item).build();
 }
 
 #pragma mark- right
@@ -472,7 +532,7 @@
  */
 - (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.right(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.right(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -505,7 +565,12 @@
  */
 - (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.rightToLeft(item).margin(margin).relation(relation).build;
+    return self.sea_autoLayoutBuilder.rightToLeft(item).margin(margin).relation(relation).build();
+}
+
+- (NSLayoutConstraint*)sea_rightToItemCenterX:(id) item
+{
+    return self.sea_autoLayoutBuilder.rightToCenterX(item).build();
 }
 
 #pragma mark- size
@@ -613,7 +678,7 @@
  */
 - (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
-    return self.sea_autoLayoutBuilder.widthTo(item).margin(constant).multiplier(multiplier).build;
+    return self.sea_autoLayoutBuilder.widthTo(item).margin(constant).multiplier(multiplier).build();
 }
 
 /**
@@ -625,7 +690,7 @@
  */
 - (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
-    return self.sea_autoLayoutBuilder.heightTo(item).margin(constant).multiplier(multiplier).build;
+    return self.sea_autoLayoutBuilder.heightTo(item).margin(constant).multiplier(multiplier).build();
 }
 
 /**
@@ -635,7 +700,7 @@
  */
 - (NSLayoutConstraint*)sea_aspectRatio:(CGFloat) ratio
 {
-    return self.sea_autoLayoutBuilder.aspectRatio(ratio).build;
+    return self.sea_autoLayoutBuilder.aspectRatio(ratio).build();
 }
 
 /**
@@ -817,20 +882,20 @@
     CGSize size = CGSizeZero;
     if (type != SeaAutoLayoutCalculateTypeSize)
     {
-//        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
-//        self.translatesAutoresizingMaskIntoConstraints = NO;
+        //        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
+        //        self.translatesAutoresizingMaskIntoConstraints = NO;
         //添加临时约束
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:type == SeaAutoLayoutCalculateTypeHeight ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:type == SeaAutoLayoutCalculateTypeHeight ? fitsSize.width : fitsSize.height];
         constraint.priority = SeaAutoLayoutPriorityDefault;
         [self addConstraint:constraint];
         size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         [self removeConstraint:constraint];
-//        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
+        //        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
     }
     else
     {
-//        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
-//        self.translatesAutoresizingMaskIntoConstraints = NO;
+        //        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
+        //        self.translatesAutoresizingMaskIntoConstraints = NO;
         //添加临时约束
         NSLayoutConstraint *constraint = nil;
         if(!CGSizeEqualToSize(fitsSize, CGSizeZero))
@@ -848,10 +913,11 @@
             [self removeConstraint:constraint];
         }
         
-//        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
+        //        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
     }
     
     return size;
 }
 
 @end
+

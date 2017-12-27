@@ -1,14 +1,13 @@
 //
 //  UITableView+SeaRowHeight.m
-//  BeautifulLife
 //
 //  Created by 罗海雄 on 17/9/2.
-//  Copyright © 2017年 qianseit. All rights reserved.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import "UITableView+SeaRowHeight.h"
 #import <objc/runtime.h>
-#import "UIView+Utils.h"
+#import "UIView+SeaAutoLayout.h"
 
 ///tableView section 缓存大小
 @interface SeaTableViewSectionInfo : NSObject
@@ -29,8 +28,7 @@
 - (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
+    if(self){
         self.rowHeights = [NSMutableDictionary dictionary];
     }
     
@@ -51,16 +49,10 @@
         @selector(reloadRowsAtIndexPaths:withRowAnimation:),
         @selector(deleteRowsAtIndexPaths:withRowAnimation:),
         @selector(moveRowAtIndexPath:toIndexPath:),
-        
-        @selector(registerNib:forCellReuseIdentifier:),
-        @selector(registerClass:forCellReuseIdentifier:),
-        @selector(registerNib:forHeaderFooterViewReuseIdentifier:),
-        @selector(registerClass:forHeaderFooterViewReuseIdentifier:)
     };
     
     
-    for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++)
-    {
+    for(NSInteger i = 0;i < sizeof(selectors) / sizeof(SEL);i ++){
         SEL selector1 = selectors[i];
         SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"sea_rowHeight_%@", NSStringFromSelector(selector1)]);
         
@@ -71,47 +63,12 @@
     }
 }
 
-#pragma mark - register cells
-
-- (void)sea_rowHeight_registerClass:(Class) clazz forCellReuseIdentifier:(NSString *)identifier
-{
-    [self sea_rowHeight_registerClass:clazz forCellReuseIdentifier:identifier];
-    
-    [[self sea_cells] setObject:[[clazz alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] forKey:identifier];
-}
-
-- (void)sea_rowHeight_registerNib:(UINib *) nib forCellReuseIdentifier:(NSString *)identifier
-{
-    [self sea_rowHeight_registerNib:nib forCellReuseIdentifier:identifier];
-    [[self sea_cells] setObject:[[nib instantiateWithOwner:nil options:nil] firstObject] forKey:identifier];
-}
-
-- (void)sea_rowHeight_registerClass:(Class) clazz forHeaderFooterViewReuseIdentifier:(NSString *)identifier
-{
-    [self sea_rowHeight_registerClass:clazz forHeaderFooterViewReuseIdentifier:identifier];
-    if([clazz isSubclassOfClass:[UITableViewHeaderFooterView class]])
-    {
-        [[self sea_cells] setObject:[[clazz alloc] initWithReuseIdentifier:identifier] forKey:identifier];
-    }
-    else
-    {
-        [[self sea_cells] setObject:[[clazz alloc] initWithFrame:CGRectZero] forKey:identifier];
-    }
-}
-
-- (void)sea_rowHeight_registerNib:(UINib *) nib forHeaderFooterViewReuseIdentifier:(NSString *)identifier
-{
-    [self sea_rowHeight_registerNib:nib forHeaderFooterViewReuseIdentifier:identifier];
-    [[self sea_cells] setObject:[[nib instantiateWithOwner:nil options:nil] firstObject] forKey:identifier];
-}
-
 #pragma mark - data change
 
 - (void)sea_rowHeight_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             
             [caches removeObjectForKey:@(section)];
@@ -123,8 +80,7 @@
 - (void)sea_rowHeight_deleteSections:(NSIndexSet *) sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             
             [caches removeObjectForKey:@(section)];
@@ -136,22 +92,16 @@
 - (void)sea_rowHeight_moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         NSMutableDictionary *dic = [caches objectForKey:@(section)];
         NSMutableDictionary *newDic = [caches objectForKey:@(newSection)];
         
-        if(dic != nil && newDic != nil)
-        {
+        if(dic != nil && newDic != nil){
             [caches setObject:dic forKey:@(newSection)];
             [caches setObject:newDic forKey:@(section)];
-        }
-        else if(dic != nil)
-        {
+        }else if(dic != nil){
             [caches setObject:dic forKey:@(newSection)];
-        }
-        else if (newDic != nil)
-        {
+        }else if (newDic != nil){
             [caches setObject:newDic forKey:@(section)];
         }
     }
@@ -162,22 +112,16 @@
 - (void)sea_rowHeight_moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
-    if(caches.count > 0)
-    {
+    if(caches.count > 0){
         NSNumber *number = [self sea_cachedCellHeightForIndexPath:indexPath];
         NSNumber *toNumber = [self sea_cachedCellHeightForIndexPath:newIndexPath];
         
-        if(number != nil && toNumber != nil)
-        {
+        if(number != nil && toNumber != nil){
             [self sea_setCellHeight:number forIndexPath:indexPath];
             [self sea_setCellHeight:toNumber forIndexPath:newIndexPath];
-        }
-        else if(number != nil)
-        {
+        }else if(number != nil){
             [self sea_setCellHeight:number forIndexPath:indexPath];
-        }
-        else if (toNumber != nil)
-        {
+        }else if (toNumber != nil){
             [self sea_setCellHeight:toNumber forIndexPath:newIndexPath];
         }
     }
@@ -188,10 +132,8 @@
 - (void)sea_rowHeight_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
-    if(caches.count > 0)
-    {
-        for(NSIndexPath *indexPath in indexPaths)
-        {
+    if(caches.count > 0){
+        for(NSIndexPath *indexPath in indexPaths){
             [self sea_setCellHeight:nil forIndexPath:indexPath];
         }
     }
@@ -202,10 +144,8 @@
 - (void)sea_rowHeight_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
-    if(caches.count > 0)
-    {
-        for(NSIndexPath *indexPath in indexPaths)
-        {
+    if(caches.count > 0){
+        for(NSIndexPath *indexPath in indexPaths){
             [self sea_setCellHeight:nil forIndexPath:indexPath];
         }
     }
@@ -230,13 +170,12 @@
 - (CGFloat)sea_rowHeightForIdentifier:(NSString *)identifier indexPath:(NSIndexPath *)indexPath configuration:(SeaTableCellConfiguration)configuration
 {
     NSNumber *number = [self sea_cachedCellHeightForIndexPath:indexPath];
-    if (number != nil && [number floatValue] != 0)
-    {
+    if (number != nil && [number floatValue] != 0){
         return [number floatValue];
     }
     
     //计算大小
-    UITableViewCell *cell = [self sea_cellForIdentifier:identifier];
+    UITableViewCell *cell = [self dequeueReusableCellWithIdentifier:identifier];
     CGFloat height = [self sea_rowHeightForCell:cell indexPath:indexPath configuration:configuration useCache:NO];
     
     return height;
@@ -270,31 +209,24 @@
  */
 - (CGFloat)sea_rowHeightForCell:(UITableViewCell*) cell indexPath:(NSIndexPath*) indexPath configuration:(SeaTableCellConfiguration) configuration useCache:(BOOL) useCache
 {
-    if(useCache)
-    {
+    if(useCache){
         NSNumber *number = [self sea_cachedCellHeightForIndexPath:indexPath];
-        if (number != nil && [number floatValue] != 0)
-        {
+        if (number != nil && [number floatValue] != 0){
             return [number floatValue];
         }
     }
     
-    if(configuration != nil)
-    {
+    if(configuration != nil){
         configuration(cell);
     }
     
     CGFloat width = CGRectGetWidth(self.frame);
     
     ///当使用系统的accessoryView时，content宽度会向右偏移
-    if (cell.accessoryView)
-    {
+    if (cell.accessoryView){
         width -= 16.0 + CGRectGetWidth(cell.accessoryView.frame);
-    }
-    else
-    {
-        switch (cell.accessoryType)
-        {
+    }else{
+        switch (cell.accessoryType){
             case UITableViewCellAccessoryDisclosureIndicator :
                 //箭头
                 width -= 34.0;
@@ -321,8 +253,7 @@
     CGFloat height = [contentView sea_sizeThatFits:CGSizeMake(width, 0) type:SeaAutoLayoutCalculateTypeHeight].height;
     
     ///如果有分割线 加上1px
-    if(self.separatorStyle != UITableViewCellSeparatorStyleNone)
-    {
+    if(self.separatorStyle != UITableViewCellSeparatorStyleNone){
         height += 1.0 / [UIScreen mainScreen].scale;
     }
     
@@ -343,7 +274,9 @@
     if(height != 0)
         return height;
     
-    return [self sea_heightForHeaderOrFooter:[self sea_cellForIdentifier:identifier] section:section isHeader:YES configuration:configuration useCache:NO];
+    UIView *header = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    NSAssert(header != nil, @"必须 register a header");
+    return [self sea_heightForHeaderOrFooter:header section:section isHeader:YES configuration:configuration useCache:NO];
 }
 
 /**获取header高度 主要用于静态 header，不重用的header
@@ -353,7 +286,7 @@
  */
 - (CGFloat)sea_heightForHeader:(UIView*) header section:(NSInteger) section
 {
-   return [self sea_heightForHeader:header section:section configuration:nil];
+    return [self sea_heightForHeader:header section:section configuration:nil];
 }
 
 /**获取header高度 主要用于静态 header，不重用的header
@@ -377,7 +310,9 @@
     if(height != 0)
         return height;
     
-    return [self sea_heightForHeaderOrFooter:[self sea_cellForIdentifier:identifier] section:section isHeader:NO configuration:configuration useCache:NO];
+    UIView *footer = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    NSAssert(footer != nil, @"必须 register a footer");
+    return [self sea_heightForHeaderOrFooter:footer section:section isHeader:NO configuration:configuration useCache:NO];
 }
 
 /**获取footer高度 主要用于静态 footer，不重用的footer
@@ -397,7 +332,7 @@
  */
 - (CGFloat)sea_heightForFooter:(UIView*) footer section:(NSInteger) section configuration:(SeaTableHeaderFooterConfiguration) configuration
 {
-     return [self sea_heightForHeaderOrFooter:footer section:section isHeader:NO configuration:configuration useCache:YES];
+    return [self sea_heightForHeaderOrFooter:footer section:section isHeader:NO configuration:configuration useCache:YES];
 }
 
 /**获取header or footer高度 主要用于静态 ，不重用的
@@ -409,36 +344,31 @@
  */
 - (CGFloat)sea_heightForHeaderOrFooter:(UIView*) headerOrFooter section:(NSInteger) section isHeader:(BOOL) isHeader configuration:(SeaTableHeaderFooterConfiguration) configuration useCache:(BOOL) useCache
 {
-    if(useCache)
-    {
+    if(useCache){
         CGFloat height = isHeader ? [self sea_cachedHeaderHeightForSection:section] : [self sea_cachedFooterHeightForSection:section];
         if(height != 0)
             return height;
     }
     
-    if(configuration != nil)
-    {
+    if(configuration != nil){
         configuration(headerOrFooter);
     }
     
     CGFloat width = CGRectGetWidth(self.frame);
     
     UIView *contentView = headerOrFooter;
-//    if([headerOrFooter isKindOfClass:[UITableViewHeaderFooterView class]])
-//    {
-//        contentView = [(UITableViewHeaderFooterView*)headerOrFooter contentView];
-//        if(contentView == nil)
-//            contentView = headerOrFooter;
-//    }
+    //    if([headerOrFooter isKindOfClass:[UITableViewHeaderFooterView class]])
+    //    {
+    //        contentView = [(UITableViewHeaderFooterView*)headerOrFooter contentView];
+    //        if(contentView == nil)
+    //            contentView = headerOrFooter;
+    //    }
     
     CGFloat height = [contentView sea_sizeThatFits:CGSizeMake(width, 0) type:SeaAutoLayoutCalculateTypeHeight].height;
     
-    if(isHeader)
-    {
+    if(isHeader){
         [self sea_setHeaderHeight:height forSection:section];
-    }
-    else
-    {
+    }else{
         [self sea_setFooterHeight:height forSection:section];
     }
     
@@ -451,8 +381,7 @@
 - (NSMutableDictionary<NSNumber*, SeaTableViewSectionInfo* >*)sea_rowHeightCaches
 {
     NSMutableDictionary *caches = objc_getAssociatedObject(self, _cmd);
-    if(caches == nil)
-    {
+    if(caches == nil){
         caches = [NSMutableDictionary dictionary];
         objc_setAssociatedObject(self, _cmd, caches, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
@@ -498,12 +427,9 @@
 {
     SeaTableViewSectionInfo *info = [self sea_sectionInfoForSection:indexPath.section];
     
-    if(height != nil)
-    {
+    if(height != nil){
         [info.rowHeights setObject:height forKey:@(indexPath.row)];
-    }
-    else
-    {
+    }else{
         [info.rowHeights removeObjectForKey:@(indexPath.row)];
     }
 }
@@ -520,25 +446,5 @@
     info.footerHeight = height;
 }
 
-#pragma mark- 注册的 cells
-
-///注册的cells header footer 用来计算
-- (NSMutableDictionary *)sea_cells
-{
-    NSMutableDictionary<NSString*, UITableViewCell*> *cells = objc_getAssociatedObject(self, _cmd);
-    if (cells == nil)
-    {
-        cells = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, _cmd, cells, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return cells;
-}
-
-- (UITableViewCell *)sea_cellForIdentifier:(NSString *)identifier
-{
-    return [[self sea_cells] objectForKey:identifier];
-}
-
-
-
 @end
+

@@ -3,7 +3,7 @@
 //  zhqt
 //
 //  Created by 罗海雄 on 17/9/4.
-//  Copyright © 2017年 qianseit. All rights reserved.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import "SeaTextListCell.h"

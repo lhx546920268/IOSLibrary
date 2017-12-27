@@ -3,7 +3,7 @@
 //  ThreadDemo
 //
 //  Created by 罗海雄 on 16/6/6.
-//  Copyright © 2016年 qianseit. All rights reserved.
+//  Copyright © 2016年 罗海雄. All rights reserved.
 //
 
 #import "SeaCollectionViewFlowFillLayout.h"

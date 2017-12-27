@@ -3,7 +3,7 @@
 //  WestMailDutyFee
 //
 //  Created by 罗海雄 on 15/8/30.
-//  Copyright (c) 2015年 qianseit. All rights reserved.
+//  Copyright (c) 2015年 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
