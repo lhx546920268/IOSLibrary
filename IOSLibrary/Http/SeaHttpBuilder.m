@@ -276,10 +276,10 @@ static NSString *const SeaContentType = @"Content-Type";
             NSString *value = (NSString*)param.value;
             if([value isKindOfClass:[NSString class]])
             {
-                value = [NSString encodeString:value];
+                value = [NSString sea_encodeStringWithUTF8:value];
             }
             
-            [string appendFormat:@"%@=%@", [NSString encodeString:param.key], value];
+            [string appendFormat:@"%@=%@", [NSString sea_encodeStringWithUTF8:param.key], value];
             if(i != self.params.count - 1){
                 [string appendString:@"&"];
             }
@@ -349,11 +349,11 @@ static NSString *const SeaContentType = @"Content-Type";
             NSString *value = (NSString*)param.value;
             if([value isKindOfClass:[NSString class]])
             {
-                value = [NSString encodeString:value];
+                value = [NSString sea_encodeStringWithUTF8:value];
             }
             
             [postData appendData:
-             [[NSString stringWithFormat:@"%@=%@%@", [NSString encodeString:param.key], value, i == self.params.count - 1 ? @"" : @"&"]
+             [[NSString stringWithFormat:@"%@=%@%@", [NSString sea_encodeStringWithUTF8:param.key], value, i == self.params.count - 1 ? @"" : @"&"]
               dataUsingEncoding:NSUTF8StringEncoding]];
         }
         i ++;

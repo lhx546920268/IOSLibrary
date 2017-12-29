@@ -1,15 +1,18 @@
 //
-//  NSString+customString.h
-
+//  NSString+Utils.h
+//  IOSLibrary
+//
+//  Created by 罗海雄 on 2017/12/29.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface NSString (Utilities)
+@interface NSString (Utils)
 
 #pragma mark- 空判断
 
-/**判断字符串是否为空，如果字符串为空格也会判断为空
+/**判断字符串是否为空，会去掉 空格 \n \r
  */
 + (BOOL)isEmpty:(NSString*) str;
 
@@ -71,89 +74,5 @@
 
 ///删除中文
 - (NSString*)stringByRemoveChinese;
-
-#pragma mark- 百度
-
-/**百度搜索链接
- */
-+ (NSString*)baiduURLForKey:(NSString*) key;
-
-#pragma mark- md5
-
-/**md5加密
- */
-- (NSString*)md5;
-
-#pragma mark- 验证合法性
-
-/**判断是否是是手机号码
- */
-- (BOOL)isMobileNumber;
-
-/**特殊字符验证
- */
-- (BOOL)isIncludeSpecialCharacter;
-
-/**邮政编码验证
- */
-- (BOOL)isZipCode;
-
-/**验证固定电话
- */
-- (BOOL)isTelPhoneNumber;
-
-/**验证邮箱
- */
-- (BOOL)isEmail;
-
-/**是否是身份证号码
- */
-- (BOOL)isCardId;
-
-/**是否是网址
- */
-- (BOOL)isURL;
-
-/**是否是中文
- */
-- (BOOL)isChinese;
-
-/**判断是不是纯数字
- */
-- (BOOL)isNumText;
-
-/**判断是否是整数
- */
-- (BOOL)isPureInt;
-
-/**是否是纯字母
- */
-- (BOOL)isLetterText;
-
-/**是否是字母和数字组合
- */
-- (BOOL)isLetterAndNumberText;
-
-/**是否是银行卡
- */
-- (BOOL)isBankCard;
-
-#pragma mark- 格式化
-
-///固定电话格式化
-- (NSString*)formatTelPhoneNumber;
-
-
-@end
-
-@interface NSMutableString (Utilities)
-
-/**移除最后一个字符
- */
-- (void)removeLastCharacter;
-
-/**通过给定字符串，移除最后一个字符串
- */
-- (void)removeLastStringWithString:(NSString*) str;
 
 @end

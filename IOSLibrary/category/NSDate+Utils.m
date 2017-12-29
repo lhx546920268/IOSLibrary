@@ -7,6 +7,7 @@
 //
 
 #import "NSDate+Utils.h"
+#import "NSString+Utilities.h"
 
 static const int SeaHourPerDay = 24;
 static const int SeaDayPerMonth = 30;
@@ -148,7 +149,7 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return retStr;
 }
 
-+ (NSString*)getChineseMonthFromMonth:(NSInteger) month
++ (NSString*)sea_stringFromMonth:(NSInteger) month
 {
     NSString *result = nil;
     switch (month){
@@ -271,8 +272,6 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     int minutes1 = (int)components1.minute;
 //    int minutes2 = (int)components2.minute;
     
-    //上午还是下午
-    
     
     NSString *result = nil;
     //同年
@@ -312,10 +311,6 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return [NSDate sea_convertTimeIntervalToAgo:[[formatter dateFromString:time] timeIntervalSince1970]];
 }
 
-/**转换时间成---秒，分 前 如1小时前
- *@param timeInterval 要转换的时间戳
- *@return 转换后的时间，或nil，如果时间格式和时间不对应
- */
 + (NSString*)sea_convertTimeIntervalToAgo:(NSTimeInterval) timeInterval
 {
     NSDate *currentDate = [NSDate date];
@@ -342,117 +337,26 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     
     //小于一个月
     interval = interval / SeaHourPerDay;
-    if(interval < SeaDayPerMonth)
-    {
+    if(interval < SeaDayPerMonth){
         return [NSString stringWithFormat:@"%ld天前", interval];
     }
     
-    interval = interval / _dayPerMonth_;
-    
-    if(interval < 12)
-    {
+    //小于一年
+    interval = interval / SeaDayPerMonth;
+    if(interval < 12){
         return [NSString stringWithFormat:@"%ld月前", interval];
     }
     
     long year = interval / 12;
-    //long day = interval % _dayPerYear_;
-    
     return [NSString stringWithFormat:@"%ld年前", year];
 }
 
-/**通过给定秒数 返回 秒，分 前 如1小时前，富文本
- */
-+ (NSMutableAttributedString*)previousAttributedDateWithIntrval:(long long) interval
++ (NSString*)sea_formatTime:(NSString*) time format:(NSString*) format
 {
-    if(interval < 0)
-        interval = - interval;
-    
-    UIFont *numberFont = [UIFont fontWithName:SeaMainNumberFontName size:14.0];
-    UIFont *stringFont = [UIFont fontWithName:SeaMainFontName size:14.0];
-    UIColor *textColor = [UIColor grayColor];
-    
-    NSMutableAttributedString *text = nil;
-    NSString *number = nil;
-    
-    if(interval < _timerInterval_)
-    {
-        number = [NSString stringWithFormat:@"%lld", interval];
-        text = [[NSMutableAttributedString alloc] initWithString:[number stringByAppendingString:@"秒前"]];
-        [text addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, text.length)];
-        [text addAttribute:NSFontAttributeName value:stringFont range:NSMakeRange(number.length, text.length - number.length)];
-        [text addAttribute:NSFontAttributeName value:numberFont range:NSMakeRange(0, number.length)];
-        
-        return text;
-    }
-    
-    interval = interval / _timerInterval_;
-    if(interval < _timerInterval_)
-    {
-        number = [NSString stringWithFormat:@"%lld", interval];
-        text = [[NSMutableAttributedString alloc] initWithString:[number stringByAppendingString:@"分前"]];
-        [text addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, text.length)];
-        [text addAttribute:NSFontAttributeName value:stringFont range:NSMakeRange(number.length, text.length - number.length)];
-        [text addAttribute:NSFontAttributeName value:numberFont range:NSMakeRange(0, number.length)];
-        
-        return text;
-    }
-    
-    interval = interval / _timerInterval_;
-    if(interval < _hourPerDay_)
-    {
-        number = [NSString stringWithFormat:@"%lld", interval];
-        text = [[NSMutableAttributedString alloc] initWithString:[number stringByAppendingString:@"小时前"]];
-        [text addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, text.length)];
-        [text addAttribute:NSFontAttributeName value:stringFont range:NSMakeRange(number.length, text.length - number.length)];
-        [text addAttribute:NSFontAttributeName value:numberFont range:NSMakeRange(0, number.length)];
-        
-        return text;
-    }
-    
-    interval = interval / _hourPerDay_;
-    
-    if(interval < _dayPerYear_)
-    {
-        number = [NSString stringWithFormat:@"%lld", interval];
-        text = [[NSMutableAttributedString alloc] initWithString:[number stringByAppendingString:@"天前"]];
-        [text addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, text.length)];
-        [text addAttribute:NSFontAttributeName value:stringFont range:NSMakeRange(number.length, text.length - number.length)];
-        [text addAttribute:NSFontAttributeName value:numberFont range:NSMakeRange(0, number.length)];
-        
-        return text;
-    }
-    
-    long long year = interval / _dayPerYear_;
-    long long day = interval % _dayPerYear_;
-    
-    NSString *yearString = [NSString stringWithFormat:@"%lld", year];
-    NSString *dayString = [NSString stringWithFormat:@"%lld", day];
-    
-    
-    text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@年零%@天前", yearString, dayString] attributes:[NSDictionary dictionaryWithObjectsAndKeys:NSForegroundColorAttributeName, textColor, NSFontAttributeName, stringFont, nil]];
-    
-    [text addAttribute:NSFontAttributeName value:numberFont range:NSMakeRange(0, yearString.length)];
-    [text addAttribute:NSFontAttributeName value:numberFont range:[dayString rangeOfString:text.string]];
-    
-    return text;
+    return [NSDate sea_formatTime:time fromFormat:SeaDateFormatYMdHms toFormat:format];
 }
 
-/**时间格式转换 从@"YYYY-MM-dd HH:mm:ss" 转换成给定格式
- *@param format 要转换成的格式
- *@retrun 转换后的时间
- */
-+ (NSString*)formatDate:(NSString*) time format:(NSString*) format
-{
-    return [NSDate formatDate:time fromFormat:SeaDateFormatYMdHms toFormat:format];
-}
-
-/**时间格式转换
- *@param time 要转换的时间
- *@param fromFormat 要转换的时间的格式
- *@param toFormat 要转换成的格式
- *@retrun 转换后的时间
- */
-+ (NSString*)formatDate:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat
++ (NSString*)sea_formatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:fromFormat];
@@ -465,12 +369,26 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return timeStr;
 }
 
-/**从时间字符串中获取date
- *@param time 时间字符串
- *@param format 时间格式
- *@return 时间date
- */
-+ (NSDate*)dateFromString:(NSString*) time format:(NSString*) format
++ (NSString*)sea_formatTimeInterval:(NSString*) timeInterval format:(NSString*) format
+{
+    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
+    [formatter setDateFormat:format];
+    
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+    
+    return [formatter stringFromDate:date];
+}
+
++ (NSTimeInterval)sea_timeIntervalFromTime:(NSString*) time format:(NSString*) format
+{
+    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
+    [formatter setDateFormat:format];
+    
+    NSDate *date = [formatter dateFromString:time];
+    return [date timeIntervalSince1970];
+}
+
++ (NSDate*)sea_dateFromTime:(NSString*) time format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
@@ -478,9 +396,7 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return date;
 }
 
-/**从date获取时间字符串
- */
-+ (NSString*)timeFromDate:(NSDate*) date format:(NSString*) format
++ (NSString*)sea_timeFromDate:(NSDate*) date format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
@@ -490,29 +406,18 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
 
 #pragma mark- 时间比较
 
-/**判断给定时间距离当前时间是否超过这个时间段
- *@param time 要比较的时间
- *@param timeInterval 时间约束
- */
-+ (BOOL)compareTime:(NSString*) time beyondTimeIntervalFromNow:(NSTimeInterval) timeInterval
++ (BOOL)sea_TimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval
 {
-    return [NSDate compareTime:[NSDate sea_currentTime] andTime:time beyondTimeInterval:timeInterval];
+    return [NSDate sea_TimeMinus:time time:[NSDate sea_currentTime] greaterThan:timeInterval];
 }
 
-/**判断两个时间的间隔是否超过这个时间段
- *@param time1 要比较的时间1
- *@param time2 要比较的时间2
- *@param timeInterval 时间约束
- */
-+ (BOOL)compareTime:(NSString *)time1 andTime:(NSString*) time2 beyondTimeInterval:(NSTimeInterval)timeInterval
++ (BOOL)sea_TimeMinus:(NSString *)time1 time:(NSString*) time2 greaterThan:(NSTimeInterval)timeInterval
 {
-    if([NSString isEmpty:time1])
-    {
+    if([NSString isEmpty:time1]){
         return YES;
     }
     
-    if([NSString isEmpty:time2])
-    {
+    if([NSString isEmpty:time2]){
         return YES;
     }
     
@@ -523,21 +428,10 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     NSDate *date1 = [dateFormatter dateFromString:time1];
     NSDate *date2 = [dateFormatter dateFromString:time2];
     
-    NSTimeInterval interval = [date1 timeIntervalSinceDate:date2];
-    
-    if(interval >= timeInterval)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+    return [date1 timeIntervalSinceDate:date2] > timeInterval;
 }
 
-/**比较两个时间是否相等
- */
-+ (BOOL)isTime:(NSString*) time1 equalTime:(NSString*) time2
++ (BOOL)sea_time:(NSString*) time1 equalToTime:(NSString*) time2
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:SeaDateFormatYMdHms];
@@ -548,97 +442,8 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return [date1 isEqualToDate:date2];
 }
 
-#pragma mark- 时间格式化
-
-/**把时间转换成 几年 几天 几个小时 几分 几秒
- *@return key 为年y，天d，小时h，分m，秒s value double
- */
-+ (NSDictionary*)formatTimeInterval:(long long) interval
-{
-    NSString *second = nil;
-    NSString *minute = nil;
-    NSString *hour = nil;
-    
-    NSString *day = nil;
-    NSString *year = nil;
-    
-    if(interval >= 60)
-    {
-        second = [NSString stringWithFormat:@"%lld", interval % 60];
-        
-        interval /= 60;
-        
-        if(interval >= 60)
-        {
-            minute = [NSString stringWithFormat:@"%lld", interval % 60];
-            
-            interval /= 60;
-            
-            if(interval >= 24)
-            {
-                hour = [NSString stringWithFormat:@"%lld", interval % 24];
-                interval /= 24;
-                
-                if(interval >= 365)
-                {
-                    day = [NSString stringWithFormat:@"%lld", interval % 24];
-                    year = [NSString stringWithFormat:@"%lld", interval / 365];
-                }
-                else
-                {
-                    day = [NSString stringWithFormat:@"%lld", interval];
-                }
-            }
-            else
-            {
-                hour = [NSString stringWithFormat:@"%lld", interval];
-            }
-        }
-        else
-        {
-            minute = [NSString stringWithFormat:@"%lld", interval];
-        }
-    }
-    else
-    {
-        second = [NSString stringWithFormat:@"%lld", interval];
-    }
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    
-    if(second)
-    {
-        [dic setObject:second forKey:@"s"];
-    }
-    
-    if(minute)
-    {
-        [dic setObject:minute forKey:@"m"];
-    }
-    
-    if(hour)
-    {
-        [dic setObject:hour forKey:@"h"];
-    }
-    
-    if(day)
-    {
-        [dic setObject:day forKey:@"d"];
-    }
-    
-    if(year)
-    {
-        [dic setObject:year forKey:@"y"];
-    }
-    
-    return dic;
-}
-
 #pragma mark- other
 
-/**当前时间和随机数生成的字符串
- *@return 如 1989072407080998
- */
 + (NSString*)getTimeAndRandom
 {
     int iRandom = arc4random() % 1000000;
@@ -652,17 +457,12 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return tResult;
 }
 
-/**通过出生日期获取年龄
- *@param date 出生日期
- *@param format 时间格式
- *@return 年龄，如 16岁
- */
-+ (NSString*)ageFromBirthDate:(NSString*) date format:(NSString*) format
++ (NSString*)sea_ageFromTime:(NSString*) time format:(NSString*) format
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
     
-    NSDate *oldDate = [formatter dateFromString:date];
+    NSDate *oldDate = [formatter dateFromString:time];
     
     NSTimeInterval timeInterval = -[oldDate timeIntervalSinceNow];
     
@@ -676,51 +476,13 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
     return [NSString stringWithFormat:@"%d岁", age];
 }
 
-
-/**计算时间距离现在有多少秒
- */
-+ (NSTimeInterval)timeIntervalFromNowWithDate:(NSString*) date
++ (NSTimeInterval)sea_timeIntervalFromNow:(NSString*) time
 {
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:SeaDateFormatYMdHms];
     
-    NSDate *oldDate = [formatter dateFromString:date];
-    NSDate *currentDate = [NSDate date];
-    
-    NSTimeInterval interval = [currentDate timeIntervalSinceDate:oldDate];
-    
-    return interval;
-}
-
-/**通过时间戳获取具体时间
- *@param time 时间戳，是距离1970年到当前的秒
- *@param format 要返回的时间格式
- *@return 具体时间
- */
-+ (NSString*)formatTimeInterval:(NSString*) time format:(NSString*) format
-{
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:format];
-    
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[time doubleValue]];
-    
-    NSString *result = [formatter stringFromDate:date];
-    
-    return result;
-}
-
-/**通过时间获取时间戳
- *@param time 时间
- *@param format 时间格式
- *@return 时间戳
- */
-+ (NSTimeInterval)timeIntervalFromTime:(NSString*) time format:(NSString*) format
-{
-    NSDateFormatter *formatter = [NSDate sharedDateFormatter];
-    [formatter setDateFormat:format];
-    
     NSDate *date = [formatter dateFromString:time];
-    return [date timeIntervalSince1970];
+    return [date timeIntervalSinceNow];
 }
 
 @end

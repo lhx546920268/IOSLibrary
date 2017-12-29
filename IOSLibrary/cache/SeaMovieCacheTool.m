@@ -425,7 +425,7 @@
     __block BOOL result = NO;
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        result = [db executeUpdateWithFormat:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate timeFromDate:date format:SeaDateFormatYMdHms]];
+        result = [db executeUpdateWithFormat:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate sea_timeFromDate:date format:SeaDateFormatYMdHms]];
     }];
     
     return result;

@@ -109,15 +109,12 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
  */
 + (NSString*)sea_convertTimeIntervalToAgo:(NSTimeInterval) timeInterval;
 
-/**通过给定秒数 返回 秒，分 前 如1小时前，富文本
- */
-+ (NSMutableAttributedString*)previousAttributedDateWithIntrval:(long long) interval;
-
 /**时间格式转换 从@"YYYY-MM-dd HH:mm:ss" 转换成给定格式
+ *@param time 要格式化的时间
  *@param format 要转换成的格式
  *@retrun 转换后的时间
  */
-+ (NSString*)formatDate:(NSString*) time format:(NSString*) format;
++ (NSString*)sea_formatTime:(NSString*) time format:(NSString*) format;
 
 /**时间格式转换
  *@param time 要转换的时间
@@ -125,44 +122,56 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
  *@param toFormat 要转换成的格式
  *@retrun 转换后的时间
  */
-+ (NSString*)formatDate:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat;
++ (NSString*)sea_formatTime:(NSString*) time fromFormat:(NSString*) fromFormat toFormat:(NSString*) toFormat;
+
+/**通过时间戳获取具体时间
+ *@param timeInterval 时间戳，是距离1970年到当前的秒
+ *@param format 要返回的时间格式
+ *@return 具体时间
+ */
++ (NSString*)sea_formatTimeInterval:(NSString*) timeInterval format:(NSString*) format;
+
+/**通过时间获取时间戳
+ *@param time 时间
+ *@param format 时间格式
+ *@return 时间戳
+ */
++ (NSTimeInterval)sea_timeIntervalFromTime:(NSString*) time format:(NSString*) format;
 
 /**从时间字符串中获取date
  *@param time 时间字符串
  *@param format 时间格式
  *@return 时间date
  */
-+ (NSDate*)dateFromString:(NSString*) time format:(NSString*) format;
++ (NSDate*)sea_dateFromTime:(NSString*) time format:(NSString*) format;
 
 /**从date获取时间字符串
+ *@param date 时间
+ *@param format 时间格式
+ *@return 格式化的时间
  */
-+ (NSString*)timeFromDate:(NSDate*) date format:(NSString*) format;
++ (NSString*)sea_timeFromDate:(NSDate*) date format:(NSString*) format;
 
 #pragma mark- 时间比较
 
-/**判断给定时间距离当前时间是否超过这个时间段
+/**
+ time - 当前时间 > timeInterval
  *@param time 要比较的时间
- *@param timeInterval 时间约束
+ *@param timeInterval 要大于的值
  */
-+ (BOOL)compareTime:(NSString*) time beyondTimeIntervalFromNow:(NSTimeInterval) timeInterval;
++ (BOOL)sea_TimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval;
 
-/**判断两个时间的间隔是否超过这个时间段
+/**
+ time1 - time2 > timeInterval
  *@param time1 要比较的时间1
  *@param time2 要比较的时间2
- *@param timeInterval 时间约束
+ *@param timeInterval 要大于的值
  */
-+ (BOOL)compareTime:(NSString *)time1 andTime:(NSString*) time2 beyondTimeInterval:(NSTimeInterval)timeInterval;
++ (BOOL)sea_TimeMinus:(NSString *)time1 time:(NSString*) time2 greaterThan:(NSTimeInterval)timeInterval;
 
 /**比较两个时间是否相等
  */
-+ (BOOL)isTime:(NSString*) time1 equalTime:(NSString*) time2;
-
-#pragma mark- 时间格式化
-
-/**把时间转换成 几年 几天 几个小时 几分 几秒
- *@return key 为年y，天d，小时h，分m，秒s value double
- */
-+ (NSDictionary*)formatTimeInterval:(long long) interval;
++ (BOOL)sea_time:(NSString*) time1 equalToTime:(NSString*) time2;
 
 #pragma mark- other
 
@@ -171,29 +180,15 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
  */
 + (NSString*)getTimeAndRandom;
 
-/**通过出生日期获取年龄
- *@param date 出生日期
+/**通过日期获取年龄
+ *@param time 日期
  *@param format 时间格式
  *@return 年龄，如 16岁
  */
-+ (NSString*)ageFromBirthDate:(NSString*) date format:(NSString*) format;
++ (NSString*)sea_ageFromTime:(NSString*) time format:(NSString*) format;
 
 /**计算时间距离现在有多少秒
  */
-+ (NSTimeInterval)timeIntervalFromNowWithDate:(NSString*) date;
-
-/**通过时间戳获取具体时间
- *@param time 时间戳，是距离1970年到当前的秒
- *@param format 要返回的时间格式
- *@return 具体时间
- */
-+ (NSString*)formatTimeInterval:(NSString*) time format:(NSString*) format;
-
-/**通过时间获取时间戳
- *@param time 时间
- *@param format 时间格式
- *@return 时间戳
- */
-+ (NSTimeInterval)timeIntervalFromTime:(NSString*) time format:(NSString*) format;
++ (NSTimeInterval)sea_timeIntervalFromNow:(NSString*) time;
 
 @end

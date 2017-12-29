@@ -75,6 +75,8 @@
 		1045CE601FDA1D38003506BA /* UIView+SeaLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */; };
 		104662021FE1230400A88D3C /* UIView+SeaToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 104662001FE1230400A88D3C /* UIView+SeaToast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 104662011FE1230400A88D3C /* UIView+SeaToast.m */; };
+		104DB5B61FF6278C00FDB81A /* NSString+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 104DB5B41FF6278C00FDB81A /* NSString+Utils.h */; };
+		104DB5B71FF6278C00FDB81A /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 104DB5B51FF6278C00FDB81A /* NSString+Utils.m */; };
 		10509CB11FE8F45F003468EB /* UINavigationItem+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10509CAB1FE8F28D003468EB /* UINavigationItem+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10509CB21FE8F45F003468EB /* UINavigationBar+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10509CAD1FE8F28D003468EB /* UINavigationBar+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10509CB31FE8F45F003468EB /* SeaNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10509CAF1FE8F28D003468EB /* SeaNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -361,6 +363,8 @@
 		1045CE5E1FDA1D38003506BA /* UIView+SeaLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaLoading.m"; sourceTree = "<group>"; };
 		104662001FE1230400A88D3C /* UIView+SeaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaToast.h"; sourceTree = "<group>"; };
 		104662011FE1230400A88D3C /* UIView+SeaToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaToast.m"; sourceTree = "<group>"; };
+		104DB5B41FF6278C00FDB81A /* NSString+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
+		104DB5B51FF6278C00FDB81A /* NSString+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		10509CAA1FE8F28D003468EB /* UINavigationBar+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Utils.m"; sourceTree = "<group>"; };
 		10509CAB1FE8F28D003468EB /* UINavigationItem+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem+Utils.h"; sourceTree = "<group>"; };
 		10509CAC1FE8F28D003468EB /* UINavigationItem+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem+Utils.m"; sourceTree = "<group>"; };
@@ -1329,6 +1333,8 @@
 				1068F9C81FF3981C00DB0C3F /* NSAttributedString+Utils.m */,
 				1068F9CB1FF3999700DB0C3F /* NSDate+Utils.h */,
 				1068F9CC1FF3999700DB0C3F /* NSDate+Utils.m */,
+				104DB5B41FF6278C00FDB81A /* NSString+Utils.h */,
+				104DB5B51FF6278C00FDB81A /* NSString+Utils.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -1556,6 +1562,7 @@
 				100E48121FF1E2F800CAB10A /* UIButton+SeaImageCache.h in Headers */,
 				100E48131FF1E2F800CAB10A /* UIImageView+SeaImageCache.h in Headers */,
 				100E48141FF1E2F800CAB10A /* UIImageView+SeaMovieCache.h in Headers */,
+				104DB5B61FF6278C00FDB81A /* NSString+Utils.h in Headers */,
 				100E48151FF1E2F800CAB10A /* UIView+SeaActivityIndicatorView.h in Headers */,
 				10E7B2381F9F2D48006A83D8 /* SeaPresentTransitionDelegate.h in Headers */,
 				10E7B2391F9F2D48006A83D8 /* SeaPartialPresentTransitionDelegate.h in Headers */,
@@ -1665,6 +1672,7 @@
 				108E6EC11FDF836600F1B121 /* SeaHighlightView.m in Sources */,
 				108E6EC21FDF836600F1B121 /* SeaNumberBadge.m in Sources */,
 				108E6EC31FDF836600F1B121 /* SeaMagnifyingGlass.m in Sources */,
+				104DB5B71FF6278C00FDB81A /* NSString+Utils.m in Sources */,
 				108E6EC41FDF836600F1B121 /* SeaWeakObjectContainer.m in Sources */,
 				108E6EC51FDF836600F1B121 /* SeaLabel.m in Sources */,
 				108E6EC61FDF836600F1B121 /* SeaTextInsetLabel.m in Sources */,

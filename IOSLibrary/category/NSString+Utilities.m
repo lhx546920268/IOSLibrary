@@ -77,9 +77,9 @@
  *@param str 要编码的字符串
  *@return 编码后的字符串
  */
-+ (NSString*)encodeString:(NSString*) str
++ (NSString*)sea_encodeStringWithUTF8:(NSString*) str
 {
-    return [NSString encodeString:str stringEncoding:NSUTF8StringEncoding];
+    return [NSString sea_encodeString:str stringEncoding:NSUTF8StringEncoding];
 }
 
 /**编码
@@ -87,11 +87,11 @@
  *@param stringEncoding 编码方式
  *@return 编码后的字符串
  */
-+ (NSString*)encodeString:(NSString*) str stringEncoding:(NSStringEncoding) stringEncoding
++ (NSString*)sea_encodeString:(NSString*) str stringEncoding:(NSStringEncoding) stringEncoding
 {
     if([str isKindOfClass:[NSString class]] && str.length > 0)
     {
-        return [str encodeWithStringEncoding:stringEncoding];
+        return [str sea_encodeWithStringEncoding:stringEncoding];
     }
     
     return @"";
@@ -100,16 +100,16 @@
 /**编码，使用 NSUTF8StringEncoding
  *@return 编码后的字符串
  */
-- (NSString*)encodeWithUTF8
+- (NSString*)sea_encodeWithUTF8
 {
-    return [self encodeWithStringEncoding:NSUTF8StringEncoding];
+    return [self sea_encodeWithStringEncoding:NSUTF8StringEncoding];
 }
 
 /**编码
  *@param stringEncoding 编码方式
  *@return 编码后的字符串
  */
-- (NSString*)encodeWithStringEncoding:(NSStringEncoding) stringEncoding
+- (NSString*)sea_encodeWithStringEncoding:(NSStringEncoding) stringEncoding
 {
     CFStringRef string = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)self, NULL, CFSTR(":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`"), CFStringConvertNSStringEncodingToEncoding(stringEncoding));
     
@@ -242,7 +242,7 @@
 + (NSString*)baiduURLForKey:(NSString *)key
 {
     NSString *url = [NSString stringWithFormat:@"http://www.baidu.com/s?word=%@", key];
-    url = [[self class] encodeString:url];
+    url = [[self class] sea_encodeStringWithUTF8:url];
     return url;
 }
 
@@ -401,7 +401,7 @@
 {
     NSString *urlRegex = @"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)";
     
-    NSString *str = [NSString encodeString:self];
+    NSString *str = [NSString sea_encodeStringWithUTF8:self];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",urlRegex];
     
     if(![predicate evaluateWithObject:str])
