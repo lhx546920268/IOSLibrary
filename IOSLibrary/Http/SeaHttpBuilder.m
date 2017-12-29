@@ -36,10 +36,10 @@ static NSString *const SeaContentType = @"Content-Type";
 }
 
 //请求参数 数组元素是 SeaHttpRequestParam
-@property(nonatomic,retain) NSMutableArray *params;
+@property(nonatomic,strong) NSMutableArray *params;
 
 //body 输出流，把body写入文件
-@property(nonatomic,retain) NSOutputStream *bodyOutputStream;
+@property(nonatomic,strong) NSOutputStream *bodyOutputStream;
 
 //body 上传临时文件
 @property(nonatomic,copy) NSString *uploadTemporaryPath;
@@ -59,8 +59,7 @@ static NSString *const SeaContentType = @"Content-Type";
 - (instancetype)initWithURL:(NSString*)URL
 {
     self = [super init];
-    if(self)
-    {
+    if(self){
         _URL = [URL copy];
         self.postFormat = SeaPostFormatURLEncoded;
     }
@@ -79,8 +78,7 @@ static NSString *const SeaContentType = @"Content-Type";
     [_bodyOutputStream close];
     
     //删除临时文件
-    if(_uploadTemporaryPath)
-    {
+    if(_uploadTemporaryPath){
         [[[NSFileManager alloc] init] removeItemAtPath:_uploadTemporaryPath error:nil];
     }
 }
@@ -136,8 +134,7 @@ static NSString *const SeaContentType = @"Content-Type";
  */
 - (void)addValue:(id<NSObject>)value forKey:(NSString*)key
 {
-    if(!self.params)
-    {
+    if(!self.params){
         self.params = [NSMutableArray array];
     }
     
@@ -165,10 +162,8 @@ static NSString *const SeaContentType = @"Content-Type";
         return;
     
     //判断文件是否存在
-    if([[[NSFileManager alloc] init] fileExistsAtPath:filePath isDirectory:nil])
-    {
-        if(!self.params)
-        {
+    if([[[NSFileManager alloc] init] fileExistsAtPath:filePath isDirectory:nil]){
+        if(!self.params){
             self.params = [NSMutableArray array];
         }
         
@@ -191,8 +186,7 @@ static NSString *const SeaContentType = @"Content-Type";
  */
 - (void)addValuesFromDictionary:(NSDictionary<NSString*, id<NSObject>>*) dic
 {
-    if(dic.count > 0)
-    {
+    if(dic.count > 0){
         [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
             
             [self addValue:obj forKey:key];
@@ -206,10 +200,8 @@ static NSString *const SeaContentType = @"Content-Type";
  */
 - (void)addFiles:(NSArray<NSString*>*) files fileKey:(NSString*) fileKey
 {
-    if(files.count > 0 && fileKey != nil)
-    {
-        for(NSString *filePath in files)
-        {
+    if(files.count > 0 && fileKey != nil){
+        for(NSString *filePath in files){
             [self addFile:filePath forKey:fileKey];
         }
     }
@@ -251,11 +243,9 @@ static NSString *const SeaContentType = @"Content-Type";
  */
 - (void)removeValueForKey:(NSString*)key paramType:(SeaHttpParamType) type
 {
-    for(NSInteger i = 0;i < self.params.count;i ++)
-    {
+    for(NSInteger i = 0;i < self.params.count;i ++){
         SeaHttpParam *param = [self.params objectAtIndex:i];
-        if(param.paramType == type && [param.key isEqualToString:key])
-        {
+        if(param.paramType == type && [param.key isEqualToString:key]){
             [self.params removeObjectAtIndex:i];
             i --;
         }
@@ -264,18 +254,16 @@ static NSString *const SeaContentType = @"Content-Type";
 
 #pragma mark- 构建 get 参数
 
+///构建 get 请求参数
 - (NSString*)buildGetBody
 {
     NSInteger i = 0;
     NSMutableString *string = [NSMutableString string];
-    for(SeaHttpParam *param in self.params)
-    {
-        if([param paramIsAvaliable])
-        {
+    for(SeaHttpParam *param in self.params){
+        if([param paramIsAvaliable]){
             ///如果是字符串要编码，防止包含特殊字符时，出现不可预料的问题
             NSString *value = (NSString*)param.value;
-            if([value isKindOfClass:[NSString class]])
-            {
+            if([value isKindOfClass:[NSString class]]){
                 value = [NSString sea_encodeStringWithUTF8:value];
             }
             
@@ -297,10 +285,8 @@ static NSString *const SeaContentType = @"Content-Type";
 - (BOOL)isExistFile
 {
     BOOL exist = NO;
-    for(SeaHttpParam *param in self.params)
-    {
-        if(param.paramType == SeaHttpParamTypeFile)
-        {
+    for(SeaHttpParam *param in self.params){
+        if(param.paramType == SeaHttpParamTypeFile){
             exist = YES;
             break;
         }
@@ -315,15 +301,12 @@ static NSString *const SeaContentType = @"Content-Type";
     if(self.params.count == 0)
         return;
     
-    switch (self.postFormat)
-    {
-        case SeaPostFormatURLEncoded :
-        {
+    switch (self.postFormat){
+        case SeaPostFormatURLEncoded : {
             [self bulidURLEncodedPostBody];
         }
             break;
-        case SeaPostFormatMultipartFormData :
-        {
+        case SeaPostFormatMultipartFormData : {
             [self bulidMultipartFormDataPostBody];
         }
             break;
@@ -341,14 +324,11 @@ static NSString *const SeaContentType = @"Content-Type";
     
     //设置请求body
     NSInteger i = 0;
-    for(SeaHttpParam *param in self.params)
-    {
-        if([param paramIsAvaliable])
-        {
+    for(SeaHttpParam *param in self.params){
+        if([param paramIsAvaliable]){
             ///如果是字符串要编码，防止包含特殊字符时，出现不可预料的问题
             NSString *value = (NSString*)param.value;
-            if([value isKindOfClass:[NSString class]])
-            {
+            if([value isKindOfClass:[NSString class]]){
                 value = [NSString sea_encodeStringWithUTF8:value];
             }
             
@@ -376,17 +356,10 @@ static NSString *const SeaContentType = @"Content-Type";
 - (void)bulidMultipartFormDataPostBody
 {
     //post body 边界
-    CFUUIDRef uuid = CFUUIDCreate(nil);
-    NSString *uuidString = CFBridgingRelease(CFUUIDCreateString(nil, uuid));
-    CFRelease(uuid);
-    
-    NSString *stringBoundary = [NSString stringWithFormat:@"0xKhTmLbOuNdArY-%@",uuidString];
-    
-    
-    NSString *contentType = [NSString stringWithFormat:@"%@; %@; boundary=%@", SeaMultipartFormData, [self charset], stringBoundary];
+    NSString *stringBoundary = [NSString stringWithFormat:@"0xKhTmLbOuNdArY-%@", [[NSUUID UUID] UUIDString]];
     
     //设置请求头
-    [_request setValue:contentType forHTTPHeaderField:SeaContentType];
+    [_request setValue:[NSString stringWithFormat:@"%@; %@; boundary=%@", SeaMultipartFormData, [self charset], stringBoundary] forHTTPHeaderField:SeaContentType];
     
     [self setupBodyOutStream];
     
@@ -398,21 +371,17 @@ static NSString *const SeaContentType = @"Content-Type";
     
     //添加Body内容
     NSInteger i = 0;
-    for(SeaHttpParam *param in self.params)
-    {
+    for(SeaHttpParam *param in self.params){
         if(![param paramIsAvaliable])
             continue;
-        switch (param.paramType)
-        {
-            case SeaHttpParamTypeDefault :
-            {
+        switch (param.paramType){
+            case SeaHttpParamTypeDefault : {
                 [self appendPostBodyString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param.key]];
                 
                 [self appendPostBodyData:param.NSDataValue];
             }
                 break;
-            case SeaHttpParamTypeFile :
-            {
+            case SeaHttpParamTypeFile : {
                 [self appendPostBodyString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", param.key, [(NSString*)param.value lastPathComponent]]];
                 
                 [self appendPostBodyString:[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", [SeaHttpBuilder mimeTypeForFileAtPath:(NSString*)param.value]]];
@@ -423,8 +392,7 @@ static NSString *const SeaContentType = @"Content-Type";
         i ++;
         
         //只有当当前参数项目不是最后一个 才添加分隔符
-        if(i != self.params.count)
-        {
+        if(i != self.params.count){
             [self appendPostBodyString:endItemBoundary];
         }
     }
@@ -483,15 +451,13 @@ static NSString *const SeaContentType = @"Content-Type";
     [inputStream open];
     
     NSInteger bytesDidRead;
-    while ([inputStream hasBytesAvailable])
-    {
+    while ([inputStream hasBytesAvailable]){
         //每次读取 256kb
         uint8_t buffer[1024 * 256];
         bytesDidRead = [inputStream read:buffer maxLength:sizeof(buffer)];
         
         //判断是否已读完
-        if(bytesDidRead == 0)
-        {
+        if(bytesDidRead == 0){
             break;
         }
         
@@ -505,8 +471,7 @@ static NSString *const SeaContentType = @"Content-Type";
 //设置输出流
 - (void)setupBodyOutStream
 {
-    if(!self.bodyOutputStream)
-    {
+    if(!self.bodyOutputStream){
         //创建临时文件
         self.uploadTemporaryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[[NSProcessInfo processInfo] globallyUniqueString]];
         self.bodyOutputStream = [NSOutputStream outputStreamToFileAtPath:self.uploadTemporaryPath append:NO];
@@ -522,8 +487,7 @@ static NSString *const SeaContentType = @"Content-Type";
  */
 + (NSString *)mimeTypeForFileAtPath:(NSString *)path
 {
-    if (![[[NSFileManager alloc] init] fileExistsAtPath:path])
-    {
+    if (![[[NSFileManager alloc] init] fileExistsAtPath:path]){
         return nil;
     }
     
@@ -535,8 +499,7 @@ static NSString *const SeaContentType = @"Content-Type";
     
     CFRelease(UTI);
     
-    if (!MIMEType)
-    {
+    if (!MIMEType){
         return @"application/octet-stream";
     }
     

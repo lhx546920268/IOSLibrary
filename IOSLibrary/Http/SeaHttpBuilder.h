@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, SeaPostFormat)
  */
 @interface SeaHttpBuilder : NSObject
 
-/**postBody数据格式 default is 'SeaURLRequestPostFormatURLEncoded',如果有文件需要上传，将自动设置为 SeaURLRequestPostFormatMultipartFormData
+/**postBody数据格式 default is 'SeaPostFormatURLEncoded',如果有文件需要上传，将自动设置为 SeaPostFormatMultipartFormData
  */
 @property(nonatomic,assign) SeaPostFormat postFormat;
 

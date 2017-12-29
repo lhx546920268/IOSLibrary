@@ -12,7 +12,6 @@
 
 @interface SeaHttpTask()
 
-
 @end
 
 @implementation SeaHttpTask
