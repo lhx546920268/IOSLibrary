@@ -7,7 +7,7 @@
 //
 
 #import "NSDate+Utils.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 
 static const int SeaHourPerDay = 24;
 static const int SeaDayPerMonth = 30;
@@ -444,7 +444,7 @@ static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
 
 #pragma mark- other
 
-+ (NSString*)getTimeAndRandom
++ (NSString*)sea_random
 {
     int iRandom = arc4random() % 1000000;
     if (iRandom < 0) {

@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 #import "UIView+SeaActivityIndicatorView.h"
 #import "SeaImageCacheTool.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 
 ///图片路径
 static char SeaImageURLKey;

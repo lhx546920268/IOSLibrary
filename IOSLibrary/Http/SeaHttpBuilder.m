@@ -9,7 +9,7 @@
 #import "SeaHttpBuilder.h"
 #import "SeaHttpParam.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "SeaHttpTask.h"
 
 //postBody 默认格式

@@ -9,7 +9,7 @@
 #import "SeaMovieCacheTool.h"
 #import <AVFoundation/AVFoundation.h>
 #import "SeaImageCacheTool.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "SeaBasic.h"
 #import "SeaDataBase.h"
 #import "FMDB.h"

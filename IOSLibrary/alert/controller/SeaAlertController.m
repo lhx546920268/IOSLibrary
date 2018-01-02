@@ -8,7 +8,7 @@
 
 #import "SeaAlertController.h"
 #import "UIView+Utils.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "NSAttributedString+Utils.h"
 #import "UIViewController+Utils.h"
 #import "SeaBasic.h"
@@ -264,7 +264,7 @@
         }
         else
         {
-            size = [_titleLabel.text stringSizeWithFont:_titleLabel.font contraintWith:width];
+            size = [_titleLabel.text sea_stringSizeWithFont:_titleLabel.font contraintWith:width];
         }
         
         CGRect frame = _titleLabel.frame;
@@ -280,7 +280,7 @@
             }
             else
             {
-                size = [_messageLabel.text stringSizeWithFont:_messageLabel.font contraintWith:width];
+                size = [_messageLabel.text sea_stringSizeWithFont:_messageLabel.font contraintWith:width];
             }
         }
         else

@@ -11,10 +11,10 @@
 #import "NSArray+Utilities.h"
 #import "NSAttributedString+Utils.h"
 #import "NSDate+Utils.h"
-#import "NSDictionary+Utilities.h"
+#import "NSDictionary+Utils.h"
 #import "NSIndexPath+Utilities.h"
-#import "NSJSONSerialization+Utilities.h"
-#import "NSString+Utilities.h"
+#import "NSJSONSerialization+Utils.h"
+#import "NSString+Utils.h"
 
 #import "UIColor+colorUtilities.h"
 #import "UIFont+Utilities.h"

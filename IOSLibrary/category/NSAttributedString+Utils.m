@@ -8,7 +8,7 @@
 
 #import "NSAttributedString+Utils.h"
 #import <CoreText/CoreText.h>
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 
 @implementation NSAttributedString (Utils)
 

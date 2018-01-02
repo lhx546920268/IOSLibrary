@@ -5,7 +5,7 @@
 //
 
 #import "SeaTools.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "SeaAlertController.h"
 
 CGPoint pointInCircle(CGPoint center, CGFloat radius, CGFloat arc)

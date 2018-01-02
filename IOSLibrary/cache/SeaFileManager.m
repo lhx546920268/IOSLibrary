@@ -3,7 +3,7 @@
 //
 
 #import "SeaFileManager.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "NSDate+Utils.h"
 #import "SeaImageCacheTool.h"
 #import <sys/xattr.h>
@@ -32,7 +32,7 @@
     
     for(NSInteger i = 0; i < images.count; i ++){
         UIImage *image = [images objectAtIndex:i];
-        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate getTimeAndRandom], @"jpg"]];
+        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate sea_random], @"jpg"]];
         
         NSData *imageData = UIImageJPEGRepresentation(image, scale);
 
@@ -61,7 +61,7 @@
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:images.count];
     for(NSInteger i = 0; i < images.count; i ++){
         UIImage *image = [images objectAtIndex:i];
-        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate getTimeAndRandom], @"jpg"]];
+        NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate sea_random], @"jpg"]];
         
         NSData *imageData = UIImageJPEGRepresentation(image, scale);
         
@@ -85,7 +85,7 @@
     NSString *filePath = NSTemporaryDirectory();
     
     
-    NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate getTimeAndRandom], @"jpg"]];
+    NSString *fileName = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"tmpImage%@.%@", [NSDate sea_random], @"jpg"]];
     
     NSData *imageData = UIImageJPEGRepresentation(image, scale);
     
@@ -132,7 +132,7 @@
 + (NSString*)getTemporaryFileWithSuffix:(NSString*) suffix
 {
     NSString *temp = NSTemporaryDirectory();
-    NSString *time = [NSDate getTimeAndRandom];
+    NSString *time = [NSDate sea_random];
     NSString *file = [NSString stringWithFormat:@"%@.%@",time, suffix];
     
     return [temp stringByAppendingPathComponent:file];
@@ -140,7 +140,7 @@
 
 + (NSString*)fileNameForURL:(NSString*) url suffix:(NSString *)suffix
 {
-    NSString *fileName = [url md5];
+    NSString *fileName = [url seaMD5String];
     
     if(![NSString isEmpty:suffix]){
         fileName = [fileName stringByAppendingFormat:@".%@",suffix];

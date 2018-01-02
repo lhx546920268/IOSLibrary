@@ -7,7 +7,7 @@
 //
 
 #import "UIImageView+SeaMovieCache.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import <objc/runtime.h>
 #import "UIView+SeaActivityIndicatorView.h"
 

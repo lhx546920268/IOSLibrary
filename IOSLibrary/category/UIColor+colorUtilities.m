@@ -11,7 +11,7 @@
 /**获取颜色的RGB值 透明度 只有当颜色是由RGB组成的才有返回
  *@return 成功返回一个字典 rgb键值 否则返回nil
  */
-- (NSDictionary*)getColorRGB
+- (NSDictionary*)sea_colorARGB
 {
     
     CGFloat R, G, B, alpha;
@@ -37,8 +37,8 @@
  */
 - (BOOL)isEqualToColor:(UIColor*) color
 {
-    NSDictionary *dic1 = [self getColorRGB];
-    NSDictionary *dic2 = [color getColorRGB];
+    NSDictionary *dic1 = [self sea_colorARGB];
+    NSDictionary *dic2 = [color sea_colorARGB];
     
     if(dic1 == nil || dic2 == nil)
         return NO;
@@ -63,7 +63,7 @@
 
 /**获取颜色色彩 饱和度 亮度
  */
-- (HSBType)HSB
+- (HSBType)sea_colorHSB
 {
     HSBType hsb;
     
@@ -106,19 +106,20 @@
 /**获取颜色的16进制
  *@return 16进制颜色值，FFFFFF
  */
-- (NSString*)hexadecimalValue
+- (NSString*)sea_colorHex
 {
-    NSDictionary *dic = [self getColorRGB];
+    NSDictionary *dic = [self sea_colorARGB];
     if(dic != nil)
     {
         int R = [[dic objectForKey:_colorRedKey_] floatValue] * 255;
         int G = [[dic objectForKey:_colorGreenKey_] floatValue] * 255;
         int B = [[dic objectForKey:_colorBlueKey_] floatValue] * 255;
         
-        return [UIColor hexadecimalValueFromR:R G:G B:B];
+        return [UIColor sea_colorHexFromRed:R green:G blue:B];
     }
-    return @"000000";
+    return @"ff000000";
 }
+
 
 /**通过RGB值获取颜色的16进制
  *@param R 红色 0~255
@@ -126,15 +127,15 @@
  *@param B 蓝色 0~255
  *@return 16进制颜色值，FFFFFF
  */
-+ (NSString*)hexadecimalValueFromR:(int) R G:(int) G  B:(int) B
++ (NSString*)sea_colorHexFromRed:(int) R green:(int) G  blue:(int) B
 {
     NSString *hex = [NSString stringWithFormat:@"%@%@%@%@%@%@",
-                     [UIColor hexadecimalValueFromAdecimal:R / 16],
-                     [UIColor hexadecimalValueFromAdecimal:R % 16],
-                     [UIColor hexadecimalValueFromAdecimal:G / 16],
-                     [UIColor hexadecimalValueFromAdecimal:G % 16],
-                     [UIColor hexadecimalValueFromAdecimal:B / 16],
-                     [UIColor hexadecimalValueFromAdecimal:B % 16]
+                     [UIColor sea_hexFromDecimal:R / 16],
+                     [UIColor sea_hexFromDecimal:R % 16],
+                     [UIColor sea_hexFromDecimal:G / 16],
+                     [UIColor sea_hexFromDecimal:G % 16],
+                     [UIColor sea_hexFromDecimal:B / 16],
+                     [UIColor sea_hexFromDecimal:B % 16]
                      ];
     return hex;
 }
@@ -142,16 +143,16 @@
 /**通过16进制颜色值获取颜色
  *@return 一个 UIColor对象
  */
-+ (UIColor*)colorFromHexadecimal:(NSString*) hexadecimal
++ (UIColor*)sea_colorFromHex:(NSString*) hexadecimal
 {
-    return [UIColor colorFromHexadecimal:hexadecimal alpha:1.0];
+    return [UIColor sea_colorFromHex:hexadecimal alpha:1.0];
 }
 
 /**通过16进制颜色值获取颜色
  *@param alpha 透明度
  *@return 一个 UIColor对象
  */
-+ (UIColor*)colorFromHexadecimal:(NSString*) hexadecimal alpha:(CGFloat) alpha
++ (UIColor*)sea_colorFromHex:(NSString*) hexadecimal alpha:(CGFloat) alpha
 {
     hexadecimal = [hexadecimal uppercaseString];
     if(hexadecimal.length >= 6)
@@ -187,7 +188,7 @@
  *@param adecimal 10进制
  *@return 16进制值
  */
-+ (NSString*)hexadecimalValueFromAdecimal:(int) adecimal
++ (NSString*)sea_hexFromDecimal:(int) adecimal
 {
     switch (adecimal)
     {
@@ -231,7 +232,7 @@
  *@param hexadecimal 16进制
  *@return 10进制值
  */
-+ (NSInteger)adecimalValueFromHexadecimal:(char)hexadecimal
++ (NSInteger)sea_decimalFromHex:(char)hexadecimal
 {
     switch (hexadecimal)
     {
@@ -278,7 +279,7 @@
  *@param a 透明度 0 ~ 1.0
  *@return 一个初始化的颜色对象
  */
-+ (UIColor*)colorWithR:(int) r G:(int) g B:(int) b a:(CGFloat) a
++ (UIColor*)sea_colorWithRed:(int) r green:(int) g blue:(int) b alpha:(CGFloat) a
 {
     r = MIN(255, abs(r));
     g = MIN(255, abs(g));

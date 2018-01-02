@@ -10,7 +10,7 @@
 #import "SeaHttpTaskDelegate.h"
 #import "SeaHttpTask.h"
 #import "SeaHttpBuilder.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "SeaFileManager.h"
 #import "SeaBasic.h"
 #import "SeaWeakObjectContainer.h"

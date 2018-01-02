@@ -6,7 +6,7 @@
 #import "SeaTableViewController.h"
 #import "UIViewController+Utils.h"
 #import "UIView+SeaAutoLayout.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 
 @interface SeaTableViewController ()
 

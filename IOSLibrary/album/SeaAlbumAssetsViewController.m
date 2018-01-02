@@ -13,7 +13,7 @@
 #import "UIImagePickerController+Utilities.h"
 #import "UIViewController+Utils.h"
 #import "UIView+Utils.h"
-#import "UIButton+utilities.h"
+#import "UIButton+Utils.h"
 #import "UIImage+Utilities.h"
 #import "SeaUtlities.h"
 #import "SeaBasic.h"
@@ -201,7 +201,7 @@
         titleButton.titleLabel.font = [UIFont systemFontOfSize:19.0];
         [titleButton setImage:arrow forState:UIControlStateNormal];
         [titleButton setImage:[UIImage imageNamed:@"triangle_up"] forState:UIControlStateSelected];
-        [titleButton setButtonIconToRightWithInterval:2.0];
+        [titleButton sea_setImagePosition:SeaButtonImagePositionRight margin:2.0];
         titleButton.adjustsImageWhenDisabled = NO;
         titleButton.tintColor = self.iconTintColor;
         titleButton.adjustsImageWhenHighlighted = NO;

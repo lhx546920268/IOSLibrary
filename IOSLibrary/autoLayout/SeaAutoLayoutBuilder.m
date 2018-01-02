@@ -11,9 +11,9 @@
 
 @interface SeaAutoLayoutBuilder()
 
-@property(nonatomic, strong) UIView *sea_item1;
+@property(nonatomic, weak) UIView *sea_item1;
 
-@property(nonatomic, strong) id sea_item2;
+@property(nonatomic, weak) id sea_item2;
 
 @property(nonatomic, assign) NSLayoutAttribute sea_attr1;
 
@@ -553,6 +553,7 @@
             [self.sea_item1 addConstraint:constraint];
         }
         
+        [self reset];
         return constraint;
     };
 }

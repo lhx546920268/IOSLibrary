@@ -167,7 +167,7 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
  *@param time2 要比较的时间2
  *@param timeInterval 要大于的值
  */
-+ (BOOL)sea_TimeMinus:(NSString *)time1 time:(NSString*) time2 greaterThan:(NSTimeInterval)timeInterval;
++ (BOOL)sea_TimeMinus:(NSString *) time1 time:(NSString*) time2 greaterThan:(NSTimeInterval) timeInterval;
 
 /**比较两个时间是否相等
  */
@@ -178,7 +178,7 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
 /**当前时间和随机数生成的字符串
  *@return 如 1989072407080998
  */
-+ (NSString*)getTimeAndRandom;
++ (NSString*)sea_random;
 
 /**通过日期获取年龄
  *@param time 日期

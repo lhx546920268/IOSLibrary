@@ -8,7 +8,7 @@
 
 #import "UIButton+SeaImageCache.h"
 #import <objc/runtime.h>
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "UIView+SeaActivityIndicatorView.h"
 
 static char SeaImageCacheImageURLDictionaryKey;

@@ -8,7 +8,7 @@
 
 #import "SeaRadarView.h"
 #import "UIColor+colorUtilities.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 
 @implementation SeaRadarInfo
 
@@ -46,10 +46,10 @@
 ///初始化
 - (void)initialization
 {
-    self.redarStrokeColor = [UIColor colorFromHexadecimal:@"bcbcbc"];
-    self.dataStrokeColor = [UIColor colorFromHexadecimal:@"28cec1"];
-    self.innerFillColor = [UIColor colorFromHexadecimal:@"a0d3da"];
-    self.outerFillColor = [UIColor colorFromHexadecimal:@"afe2e9"];
+    self.redarStrokeColor = [UIColor sea_colorFromHex:@"bcbcbc"];
+    self.dataStrokeColor = [UIColor sea_colorFromHex:@"28cec1"];
+    self.innerFillColor = [UIColor sea_colorFromHex:@"a0d3da"];
+    self.outerFillColor = [UIColor sea_colorFromHex:@"afe2e9"];
     self.offsetY = 10;
     self.maxValue = 100;
 }
@@ -187,7 +187,7 @@
             //第1象限
             if(tmpRadian == M_PI_2)
             {
-                float dis = [info.title stringSizeWithFont:font contraintWith:rect.size.width].width;
+                float dis = [info.title sea_stringSizeWithFont:font contraintWith:rect.size.width].width;
                 x -= dis / 2;
                 y -= font.lineHeight + 10.0;
             }
@@ -207,13 +207,13 @@
         else if(tmpRadian > M_PI_2 && tmpRadian <= M_PI)
         {
             //第2象限
-            float dis = [info.title stringSizeWithFont:font contraintWith:rect.size.width].width;//文本长度
+            float dis = [info.title sea_stringSizeWithFont:font contraintWith:rect.size.width].width;//文本长度
             [info.title drawAtPoint:CGPointMake(x - dis - 10.0, y - font.lineHeight) withAttributes:attributes];
         }
         else if(tmpRadian >= M_PI && tmpRadian < 3 * M_PI_2)
         {
             //第3象限
-            float dis = [info.title stringSizeWithFont:font contraintWith:rect.size.width].width;//文本长度
+            float dis = [info.title sea_stringSizeWithFont:font contraintWith:rect.size.width].width;//文本长度
             [info.title drawAtPoint:CGPointMake(x - dis - 10, y) withAttributes:attributes];
         }
     }

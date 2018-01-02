@@ -6,6 +6,7 @@
 #import "SeaMenuBarItem.h"
 #import "SeaNumberBadge.h"
 #import "SeaBasic.h"
+#import "UIButton+Utils.h"
 
 @implementation SeaMenuBarItem
 
@@ -59,7 +60,7 @@
     
     if(info.icon != nil && info.title != nil && _info.iconPosition == SeaMenuItemIconPositionRight)
     {
-        [_button setButtonIconToRightWithInterval:5.0];
+        [_button sea_setImagePosition:SeaButtonImagePositionRight margin:5.0];
     }
     else
     {

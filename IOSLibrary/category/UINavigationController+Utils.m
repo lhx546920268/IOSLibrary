@@ -30,7 +30,7 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _shadowView = [[UIView alloc] init];
         _shadowView.translatesAutoresizingMaskIntoConstraints = NO;
-        _shadowView.backgroundColor = [UIColor colorFromHexadecimal:@"C7C6CB"];
+        _shadowView.backgroundColor = [UIColor sea_colorFromHex:@"C7C6CB"];
         [self addSubview:_shadowView];
         
         NSDictionary *views = NSDictionaryOfVariableBindings(_shadowView);

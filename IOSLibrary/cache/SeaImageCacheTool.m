@@ -12,7 +12,7 @@
 #import "SeaBasic.h"
 #import "SeaMovieCacheTool.h"
 #import "SeaHttpTask.h"
-#import "NSString+Utilities.h"
+#import "NSString+Utils.h"
 #import "UIImage+Utilities.h"
 #import "SeaImageCacheTask.h"
 #import "SeaMovieCacheTool.m"
