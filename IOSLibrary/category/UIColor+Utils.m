@@ -43,6 +43,8 @@ NSString *const SeaColorAlpha = @"alpha";
 
 - (BOOL)isEqualToColor:(UIColor*) color
 {
+    if(!color)
+        return NO;
     NSDictionary *dic1 = [self sea_colorARGB];
     NSDictionary *dic2 = [color sea_colorARGB];
     
@@ -82,7 +84,7 @@ NSString *const SeaColorAlpha = @"alpha";
     if([NSString isEmpty:hex])
         return nil;
     hex = [hex stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    hex = [hex uppercaseString];
+    hex = [hex lowercaseString];
     
     CGFloat alpha = 1.0;
     CGFloat red = 0;
@@ -149,35 +151,23 @@ NSString *const SeaColorAlpha = @"alpha";
 
 + (UIColor*)sea_colorFromHex:(NSString*) hex
 {
-    return [UIColor sea_colorFromHex:hex alpha:1.0];
+    NSDictionary *dic = [self sea_colorARGBFromHex:hex];
+    CGFloat red = [[dic objectForKey:SeaColorRed] floatValue];
+    CGFloat green = [[dic objectForKey:SeaColorGreen] floatValue];
+    CGFloat blue = [[dic objectForKey:SeaColorBlue] floatValue];
+    CGFloat alpha = [[dic objectForKey:SeaColorBlue] floatValue];
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 + (UIColor*)sea_colorFromHex:(NSString*) hex alpha:(CGFloat) alpha
 {
-    hex = [hex uppercaseString];
-    if(hex.length >= 6){
-        NSInteger index = 0;
-        if([hex hasPrefix:@"#"])
-        {
-            if(hex.length < 7)
-                return nil;
-            
-            index = 1;
-        }
-        NSString *hexR = [hex substringWithRange:NSMakeRange(index, 2)];
-        NSString *hexG = [hex substringWithRange:NSMakeRange(index + 2, 2)];
-        NSString *hexB = [hex substringWithRange:NSMakeRange(index + 4, 2)];
-        
-        CGFloat R = [self sea_decimalFromHex:[hexR sea_firstCharacter]] * 16 + [self sea_decimalFromHex:[hexR characterAtIndex:1]];
-        CGFloat G = [self sea_decimalFromHex:[hexG sea_firstCharacter]] * 16 + [self sea_decimalFromHex:[hexG characterAtIndex:1]];
-        CGFloat B = [self sea_decimalFromHex:[hexB sea_firstCharacter]] * 16 + [self sea_decimalFromHex:[hexB characterAtIndex:1]];
-        
-        UIColor *color = [UIColor colorWithRed:R / 255.0f green:G / 255.0f blue:B / 255.0f alpha:alpha];
-        
-        return color;
-    }else{
-        return [UIColor colorWithRed:0 green:0 blue:0 alpha:alpha];
-    }
+    NSDictionary *dic = [self sea_colorARGBFromHex:hex];
+    CGFloat red = [[dic objectForKey:SeaColorRed] floatValue];
+    CGFloat green = [[dic objectForKey:SeaColorGreen] floatValue];
+    CGFloat blue = [[dic objectForKey:SeaColorBlue] floatValue];
+    
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 /**
@@ -208,19 +198,25 @@ NSString *const SeaColorAlpha = @"alpha";
     int value;
     switch (c) {
         case 'A' :
+        case 'a' :
             value = 10;
             break;
         case 'B' :
+        case 'b' :
             value = 11;
         case 'C' :
+        case 'c' :
             value = 12;
         case 'D' :
+        case 'd' :
             value = 13;
             break;
         case 'E' :
+        case 'e' :
             value = 14;
             break;
         case 'F' :
+        case 'f' :
             value = 15;
             break;
         default:
@@ -230,14 +226,13 @@ NSString *const SeaColorAlpha = @"alpha";
     return value;
 }
 
-+ (UIColor*)sea_colorWithRed:(int) r green:(int) g blue:(int) b alpha:(CGFloat) a
++ (UIColor*)sea_colorWithRed:(int) red green:(int) green blue:(int) blue alpha:(CGFloat) alpha
 {
-    r = MIN(255, abs(r));
-    g = MIN(255, abs(g));
-    b = MIN(255, abs(b));
-    a = MIN(1.0, fabs(a));
+    red = MIN(255, abs(red));
+    green = MIN(255, abs(green));
+    blue = MIN(255, abs(blue));
     
-    return [UIColor colorWithRed:r / 255.0f green:g / 255.0f blue:b / 255.0f alpha:a];
+    return [UIColor colorWithRed:red / 255.0f green:green / 255.0f blue:blue / 255.0f alpha:alpha];
 }
 
 @end

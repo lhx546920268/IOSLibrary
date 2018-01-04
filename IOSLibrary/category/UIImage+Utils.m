@@ -1,158 +1,111 @@
 //
-//  UIImage+Utilities.m
-
+//  UIImage+Utils.m
+//  IOSLibrary
+//
+//  Created by 罗海雄 on 2018/1/4.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
-#import "UIImage+Utilities.h"
-#import "SeaBasic.h"
+#import "UIImage+Utils.h"
+#import "UIColor+Utils.h"
 
-
-
-@implementation UIImage (Utilities)
+@implementation UIImage (Utils)
 
 #pragma mark- init
 
-/**图片初始化 png格式 使用initWithContentsOfFile
- *@param name 图片名称
- *@return 一个初始化的UIImage
- */
-+ (UIImage*)bundleImageWithName:(NSString *)name
++ (UIImage*)sea_bundleImageWithName:(NSString *)name
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"png"];
-    UIImage *image = [UIImage imageWithContentsOfFile:path];
-    
-    return image;
+    return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"png"]];
 }
 
-/**从图片资源中获取图片数据
- *@return [UIImage imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
- */
-+ (UIImage*)imageFromAsset:(ALAsset *)asset
++ (UIImage*)sea_imageFromAsset:(ALAsset *)asset
 {
-    return [UIImage imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
+    return [UIImage sea_imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
 }
 
-/**从图片资源中获取图片数据
- *@param asset 资源文件类
- *@param options 从资源文件中获取图片的选项
- */
-+ (UIImage*)imageFromAsset:(ALAsset*) asset options:(SeaAssetImageOptions) options
++ (UIImage*)sea_imageFromAsset:(ALAsset*) asset options:(SeaAssetImageOptions) options
 {
     if(asset == nil)
         return nil;
     
     ALAssetRepresentation *representation = [asset defaultRepresentation];
     
-    //获取正确的图片方向
-    UIImageOrientation orientation = UIImageOrientationUp;
-    NSNumber *number = [asset valueForProperty:ALAssetPropertyOrientation];
-    
-    if(number != nil)
-    {
-        orientation = [number intValue];
-    }
-    
     UIImage *image = nil;
     
-    switch (options)
-    {
-        case SeaAssetImageOptionsFullScreenImage :
-        {
+    switch (options){
+        case SeaAssetImageOptionsFullScreenImage : {
             //满屏的图片朝向已调整为 UIImageOrientationUp
             image = [UIImage imageWithCGImage:[representation fullScreenImage]];
         }
             break;
-        case SeaAssetImageOptionsResolutionImage :
-        {
+        case SeaAssetImageOptionsResolutionImage : {
             //图片朝向可能不正确，需要调整
+            //获取正确的图片方向
+            UIImageOrientation orientation = UIImageOrientationUp;
+            NSNumber *number = [asset valueForProperty:ALAssetPropertyOrientation];
+            
+            if(number != nil){
+                orientation = [number intValue];
+            }
+            
             image = [UIImage imageWithCGImage:[representation fullResolutionImage] scale:representation.scale orientation:orientation];
         }
             break;
     }
-    
     
     return image;
 }
 
 #pragma mark- resize
 
-/**等比例缩小图片
- *@param size 要缩小的图片最大尺寸
- *@param type 缩小方式
- *@return 返回要缩小的图片尺寸
- */
-- (CGSize)shrinkWithSize:(CGSize) size type:(SeaImageShrinkType) type
+- (CGSize)sea_fitWithSize:(CGSize) size type:(SeaImageFitType) type
 {
-    return [UIImage shrinkImageSize:self.size withSize:size type:type];
+    return [UIImage sea_fitImageSize:self.size size:size type:type];
 }
 
-/**等比例缩小图片
- *@param imageSize 要缩小的图片大小
- *@param size 要缩小的图片最大尺寸
- *@param type 缩小方式
- *@return 返回要缩小的图片尺寸
- */
-+ (CGSize)shrinkImageSize:(CGSize) imageSize withSize:(CGSize) size type:(SeaImageShrinkType) type
++ (CGSize)sea_fitImageSize:(CGSize) imageSize size:(CGSize) size type:(SeaImageFitType) type
 {
     CGSize retSize = CGSizeZero;
     CGFloat width = imageSize.width;
     CGFloat height = imageSize.height;
     
-    if(width == height)
-    {
+    if(width == height){
         width = MIN(width, size.width > size.height ? size.height : size.width);
         height = width;
-    }
-    else
-    {
+    }else{
         CGFloat heightScale = height / size.height;
         CGFloat widthScale = width / size.width;
         
-        switch (type)
-        {
-            case SeaImageShrinkTypeWidthAndHeight :
-            {
-                if(height >= size.height && width >= size.width)
-                {
-                    if(heightScale > widthScale)
-                    {
+        switch (type) {
+            case SeaImageFitTypeSize : {
+                if(height >= size.height && width >= size.width){
+                    if(heightScale > widthScale){
                         height = floorf(height / heightScale);
                         width = floorf(width / heightScale);
-                    }
-                    else
-                    {
+                    }else{
                         height = floorf(height / widthScale);
                         width = floorf(width / widthScale);
                     }
-                }
-                else
-                {
-                    if(height >= size.height && width <= size.width)
-                    {
+                } else {
+                    if(height >= size.height && width <= size.width) {
                         height = floorf(height / heightScale);
                         width = floorf(width / heightScale);
-                    }
-                    else if(height <= size.height && width >= size.width)
-                    {
+                    } else if(height <= size.height && width >= size.width){
                         height = floorf(height / widthScale);
                         width = floorf(width / widthScale);
                     }
                 }
             }
                 break;
-            case SeaImageShrinkTypeWidth :
-            {
-                if(width > size.width)
-                {
+            case SeaImageFitTypeWidth : {
+                if(width > size.width) {
                     height = floorf(height / widthScale);
                     width = floorf(width / widthScale);
                 }
             }
                 break;
-            case SeaImageShrinkTypeHeight :
-            {
-                if(height > size.height)
-                {
+            case SeaImageFitTypeHeight : {
+                if(height > size.height) {
                     height = floorf(height / heightScale);
                     width = floorf(width / heightScale);
                 }
@@ -167,17 +120,13 @@
     return retSize;
 }
 
-/**通过给定大小获取图片的缩率图
- *@param size 目标图片大小
- *@return 图片的缩略图
- */
-- (UIImage*)aspectFitthumbnailWithSize:(CGSize)size
+- (UIImage*)sea_aspectFitWithSize:(CGSize)size
 {
     CGImageRef cgImage = self.CGImage;
     size_t width = CGImageGetWidth(cgImage) / SeaImageScale;
     size_t height = CGImageGetHeight(cgImage) / SeaImageScale;
     
-    size = [UIImage shrinkImageSize:CGSizeMake(width, height) withSize:size type:SeaImageShrinkTypeWidthAndHeight];
+    size = [UIImage sea_fitImageSize:CGSizeMake(width, height) size:size type:SeaImageFitTypeSize];
     
     if(size.height >= height || size.width >= width)
         return self;
@@ -187,51 +136,33 @@
     [self drawInRect:imageRect];
     UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
-    thumbnail = [UIImage imageWithCGImage:thumbnail.CGImage scale:thumbnail.scale orientation:thumbnail.imageOrientation];
     
-//    NSLog(@"--%@", NSStringFromCGSize(size));
-//    NSLog(@"--%@", NSStringFromCGSize(self.size));
+    thumbnail = [UIImage imageWithCGImage:thumbnail.CGImage scale:thumbnail.scale orientation:thumbnail.imageOrientation];
     
     return thumbnail;
 }
 
-/**居中截取的缩略图
- *@param size 目标图片大小
- *@return 图片的缩略图
- */
-- (UIImage*)aspectFillThumbnailWithSize:(CGSize)size
+- (UIImage*)sea_aspectFillWithSize:(CGSize)size
 {
     UIImage *ret = nil;
     
-    if(self.size.width == self.size.height && size.width == size.height)
-    {
+    if(self.size.width == self.size.height && size.width == size.height) {
         //正方形图片
         ret = self;
-    }
-    //    else if (self.size.width < size.width && self.size.height < size.height)
-    //    {
-    //        ret = [self subImageWithRect:CGRectMake((self.size.width - size.width) / 2.0, (self.size.height - size.height) / 2.0, size.width, size.height)];
-    //    }
-    else
-    {
+    } else {
         CGFloat multipleWidthNum = self.size.width / size.width;
         CGFloat multipleHeightNum = self.size.height / size.height;
         
         CGFloat scale = MIN(multipleWidthNum, multipleHeightNum);
         int width = size.width * scale;
         int height = size.height * scale;
-        ret = [self subImageWithRect:CGRectMake((self.size.width - width) / 2.0, (self.size.height - height) / 2.0, width, height)];
+        ret = [self sea_subImageWithRect:CGRectMake((self.size.width - width) / 2.0, (self.size.height - height) / 2.0, width, height)];
     }
     
-    return [ret aspectFitthumbnailWithSize:size];
+    return [ret sea_aspectFitWithSize:size];
 }
 
-/**截取图片
- *@param rect 要截取的rect
- *@return 截取的图片
- */
-- (UIImage*)subImageWithRect:(CGRect)rect
+- (UIImage*)sea_subImageWithRect:(CGRect)rect
 {
     CGPoint origin = CGPointMake(-rect.origin.x, -rect.origin.y);
     
@@ -246,10 +177,7 @@
     return img;
 }
 
-
-/**把UIImage轉成bitmap 需要调用free(),避免内存泄露
- */
-- (unsigned char *)createRGBABitmap
+- (unsigned char *)sea_bitmap
 {
     CGContextRef context = NULL;
     CGColorSpaceRef colorSpace;
@@ -262,18 +190,16 @@
     size_t width = CGImageGetWidth(image);
     size_t height = CGImageGetHeight(image);
     
-    bytesPerRow   = (width * 4);
-    bitmapSize     = (bytesPerRow * height);
+    bytesPerRow = (width * 4);
+    bitmapSize = (bytesPerRow * height);
     
     bitmap = malloc( bitmapSize );
-    if (bitmap == NULL)
-    {
+    if (bitmap == NULL) {
         return NULL;
     }
     
     colorSpace = CGColorSpaceCreateDeviceRGB();
-    if (colorSpace == NULL)
-    {
+    if (colorSpace == NULL) {
         free(bitmap);
         return NULL;
     }
@@ -287,10 +213,9 @@
                                      colorSpace,
                                      kBGRxBitmapInfo);
     
-    CGColorSpaceRelease( colorSpace );
+    CGColorSpaceRelease(colorSpace);
     
-    if (context == NULL)
-    {
+    if (context == NULL) {
         free (bitmap);
         return NULL;
     }
@@ -301,9 +226,7 @@
     return bitmap;
 }
 
-/**拷贝图片
- */
-- (UIImage*)deepCopy
+- (UIImage*)sea_deepCopy
 {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(floorf(self.size.width), floorf(self.size.height)), NO, SeaImageScale);
     
@@ -314,13 +237,7 @@
     return image;
 }
 
-/**获取圆角图片，可设置边框
- *@param cornerRradius 圆角半径
- *@param borderWidth 边框线条宽度
- *@param borderColor 边框颜色
- *@return 圆角图片
- */
-- (UIImage*)imageWithCornerRadius:(CGFloat) cornerRradius borderWidth:(CGFloat) borderWidth borderColor:(UIColor*) borderColor
+- (UIImage*)sea_imageWithCornerRadius:(CGFloat) cornerRradius borderWidth:(CGFloat) borderWidth borderColor:(UIColor*) borderColor
 {
     CGImageRef imageR = self.CGImage;
     size_t width = CGImageGetWidth(imageR);
@@ -354,8 +271,7 @@
     //绘图
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), self.CGImage);
     
-    if(borderColor != nil)
-    {
+    if(borderColor != nil){
         ///绘制边框
         CGContextSetLineWidth(context, borderWidth * 2);
         CGContextSetStrokeColorWithColor(context, borderColor.CGColor);
@@ -378,14 +294,12 @@
 
 #pragma mark- 创建图片
 
-+ (UIImage*)imageFromView:(UIView *)view
++ (UIImage*)sea_imageFromView:(UIView *)view
 {
-    return [UIImage imageFromLayer:view.layer];
+    return [UIImage sea_imageFromLayer:view.layer];
 }
 
-/**通过layer生成图片
- */
-+ (UIImage*)imageFromLayer:(CALayer*) layer
++ (UIImage*)sea_imageFromLayer:(CALayer*) layer
 {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(floor(layer.bounds.size.width), floor(layer.bounds.size.height)), layer.opaque, SeaImageScale);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -397,9 +311,7 @@
     return retImage;
 }
 
-/**通过给定颜色创建图片
- */
-+ (UIImage*)imageWithColor:(UIColor*) color size:(CGSize) size
++ (UIImage*)sea_imageWithColor:(UIColor*) color size:(CGSize) size
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     view.backgroundColor = color;
@@ -416,16 +328,7 @@
 
 #pragma mark- QRCode 二维码
 
-/**通过给定信息生成二维码
- *@param string 二维码信息 不能为空
- *@param correctionLevel 二维码容错率
- *@param size 二维码大小 如果为CGSizeZero ，将使用 240的大小
- *@param contentColor 二维码内容颜色，如果空，将使用 blackColor
- *@param backgroundColor 二维码背景颜色，如果空，将使用 whiteColor
- *@param logo 二维码 logo ,放在中心位置 ，logo的大小 根据 UIImage.size 来确定
- *@return 成功返回二维码图片，否则nil
- */
-+ (UIImage*)qrCodeImageWithString:(NSString*) string
++ (UIImage*)sea_qrCodeImageWithString:(NSString*) string
                   correctionLevel:(SeaQRCodeImageCorrectionLevel) correctionLevel
                              size:(CGSize) size
                      contentColor:(UIColor*) contentColor
@@ -442,34 +345,23 @@
     if(backgroundColor == nil)
         backgroundColor = [UIColor whiteColor];
     
-    if(CGSizeEqualToSize(size, CGSizeZero))
-    {
+    if(CGSizeEqualToSize(size, CGSizeZero)){
         size = CGSizeMake(240.0, 240.0);
     }
     
     NSString *level = nil;
-    switch (correctionLevel)
-    {
+    switch (correctionLevel){
         case SeaQRCodeImageCorrectionLevelPercent7 :
-        {
             level = @"L";
-        }
             break;
         case SeaQRCodeImageCorrectionLevelPercent15 :
-        {
             level = @"M";
-        }
             break;
         case SeaQRCodeImageCorrectionLevelPercent25 :
-        {
             level = @"Q";
-        }
             break;
         case SeaQRCodeImageCorrectionLevelPercent30 :
-        {
             level = @"H";
-        }
-        default:
             break;
     }
     
@@ -508,8 +400,7 @@
     CGContextRef cx = CGBitmapContextCreate(data, width, height, 8, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Little);
     CGColorSpaceRelease(colorSpace);
     
-    if(cx == NULL)
-    {
+    if(cx == NULL){
         CGImageRelease(imageRef);
         free(data);
         return nil;
@@ -524,39 +415,34 @@
     ///也可以使用 CIFalseColor 类型的滤镜来改变二维码背景颜色和二维码颜色
     
     ///如果二维码颜色不是黑色 并且背景不是白色 ，改变它的颜色
-    if(![contentColor isEqualToColor:[UIColor blackColor]] || ![backgroundColor isEqualToColor:[UIColor whiteColor]])
-    {
+    if(![contentColor isEqualToColor:[UIColor blackColor]]
+       || ![backgroundColor isEqualToColor:[UIColor whiteColor]]){
         ///获取颜色的rgba值
-        NSDictionary *dic = [contentColor getColorRGB];
-        int c_red = [[dic objectForKey:_colorRedKey_] floatValue] * 255;
-        int c_green = [[dic objectForKey:_colorGreenKey_] floatValue] * 255;
-        int c_blue = [[dic objectForKey:_colorBlueKey_] floatValue] * 255;
-        int c_alpha = [[dic objectForKey:_colorAlphaKey_] floatValue] * 255;
+        NSDictionary *dic = [contentColor sea_colorARGB];
+        int c_red = [[dic objectForKey:SeaColorRed] floatValue] * 255;
+        int c_green = [[dic objectForKey:SeaColorGreen] floatValue] * 255;
+        int c_blue = [[dic objectForKey:SeaColorBlue] floatValue] * 255;
+        int c_alpha = [[dic objectForKey:SeaColorAlpha] floatValue] * 255;
         
-        dic = [backgroundColor getColorRGB];
-        int b_red = [[dic objectForKey:_colorRedKey_] floatValue] * 255;
-        int b_green = [[dic objectForKey:_colorGreenKey_] floatValue] * 255;
-        int b_blue = [[dic objectForKey:_colorBlueKey_] floatValue] * 255;
-        int b_alpha = [[dic objectForKey:_colorAlphaKey_] floatValue] * 255;
+        dic = [backgroundColor sea_colorARGB];
+        int b_red = [[dic objectForKey:SeaColorRed] floatValue] * 255;
+        int b_green = [[dic objectForKey:SeaColorGreen] floatValue] * 255;
+        int b_blue = [[dic objectForKey:SeaColorBlue] floatValue] * 255;
+        int b_alpha = [[dic objectForKey:SeaColorAlpha] floatValue] * 255;
         
         
         ///遍历图片的像素并改变值，像素是一个二维数组， 每个像素由RGBA的数组组成，在数组中的排列顺序是从右到左即 array[0] 是 A阿尔法通道
         uint32_t *tmpData = data; ///创建临时的数组指针，保持data的指针指向为起始位置
-        for(size_t i = 0;i < height; i ++)
-        {
-            for(size_t j = 0;j < width; j ++)
-            {
-                if((*tmpData & 0xFFFFFF) < 0x999999) ///判断是否是背景像素，白色是背景
-                {
+        for(size_t i = 0;i < height; i ++){
+            for(size_t j = 0;j < width; j ++){
+                if((*tmpData & 0xFFFFFF) < 0x999999){ ///判断是否是背景像素，白色是背景
                     ///改变二维码颜色
                     uint8_t *ptr = (uint8_t*)tmpData;
                     ptr[3] = c_red;
                     ptr[2] = c_green;
                     ptr[1] = c_blue;
                     ptr[0] = c_alpha;
-                }
-                else
-                {
+                }else{
                     ///改变背景颜色
                     uint8_t *ptr = (uint8_t*)tmpData;
                     ptr[3] = b_red;
@@ -593,8 +479,7 @@
     CGImageRelease(qrImageRef);
     
     ///绘制logo 没有锯齿
-    if(logo)
-    {
+    if(logo){
         CGSize size = CGSizeMake(floorf(image.size.width), floorf(image.size.height));
         UIGraphicsBeginImageContextWithOptions(size, NO, SeaImageScale);
         
@@ -603,7 +488,6 @@
         image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     }
-    
     
     return image;
 }

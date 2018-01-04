@@ -1,31 +1,43 @@
 //
-//  UITextField+customTextField.h
-
+//  UITextField+Utils.h
+//  IOSLibrary
+//
+//  Created by 罗海雄 on 2018/1/4.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UITextField (Utilities)
+@interface UITextField (Utils)
 
 #pragma mark- 内嵌视图
 
-/**设置输入框左边图标
+/**
+ 设置输入框左边图标
  *@param imageName 图标名称
  *@param padding 图标与文字的间距
  */
-- (void)setLeftViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
+- (void)sea_setLeftViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
 
-/**设置输入框右边图标
+/**
+ 设置输入框右边图标
  *@param imageName 图标名称
  *@param padding 图标与文字的间距
  */
-- (void)setRightViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
+- (void)sea_setRightViewWithImageName:(NSString*) imageName padding:(CGFloat) padding;
 
-/**底部分割线
+/**
+ 设置默认分割线
+ */
+- (UIView*)sea_setDefaultSeparator;
+
+/**
+ 底部分割线
  *@param color 分割线颜色
  *@param height 分割线高度
+ *@return 分割线 使用autoLayout
  */
-- (void)setSeparatorLineWithColor:(UIColor*) color height:(CGFloat) height;
+- (UIView*)sea_setSeparatorWithColor:(UIColor*) color height:(CGFloat) height;
 
 #pragma mark- 文本限制
 
@@ -105,5 +117,6 @@
 
 ///是否禁止输入中文 和 chineseAsTwoCharWhenInputLimit 不兼容
 @property(nonatomic,assign) BOOL forbidInputChinese;
+
 
 @end

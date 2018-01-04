@@ -18,11 +18,11 @@
 
 #import "UIColor+colorUtilities.h"
 #import "UIFont+Utilities.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 
 #import "UITableView+Utilities.h"
 #import "UITableViewCell+Utilities.h"
-#import "UITextField+Utilities.h"
+#import "UITextField+Utils.h"
 #import "UITextView+Utilities.h"
 #import "UIView+Utils.h"
 #import "UIWebView+Utilities.h"
@@ -31,13 +31,13 @@
 #import "UIImageView+SeaMovieCacheTool.h"
 #import "UIImageView+SeaCache.h"
 #import "UIButton+SeaImageCacheTool.h"
-#import "UIImagePickerController+Utilities.h"
+#import "UIImagePickerController+Utils.h"
 #import "UIButton+utilities.h"
 
 #import "UIViewController+Utils.h"
 #import "UISearchBar+Utilities.h"
 #import "UITabBarItem+Utilities.h"
-#import "UITabBarController+Utilities.h"
+#import "UITabBarController+Utils.h"
 #import "UINavigationController+Utilities.h"
 
 #import "NSObject+utilities.h"

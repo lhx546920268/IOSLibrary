@@ -1,16 +1,20 @@
 //
-//  UIFont+Utilities.m
-
+//  UIFont+Utils.m
+//  IOSLibrary
+//
+//  Created by 罗海雄 on 2018/1/4.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
-#import "UIFont+Utilities.h"
+#import "UIFont+Utils.h"
 
-@implementation UIFont (Utilities)
+@implementation UIFont (Utils)
 
-/**把CTFont转成 uifont
- */
-+ (UIFont*)fontWithCTFont:(CTFontRef)ctFont
++ (UIFont*)sea_fontFromCTFont:(CTFontRef) ctFont
 {
+    if(ctFont == NULL)
+        return nil;
+    
     CFStringRef fontName = CTFontCopyPostScriptName(ctFont);
     CGFloat fontSize = CTFontGetSize(ctFont);
     
@@ -19,11 +23,11 @@
     return ret;
 }
 
-
-/**字体是否相等
- */
 - (BOOL)isEqualToFont:(UIFont*) font
 {
+    if(!font)
+        return NO;
+    
     return [self.fontName isEqualToString:font.fontName] && self.pointSize == font.pointSize;
 }
 

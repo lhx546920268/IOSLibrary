@@ -1,25 +1,22 @@
 //
-//  UITabBarController+Utilities.m
-//  WanShoes
+//  UITabBarController+Utils.m
+//  IOSLibrary
 //
-//  Created by 罗海雄 on 16/4/5.
-//  Copyright (c) 2016年 罗海雄. All rights reserved.
+//  Created by 罗海雄 on 2018/1/4.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
-#import "UITabBarController+Utilities.h"
+#import "UITabBarController+Utils.h"
 #import <objc/runtime.h>
 #import "SeaBasic.h"
 
-///点字典key
-static char SeaTabBarPointDictionaryKey;
-
-@implementation UITabBarController (Utilities)
+@implementation UITabBarController (Utils)
 
 /**以默认样式在tabBar 上面显示一个点， 红色，10 * 10
  */
-- (void)addRedPointAtIndex:(NSInteger) index
+- (void)sea_addRedPointAtIndex:(NSInteger) index
 {
-    [self addPointWithSize:CGSizeMake(10, 10) color:[UIColor redColor] atIndex:index];
+    [self sea_addPointWithSize:CGSizeMake(10, 10) color:[UIColor redColor] atIndex:index];
 }
 
 /**在tabBar 上面显示一个点
@@ -27,13 +24,13 @@ static char SeaTabBarPointDictionaryKey;
  *@param color 点颜色
  *@param index 点所在的 tabBarItem
  */
-- (void)addPointWithSize:(CGSize) size color:(UIColor*) color atIndex:(NSInteger) index
+- (void)sea_addPointWithSize:(CGSize) size color:(UIColor*) color atIndex:(NSInteger) index
 {
 #if SeaDebug
     NSAssert(index < self.tabBar.items.count, @"addPointWithSize:(CGSize) size color:(UIColor*) color atIndex:(NSInteger) index ， index 已越界");
 #endif
     
-    NSMutableDictionary *dic = [self pointDictionary];
+    NSMutableDictionary *dic = [self sea_pointDictionary];
     UIView *point = [dic objectForKey:@(index)];
     
     if(!point)
@@ -63,13 +60,13 @@ static char SeaTabBarPointDictionaryKey;
 }
 
 ///获取存放点的字典
-- (NSMutableDictionary*)pointDictionary
+- (NSMutableDictionary*)sea_pointDictionary
 {
-    NSMutableDictionary *dic = objc_getAssociatedObject(self, &SeaTabBarPointDictionaryKey);
+    NSMutableDictionary *dic = objc_getAssociatedObject(self, _cmd);
     if(!dic)
     {
         dic = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, &SeaTabBarPointDictionaryKey, dic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, _cmd, dic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     
     return dic;

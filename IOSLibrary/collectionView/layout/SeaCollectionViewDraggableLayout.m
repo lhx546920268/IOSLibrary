@@ -7,7 +7,7 @@
 //
 
 #import "SeaCollectionViewDraggableLayout.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 #import "UIView+Utils.h"
 
 ///拖拽方向
@@ -152,7 +152,7 @@ typedef NS_ENUM(NSInteger, SeaCollectionViewDraggableLayoutDragDirection)
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
 
         //创建模拟视图
-        UIImage *image = [UIImage imageFromView:cell];
+        UIImage *image = [UIImage sea_imageFromView:cell];
 
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:cell.frame];
 

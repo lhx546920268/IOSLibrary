@@ -11,12 +11,12 @@
 
 @implementation UIAlertController (Utils)
 
-+ (void)alertWithTitle:(NSString*) title message:(NSString*) message buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION
++ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION
 {
     [self sea_controllerWithTitle:title message:message style:UIAlertControllerStyleAlert handler:nil buttonTitles:titles, nil];
 }
 
-+ (void)alertWithTitle:(NSString*) title message:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION
++ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION
 {
     [self sea_controllerWithTitle:title message:message style:UIAlertControllerStyleAlert handler:handler buttonTitles:titles, nil];
 }

@@ -10,11 +10,11 @@
 #import "SeaAlbumGroupListView.h"
 #import <AVFoundation/AVFoundation.h>
 #import "SeaImageCropViewController.h"
-#import "UIImagePickerController+Utilities.h"
+#import "UIImagePickerController+Utils.h"
 #import "UIViewController+Utils.h"
 #import "UIView+Utils.h"
 #import "UIButton+Utils.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 #import "SeaUtlities.h"
 #import "SeaBasic.h"
 
@@ -77,7 +77,7 @@
 //拍照
 - (void)camera
 {
-    if([UIImagePickerController canUseCamera])
+    if([UIImagePickerController sea_canUseCamera])
     {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
@@ -437,7 +437,7 @@
                     images = [NSMutableArray arrayWithCapacity:self.selectedAssetInfos.count];
                     for(ALAsset *asset in self.selectedAssetInfos)
                     {
-                        UIImage *image = [UIImage imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
+                        UIImage *image = [UIImage sea_imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
                         if(image)
                         {
                             [images addObject:image];
@@ -467,7 +467,7 @@
             self.requesting = YES;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
                 
-                UIImage *image = [UIImage imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
+                UIImage *image = [UIImage sea_imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
                 
                 dispatch_async(dispatch_get_main_queue(), ^(void){
                     

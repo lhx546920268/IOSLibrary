@@ -1,11 +1,16 @@
 //
-//  UITextField+customTextField.m
-
+//  UITextField+Utils.m
+//  IOSLibrary
+//
+//  Created by 罗海雄 on 2018/1/4.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
-#import "UITextField+Utilities.h"
+#import "UITextField+Utils.h"
+#import "UIView+Utils.h"
 #import <objc/runtime.h>
 #import "SeaBasic.h"
+#import "UIView+SeaAutoLayout.h"
 
 //系统默认的蓝色
 #define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
@@ -16,15 +21,11 @@ static char SeaInputLimitMaxKey;
 static char SeaPreviousTextKey;
 static char SeaForbidInputChineseKey;
 
-@implementation UITextField (Utilities)
+@implementation UITextField (Utils)
 
 #pragma mark- 内嵌视图
 
-/**设置输入框左边图标
- *@param imageName 图标名称
- *@param padding 图标与文字的间距
- */
-- (void)setLeftViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
+- (void)sea_setLeftViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
 {
     self.leftViewMode = UITextFieldViewModeAlways;
     UIImage *image = [UIImage imageNamed:imageName];
@@ -34,11 +35,7 @@ static char SeaForbidInputChineseKey;
     self.leftView = imageView;
 }
 
-/**设置输入框右边图标
- *@param imageName 图标名称
- *@param padding 图标与文字的间距
- */
-- (void)setRightViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
+- (void)sea_setRightViewWithImageName:(NSString*) imageName padding:(CGFloat)padding
 {
     self.rightViewMode = UITextFieldViewModeAlways;
     UIImage *image = [UIImage imageNamed:imageName];
@@ -48,15 +45,35 @@ static char SeaForbidInputChineseKey;
     self.rightView = imageView;
 }
 
-/**底部分割线
- *@param color 分割线颜色
- *@param height 分割线高度
- */
-- (void)setSeparatorLineWithColor:(UIColor *)color height:(CGFloat)height
+- (void)sea_setDefaultSeparator
 {
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - height, self.width, height)];
-    lineView.backgroundColor = color;
-    [self addSubview:lineView];
+    return [self sea_setSeparatorWithColor:SeaSeparatorColor height:SeaSeparatorHeight];
+}
+
+- (void)sea_setSeparatorWithColor:(UIColor *)color height:(CGFloat)height
+{
+    UIView *separator = self.sea_separator;
+    separator.backgroundColor = color;
+    separator.sea_heightLayoutConstraint.constant = height;
+    
+    return separator;
+}
+
+- (UIView*)sea_separator
+{
+    UIView *separator = objc_getAssociatedObject(self, _cmd);
+    if(!separator){
+        separator = [UIView new];
+        [self addSubview:separator];
+        
+        [separator sea_leftToSuperview];
+        [separator sea_rightToSuperview];
+        [separator sea_bottomToSuperview];
+        [separator sea_heightToSelf:SeaSeparatorHeight];
+        
+        objc_setAssociatedObject(self, _cmd, separator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return separator;
 }
 
 #pragma mark- 文本限制
@@ -158,7 +175,7 @@ static char SeaForbidInputChineseKey;
                     break;
             }
         }
-
+        
         NSString *str = [string substringWithRange:NSMakeRange(0, MIN(index, string.length))];
         self.text = [new stringByReplacingCharactersInRange:NSMakeRange(range.location, range.length + string.length) withString:str];
         self.selectedRange = NSMakeRange(range.location + str.length, 0);
@@ -242,23 +259,23 @@ static char SeaForbidInputChineseKey;
 - (void)textFieldEditDidChange:(id) sender
 {
     NSInteger inputLimitMax = self.inputLimitMax;
-
+    
     if(inputLimitMax == 0)
         return;
     // 简体中文输入，包括简体拼音，健体五笔，简体手写 //获取高亮部分
     UITextRange *markedRange = [self markedTextRange];
-
+    
     if(!self.previousText)
     {
         self.previousText = self.text;
     }
-
+    
     if(markedRange)
         return;
-
+    
     NSString *text = self.text;
     NSInteger textLength = 0;
-
+    
     ///中文输入限制
     if(self.chineseAsTwoCharWhenInputLimit)
     {
@@ -266,26 +283,26 @@ static char SeaForbidInputChineseKey;
         if(textLength >= inputLimitMax)
         {
             NSInteger length = text.length - self.previousText.length;
-
+            
             if(length < 0)
                 length = 0;
-
+            
             NSInteger loc = self.selectedRange.location - length;
-
+            
             ///获取输入的text
             NSString *inputString = [text substringWithRange:NSMakeRange(loc, length)];
-
+            
             ///截取输入的字符串
             NSInteger len = 0;
             NSInteger index = 0;
             NSInteger maxLen = inputString.lengthWithChineseAsTwoChar - (textLength - inputLimitMax);
-
+            
             if(maxLen > 0)
             {
                 for(NSUInteger i = 0;i < inputString.length;i ++)
                 {
                     unichar c = [inputString characterAtIndex:i];
-
+                    
                     ///判断是否是中文
                     if(c > 0x4e00 && c < 0x9fff)
                     {
@@ -304,15 +321,15 @@ static char SeaForbidInputChineseKey;
                         break;
                 }
             }
-
+            
             NSString *newString = [inputString substringWithRange:NSMakeRange(0, index)];
-
+            
             self.text = [text stringByReplacingCharactersInRange:NSMakeRange(loc, inputString.length) withString:newString];
-
+            
             ///设定光标位置
             self.selectedRange = NSMakeRange(MIN(self.text.length, loc + index), 0);
         }
-
+        
     }
     else if(text.length > inputLimitMax)
     {
@@ -320,19 +337,19 @@ static char SeaForbidInputChineseKey;
         NSInteger length = text.length - self.previousText.length;
         if(length < 0)
             length = 0;
-
+        
         NSInteger loc = self.selectedRange.location - length;
-
+        
         ///获取输入的text
         NSString *inputString = [text substringWithRange:NSMakeRange(loc, MAX(0, length))];
-
+        
         ///截取输入的字符串
         NSInteger maxLen = inputString.length - (textLength - inputLimitMax);
-
+        
         NSString *newString = [inputString substringWithRange:NSMakeRange(0, MAX(0, maxLen))];
-
+        
         self.text = [text stringByReplacingCharactersInRange:NSMakeRange(loc, inputString.length) withString:newString];
-
+        
         ///设定光标位置
         self.selectedRange = NSMakeRange(MIN(self.text.length, loc + newString.length), 0);
     }
@@ -427,7 +444,7 @@ static char SeaForbidInputChineseKey;
     {
         if(newString.length != 0)
         {
-           newString = [newString stringByAppendingString:repairString];
+            newString = [newString stringByAppendingString:repairString];
         }
         self.text = newString;
         location = range.location + string.length;
@@ -513,7 +530,7 @@ static char SeaForbidInputChineseKey;
                 
                 self.selectedRange = selectedRange;
             }
- 
+            
             return NO;
         }
     }
@@ -642,5 +659,6 @@ static char SeaForbidInputChineseKey;
 {
     return [objc_getAssociatedObject(self, &SeaForbidInputChineseKey) boolValue];
 }
+
 
 @end

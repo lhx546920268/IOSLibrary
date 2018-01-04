@@ -15,7 +15,7 @@
 #import "FMDB.h"
 #import "NSDate+Utils.h"
 #import "SeaMovieCacheTask.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 
 @implementation SeaMovieCacheInfo
 
@@ -328,7 +328,7 @@
         //缓存缩略图
         URL = [self thumbnailKeyInMemoryForURL:URL size:size];
         
-        UIImage *thumbnail = [info.firstImage aspectFillThumbnailWithSize:size];
+        UIImage *thumbnail = [info.firstImage sea_aspectFillWithSize:size];
         
         if(thumbnail){
             info = [SeaMovieCacheInfo infoWithDuration:info.duration image:info.firstImage];

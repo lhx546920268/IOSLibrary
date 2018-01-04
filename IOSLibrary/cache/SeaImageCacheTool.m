@@ -13,7 +13,7 @@
 #import "SeaMovieCacheTool.h"
 #import "SeaHttpTask.h"
 #import "NSString+Utils.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 #import "SeaImageCacheTask.h"
 #import "SeaMovieCacheTool.m"
 
@@ -394,7 +394,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
     //使用缩略图
     if(thumbnailKey){
         //生成缩略图
-        image = [image aspectFillThumbnailWithSize:size];
+        image = [image sea_aspectFillWithSize:size];
     }
     
     //保存在内存
@@ -529,7 +529,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
         //缓存缩略图
         URL = [self thumbnailKeyInMemoryForURL:URL size:size];
         
-        UIImage *thumbnail = [image aspectFillThumbnailWithSize:size];
+        UIImage *thumbnail = [image sea_aspectFillWithSize:size];
         
         if(thumbnail){
             [cache setObject:thumbnail forKey:URL];

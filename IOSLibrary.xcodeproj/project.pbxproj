@@ -96,6 +96,10 @@
 		1053E3DF1FFB6E8900F2B548 /* UIButton+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1053E3DD1FFB6E8900F2B548 /* UIButton+Utils.m */; };
 		1053E3E21FFB703B00F2B548 /* UIColor+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 1053E3E01FFB703B00F2B548 /* UIColor+Utils.h */; };
 		1053E3E31FFB703B00F2B548 /* UIColor+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1053E3E11FFB703B00F2B548 /* UIColor+Utils.m */; };
+		1055A2411FFDBA1600D18470 /* UIFont+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 1055A23F1FFDBA1600D18470 /* UIFont+Utils.h */; };
+		1055A2421FFDBA1600D18470 /* UIFont+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1055A2401FFDBA1600D18470 /* UIFont+Utils.m */; };
+		1055A2451FFDBB0F00D18470 /* UIImage+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 1055A2431FFDBB0F00D18470 /* UIImage+Utils.h */; };
+		1055A2461FFDBB0F00D18470 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1055A2441FFDBB0F00D18470 /* UIImage+Utils.m */; };
 		105FEC5D1FF0D8D500EBD7CB /* SeaMovieCacheTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 105FEC5B1FF0D8D500EBD7CB /* SeaMovieCacheTask.h */; };
 		105FEC5E1FF0D8D500EBD7CB /* SeaMovieCacheTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 105FEC5C1FF0D8D500EBD7CB /* SeaMovieCacheTask.m */; };
 		1068F9BA1FF3929500DB0C3F /* SeaHttpParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 1068F9AD1FF3928C00DB0C3F /* SeaHttpParam.m */; };
@@ -219,6 +223,14 @@
 		109D162E1FF0A352005E01C7 /* SeaDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 109D162C1FF0A352005E01C7 /* SeaDataBase.m */; };
 		10BB623D1FA0293100E1EA40 /* SeaImageGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BB623B1FA0293100E1EA40 /* SeaImageGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10BB623E1FA0293100E1EA40 /* SeaImageGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BB623C1FA0293100E1EA40 /* SeaImageGenerator.m */; };
+		10BFED4B1FFDC51C0065F4D1 /* UIImagePickerController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BFED491FFDC51C0065F4D1 /* UIImagePickerController+Utils.h */; };
+		10BFED4C1FFDC51C0065F4D1 /* UIImagePickerController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BFED4A1FFDC51C0065F4D1 /* UIImagePickerController+Utils.m */; };
+		10BFED4F1FFDC6590065F4D1 /* UISearchBar+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BFED4D1FFDC6590065F4D1 /* UISearchBar+Utils.h */; };
+		10BFED501FFDC6590065F4D1 /* UISearchBar+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BFED4E1FFDC6590065F4D1 /* UISearchBar+Utils.m */; };
+		10BFED531FFDC6950065F4D1 /* UITabBarController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BFED511FFDC6950065F4D1 /* UITabBarController+Utils.h */; };
+		10BFED541FFDC6950065F4D1 /* UITabBarController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BFED521FFDC6950065F4D1 /* UITabBarController+Utils.m */; };
+		10BFED571FFDC7520065F4D1 /* UITextField+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10BFED551FFDC7520065F4D1 /* UITextField+Utils.h */; };
+		10BFED581FFDC7520065F4D1 /* UITextField+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10BFED561FFDC7520065F4D1 /* UITextField+Utils.m */; };
 		10C3EFA91FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10C3EFA71FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.h */; };
 		10C3EFAA1FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10C3EFA81FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m */; };
 		10C3EFAD1FFB1C6400BFD1E2 /* NSDictionary+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10C3EFAB1FFB1C6400BFD1E2 /* NSDictionary+Utils.h */; };
@@ -229,16 +241,9 @@
 		10E7B17F1F9F2D38006A83D8 /* SeaUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1081F9F2D13006A83D8 /* SeaUserDefaults.m */; };
 		10E7B1821F9F2D38006A83D8 /* SeaFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B10C1F9F2D13006A83D8 /* SeaFileManager.m */; };
 		10E7B1851F9F2D38006A83D8 /* SeaImageCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1101F9F2D13006A83D8 /* SeaImageCacheTool.m */; };
-		10E7B1871F9F2D38006A83D8 /* UITabBarController+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */; };
 		10E7B18A1F9F2D38006A83D8 /* UIWebView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B12A1F9F2D13006A83D8 /* UIWebView+Utilities.m */; };
-		10E7B18E1F9F2D38006A83D8 /* UIFont+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1321F9F2D13006A83D8 /* UIFont+Utilities.m */; };
 		10E7B1901F9F2D38006A83D8 /* UITextView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1341F9F2D13006A83D8 /* UITextView+Utilities.m */; };
-		10E7B1951F9F2D38006A83D8 /* UISearchBar+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B13A1F9F2D13006A83D8 /* UISearchBar+Utilities.m */; };
-		10E7B1981F9F2D38006A83D8 /* UIColor+colorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B13F1F9F2D13006A83D8 /* UIColor+colorUtilities.m */; };
-		10E7B19A1F9F2D38006A83D8 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1411F9F2D13006A83D8 /* UIImage+Utilities.m */; };
-		10E7B19C1F9F2D38006A83D8 /* UITextField+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1431F9F2D13006A83D8 /* UITextField+Utilities.m */; };
 		10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1491F9F2D13006A83D8 /* UINavigationController+Utils.m */; };
-		10E7B1A01F9F2D38006A83D8 /* UIImagePickerController+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B14F1F9F2D13006A83D8 /* UIImagePickerController+Utilities.m */; };
 		10E7B1A71F9F2D38006A83D8 /* SeaImageFilterColorMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1161F9F2D13006A83D8 /* SeaImageFilterColorMatrix.m */; };
 		10E7B1A81F9F2D38006A83D8 /* SeaImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1171F9F2D13006A83D8 /* SeaImageCropViewController.m */; };
 		10E7B1A91F9F2D38006A83D8 /* SeaImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1181F9F2D13006A83D8 /* SeaImageBrowser.m */; };
@@ -255,17 +260,10 @@
 		10E7B2031F9F2D48006A83D8 /* SeaImageCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1051F9F2D13006A83D8 /* SeaImageCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2051F9F2D48006A83D8 /* SeaMovieCacheTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B10A1F9F2D13006A83D8 /* SeaMovieCacheTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2071F9F2D48006A83D8 /* SeaUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1121F9F2D13006A83D8 /* SeaUserDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2091F9F2D48006A83D8 /* UISearchBar+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B11C1F9F2D13006A83D8 /* UISearchBar+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B20D1F9F2D48006A83D8 /* SeaUtlities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1211F9F2D13006A83D8 /* SeaUtlities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B20F1F9F2D48006A83D8 /* UIImage+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1231F9F2D13006A83D8 /* UIImage+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2111F9F2D48006A83D8 /* UIColor+colorUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1251F9F2D13006A83D8 /* UIColor+colorUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2131F9F2D48006A83D8 /* UINavigationController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1291F9F2D13006A83D8 /* UINavigationController+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2161F9F2D48006A83D8 /* UITextField+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B12F1F9F2D13006A83D8 /* UITextField+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2171F9F2D48006A83D8 /* UIImagePickerController+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1301F9F2D13006A83D8 /* UIImagePickerController+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2181F9F2D48006A83D8 /* UITabBarController+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1371F9F2D13006A83D8 /* UITabBarController+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B21D1F9F2D48006A83D8 /* UIWebView+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1481F9F2D13006A83D8 /* UIWebView+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B2201F9F2D48006A83D8 /* UITextView+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B14C1F9F2D13006A83D8 /* UITextView+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E7B2221F9F2D48006A83D8 /* UIFont+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B14E1F9F2D13006A83D8 /* UIFont+Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B22A1F9F2D48006A83D8 /* SeaImageBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1141F9F2D13006A83D8 /* SeaImageBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B22B1F9F2D48006A83D8 /* SeaImageCropViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1151F9F2D13006A83D8 /* SeaImageCropViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E7B22C1F9F2D48006A83D8 /* SeaImageFilterColorMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E7B1191F9F2D13006A83D8 /* SeaImageFilterColorMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -381,6 +379,10 @@
 		1053E3DD1FFB6E8900F2B548 /* UIButton+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Utils.m"; sourceTree = "<group>"; };
 		1053E3E01FFB703B00F2B548 /* UIColor+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utils.h"; sourceTree = "<group>"; };
 		1053E3E11FFB703B00F2B548 /* UIColor+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Utils.m"; sourceTree = "<group>"; };
+		1055A23F1FFDBA1600D18470 /* UIFont+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+Utils.h"; sourceTree = "<group>"; };
+		1055A2401FFDBA1600D18470 /* UIFont+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Utils.m"; sourceTree = "<group>"; };
+		1055A2431FFDBB0F00D18470 /* UIImage+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
+		1055A2441FFDBB0F00D18470 /* UIImage+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		105FEC5B1FF0D8D500EBD7CB /* SeaMovieCacheTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaMovieCacheTask.h; sourceTree = "<group>"; };
 		105FEC5C1FF0D8D500EBD7CB /* SeaMovieCacheTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaMovieCacheTask.m; sourceTree = "<group>"; };
 		1068F9AD1FF3928C00DB0C3F /* SeaHttpParam.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaHttpParam.m; sourceTree = "<group>"; };
@@ -520,6 +522,14 @@
 		10BB62371FA024B700E1EA40 /* IOSLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSLibrary.h; sourceTree = "<group>"; };
 		10BB623B1FA0293100E1EA40 /* SeaImageGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageGenerator.h; sourceTree = "<group>"; };
 		10BB623C1FA0293100E1EA40 /* SeaImageGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageGenerator.m; sourceTree = "<group>"; };
+		10BFED491FFDC51C0065F4D1 /* UIImagePickerController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImagePickerController+Utils.h"; sourceTree = "<group>"; };
+		10BFED4A1FFDC51C0065F4D1 /* UIImagePickerController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImagePickerController+Utils.m"; sourceTree = "<group>"; };
+		10BFED4D1FFDC6590065F4D1 /* UISearchBar+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Utils.h"; sourceTree = "<group>"; };
+		10BFED4E1FFDC6590065F4D1 /* UISearchBar+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Utils.m"; sourceTree = "<group>"; };
+		10BFED511FFDC6950065F4D1 /* UITabBarController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Utils.h"; sourceTree = "<group>"; };
+		10BFED521FFDC6950065F4D1 /* UITabBarController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Utils.m"; sourceTree = "<group>"; };
+		10BFED551FFDC7520065F4D1 /* UITextField+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextField+Utils.h"; sourceTree = "<group>"; };
+		10BFED561FFDC7520065F4D1 /* UITextField+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Utils.m"; sourceTree = "<group>"; };
 		10C3EFA71FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSJSONSerialization+Utils.h"; sourceTree = "<group>"; };
 		10C3EFA81FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSJSONSerialization+Utils.m"; sourceTree = "<group>"; };
 		10C3EFAB1FFB1C6400BFD1E2 /* NSDictionary+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Utils.h"; sourceTree = "<group>"; };
@@ -562,27 +572,13 @@
 		10E7B1171F9F2D13006A83D8 /* SeaImageCropViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageCropViewController.m; sourceTree = "<group>"; };
 		10E7B1181F9F2D13006A83D8 /* SeaImageBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageBrowser.m; sourceTree = "<group>"; };
 		10E7B1191F9F2D13006A83D8 /* SeaImageFilterColorMatrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageFilterColorMatrix.h; sourceTree = "<group>"; };
-		10E7B11C1F9F2D13006A83D8 /* UISearchBar+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Utilities.h"; sourceTree = "<group>"; };
-		10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1211F9F2D13006A83D8 /* SeaUtlities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaUtlities.h; sourceTree = "<group>"; };
-		10E7B1231F9F2D13006A83D8 /* UIImage+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utilities.h"; sourceTree = "<group>"; };
-		10E7B1251F9F2D13006A83D8 /* UIColor+colorUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+colorUtilities.h"; sourceTree = "<group>"; };
 		10E7B1291F9F2D13006A83D8 /* UINavigationController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Utils.h"; sourceTree = "<group>"; };
 		10E7B12A1F9F2D13006A83D8 /* UIWebView+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+Utilities.m"; sourceTree = "<group>"; };
-		10E7B12F1F9F2D13006A83D8 /* UITextField+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextField+Utilities.h"; sourceTree = "<group>"; };
-		10E7B1301F9F2D13006A83D8 /* UIImagePickerController+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImagePickerController+Utilities.h"; sourceTree = "<group>"; };
-		10E7B1321F9F2D13006A83D8 /* UIFont+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1341F9F2D13006A83D8 /* UITextView+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Utilities.m"; sourceTree = "<group>"; };
-		10E7B1371F9F2D13006A83D8 /* UITabBarController+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Utilities.h"; sourceTree = "<group>"; };
-		10E7B13A1F9F2D13006A83D8 /* UISearchBar+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Utilities.m"; sourceTree = "<group>"; };
-		10E7B13F1F9F2D13006A83D8 /* UIColor+colorUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+colorUtilities.m"; sourceTree = "<group>"; };
-		10E7B1411F9F2D13006A83D8 /* UIImage+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utilities.m"; sourceTree = "<group>"; };
-		10E7B1431F9F2D13006A83D8 /* UITextField+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Utilities.m"; sourceTree = "<group>"; };
 		10E7B1481F9F2D13006A83D8 /* UIWebView+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWebView+Utilities.h"; sourceTree = "<group>"; };
 		10E7B1491F9F2D13006A83D8 /* UINavigationController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Utils.m"; sourceTree = "<group>"; };
 		10E7B14C1F9F2D13006A83D8 /* UITextView+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+Utilities.h"; sourceTree = "<group>"; };
-		10E7B14E1F9F2D13006A83D8 /* UIFont+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+Utilities.h"; sourceTree = "<group>"; };
-		10E7B14F1F9F2D13006A83D8 /* UIImagePickerController+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImagePickerController+Utilities.m"; sourceTree = "<group>"; };
 		10F6A3121FD8DED100F2B30E /* UIView+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utils.m"; sourceTree = "<group>"; };
 		10F6A3131FD8DED100F2B30E /* UIView+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
 		10F6A3151FD8DED100F2B30E /* SeaContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaContainer.h; sourceTree = "<group>"; };
@@ -1286,23 +1282,13 @@
 			children = (
 				100E48191FF1E86E00CAB10A /* NSMutableArray+Utils.h */,
 				100E481A1FF1E86E00CAB10A /* NSMutableArray+Utils.m */,
+				10BFED511FFDC6950065F4D1 /* UITabBarController+Utils.h */,
+				10BFED521FFDC6950065F4D1 /* UITabBarController+Utils.m */,
+				1055A23F1FFDBA1600D18470 /* UIFont+Utils.h */,
+				1055A2401FFDBA1600D18470 /* UIFont+Utils.m */,
 				10E7B1211F9F2D13006A83D8 /* SeaUtlities.h */,
-				10E7B1251F9F2D13006A83D8 /* UIColor+colorUtilities.h */,
-				10E7B13F1F9F2D13006A83D8 /* UIColor+colorUtilities.m */,
-				10E7B14E1F9F2D13006A83D8 /* UIFont+Utilities.h */,
-				10E7B1321F9F2D13006A83D8 /* UIFont+Utilities.m */,
-				10E7B1231F9F2D13006A83D8 /* UIImage+Utilities.h */,
-				10E7B1411F9F2D13006A83D8 /* UIImage+Utilities.m */,
-				10E7B1301F9F2D13006A83D8 /* UIImagePickerController+Utilities.h */,
-				10E7B14F1F9F2D13006A83D8 /* UIImagePickerController+Utilities.m */,
 				10E7B1291F9F2D13006A83D8 /* UINavigationController+Utils.h */,
 				10E7B1491F9F2D13006A83D8 /* UINavigationController+Utils.m */,
-				10E7B11C1F9F2D13006A83D8 /* UISearchBar+Utilities.h */,
-				10E7B13A1F9F2D13006A83D8 /* UISearchBar+Utilities.m */,
-				10E7B1371F9F2D13006A83D8 /* UITabBarController+Utilities.h */,
-				10E7B11E1F9F2D13006A83D8 /* UITabBarController+Utilities.m */,
-				10E7B12F1F9F2D13006A83D8 /* UITextField+Utilities.h */,
-				10E7B1431F9F2D13006A83D8 /* UITextField+Utilities.m */,
 				10E7B14C1F9F2D13006A83D8 /* UITextView+Utilities.h */,
 				10E7B1341F9F2D13006A83D8 /* UITextView+Utilities.m */,
 				10E7B1481F9F2D13006A83D8 /* UIWebView+Utilities.h */,
@@ -1323,6 +1309,14 @@
 				1053E3DD1FFB6E8900F2B548 /* UIButton+Utils.m */,
 				1053E3E01FFB703B00F2B548 /* UIColor+Utils.h */,
 				1053E3E11FFB703B00F2B548 /* UIColor+Utils.m */,
+				1055A2431FFDBB0F00D18470 /* UIImage+Utils.h */,
+				1055A2441FFDBB0F00D18470 /* UIImage+Utils.m */,
+				10BFED491FFDC51C0065F4D1 /* UIImagePickerController+Utils.h */,
+				10BFED4A1FFDC51C0065F4D1 /* UIImagePickerController+Utils.m */,
+				10BFED4D1FFDC6590065F4D1 /* UISearchBar+Utils.h */,
+				10BFED4E1FFDC6590065F4D1 /* UISearchBar+Utils.m */,
+				10BFED551FFDC7520065F4D1 /* UITextField+Utils.h */,
+				10BFED561FFDC7520065F4D1 /* UITextField+Utils.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -1422,6 +1416,7 @@
 				108E6F071FDF85FC00F1B121 /* SeaRefreshControl.h in Headers */,
 				108E6F081FDF85FC00F1B121 /* SeaLoadMoreControl.h in Headers */,
 				108E6E8F1FDF835700F1B121 /* SeaTextView.h in Headers */,
+				10BFED571FFDC7520065F4D1 /* UITextField+Utils.h in Headers */,
 				108E6E901FDF835700F1B121 /* SeaGridPasswordLabel.h in Headers */,
 				108E6E911FDF835700F1B121 /* SeaProgressView.h in Headers */,
 				108E6E921FDF835700F1B121 /* SeaMagnifyingGlass.h in Headers */,
@@ -1490,6 +1485,7 @@
 				10C3EFAD1FFB1C6400BFD1E2 /* NSDictionary+Utils.h in Headers */,
 				10C3EFB11FFB246400BFD1E2 /* NSObject+Utils.h in Headers */,
 				10F6A31A1FD8DEEF00F2B30E /* SeaContainer.h in Headers */,
+				10BFED4F1FFDC6590065F4D1 /* UISearchBar+Utils.h in Headers */,
 				1052CAEC1FD790D300F6F01F /* UITableView+SeaRowHeight.h in Headers */,
 				1052CAE31FD78EC700F6F01F /* UITableView+Utils.h in Headers */,
 				109D162D1FF0A352005E01C7 /* SeaDataBase.h in Headers */,
@@ -1509,25 +1505,21 @@
 				1044C01A1FEC9495006BC8CA /* SeaImageCacheOptions.h in Headers */,
 				10E7B2031F9F2D48006A83D8 /* SeaImageCacheTool.h in Headers */,
 				10E7B2051F9F2D48006A83D8 /* SeaMovieCacheTool.h in Headers */,
+				10BFED531FFDC6950065F4D1 /* UITabBarController+Utils.h in Headers */,
 				10E7B2071F9F2D48006A83D8 /* SeaUserDefaults.h in Headers */,
-				10E7B2091F9F2D48006A83D8 /* UISearchBar+Utilities.h in Headers */,
 				10E7B20D1F9F2D48006A83D8 /* SeaUtlities.h in Headers */,
-				10E7B20F1F9F2D48006A83D8 /* UIImage+Utilities.h in Headers */,
-				10E7B2111F9F2D48006A83D8 /* UIColor+colorUtilities.h in Headers */,
 				10E7B2131F9F2D48006A83D8 /* UINavigationController+Utils.h in Headers */,
-				10E7B2161F9F2D48006A83D8 /* UITextField+Utilities.h in Headers */,
-				10E7B2171F9F2D48006A83D8 /* UIImagePickerController+Utilities.h in Headers */,
-				10E7B2181F9F2D48006A83D8 /* UITabBarController+Utilities.h in Headers */,
 				10E7B21D1F9F2D48006A83D8 /* UIWebView+Utilities.h in Headers */,
 				105FEC5D1FF0D8D500EBD7CB /* SeaMovieCacheTask.h in Headers */,
 				1068F9C91FF3981C00DB0C3F /* NSAttributedString+Utils.h in Headers */,
 				10E7B2201F9F2D48006A83D8 /* UITextView+Utilities.h in Headers */,
-				10E7B2221F9F2D48006A83D8 /* UIFont+Utilities.h in Headers */,
 				10E7B22A1F9F2D48006A83D8 /* SeaImageBrowser.h in Headers */,
 				10E7B22B1F9F2D48006A83D8 /* SeaImageCropViewController.h in Headers */,
 				10E7B22C1F9F2D48006A83D8 /* SeaImageFilterColorMatrix.h in Headers */,
 				10E7B22D1F9F2D48006A83D8 /* SeaCacheCrash.h in Headers */,
 				10E7B22E1F9F2D48006A83D8 /* SeaBasicInitialization.h in Headers */,
+				1055A2411FFDBA1600D18470 /* UIFont+Utils.h in Headers */,
+				10BFED4B1FFDC51C0065F4D1 /* UIImagePickerController+Utils.h in Headers */,
 				10E7B22F1F9F2D48006A83D8 /* SeaTools.h in Headers */,
 				10E7B2301F9F2D48006A83D8 /* SeaObject.h in Headers */,
 				10E7B2311F9F2D48006A83D8 /* SeaBasic.h in Headers */,
@@ -1549,6 +1541,7 @@
 				100E48131FF1E2F800CAB10A /* UIImageView+SeaImageCache.h in Headers */,
 				100E48141FF1E2F800CAB10A /* UIImageView+SeaMovieCache.h in Headers */,
 				104DB5B61FF6278C00FDB81A /* NSString+Utils.h in Headers */,
+				1055A2451FFDBB0F00D18470 /* UIImage+Utils.h in Headers */,
 				100E48151FF1E2F800CAB10A /* UIView+SeaActivityIndicatorView.h in Headers */,
 				10E7B2381F9F2D48006A83D8 /* SeaPresentTransitionDelegate.h in Headers */,
 				10E7B2391F9F2D48006A83D8 /* SeaPartialPresentTransitionDelegate.h in Headers */,
@@ -1642,6 +1635,7 @@
 				100E48041FF1E2E700CAB10A /* FMDatabaseAdditions.m in Sources */,
 				100E48051FF1E2E700CAB10A /* FMDatabasePool.m in Sources */,
 				100E48061FF1E2E700CAB10A /* FMDatabaseQueue.m in Sources */,
+				10BFED501FFDC6590065F4D1 /* UISearchBar+Utils.m in Sources */,
 				100E48071FF1E2E700CAB10A /* FMResultSet.m in Sources */,
 				10509CB41FE8F46D003468EB /* UINavigationBar+Utils.m in Sources */,
 				10509CB51FE8F46D003468EB /* UINavigationItem+Utils.m in Sources */,
@@ -1652,6 +1646,7 @@
 				108E6F0B1FDF860700F1B121 /* SeaLoadMoreControl.m in Sources */,
 				108E6F0C1FDF860700F1B121 /* SeaDataControl.m in Sources */,
 				108E6EBD1FDF836600F1B121 /* SeaTextView.m in Sources */,
+				10BFED4C1FFDC51C0065F4D1 /* UIImagePickerController+Utils.m in Sources */,
 				108E6EBE1FDF836600F1B121 /* SeaGridPasswordLabel.m in Sources */,
 				108E6EBF1FDF836600F1B121 /* SeaProgressView.m in Sources */,
 				108E6EC01FDF836600F1B121 /* SeaDashView.m in Sources */,
@@ -1668,6 +1663,7 @@
 				108E6ECA1FDF836600F1B121 /* SeaTabBar.m in Sources */,
 				108E6ECB1FDF836600F1B121 /* SeaTabBarItem.m in Sources */,
 				108E6ECC1FDF836600F1B121 /* SeaTabBarController.m in Sources */,
+				10BFED581FFDC7520065F4D1 /* UITextField+Utils.m in Sources */,
 				108E6ECD1FDF836600F1B121 /* SeaCountDownButton.m in Sources */,
 				108E6ECE1FDF836600F1B121 /* SeaButton.m in Sources */,
 				10C3EFAA1FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m in Sources */,
@@ -1683,6 +1679,7 @@
 				108E6ED71FDF836600F1B121 /* SeaGridronMenu.m in Sources */,
 				108E6ED81FDF836600F1B121 /* SeaMenuBarItem.m in Sources */,
 				108E6ED91FDF836600F1B121 /* SeaMenuBar.m in Sources */,
+				1055A2421FFDBA1600D18470 /* UIFont+Utils.m in Sources */,
 				108E6EDA1FDF836600F1B121 /* SeaMenuItemInfo.m in Sources */,
 				108E6EDB1FDF836600F1B121 /* SeaImageTitleMenu.m in Sources */,
 				108E6EDC1FDF836600F1B121 /* SeaRadarView.m in Sources */,
@@ -1691,6 +1688,7 @@
 				108E6EDE1FDF836600F1B121 /* SeaTextLoadingListCell.m in Sources */,
 				108E6EDF1FDF836600F1B121 /* SeaTextSwitchListCell.m in Sources */,
 				108E6EE01FDF836600F1B121 /* SeaSeparatorTableViewCell.m in Sources */,
+				1055A2461FFDBB0F00D18470 /* UIImage+Utils.m in Sources */,
 				108E6EE11FDF836600F1B121 /* SeaTextCell.m in Sources */,
 				108E6EE21FDF836600F1B121 /* SeaTitleContentCell.m in Sources */,
 				108E6EE31FDF836600F1B121 /* SeaTextFieldCell.m in Sources */,
@@ -1729,22 +1727,15 @@
 				10E7B1821F9F2D38006A83D8 /* SeaFileManager.m in Sources */,
 				100B1C911FDA97BE00FBCD62 /* SeaCollectionViewDraggableLayout.m in Sources */,
 				10E7B1851F9F2D38006A83D8 /* SeaImageCacheTool.m in Sources */,
-				10E7B1871F9F2D38006A83D8 /* UITabBarController+Utilities.m in Sources */,
 				1052CAEB1FD790BA00F6F01F /* UITableView+SeaRowHeight.m in Sources */,
 				10E7B18A1F9F2D38006A83D8 /* UIWebView+Utilities.m in Sources */,
-				10E7B18E1F9F2D38006A83D8 /* UIFont+Utilities.m in Sources */,
 				10E7B1901F9F2D38006A83D8 /* UITextView+Utilities.m in Sources */,
 				100B1C8C1FDA97BE00FBCD62 /* UICollectionView+SeaCellSize.m in Sources */,
 				10BB623E1FA0293100E1EA40 /* SeaImageGenerator.m in Sources */,
 				100B1C941FDA97BE00FBCD62 /* SeaCollectionViewFlowFillLayout.m in Sources */,
-				10E7B1951F9F2D38006A83D8 /* UISearchBar+Utilities.m in Sources */,
 				109D162E1FF0A352005E01C7 /* SeaDataBase.m in Sources */,
-				10E7B1981F9F2D38006A83D8 /* UIColor+colorUtilities.m in Sources */,
-				10E7B19A1F9F2D38006A83D8 /* UIImage+Utilities.m in Sources */,
 				1044C01F1FEC9995006BC8CA /* SeaImageCacheTask.m in Sources */,
-				10E7B19C1F9F2D38006A83D8 /* UITextField+Utilities.m in Sources */,
 				10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */,
-				10E7B1A01F9F2D38006A83D8 /* UIImagePickerController+Utilities.m in Sources */,
 				1051BB2C1FE3768900658772 /* SeaAutoLayoutBuilder.m in Sources */,
 				100B1C8F1FDA97BE00FBCD62 /* SeaCollectionViewWaterLayout.m in Sources */,
 				100B1C7B1FDA913A00FBCD62 /* SeaAutoScrollView.m in Sources */,
@@ -1757,6 +1748,7 @@
 				10E7B1AB1F9F2D38006A83D8 /* ChineseToPinyin.m in Sources */,
 				10E7B1AC1F9F2D38006A83D8 /* SeaBasicInitialization.m in Sources */,
 				10E7B1AD1F9F2D38006A83D8 /* SeaCacheCrash.m in Sources */,
+				10BFED541FFDC6950065F4D1 /* UITabBarController+Utils.m in Sources */,
 				10E7B1AE1F9F2D38006A83D8 /* SeaTools.m in Sources */,
 				10E7B1B31F9F2D38006A83D8 /* SeaPartialPresentTransitionDelegate.m in Sources */,
 				10E7B1B41F9F2D38006A83D8 /* SeaPresentTransitionDelegate.m in Sources */,

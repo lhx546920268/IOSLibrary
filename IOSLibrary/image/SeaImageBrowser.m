@@ -9,7 +9,7 @@
 #import "SeaImageBrowser.h"
 #import "UIImageView+SeaImageCacheTool.h"
 #import "UIImageView+SeaCache.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 #import "SeaBasic.h"
 
 @implementation SeaImageBrowserCell
@@ -118,7 +118,7 @@
  */
 - (CGRect)rectFromImage:(UIImage*) image
 {
-    CGSize size = [image shrinkWithSize:_scrollView.bounds.size type:SeaImageShrinkTypeWidth];
+    CGSize size = [image sea_fitWithSize:_scrollView.bounds.size type:SeaImageShrinkTypeWidth];
    return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
 }
 

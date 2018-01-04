@@ -15,10 +15,10 @@ typedef void(^UIAlertControllerActionHandler)(int index);
 @interface UIAlertController (Utils)
 
 ///显示一个弹窗
-+ (void)alertWithTitle:(NSString*) title message:(NSString*) message buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION;
++ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION;
 
 ///显示一个弹窗
-+ (void)alertWithTitle:(NSString*) title message:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION;
++ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION;
 
 ///显示一个弹窗
 + (void)sea_controllerWithTitle:(NSString*) title message:(NSString*) message style:(UIAlertControllerStyle) style handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) buttonTitles, ... NS_REQUIRES_NIL_TERMINATION;

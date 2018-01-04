@@ -8,7 +8,7 @@
 
 #import "SeaNumberKeyboard.h"
 #import "SeaHighlightButton.h"
-#import "UIImage+Utilities.h"
+#import "UIImage+Utils.h"
 #import "UIView+Utils.h"
 #import "SeaBasic.h"
 
@@ -52,8 +52,8 @@
         NSArray *titles = [NSArray arrayWithObjects:@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", otherButtonTittle, @"0", [UIImage imageNamed:@"keyboard_delete"], nil];
         
         ///按钮背景图片
-        UIImage *nor_bg_image = [UIImage imageWithColor:[UIColor colorWithRed:252/255.0 green:252/255.0 blue:252/255.0 alpha:1] size:CGSizeMake(1, 1)];
-        UIImage *high_light_bg_image = [UIImage imageWithColor:[UIColor colorWithWhite:0.85 alpha:1.0] size:CGSizeMake(1, 1)];
+        UIImage *nor_bg_image = [UIImage sea_imageWithColor:[UIColor colorWithRed:252/255.0 green:252/255.0 blue:252/255.0 alpha:1] size:CGSizeMake(1, 1)];
+        UIImage *high_light_bg_image = [UIImage sea_imageWithColor:[UIColor colorWithWhite:0.85 alpha:1.0] size:CGSizeMake(1, 1)];
         
         NSInteger currentRow = 0;
         NSInteger currentColumn = 0;
