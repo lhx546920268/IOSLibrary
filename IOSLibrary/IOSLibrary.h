@@ -9,5 +9,15 @@
 #ifndef IOSLibrary_h
 #define IOSLibrary_h
 
+#import <SeaViewController.h>
+#import <SeaCollectionViewController.h>
+#import <SeaTableViewController.h>
+#import <UIViewController+Utils.h>
+
+
+#import <UIView+Utils.h>
+#import <UIView+SeaAutoLayout.h>
+
+#import <SeaBasic.h>
 
 #endif /* IOSLibrary_h */

@@ -6,6 +6,8 @@
 
 #import "SeaSlideViewController.h"
 #import "SeaBasic.h"
+#import "UIViewController+Utils.h"
+#import "UIView+Utils.h"
 
 @interface SeaSlideViewController ()
 

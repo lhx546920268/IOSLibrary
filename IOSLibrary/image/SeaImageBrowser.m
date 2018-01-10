@@ -1,16 +1,17 @@
 //
 //  SeaImageBrowser.m
-//  StandardShop
+//  IOSLibrary
 //
 //  Created by 罗海雄 on 16/6/2.
 //  Copyright © 2016年 罗海雄. All rights reserved.
 //
 
 #import "SeaImageBrowser.h"
-#import "UIImageView+SeaImageCacheTool.h"
-#import "UIImageView+SeaCache.h"
+#import "UIImageView+SeaImageCache.h"
 #import "UIImage+Utils.h"
 #import "SeaBasic.h"
+#import "UIView+Utils.h"
+#import "UIViewController+Utils.h"
 
 @implementation SeaImageBrowserCell
 
@@ -30,8 +31,6 @@
         [self.contentView addSubview:_scrollView];
 
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        _imageView.sea_showLoadingActivity = YES;
-        _imageView.sea_actStyle = UIActivityIndicatorViewStyleWhiteLarge;
         _imageView.backgroundColor = [UIColor clearColor];
         [_scrollView addSubview:_imageView];
 
@@ -118,7 +117,7 @@
  */
 - (CGRect)rectFromImage:(UIImage*) image
 {
-    CGSize size = [image sea_fitWithSize:_scrollView.bounds.size type:SeaImageShrinkTypeWidth];
+    CGSize size = [image sea_fitWithSize:_scrollView.bounds.size type:SeaImageFitTypeWidth];
    return CGRectMake(MAX(0, (self.bounds.size.width - size.width) / 2.0), MAX((self.bounds.size.height - size.height) / 2.0, 0), size.width, size.height);
 }
 
@@ -220,7 +219,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return self.statusBarHidden;
+    return self.sea_statusBarHidden;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -248,7 +247,7 @@
     CGFloat animatedDuration = 0.4;
     if(show)
     {
-        UINavigationController *nav = [self createdInNavigationController];
+        UINavigationController *nav = [self sea_createWithNavigationController];
         nav.navigationBar.translucent = YES;
         [nav setNavigationBarHidden:YES];
         
@@ -282,7 +281,7 @@
     }
     else
     {
-        self.statusBarHidden = NO;
+        self.sea_statusBarHidden = NO;
         SeaImageBrowserCell *cell = (SeaImageBrowserCell*)[_collectionView.visibleCells firstObject];
         self.backgroundView.hidden = YES;
         self.msgLabel.hidden = YES;
@@ -354,7 +353,7 @@
     self.view.userInteractionEnabled = YES;
     self.isAnimating = NO;
     self.msgLabel.hidden = NO;
-    self.statusBarHidden = YES;
+    self.sea_statusBarHidden = YES;
 }
 
 /**隐藏
@@ -392,8 +391,12 @@
     cell.delegate = self;
 
     WeakSelf(self);
-    [cell.imageView sea_setImageWithURL:[self.source objectAtIndex:indexPath.item] completion:^(UIImage *image, BOOL fromNetwork){
-
+    SeaImageCacheOptions *options = [SeaImageCacheOptions defaultOptions];
+    options.shouldShowLoadingActivity = YES;
+    options.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    
+    [cell.imageView sea_setImageWithURL:[self.source objectAtIndex:indexPath.item] options:options completion:^(UIImage *image){
+        
         if(!weakSelf.needShowWithAnimate)
         {
             [cell layoutImageAfterLoad];
@@ -420,7 +423,7 @@
         
         if(!image)
         {
-            image = cell1.imageView.sea_placeHolderImage;
+            image = [SeaImageCacheOptions defaultOptions].placeholderImage;
         }
         self.view.userInteractionEnabled = NO;
         

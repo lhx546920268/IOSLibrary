@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ draw 创建图片
+ */
 @interface SeaImageGenerator : NSObject
 
 ///未打钩图片

@@ -6,6 +6,9 @@
 
 #import "SeaRefreshControl.h"
 #import "SeaBasic.h"
+#import "UIView+Utils.h"
+#import "NSDate+Utils.h"
+#import "NSString+Utils.h"
 
 @implementation SeaRefreshCircle
 
@@ -229,14 +232,7 @@ static const CGFloat SeaRefreshControlCriticalPoint = 60.0f;
  */
 - (void)refreshLastUpdatedDate
 {
-    NSDate *date = [NSDate date];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    
-    [formatter setDateFormat:DateFormatYMdHms];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithName:BeiJingTimeZone]];
-    
-    _lastUpdatedLabel.text = [NSString stringWithFormat:@"最后刷新: %@", [NSDate datetime:[formatter stringFromDate:date] formatString:DateFormatYMdHms]];
+    _lastUpdatedLabel.text = [NSString stringWithFormat:@"最后刷新: %@", [NSDate sea_currentTimeWithFormat:SeaDateFormatYMdHm]];
     
     NSString *key = self.lastUpdateDateKey;
     
@@ -342,7 +338,7 @@ static const CGFloat SeaRefreshControlCriticalPoint = 60.0f;
 - (void)updatePosition
 {
     CGFloat width = _indicatorView.isAnimating ? _indicatorView.width : 0;
-    CGSize size = [_statusLabel.text stringSizeWithFont:_statusLabel.font contraintWith:self.frame.size.width - width];
+    CGSize size = [_statusLabel.text sea_stringSizeWithFont:_statusLabel.font contraintWith:self.frame.size.width - width];
     _indicatorView.left = (self.frame.size.width - size.width - width) / 2.0;
     
     CGRect frame = _indicatorView.frame;

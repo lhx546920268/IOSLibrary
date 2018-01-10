@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSString+Utils.h"
 
 @interface UITextField (Utils)
 
@@ -39,40 +40,10 @@
  */
 - (UIView*)sea_setSeparatorWithColor:(UIColor*) color height:(CGFloat) height;
 
-#pragma mark- 文本限制
-
-/**在textField的代理中调用
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param count 输入框最大可输入字数
+/**
+ 设置默认的附加视图
  */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedCount:(NSInteger) count;
-
-/**在textField的代理中调用,把中文当成两个字符
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param count 输入框最大可输入字数
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedCountChinesseAsTwoChar:(NSInteger) count;
-
-/**设置默认的附加视图
- *@param target 方法执行者
- *@param action 方法
- */
-- (void)setDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action;
-
-/**在textField的代理中调用，限制只能输入一个小数点，并且第一个输入不能是小数点，无法输入除了数字和.以外的字符
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param limitedNum 输入框可输入的最大值
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedNum:(double) limitedNum;
-
-/**添加文本变化通知，用于中文输入限制，因为输入中文的时候 textField的代理是没有调用的
- */
-- (void)addTextDidChangeNotification;
-
-#pragma mark- 格式化
+- (void)setDefaultInputAccessoryView;
 
 /**在textField的代理中调用
  *@param range 文本变化的范围
@@ -82,41 +53,43 @@
  */
 - (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string formatTextWithInterval:(int) interval limitCount:(NSInteger) count;
 
-
-/**在textField的代理中调用，限制只能输入一个小数点，并且可补全字符串
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param limitedNum 输入框可输入的最大值
- *@param repairString 补全字符
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedNum:(double) limitedNum repairString:(NSString*) repairString;
-
 /**固定电话格式化
  *@param range 文本变化的范围
  *@param string 替换的文字
  */
 - (BOOL)telPhoneNumberShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
-#pragma mark- property
+#pragma mark- 文本限制
 
-/**禁止的方法列表，如复制，粘贴，通过 NSStringFromSelector 把需要禁止的方法传进来，如禁止粘贴，可传 NSStringFromSelector(paste:) default is 'nil'
+/**
+ - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
  */
-@property(nonatomic,strong) NSArray *forbidSelectors;
+- (BOOL)sea_shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
-///光标位置
-@property(nonatomic,assign) NSRange selectedRange;
+/**
+ 输入最大长度 default is 'NSUIntegerMax' 没有限制
+ */
+@property(nonatomic, assign) NSUInteger sea_maxLength;
 
-///输入限制时是否把中文当成两个字符 default is 'NO'
-@property(nonatomic,assign) BOOL chineseAsTwoCharWhenInputLimit;
+/**
+ 输入类型 default is 'SeaTextTypeAll'
+ */
+@property(nonatomic, assign) SeaTextType sea_textType;
 
-///最大输入限制 default is '0'，无输入限制
-@property(nonatomic,assign) NSInteger inputLimitMax;
+/**
+ 额外字符串 放在文字后面 需要配合 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string 一起使用
+ */
+@property(nonatomic, copy) NSString *sea_extraString;
 
-///输入改变前的文本
-@property(nonatomic,copy) NSString *previousText;
+/**
+ 禁止的方法列表，如复制，粘贴，通过 NSStringFromSelector 把需要禁止的方法传进来，如禁止粘贴，可传 NSStringFromSelector(paste:) default is 'nil'
+ */
+@property(nonatomic,strong) NSArray<NSString*> *sea_forbiddenActions;
 
-///是否禁止输入中文 和 chineseAsTwoCharWhenInputLimit 不兼容
-@property(nonatomic,assign) BOOL forbidInputChinese;
+/**
+ 光标位置
+ */
+@property(nonatomic,assign) NSRange sea_selectedRange;
 
 
 @end

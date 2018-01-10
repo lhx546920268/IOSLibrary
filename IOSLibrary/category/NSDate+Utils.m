@@ -11,10 +11,8 @@
 
 static const int SeaHourPerDay = 24;
 static const int SeaDayPerMonth = 30;
-static const int SeaDayPerYear = 365;
 static const int SeaSecondPerMinutes = 60;
 static const int SeaMinutesPerHour = 60;
-static const int SeaSecondsPerYear = 60 * 60 * 24 * 365;
 
 @implementation NSDate (Utils)
 

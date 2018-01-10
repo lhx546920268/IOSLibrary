@@ -12,14 +12,10 @@
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
 
-//系统默认的蓝色
-#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
-
-static char SeaForbidSelectorsKey;
-static char SeaChineseAsTwoCharWhenInputLimitKey;
-static char SeaInputLimitMaxKey;
-static char SeaPreviousTextKey;
-static char SeaForbidInputChineseKey;
+static char SeaForbiddenActionsKey;
+static char SeaMaxLengthKey;
+static char SeaTextTypeKey;
+static char SeaExtraStringKey;
 
 @implementation UITextField (Utils)
 
@@ -45,12 +41,12 @@ static char SeaForbidInputChineseKey;
     self.rightView = imageView;
 }
 
-- (void)sea_setDefaultSeparator
+- (UIView*)sea_setDefaultSeparator
 {
     return [self sea_setSeparatorWithColor:SeaSeparatorColor height:SeaSeparatorHeight];
 }
 
-- (void)sea_setSeparatorWithColor:(UIColor *)color height:(CGFloat)height
+- (UIView*)sea_setSeparatorWithColor:(UIColor *)color height:(CGFloat)height
 {
     UIView *separator = self.sea_separator;
     separator.backgroundColor = color;
@@ -76,293 +72,31 @@ static char SeaForbidInputChineseKey;
     return separator;
 }
 
-#pragma mark- 文本限制
-
-/**在textField的代理中调用
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param count 输入框最大可输入字数
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedCount:(NSInteger) count
+- (void)setDefaultInputAccessoryView
 {
-    if(self.forbidInputChinese)
-    {
-        dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
-        dispatch_after(time, dispatch_get_main_queue(), ^(void){
-            
-            [self unmarkText];
-        });
-    }
-    UITextRange *textRange = [self markedTextRange];
-    
-    NSString *markText = [self textInRange:textRange];
-    
-    NSString *new = [self.text stringByReplacingCharactersInRange:range withString:string];
-    
-    NSInteger length = new.length - (textRange.empty ? 0 : markText.length + 1);
-    
-    NSInteger res = count - length;
-    
-    
-    if(res > 0)
-    {
-        return YES;
-    }
-    else
-    {
-        NSInteger len = count - self.text.length;
-        if(len < 0)
-            len = 0;
-        if(len > string.length)
-            len = string.length;
-        
-        NSString *str = [self.text stringByReplacingCharactersInRange:range withString:[string substringWithRange:NSMakeRange(0, len)]];
-        self.text = str;
-        
-        return NO;
-    }
-}
-
-/**在textField的代理中调用,把中文当成两个字符
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param count 输入框最大可输入字数
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedCountChinesseAsTwoChar:(NSInteger) count
-{
-    UITextRange *textRange = [self markedTextRange];
-    
-    NSString *markText = [self textInRange:textRange];
-    
-    NSString *new = [self.text stringByReplacingCharactersInRange:range withString:string];
-    
-    NSInteger textLength = new.lengthWithChineseAsTwoChar;
-    
-    NSInteger length =  - (textRange.empty ? 0 : markText.lengthWithChineseAsTwoChar + 1);
-    
-    NSInteger res = count - length;
-    
-    
-    if(res > 0)
-    {
-        return YES;
-    }
-    else
-    {
-        
-        ///截取输入的字符串
-        NSInteger len = 0;
-        NSInteger index = 0;
-        NSInteger maxLen = string.lengthWithChineseAsTwoChar - (textLength - count);
-        
-        if(maxLen > 0)
-        {
-            for(NSUInteger i = 0;i < string.length;i ++)
-            {
-                unichar c = [string characterAtIndex:i];
-                
-                ///判断是否是中文
-                if(c > 0x4e00 && c < 0x9fff)
-                {
-                    len += 2;
-                }
-                else
-                {
-                    len ++;
-                }
-                index ++;
-                if(len >= maxLen)
-                    break;
-            }
-        }
-        
-        NSString *str = [string substringWithRange:NSMakeRange(0, MIN(index, string.length))];
-        self.text = [new stringByReplacingCharactersInRange:NSMakeRange(range.location, range.length + string.length) withString:str];
-        self.selectedRange = NSMakeRange(range.location + str.length, 0);
-        
-        return NO;
-    }
-}
-
-
-/**设置默认的附加视图
- *@param target 方法执行者
- *@param action 方法
- */
-- (void)setDefaultInputAccessoryViewWithTarget:(id) target action:(SEL) action
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 35.0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 35.0)];
     view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     
-    CGFloat buttonWidth = 60.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitleColor:UIKitTintColor forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button setTitle:@"完成" forState:UIControlStateNormal];
-    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [button setFrame:CGRectMake(SeaScreenWidth - buttonWidth, 0, buttonWidth, 35.0)];
+    [button addTarget:self action:@selector(handleTapInputAccessoryView:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button];
+    
+    [button sea_rightToSuperview];
+    [button sea_topToSuperview];
+    [button sea_bottomToSuperview];
+    [button sea_widthToSelf:60];
+    
     self.inputAccessoryView = view;
 }
 
-/**在textField的代理中调用，限制只能输入一个小数点，并且第一个输入不能是小数点，无法输入除了数字和.以外的字符
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param limitedNum 输入框可输入的最大值
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedNum:(double) limitedNum
+///点击完成
+- (void)handleTapInputAccessoryView:(id) sender
 {
-    if(![string isEqualToString:@"."] && ![string isNumText])
-    {
-        return NO;
-    }
-    NSRange containRange = [string rangeOfString:@"."];
-    
-    if(containRange.location != NSNotFound)
-    {
-        //只能输入一个小数点
-        containRange = [self.text rangeOfString:@"."];
-        if(containRange.location != NSNotFound)
-            return NO;
-        
-        //第一个输入不能是小数点
-        if(self.text.length == 0)
-        {
-            if([string sea_firstCharacter] == [@"." sea_firstCharacter])
-            {
-                return NO;
-            }
-        }
-    }
-    
-    
-    NSString *new = [self.text stringByReplacingCharactersInRange:range withString:string];
-    double value = [new doubleValue];
-    
-    return value <= limitedNum;
+    [self resignFirstResponder];
 }
 
-#pragma mark- 格式化
-
-/**添加文本变化通知 用于中文输入限制，因为输入中文的时候 textField的代理是没有调用的
- */
-- (void)addTextDidChangeNotification
-{
-    if(![self targetForAction:@selector(textFieldEditDidChange:) withSender:self])
-    {
-        [self addTarget:self action:@selector(textFieldEditDidChange:) forControlEvents:UIControlEventEditingChanged];
-        self.previousText = self.text;
-    }
-}
-
-
-///输入变化
-- (void)textFieldEditDidChange:(id) sender
-{
-    NSInteger inputLimitMax = self.inputLimitMax;
-    
-    if(inputLimitMax == 0)
-        return;
-    // 简体中文输入，包括简体拼音，健体五笔，简体手写 //获取高亮部分
-    UITextRange *markedRange = [self markedTextRange];
-    
-    if(!self.previousText)
-    {
-        self.previousText = self.text;
-    }
-    
-    if(markedRange)
-        return;
-    
-    NSString *text = self.text;
-    NSInteger textLength = 0;
-    
-    ///中文输入限制
-    if(self.chineseAsTwoCharWhenInputLimit)
-    {
-        textLength = text.lengthWithChineseAsTwoChar;
-        if(textLength >= inputLimitMax)
-        {
-            NSInteger length = text.length - self.previousText.length;
-            
-            if(length < 0)
-                length = 0;
-            
-            NSInteger loc = self.selectedRange.location - length;
-            
-            ///获取输入的text
-            NSString *inputString = [text substringWithRange:NSMakeRange(loc, length)];
-            
-            ///截取输入的字符串
-            NSInteger len = 0;
-            NSInteger index = 0;
-            NSInteger maxLen = inputString.lengthWithChineseAsTwoChar - (textLength - inputLimitMax);
-            
-            if(maxLen > 0)
-            {
-                for(NSUInteger i = 0;i < inputString.length;i ++)
-                {
-                    unichar c = [inputString characterAtIndex:i];
-                    
-                    ///判断是否是中文
-                    if(c > 0x4e00 && c < 0x9fff)
-                    {
-                        len += 2;
-                    }
-                    else
-                    {
-                        len ++;
-                    }
-                    if(len > maxLen)
-                        break;
-                    
-                    index ++;
-                    
-                    if(len == maxLen)
-                        break;
-                }
-            }
-            
-            NSString *newString = [inputString substringWithRange:NSMakeRange(0, index)];
-            
-            self.text = [text stringByReplacingCharactersInRange:NSMakeRange(loc, inputString.length) withString:newString];
-            
-            ///设定光标位置
-            self.selectedRange = NSMakeRange(MIN(self.text.length, loc + index), 0);
-        }
-        
-    }
-    else if(text.length > inputLimitMax)
-    {
-        textLength = text.length;
-        NSInteger length = text.length - self.previousText.length;
-        if(length < 0)
-            length = 0;
-        
-        NSInteger loc = self.selectedRange.location - length;
-        
-        ///获取输入的text
-        NSString *inputString = [text substringWithRange:NSMakeRange(loc, MAX(0, length))];
-        
-        ///截取输入的字符串
-        NSInteger maxLen = inputString.length - (textLength - inputLimitMax);
-        
-        NSString *newString = [inputString substringWithRange:NSMakeRange(0, MAX(0, maxLen))];
-        
-        self.text = [text stringByReplacingCharactersInRange:NSMakeRange(loc, inputString.length) withString:newString];
-        
-        ///设定光标位置
-        self.selectedRange = NSMakeRange(MIN(self.text.length, loc + newString.length), 0);
-    }
-    
-    self.previousText = self.text;
-}
-
-/**在textField的代理中调用
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param interval 格式化间隔，如4个字符空一格
- *@param count 输入框最大可输入字数
- */
 - (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string formatTextWithInterval:(int) interval limitCount:(NSInteger) count
 {
     NSString *text = [self text];
@@ -388,8 +122,7 @@ static char SeaForbidInputChineseKey;
     
     newString = [newString stringByTrimmingCharactersInSet:[characterSet invertedSet]];
     
-    if (newString.length >= count + ceil((double)count / (double)interval))
-    {
+    if (newString.length >= count + ceil((double)count / (double)interval)){
         return NO;
     }
     
@@ -398,77 +131,6 @@ static char SeaForbidInputChineseKey;
     return NO;
 }
 
-/**在textField的代理中调用，限制只能输入一个小数点，并且可补全字符串
- *@param range 文本变化的范围
- *@param string 替换的文字
- *@param limitedNum 输入框可输入的最大值
- *@param repairString 补全字符
- */
-- (BOOL)textShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string limitedNum:(double) limitedNum repairString:(NSString*) repairString
-{
-    if(![string isEqualToString:@"."] && ![string isNumText])
-    {
-        return NO;
-    }
-    
-    NSRange containRange = [string rangeOfString:@"."];
-    
-    if(containRange.location != NSNotFound)
-    {
-        //只能输入一个小数点
-        containRange = [self.text rangeOfString:@"."];
-        if(containRange.location != NSNotFound)
-            return NO;
-        
-        //第一个输入不能是小数点
-        if(self.text.length == 0)
-        {
-            if([string sea_firstCharacter] == [@"." sea_firstCharacter])
-            {
-                return NO;
-            }
-        }
-    }
-    
-    //要删除补全的字符
-    if ( string.length == 0 && range.length == 1 && [[self.text substringWithRange:range] isEqualToString:repairString])
-    {
-        [self setSelectedRange:NSMakeRange(range.location, 0)];
-        return NO;
-    }
-    
-    NSString *newString = [[self.text stringByReplacingCharactersInRange:range withString:string] stringByReplacingOccurrencesOfString:repairString withString:@""];
-    
-    NSInteger location = 0;
-    if([newString doubleValue] <= limitedNum)
-    {
-        if(newString.length != 0)
-        {
-            newString = [newString stringByAppendingString:repairString];
-        }
-        self.text = newString;
-        location = range.location + string.length;
-        
-        if(location >= repairString.length && location >= self.text.length)
-        {
-            location -= repairString.length;
-        }
-    }
-    else
-    {
-        location = range.location;
-    }
-    
-    [self setSelectedRange:NSMakeRange(location, 0)];
-    [self sendActionsForControlEvents:UIControlEventEditingChanged];
-    
-    return NO;
-}
-
-/**固定电话格式化
- *@param range 文本变化的范围
- *@param string 替换的文字
- */
 - (BOOL)telPhoneNumberShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString *text = self.text;
@@ -476,12 +138,10 @@ static char SeaForbidInputChineseKey;
     NSInteger stringLength = string.length;
     
     ///判断是否是删除
-    if(string.length == 0 && text.length >= 4)
-    {
+    if(string.length == 0 && text.length >= 4){
         ///删除-时，应该删除前面的数字
         NSString *deleteString = [self.text substringWithRange:range];
-        if([deleteString isEqualToString:@"-"])
-        {
+        if([deleteString isEqualToString:@"-"]){
             range.length ++;
             range.location --;
         }
@@ -490,45 +150,37 @@ static char SeaForbidInputChineseKey;
     NSString *number = [text stringByReplacingCharactersInRange:range withString:string];
     
     ///去掉超出范围的内容
-    if(number.length > 30)
-    {
+    if(number.length > 30){
         NSInteger length = number.length - 30;
         stringLength -= length;
         NSRange deleteRange = NSMakeRange(range.location + string.length - length, length);
-        if(deleteRange.location + deleteRange.length <= number.length)
-        {
+        if(deleteRange.location + deleteRange.length <= number.length){
             number = [number stringByReplacingCharactersInRange:deleteRange withString:@""];
         }
     }
     
     number = [number stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
-    if(number.length >= 4)
-    {
+    if(number.length >= 4){
         NSInteger codeIndex = 0;
         ///区号3位
-        if([number hasPrefix:@"02"] || [number hasPrefix:@"01"] || [number hasPrefix:@"85"])
-        {
+        if([number hasPrefix:@"02"] || [number hasPrefix:@"01"] || [number hasPrefix:@"85"]){
             codeIndex = 3;
-        }
-        else if(number.length > 4)
-        {
+        }else if(number.length > 4){
             ///区号四位
             codeIndex = 4;
         }
         
-        if(codeIndex != 0)
-        {
-            NSRange selectedRange = self.selectedRange;
+        if(codeIndex != 0){
+            NSRange selectedRange = self.sea_selectedRange;
             self.text = [number stringByReplacingCharactersInRange:NSMakeRange(codeIndex, 0) withString:@"-"];
             
             ///把光标定回以前的位置
-            if(selectedRange.location > 0 && selectedRange.location != self.text.length - stringLength)
-            {
+            if(selectedRange.location > 0 && selectedRange.location != self.text.length - stringLength){
                 selectedRange.location -= range.length - stringLength;
                 selectedRange.length = 0;
                 
-                self.selectedRange = selectedRange;
+                self.sea_selectedRange = selectedRange;
             }
             
             return NO;
@@ -538,59 +190,56 @@ static char SeaForbidInputChineseKey;
     return YES;
 }
 
-#pragma mark- property
+#pragma mark- 文本限制
 
-- (void)setForbidSelectors:(NSString *)forbidSelectors
+- (BOOL)sea_shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    objc_setAssociatedObject(self, &SeaForbidSelectorsKey, forbidSelectors, OBJC_ASSOCIATION_RETAIN);
+    //删除
+    NSString *extraString = self.sea_extraString;
+    if(string.length == 0 && range.location >= self.text.length - extraString.length){
+        self.sea_selectedRange = NSMakeRange(self.text.length - extraString.length, 0);
+        return NO;
+    }
+    return YES;
 }
 
-- (NSArray*)forbidSelectors
+- (void)setSea_maxLength:(NSUInteger) length
 {
-    return objc_getAssociatedObject(self, &SeaForbidSelectorsKey);
+    objc_setAssociatedObject(self, &SeaMaxLengthKey, @(length), OBJC_ASSOCIATION_RETAIN);
+    [self shouldObserveEditingChange];
 }
 
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+- (NSUInteger)sea_maxLength
 {
-    NSArray *forbidSelectors = self.forbidSelectors;
-    if(forbidSelectors.count > 0)
-    {
-        if([forbidSelectors containsObject:NSStringFromSelector(action)])
-        {
-            return NO;
-        }
-    }
-    
-    if(action == @selector(paste:))
-    {
-        return YES;
-    }
-    
-    if(self.text.length > 0)
-    {
-        NSRange range = self.selectedRange;
-        if(range.length > 0)
-        {
-            if(action == @selector(cut:) || action == @selector(copy:) || action == @selector(selectAll:))
-            {
-                return YES;
-            }
-        }
-        else
-        {
-            if(action == @selector(select:) || action == @selector(selectAll:))
-            {
-                return YES;
-            }
-        }
-    }
-    
-    
-    return NO;
+    NSNumber *number = objc_getAssociatedObject(self, &SeaMaxLengthKey);
+    return number ? [number unsignedIntegerValue] : NSUIntegerMax;
+}
+
+- (void)setSea_textType:(SeaTextType) textType
+{
+    objc_setAssociatedObject(self, &SeaTextTypeKey, @(textType), OBJC_ASSOCIATION_RETAIN);
+    [self shouldObserveEditingChange];
+}
+
+- (SeaTextType)sea_textType
+{
+    NSNumber *number = objc_getAssociatedObject(self, &SeaTextTypeKey);
+    return number ? [number unsignedIntegerValue] : SeaTextTypeAll;
+}
+
+- (void)setSea_extraString:(NSString *) extraString
+{
+    objc_setAssociatedObject(self, &SeaExtraStringKey, extraString, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    [self shouldObserveEditingChange];
+}
+
+- (NSString*)sea_extraString
+{
+    return objc_getAssociatedObject(self, &SeaExtraStringKey);
 }
 
 ///获取光标位置
-- (NSRange)selectedRange
+- (NSRange)sea_selectedRange
 {
     UITextPosition *beginning = self.beginningOfDocument;
     
@@ -605,60 +254,145 @@ static char SeaForbidInputChineseKey;
 }
 
 ///设置光标位置
-- (void)setSelectedRange:(NSRange) range
+- (void)setSea_selectedRange:(NSRange) range
 {
-    UITextPosition *start = [self positionFromPosition:[self beginningOfDocument]
+    UITextPosition *start = [self positionFromPosition:self.beginningOfDocument
                                                 offset:range.location];
-    
     UITextPosition *end = [self positionFromPosition:start
                                               offset:range.length];
     
     [self setSelectedTextRange:[self textRangeFromPosition:start toPosition:end]];
 }
 
-///输入限制时是否把中文当成两个字符 default is 'NO'
-- (void)setChineseAsTwoCharWhenInputLimit:(BOOL)chineseAsTwoCharWhenInputLimit
+- (void)setSea_forbiddenActions:(NSArray<NSString*>*) actions
 {
-    objc_setAssociatedObject(self, &SeaChineseAsTwoCharWhenInputLimitKey, [NSNumber numberWithBool:chineseAsTwoCharWhenInputLimit], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &SeaForbiddenActionsKey, actions, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (BOOL)chineseAsTwoCharWhenInputLimit
+- (NSArray<NSString*>*)sea_forbiddenActions
 {
-    return [objc_getAssociatedObject(self, &SeaChineseAsTwoCharWhenInputLimitKey) boolValue];
+    return objc_getAssociatedObject(self, &SeaForbiddenActionsKey);
 }
 
-///最大输入限制 default is '0'，无输入限制
-- (void)setInputLimitMax:(NSInteger)inputLimitMax
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    objc_setAssociatedObject(self, &SeaInputLimitMaxKey, [NSNumber numberWithInteger:inputLimitMax], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    NSArray *actions = self.sea_forbiddenActions;
+    if(actions.count > 0){
+        if([actions containsObject:NSStringFromSelector(action)]){
+            return NO;
+        }
+    }
+    
+    if(action == @selector(paste:)){
+        return YES;
+    }
+    
+    if(self.text.length > 0){
+        NSRange range = self.sea_selectedRange;
+        if(range.length > 0){
+            if(action == @selector(cut:) || action == @selector(copy:) || action == @selector(selectAll:)){
+                return YES;
+            }
+        }else{
+            if(action == @selector(select:) || action == @selector(selectAll:)){
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
 }
 
-- (NSInteger)inputLimitMax
+#pragma mark- Edit change
+
+///是否需要监听输入变化
+- (void)shouldObserveEditingChange
 {
-    return [objc_getAssociatedObject(self, &SeaInputLimitMaxKey) integerValue];
+    SEL action = @selector(textFieldTextDidChange:);
+    if(!(self.sea_textType & SeaTextTypeAll) || self.sea_maxLength > 0){
+        if(![self targetForAction:action withSender:self]){
+            [self addTarget:self action:action forControlEvents:UIControlEventEditingChanged];
+        }
+    }else{
+        [self removeTarget:self action:action forControlEvents:UIControlEventEditingChanged];
+    }
 }
 
-///输入改变前的文本
-- (void)setPreviousText:(NSString *)previousText
+///文字输入改变
+- (void)textFieldTextDidChange:(UITextField*) textField
 {
-    objc_setAssociatedObject(self, &SeaPreviousTextKey, previousText, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    NSString *text = textField.text;
+    
+    //有输入法情况下忽略
+    if(!textField.markedTextRange && text.length != 0){
+        
+        SeaTextType type = textField.sea_textType;
+        
+        NSUInteger maxLength = textField.sea_maxLength;
+        NSRange range = textField.sea_selectedRange;
+        
+        if([text isEqualToString:@"."]){
+            textField.text = @"";
+            return;
+        }
+        
+        //小数
+        if(type == SeaTextTypeDecimal){
+            NSUInteger pointIndex = [text sea_lastIndexOfCharacter:'.'];
+            if(pointIndex != NSNotFound){
+                //有多个点，删除前面的点
+                NSRange pointRange = [text rangeOfString:@"."];
+                if(pointRange.location != pointIndex){
+                    NSString *result = [text stringByReplacingOccurrencesOfString:@"." withString:@"" options:NSLiteralSearch range:NSMakeRange(0, pointIndex)];
+                    if(pointRange.location < range.location){
+                        range.location -= text.length - result.length;
+                    }
+                    text = result;
+                }
+            }
+        }
+        
+        //额外的字符串
+        NSString *extraString = self.sea_extraString;
+        if(extraString.length > 0 && text.length >= extraString.length){
+            if([text isEqualToString:extraString]){
+                textField.text = @"";
+                return;
+            }else{
+                NSRange extraRange = NSMakeRange(text.length - extraString.length, extraString.length);
+                NSString *extra = [text substringWithRange:extraRange];
+                if([extra isEqualToString:extraString]){
+                    text = [text stringByReplacingCharactersInRange:extraRange withString:@""];
+                }
+            }
+        }
+        
+        //删除超过长度的字符串
+        if(text.length > maxLength){
+            NSUInteger length = text.length - maxLength;
+            
+            //NSUInteger 没有负值
+            NSUInteger location = range.location >= length ? range.location - length : 0;
+            
+            range.location = location;
+            text = [text stringByReplacingCharactersInRange:NSMakeRange(location, length) withString:@""];
+        }
+        
+        text = [text sea_stringByFilterWithType:type];
+        
+        //添加额外字符串
+        if(text.length > 0 && extraString.length > 0){
+            text = [text stringByAppendingString:extraString];
+            if(range.location > text.length - extraString.length){
+                range.location = text.length - extraString.length;
+            }
+        }
+        
+        textField.text = text;
+        if(range.location < text.length){
+            textField.sea_selectedRange = range;
+        }
+    }
 }
-
-- (NSString*)previousText
-{
-    return objc_getAssociatedObject(self, &SeaPreviousTextKey);
-}
-
-///禁止输入中文
-- (void)setForbidInputChinese:(BOOL)forbidInputChinese
-{
-    objc_setAssociatedObject(self, &SeaForbidInputChineseKey, [NSNumber numberWithBool:forbidInputChinese], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (BOOL)forbidInputChinese
-{
-    return [objc_getAssociatedObject(self, &SeaForbidInputChineseKey) boolValue];
-}
-
 
 @end

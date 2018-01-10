@@ -1,12 +1,14 @@
 //
 //  SeaPartialPresentTransitionDelegate.m
-//  StandardShop
+//  IOSLibrary
 //
 //  Created by 罗海雄 on 16/7/11.
 //  Copyright © 2016年 罗海雄. All rights reserved.
 //
 
 #import "SeaPartialPresentTransitionDelegate.h"
+#import "UIView+Utils.h"
+#import "UIImage+Utils.h"
 #import "SeaBasic.h"
 
 ///自定义Present类型的过度动画实现 通过init初始化
@@ -147,7 +149,7 @@
         }
         self.backgroundView.alpha = 0;
 
-        UIImage *image = [UIImage imageFromView:fromView];
+        UIImage *image = [UIImage sea_imageFromView:fromView];
         self.backgroundImageView = [[UIImageView alloc] initWithFrame:fromView.frame];
         self.backgroundImageView.image = image;
     }

@@ -4,6 +4,7 @@
 //
 
 #import "SeaCollectionViewController.h"
+#import "UIView+SeaEmptyView.h"
 
 @interface SeaCollectionViewController ()
 
@@ -11,6 +12,9 @@
 @end
 
 @implementation SeaCollectionViewController
+{
+    UICollectionView *_collectionView;
+}
 
 /**构造方法
  *@param layout 布局方式，传nil会使用默认的布局
@@ -46,6 +50,12 @@
 
 #pragma mark- public method
 
+- (UICollectionView*)collectionView
+{
+    [self initCollectionView];
+    return _collectionView;
+}
+
 - (void)initCollectionView
 {
     if(_collectionView == nil)
@@ -76,8 +86,7 @@
 
 - (void)registerNib:(UINib *)nib forCellReuseIdentifier:(NSString *)identifier
 {
-    [self initCollectionView];
-    [_collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
 - (void)registerClass:(Class)cellClas
@@ -87,8 +96,7 @@
 
 - (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
 {
-    [self initCollectionView];
-    [_collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+    [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
 }
 
 - (void)registerNib:(Class) clazz forSupplementaryViewOfKind:(NSString*) kind
@@ -98,8 +106,7 @@
 
 - (void)registerNib:(UINib*) nib forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier
 {
-    [self initCollectionView];
-    [_collectionView registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
+    [self.collectionView registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
 }
 
 - (void)registerClass:(Class) cellClas forSupplementaryViewOfKind:(NSString*) kind
@@ -109,8 +116,7 @@
 
 - (void)registerClass:(Class) cellClass forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier
 {
-    [self initCollectionView];
-    [_collectionView registerClass:cellClass forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
+    [self.collectionView registerClass:cellClass forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
 }
 
 #pragma mark- UICollectionView delegate

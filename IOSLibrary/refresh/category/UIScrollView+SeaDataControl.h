@@ -11,31 +11,37 @@
 ///刷新 类目
 @interface UIScrollView (SeaDataControl)
 
-/**添加下拉刷新功能
- *@param block 刷新回调方法
+/**
+ 添加下拉刷新功能
+ *@param handler 刷新回调方法
  */
-- (void)sea_addRefreshUsingBlock:(SeaDataControlBlock) block;
+- (void)sea_addRefreshWithHandler:(SeaDataControlHandler) handler;
 
-/**删除下拉刷新功能
+/**
+ 删除下拉刷新功能
  */
-- (void)removeRefreshControl;
+- (void)sea_removeRefreshControl;
 
-/**下拉刷新控制类
+/**
+ 下拉刷新控制类
  */
-@property(nonatomic,assign) SeaRefreshControl *sea_refreshControl;
+@property(nonatomic, strong) SeaRefreshControl *sea_refreshControl;
 
 
-/**添加上拉加载功能
- *@param block 加载回调
+/**
+ 添加加载更多
+ *@param handler 加载回调
  */
-- (void)addLoadMoreControlUsingBlock:(SeaDataControlBlock) block;
+- (void)sea_addLoadMoreWithHandler:(SeaDataControlHandler) handler;
 
-/**删除上拉加载功能
+/**
+ 删除加载更多功能
  */
-- (void)removeLoadMoreControl;
+- (void)sea_removeLoadMoreControl;
 
-/**上拉加载控制类
+/**
+ 加载更多控制类
  */
-@property(nonatomic,assign) SeaLoadMoreControl *loadMoreControl;
+@property(nonatomic, strong) SeaLoadMoreControl *sea_loadMoreControl;
 
 @end

@@ -93,7 +93,7 @@ NSString *const SeaColorAlpha = @"alpha";
     
     int index = 0;
     int len = 0;
-    int length = hex.length;
+    NSInteger length = hex.length;
     switch (length) {
         case 3 :
         case 4 : {

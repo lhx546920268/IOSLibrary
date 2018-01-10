@@ -23,9 +23,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.statusBarHidden = NO;
+        self.sea_statusBarHidden = NO;
         self.sea_hideTabBar = YES;
-        self.iconTintColor = SeaTintColor;
+        self.sea_iconTintColor = SeaTintColor;
     }
     return self;
 }
@@ -55,6 +55,11 @@
     [_container setTopView:topView];
 }
 
+- (void)setTopView:(UIView *)topView height:(CGFloat)height
+{
+    [_container setTopView:topView height:height];
+}
+
 - (UIView*)topView
 {
     return _container.topView;
@@ -63,6 +68,11 @@
 - (void)setBottomView:(UIView *)bottomView
 {
     [_container setBottomView:bottomView];
+}
+
+- (void)setBottomView:(UIView *)bottomView height:(CGFloat)height
+{
+    [_container setBottomView:bottomView height:height];
 }
 
 - (UIView*)bottomView

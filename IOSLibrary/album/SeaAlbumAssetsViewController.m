@@ -15,8 +15,9 @@
 #import "UIView+Utils.h"
 #import "UIButton+Utils.h"
 #import "UIImage+Utils.h"
-#import "SeaUtlities.h"
 #import "SeaBasic.h"
+#import "UIScrollView+SeaEmptyView.h"
+#import "SeaTools.h"
 
 @interface SeaAlbumAssetsViewController ()<SeaAlbumGroupListViewDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
@@ -98,7 +99,7 @@
     
     if(self.delegate)
     {
-        [self back];
+        [self sea_back];
     }
 }
 
@@ -129,17 +130,16 @@
     
     self.navigationController.navigationBar.translucent = NO;
     self.title = @"相册";
-    self.backItem = YES;
+    self.sea_showBackItem = YES;
     
     self.assetInfos = [NSMutableArray array];
     
-    self.loading = YES;
+    self.sea_showPageLoading = YES;
     
     ALAssetsLibrary *library = [SeaAlbumAssetsViewController sharedAssetsLibrary];
     
     self.infos = [NSMutableArray array];
-    
-    self.loading = YES;
+
     //遍历相册资源，获取相册分组信息
     [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop){
         
@@ -177,7 +177,7 @@
 
 - (void)initialization
 {
-    self.loading = NO;
+    self.sea_showPageLoading = NO;
     self.selectedAssetInfos = [NSMutableArray array];
 
     int size = (self.view.width - self.gridInterval * (self.numberOfItemsPerRow + 1)) / self.numberOfItemsPerRow;
@@ -197,13 +197,13 @@
         
         titleButton.frame = CGRectMake(0, 0, 100.0, 30.0);
         [titleButton setTitle:@"相册" forState:UIControlStateNormal];
-        [titleButton setTitleColor:self.iconTintColor forState:UIControlStateNormal];
+        [titleButton setTitleColor:self.sea_iconTintColor forState:UIControlStateNormal];
         titleButton.titleLabel.font = [UIFont systemFontOfSize:19.0];
         [titleButton setImage:arrow forState:UIControlStateNormal];
         [titleButton setImage:[UIImage imageNamed:@"triangle_up"] forState:UIControlStateSelected];
         [titleButton sea_setImagePosition:SeaButtonImagePositionRight margin:2.0];
         titleButton.adjustsImageWhenDisabled = NO;
-        titleButton.tintColor = self.iconTintColor;
+        titleButton.tintColor = self.sea_iconTintColor;
         titleButton.adjustsImageWhenHighlighted = NO;
         
         [titleButton addTarget:self action:@selector(seeGroup:) forControlEvents:UIControlEventTouchUpInside];
@@ -235,7 +235,7 @@
     
     if(self.target == SeaAlbumAssetsViewControllerTargetSelected)
     {
-        [self setBarItemsWithTitle:@"使用" icon:nil action:@selector(useMultiImage) position:SeaNavigationItemPositionRight];
+        [self sea_setRightItemWithTitle:@"使用" action:@selector(useMultiImage)];
     }
 }
 
@@ -278,7 +278,7 @@
 {
     if(!self.listView)
     {
-        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.statusBarHeight - self.sea_navigationBarHeight) groups:self.infos];
+        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.sea_statusBarHeight - self.sea_navigationBarHeight) groups:self.infos];
         _listView.delegate = self;
         [self.view addSubview:_listView];
     }
@@ -406,12 +406,11 @@
 //    [self.navigationController pushViewController:browser animated:YES];
 }
 
-- (void)setRequesting:(BOOL)requesting
+- (void)setSea_showNetworkActivity:(BOOL)sea_showNetworkActivity
 {
-    [super setRequesting:requesting];
-    self.showNetworkActivity = self.requesting;
-    self.leftBarButtonItem.enabled = !self.requesting;
-    self.titleButton.userInteractionEnabled = !self.requesting;
+    [super setSea_showNetworkActivity:sea_showNetworkActivity];
+    self.navigationItem.leftBarButtonItem.enabled = !sea_showNetworkActivity;
+    self.titleButton.userInteractionEnabled = !sea_showNetworkActivity;
 }
 
 //使用图片
@@ -427,7 +426,7 @@
                 flag = YES;
             }
             
-            self.requesting = YES;
+            self.sea_showNetworkActivity = YES;
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
                
@@ -447,7 +446,7 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^(void){
                    
-                    self.requesting = NO;
+                    self.sea_showNetworkActivity = NO;
                     [self.delegate albumDidFinishSelectImages:images];
                     
                     if([self.delegate respondsToSelector:@selector(albumDidFinishSelectAssets:)])
@@ -455,7 +454,7 @@
                         [self.delegate albumDidFinishSelectAssets:self.selectedAssetInfos];
                     }
                     
-                    [self back];
+                    [self sea_back];
                 });
             });
             
@@ -464,14 +463,14 @@
             break;
         case SeaAlbumAssetsViewControllerImageCrop :
         {
-            self.requesting = YES;
+            self.sea_showNetworkActivity = YES;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
                 
                 UIImage *image = [UIImage sea_imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
                 
                 dispatch_async(dispatch_get_main_queue(), ^(void){
                     
-                    self.requesting = NO;
+                    self.sea_showNetworkActivity = NO;
                     [self cropImage:image];
                 });
             });

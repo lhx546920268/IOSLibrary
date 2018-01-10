@@ -15,19 +15,19 @@
 @property(nonatomic, assign) BOOL sea_showPageLoading;
 
 ///页面第一次加载视图 默认 SeaPageLoadingView
-@property(nonatomic, readonly) UIView *sea_pageLoadingView;
+@property(nonatomic, strong) UIView *sea_pageLoadingView;
 
 ///显示菊花
 @property(nonatomic, assign) BOOL sea_showNetworkActivity;
 
 ///菊花 默认SeaNetworkActivityView
-@property(nonatomic, readonly) UIView *sea_networkActivity;
+@property(nonatomic, strong) UIView *sea_networkActivity;
 
 ///显示加载失败页面
 @property(nonatomic, assign) BOOL sea_showFailPage;
 
 ///失败页面 默认 SeaFailPageView
-@property(nonatomic, readonly) UIView *sea_failPageView;
+@property(nonatomic, strong) UIView *sea_failPageView;
 
 ///点击失败页面回调
 @property(nonatomic, copy) void(^sea_reloadDataHandler)(void);

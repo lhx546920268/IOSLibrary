@@ -116,6 +116,11 @@
     return index;
 }
 
+- (CGSize)sea_stringSizeWithFont:(UIFont *)font
+{
+    return [self sea_stringSizeWithFont:font contraintWith:CGFLOAT_MAX];
+}
+
 - (CGSize)sea_stringSizeWithFont:(UIFont*) font contraintWith:(CGFloat) width
 {
     CGSize size;
@@ -128,6 +133,39 @@
     
     
     return size;
+}
+
+- (NSString*)sea_stringByFilterWithType:(SeaTextType)type
+{
+    return [self sea_stringByFilterWithType:type range:NSMakeRange(0, self.length)];
+}
+
+- (NSString*)sea_stringByFilterWithType:(SeaTextType) type range:(NSRange) range
+{
+    if(type & SeaTextTypeAll)
+        return self;
+    
+    NSMutableString *regex = [NSMutableString stringWithString:@"[^"];
+    
+    if(type == SeaTextTypeDecimal){
+        [regex appendString:@"0-9\\."];
+    }else{
+        if(type & SeaTextTypeDigital){
+            [regex appendString:@"0-9"];
+        }
+        
+        if(type & SeaTextTypeChinese){
+            [regex appendString:@"\u4e00-\u9fa5"];
+        }
+        
+        if(type & SeaTextTypeAlphabet){
+            [regex appendString:@"a-zA-Z"];
+        }
+    }
+    
+    [regex appendString:@"]"];
+    
+    return [self stringByReplacingOccurrencesOfString:regex withString:@"" options:NSRegularExpressionSearch range:range];;
 }
 
 #pragma mark- chinese

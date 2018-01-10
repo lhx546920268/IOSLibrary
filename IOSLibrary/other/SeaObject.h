@@ -13,6 +13,12 @@
 
 + (instancetype)infoFromDictionary:(NSDictionary*) dic NS_REQUIRES_SUPER;
 
+
+/**
+ 子类要重写这个
+
+ @param dic 包含数据的字典
+ */
 - (void)setDictionary:(NSDictionary*) dic;
 
 @end

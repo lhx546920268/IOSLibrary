@@ -8,6 +8,7 @@
 #import "SeaNavigationController.h"
 #import "UIViewController+Utils.h"
 #import "SeaBasic.h"
+#import "SeaViewController.h"
 
 @interface SeaNavigationController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>
 
@@ -31,8 +32,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
+    if (self){
         _targetStatusBarStyle = SeaStatusBarStyle;
         self.orgStyle = [UIApplication sharedApplication].statusBarStyle;
     }
@@ -49,18 +49,15 @@
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     //设置选项卡和隐藏状态
-    if([viewController isKindOfClass:[SeaViewController class]])
-    {
+    if([viewController isKindOfClass:[SeaViewController class]]){
         SeaViewController *tmp = [self.viewControllers lastObject];
-        if([tmp isKindOfClass:[SeaViewController class]])
-        {
+        if([tmp isKindOfClass:[SeaViewController class]]){
             SeaViewController *vc = (SeaViewController*)viewController;
             vc.sea_tabBarController = tmp.sea_tabBarController;
         }
     }
     
-    if ( [self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES )
-    {
+    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES){
         self.interactivePopGestureRecognizer.enabled = NO;
     }
     
@@ -75,8 +72,7 @@
     
     __weak SeaNavigationController *weakSelf = self;
     
-    if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)])
-    {
+    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.interactivePopGestureRecognizer.delegate = weakSelf;
         
         self.delegate = weakSelf;
@@ -86,24 +82,20 @@
 
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated
 {
-    if ( [self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES )
-    {
+    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES){
         self.interactivePopGestureRecognizer.enabled = NO;
     }
     
-    return  [super popToRootViewControllerAnimated:animated];
-    
+    return [super popToRootViewControllerAnimated:animated];
 }
 
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if( [self respondsToSelector:@selector(interactivePopGestureRecognizer)] )
-    {
+    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.interactivePopGestureRecognizer.enabled = NO;
     }
     
     return [super popToViewController:viewController animated:animated];
-    
 }
 
 #pragma mark UINavigationControllerDelegate
@@ -112,23 +104,19 @@
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animate
 {
-    if ([self respondsToSelector:@selector(interactivePopGestureRecognizer)])
-    {
+    if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.interactivePopGestureRecognizer.enabled = YES;
     }
 }
 
 
--(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    if ( gestureRecognizer == self.interactivePopGestureRecognizer )
+    if (gestureRecognizer == self.interactivePopGestureRecognizer)
     {
-        if (self.viewControllers.count < 2 || self.visibleViewController == [self.viewControllers firstObject] )
-        {
+        if (self.viewControllers.count < 2 || self.visibleViewController == [self.viewControllers firstObject] ){
             return NO;
-        }
-        else
-        {
+        }else{
             [[UIApplication sharedApplication].keyWindow endEditing:YES];
         }
     }
@@ -156,13 +144,11 @@
     
     UIViewController *viewController = viewControllerToPresent;
     
-    if([viewController isKindOfClass:[UINavigationController class]])
-    {
+    if([viewController isKindOfClass:[UINavigationController class]]){
         viewController = [[(UINavigationController*)viewControllerToPresent viewControllers] lastObject];
     }
     
-    if([vc isKindOfClass:[SeaViewController class]] && [viewController isKindOfClass:[SeaViewController class]])
-    {
+    if([vc isKindOfClass:[SeaViewController class]] && [viewController isKindOfClass:[SeaViewController class]]){
         SeaViewController *tmp = (SeaViewController*)viewController;
         tmp.sea_tabBarController = vc.sea_tabBarController;
     }

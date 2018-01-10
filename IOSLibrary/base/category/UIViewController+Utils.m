@@ -16,6 +16,9 @@
 #import "SeaBasic.h"
 #import "UIView+Utils.h"
 #import "UINavigationItem+Utils.h"
+#import "SeaNetworkActivityView.h"
+#import "UIColor+Utils.h"
+#import "UIView+SeaEmptyView.h"
 
 /**导航条按钮位置
  */
@@ -61,6 +64,16 @@ static char SeaTransitioningDelegateKey;
     return [self.view sea_showPageLoading];
 }
 
+- (void)setSea_pageLoadingView:(UIView *)sea_pageLoadingView
+{
+    self.view.sea_pageLoadingView = sea_pageLoadingView;
+}
+
+- (UIView*)sea_pageLoadingView
+{
+    return self.view.sea_pageLoadingView;
+}
+
 - (void)setSea_showNetworkActivity:(BOOL)sea_showNetworkActivity
 {
     [self.view setSea_showNetworkActivity:sea_showNetworkActivity];
@@ -71,12 +84,22 @@ static char SeaTransitioningDelegateKey;
     return [self.view sea_showNetworkActivity];
 }
 
+- (void)setSea_networkActivity:(UIView *)sea_networkActivity
+{
+    self.view.sea_networkActivity = sea_networkActivity;
+}
+
+- (UIView*)sea_networkActivity
+{
+    return self.view.sea_networkActivity;
+}
+
 - (void)setSea_showFailPage:(BOOL)sea_showFailPage
 {
     [self.view setSea_showFailPage:sea_showFailPage];
     if(sea_showFailPage){
         WeakSelf(self);
-        self.view.sea_reloadDataHandler() = ^(void){
+        self.view.sea_reloadDataHandler = ^(void){
             [weakSelf sea_reloadData];
         };
     }
@@ -87,10 +110,37 @@ static char SeaTransitioningDelegateKey;
     return [self.view sea_showFailPage];
 }
 
+- (void)setSea_failPageView:(UIView *)sea_failPageView
+{
+    self.view.sea_failPageView = sea_failPageView;
+}
+
+- (UIView*)sea_failPageView
+{
+    return self.view.sea_failPageView;
+}
+
 /**重新加载数据 默认不做任何事，子类可以重写该方法
  */
 - (void)sea_reloadData{
     
+}
+
+#pragma mark- empty view
+
+- (void)setSea_showEmptyView:(BOOL)sea_showEmptyView
+{
+    self.view.sea_showEmptyView = sea_showEmptyView;
+}
+
+- (BOOL)sea_showEmptyView
+{
+    return self.view.sea_showEmptyView;
+}
+
+- (SeaEmptyView*)sea_emptyView
+{
+    return self.view.sea_emptyView;
 }
 
 #pragma mark- property readonly
@@ -128,6 +178,11 @@ static char SeaTransitioningDelegateKey;
     {
         return self.tabBarController.tabBar.height;
     }
+}
+
+- (CGFloat)sea_toolBarHeight
+{
+    return SeaToolBarHeight;
 }
 
 /**工具条高度
@@ -170,13 +225,6 @@ static char SeaTransitioningDelegateKey;
         [dic setObject:sea_iconTintColor forKey:NSForegroundColorAttributeName];
         self.navigationController.navigationBar.titleTextAttributes = dic;
         self.navigationController.navigationBar.tintColor = sea_iconTintColor;
-        
-        UIBarButtonItem *item = self.sea_leftBarButtonItem;
-        item.tintColor = sea_iconTintColor;
-        item.customView.tintColor = sea_iconTintColor;
-        item = self.sea_rightBarButtonItem;
-        item.tintColor = sea_iconTintColor;
-        item.customView.tintColor = sea_iconTintColor;
     }
 }
 
@@ -193,9 +241,8 @@ static char SeaTransitioningDelegateKey;
  */
 - (void)setSea_statusBarHidden:(BOOL)sea_statusBarHidden
 {
-    if(self.sea_statusBarHeight != sea_statusBarHidden)
-    {
-        objc_setAssociatedObject(self, &SeaStatusBarHiddenKey, [NSNumber numberWithBool:sea_statusBarHidden], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if(self.sea_statusBarHeight != sea_statusBarHidden){
+        objc_setAssociatedObject(self, &SeaStatusBarHiddenKey,@(sea_statusBarHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self setNeedsStatusBarAppearanceUpdate];
     }
 }
@@ -208,12 +255,10 @@ static char SeaTransitioningDelegateKey;
 //设置返回按钮
 - (void)setSea_showBackItem:(BOOL)sea_showBackItem
 {
-    if(sea_showBackItem)
-    {
+    if(sea_showBackItem){
         UIImage *image = [UIImage imageNamed:@"back_icon"];
         ///ios7 的 imageAssets 不支持 Template
-        if(image.renderingMode != UIImageRenderingModeAlwaysTemplate)
-        {
+        if(image.renderingMode != UIImageRenderingModeAlwaysTemplate){
             image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
         
@@ -221,8 +266,8 @@ static char SeaTransitioningDelegateKey;
         imageView.image = image;
         imageView.contentMode = UIViewContentModeLeft;
         imageView.userInteractionEnabled = YES;
-        imageView.tintColor = self.iconTintColor;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(back)];
+        imageView.tintColor = self.sea_iconTintColor;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sea_back)];
         [imageView addGestureRecognizer:tap];
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBack:)];
@@ -230,7 +275,7 @@ static char SeaTransitioningDelegateKey;
         [imageView addGestureRecognizer:longPress];
         
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-        [self setBarItem:item position:SeaNavigationItemPositionLeft];
+        self.navigationItem.leftBarButtonItem = item;
     }
     else
     {
@@ -241,7 +286,7 @@ static char SeaTransitioningDelegateKey;
 
 - (BOOL)sea_showBackItem
 {
-    return [self.sea_leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
+    return [self.navigationItem.leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
 }
 
 
@@ -372,7 +417,7 @@ static char SeaTransitioningDelegateKey;
 
 - (UIBarButtonItem*)sea_setLeftItemWithTitle:(NSString*) title action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] sea_barItemWithTitle:title target:self action:action]];
+    UIBarButtonItem *item = [[self class] sea_barItemWithTitle:title target:self action:action];
     [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
     
     return item;
@@ -380,7 +425,7 @@ static char SeaTransitioningDelegateKey;
 
 - (UIBarButtonItem*)sea_setLeftItemWithImage:(UIImage*) image action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] sea_barItemWithImage:image target:self action:action]];
+    UIBarButtonItem *item = [[self class] sea_barItemWithImage:image target:self action:action];
     [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
     
     return item;
@@ -404,7 +449,7 @@ static char SeaTransitioningDelegateKey;
 
 - (UIBarButtonItem*)sea_setRightItemWithTitle:(NSString*) title action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] sea_barItemWithTitle:title target:self action:action]];
+    UIBarButtonItem *item = [[self class] sea_barItemWithTitle:title target:self action:action];
     [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionRight];
     
     return item;
@@ -412,7 +457,7 @@ static char SeaTransitioningDelegateKey;
 
 - (UIBarButtonItem*)sea_setRightItemWithImage:(UIImage*) image action:(SEL) action
 {
-    UIBarButtonItem *item = [[self class] sea_barItemWithImage:image target:self action:action]];
+    UIBarButtonItem *item = [[self class] sea_barItemWithImage:image target:self action:action];
     [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionRight];
     
     return item;
@@ -465,8 +510,11 @@ static char SeaTransitioningDelegateKey;
  */
 - (void)setShowNetworkActivityWithMsg:(NSString*) msg
 {
-    self.showNetworkActivity = YES;
-    self.networkActivityView.msg = msg;
+    self.sea_showNetworkActivity = YES;
+    if([self.sea_networkActivity isKindOfClass:[SeaNetworkActivityView class]]){
+        SeaNetworkActivityView *view = (SeaNetworkActivityView*)self.sea_networkActivity;
+        view.msg = msg;
+    }
 }
 
 /**提示信息
@@ -491,21 +539,21 @@ static char SeaTransitioningDelegateKey;
 
 /**关联的选项卡 default is 'nil'
  */
-- (void)setSea_tabBarController:(SeaTabBarController *)Sea_TabBarController
+- (void)setSea_tabBarController:(SeaTabBarController *) tabBarController
 {
-    objc_setAssociatedObject(self, &Sea_TabBarControllerKey, Sea_TabBarController, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &SeaTabBarControllerKey, tabBarController, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (SeaTabBarController*)sea_tabBarController
 {
-    return objc_getAssociatedObject(self, &Sea_TabBarControllerKey);
+    return objc_getAssociatedObject(self, &SeaTabBarControllerKey);
 }
 
 /**当viewWillAppear时是否隐藏选项卡 default is 'YES'
  */
-- (void)setSea_hideTabBar:(BOOL)sea_hideTabBar
+- (void)setSea_hideTabBar:(BOOL) hideTabBar
 {
-    objc_setAssociatedObject(self, &SeaHideTabBarKey, @(sea_hideTabBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &SeaHideTabBarKey, @(hideTabBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)sea_hideTabBar

@@ -10,6 +10,7 @@
 #import "UIView+Utils.h"
 #import "SeaBasic.h"
 #import "UIViewController+Utils.h"
+#import "SeaNavigationController.h"
 
 @interface SeaDialog ()
 

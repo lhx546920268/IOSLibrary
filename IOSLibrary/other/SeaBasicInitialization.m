@@ -7,23 +7,30 @@
 //
 
 #import "SeaBasicInitialization.h"
-#import "UIColor+colorUtilities.h"
+#import "UIColor+Utils.h"
 
 static UIColor *shareAppMainColor = nil;
 static UIColor *shareAppMainTintColor = nil;
 static UIColor *shareBackgroundColor = nil;
+
 static UIColor *shareButtonBackgroundColor = nil;
+static UIColor *shareButtonDisableBackgroundColor = nil;
+static UIColor *shareButtonTitleColor = nil;
+static UIColor *shareButtonDisableTitleColor = nil;
+
 static NSString *shareSeaMainFontName = nil;
 static NSString *shareSeaMainNumberFontName = nil;
 static NSString *shareAlertMsgWhenBadNetwork = nil;
+
 static UIColor *shareSeparatorLineColor = nil;
 static CGFloat shareSeparatorLineWidth = 0;
+
 static UIColor *shareNavigationBarColor = nil;
 static UIColor *shareNavigationBarTitleColor = nil;
 static UIFont *shareNavigationBarTitleFont = nil;
 static UIColor *shareTintColor = nil;
 static UIStatusBarStyle shareStatusBarStyle;
-static UIColor *shareButtonTitleColor = nil;
+
 static BOOL shareUseSystemBackItem = YES;
 
 @implementation SeaBasicInitialization
@@ -113,7 +120,7 @@ static BOOL shareUseSystemBackItem = YES;
     return shareSeparatorLineWidth;
 }
 
-///红颜色
+///按钮背景颜色
 + (void)sea_setButtonBackgroundColor:(UIColor*) color
 {
     shareButtonBackgroundColor = color;
@@ -122,6 +129,17 @@ static BOOL shareUseSystemBackItem = YES;
 + (UIColor*)sea_buttonBackgroundColor
 {
     return shareButtonBackgroundColor;
+}
+
+///按钮无法点击时背景颜色
++ (void)sea_setButtonDisableBackgroundColor:(UIColor *)color
+{
+    shareButtonDisableBackgroundColor = color;
+}
+
++ (UIColor*)sea_buttonDisableBackgroundColor
+{
+    return shareButtonDisableBackgroundColor;
 }
 
 ///导航栏颜色
@@ -168,6 +186,17 @@ static BOOL shareUseSystemBackItem = YES;
     return shareButtonTitleColor;
 }
 
+///按钮字体不能点击时的颜色
++ (void)sea_setButtonDisableTitleColor:(UIColor*) color
+{
+    shareButtonDisableTitleColor = color;
+}
+
++ (UIColor*)sea_buttonDisableTitleColor
+{
+    return shareButtonDisableTitleColor;
+}
+
 ///状态栏样式
 + (void)sea_setStatusBarStyle:(UIStatusBarStyle) statusBarStyle
 {
@@ -193,7 +222,7 @@ static BOOL shareUseSystemBackItem = YES;
 ///是否使用系统返回按钮 default is 'YES'
 + (void)sea_setUseSystemBackItem:(BOOL) use
 {
-    return shareUseSystemBackItem;
+    shareUseSystemBackItem = use;
 }
 
 + (BOOL)sea_useSystemBackItem
@@ -217,19 +246,21 @@ static BOOL shareUseSystemBackItem = YES;
     
     ///按钮颜色
     shareButtonBackgroundColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
+    shareButtonDisableBackgroundColor = [UIColor sea_colorFromHex:@"b3b3b3"];
     
     shareButtonTitleColor = [UIColor whiteColor];
+    shareButtonDisableTitleColor = [UIColor grayColor];
     
-        //主要字体名称
+    //主要字体名称
     shareSeaMainFontName = [UIFont systemFontOfSize:14].fontName;//
     
-        //数字字体、英文字体
+    //数字字体、英文字体
     shareSeaMainNumberFontName = [UIFont systemFontOfSize:14].fontName;
     
     //网络状态不好加载数据失败提示信息
     shareAlertMsgWhenBadNetwork = @"网络状态不佳";
     
-        //分割线颜色
+    //分割线颜色
     shareSeparatorLineColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     shareSeparatorLineWidth = 1.0 / [UIScreen mainScreen].scale;
     
@@ -237,9 +268,10 @@ static BOOL shareUseSystemBackItem = YES;
     shareNavigationBarTitleColor = [UIColor blackColor];
     shareNavigationBarTitleFont = [UIFont fontWithName:shareSeaMainFontName size:17.0];
     
-    shareTintColor = [UIColor whiteColor];
+    shareTintColor = [UIColor blackColor];
     
     shareStatusBarStyle = UIStatusBarStyleDefault;
+    
 }
 
 @end

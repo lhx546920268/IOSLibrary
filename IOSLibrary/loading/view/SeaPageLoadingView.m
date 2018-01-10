@@ -72,8 +72,6 @@
     [_textLabel sea_bottomToSuperview:10.0];
     [_textLabel sea_leftToItemRight:_activityIndicatorView margin:10.0];
     [_textLabel sea_rightToSuperview:10.0];
-    
-    self.loading = YES;
 }
 
 #pragma mark- property

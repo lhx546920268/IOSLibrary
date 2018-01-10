@@ -6,6 +6,8 @@
 
 #import "SeaLoadMoreControl.h"
 #import "SeaBasic.h"
+#import "UIView+Utils.h"
+#import "NSString+Utils.h"
 
 /**加载临界点 contentOffset
  */
@@ -25,7 +27,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 {
     self = [super initWithScrollView:scrollView];
     if(self)
-    {;
+    {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self addSubview:_activityIndicatorView];
@@ -88,13 +90,6 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     [_remindLabel removeObserver:self forKeyPath:SeaLoadMoreControlText];
     [self.superview removeObserver:self forKeyPath:SeaDataControlContentSize];
     [super removeFromSuperview];
-}
-
-#pragma mark- dealloc
-
-- (void)dealloc
-{
-    
 }
 
 #pragma mark- kvo
@@ -162,7 +157,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     {
         //调整内容
         CGFloat margin = 5.0;
-        CGFloat textWidth = [_remindLabel.text stringSizeWithFont:_remindLabel.font contraintWith:self.width - _activityIndicatorView.width - margin].width;
+        CGFloat textWidth = [_remindLabel.text sea_stringSizeWithFont:_remindLabel.font contraintWith:self.width - _activityIndicatorView.width - margin].width;
         _remindLabel.width = textWidth;
         [self setNeedsLayout];
     }

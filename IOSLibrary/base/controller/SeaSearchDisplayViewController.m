@@ -6,6 +6,9 @@
 
 #import "SeaSearchDisplayViewController.h"
 #import "SeaBasic.h"
+#import "UISearchBar+Utils.h"
+#import "UIView+SeaAutoLayout.h"
+#import "UIViewController+Utils.h"
 
 @interface SeaSearchDisplayViewController()
 
@@ -117,7 +120,7 @@
 //把控制视图中view改成UiScrollView，因为只有当UISearchBar的父视图为 UIScrollView时，UIBarPositionTopAttached才会生效
 - (void)loadView
 {
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
+    UIScrollView *scrollView = [UIScrollView new];
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.bounces = NO;
@@ -179,8 +182,8 @@
         {
             [self.view addSubview:self.searchBar];
             
-            self.tableView.top = self.searchBar.bottom;
-            self.tableView.height = self.contentHeight - self.searchBar.bottom;
+//            self.tableView.top = self.searchBar.bottom;
+//            self.tableView.height = self.contentHeight - self.searchBar.bottom;
         }
             break;
         case SeaSearchBarPositionNavigationBar :
@@ -191,13 +194,13 @@
             break;
         case SeaSearchBarPositionShowWhenSearch :
         {
-            [self setBarItemsWithStyle:UIBarButtonSystemItemSearch action:@selector(showSearchBar:) position:SeaNavigationItemPositionRight];
+//            [self setBarItemsWithStyle:UIBarButtonSystemItemSearch action:@selector(showSearchBar:) position:SeaNavigationItemPositionRight];
         }
         default:
             break;
     }
     
-    self.tableViewOriginHeight = self.tableView.height;
+//    self.tableViewOriginHeight = self.tableView.height;
 }
 
 #pragma mark- 需要重写的方法
@@ -270,33 +273,33 @@
     {
         if(!_transparentView)
         {
-            switch (_searchBarPosition)
-            {
-                case SeaSearchBarPositionTableViewTop :
-                case SeaSearchBarPositionTableViewHeader :
-                {
-                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.searchBar.bottom, SeaScreenWidth, self.contentHeight)];
-                }
-                    break;
-                case SeaSearchBarPositionNavigationBar :
-                {
-                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
-                }
-                    break;
-                case SeaSearchBarPositionShowWhenSearch :
-                {
-                    _transparentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.searchBar.height + self.statusBarHidden, SeaScreenWidth, self.contentHeight)];
-                }
-                    break;
-                default:
-                    break;
-            }
-            
+            _transparentView = [UIView new];
             _transparentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
             
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel:)];
             [_transparentView addGestureRecognizer:tap];
             [self.view addSubview:_transparentView];
+            
+            switch (_searchBarPosition)
+            {
+                case SeaSearchBarPositionTableViewTop :
+                case SeaSearchBarPositionTableViewHeader :
+                    case SeaSearchBarPositionShowWhenSearch :
+                {
+                    [_transparentView sea_leftToSuperview];
+                    [_transparentView sea_rightToSuperview];
+                    [_transparentView sea_bottomToSuperview];
+                    [_transparentView sea_topToItemBottom:self.searchBar];
+                }
+                    break;
+                case SeaSearchBarPositionNavigationBar :
+                {
+                    [_transparentView sea_insetsInSuperview:UIEdgeInsetsZero];
+                }
+                    break;
+                default:
+                    break;
+            }
         }
         
         _transparentView.hidden = NO;
@@ -321,7 +324,7 @@
     
     if(self.searchBarPosition == SeaSearchBarPositionNavigationBar)
     {
-        [self.searchCancelButton setTitleColor:self.iconTintColor forState:UIControlStateNormal];
+        [self.searchCancelButton setTitleColor:self.sea_iconTintColor forState:UIControlStateNormal];
     }
     
     if(searchBar.text.length > 0)
@@ -383,7 +386,7 @@
     {
         [self createSearchBar];
         [_searchBar setShowsCancelButton:YES animated:NO];
-        _searchBar.top = - _searchBar.height - self.statusBarHeight;
+//        _searchBar.top = - _searchBar.height - self.statusBarHeight;
         [self.view addSubview:_searchBar];
     }
     
@@ -398,11 +401,11 @@
     {
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            _searchBar.top = - self.statusBarHeight - _searchBar.height;
+//            _searchBar.top = - self.statusBarHeight - _searchBar.height;
             
             CGRect frame = self.tableView.frame;
             frame.origin.y = 0;
-            frame.size.height = self.contentHeight;
+//            frame.size.height = self.contentHeight;
             self.tableView.frame = frame;
             
         }completion:^(BOOL finish){
@@ -415,11 +418,11 @@
         _searchBar.hidden = hidden;
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            _searchBar.top = 0;
+//            _searchBar.top = 0;
             
             CGRect frame = self.tableView.frame;
-            frame.origin.y = _searchBar.height;
-            frame.size.height = self.contentHeight;
+//            frame.origin.y = _searchBar.height;
+//            frame.size.height = self.contentHeight;
             self.tableView.frame = frame;
         }];
     }
@@ -449,20 +452,20 @@
         {
             case SeaSearchBarPositionTableViewHeader :
             {
-                UIScrollView *s = (UIScrollView*)self.view;
+//                UIScrollView *s = (UIScrollView*)self.view;
                 
-                CGFloat top = - scrollView.contentOffset.y;
-                if(top < - self.searchBar.height)
-                {
-                    top = - self.searchBar.height;
-                }
-                else if(top > 0)
-                {
-                    top = 0;
-                }
-                s.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
-                
-                self.tableView.height = self.tableViewOriginHeight - top;
+//                CGFloat top = - scrollView.contentOffset.y;
+//                if(top < - self.searchBar.height)
+//                {
+//                    top = - self.searchBar.height;
+//                }
+//                else if(top > 0)
+//                {
+//                    top = 0;
+//                }
+//                s.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
+//                
+//                self.tableView.height = self.tableViewOriginHeight - top;
             }
                 break;
                 

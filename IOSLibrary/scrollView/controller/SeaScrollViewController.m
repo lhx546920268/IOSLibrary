@@ -6,6 +6,9 @@
 #import "SeaScrollViewController.h"
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
+#import "SeaRefreshControl.h"
+#import "SeaLoadMoreControl.h"
+#import "UIView+Utils.h"
 
 @interface SeaScrollViewController ()<UIScrollViewDelegate>
 
@@ -16,8 +19,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
+    if (self){
         self.curPage = 1;
     }
     return self;
@@ -34,7 +36,7 @@
 }
 
 //设置是否可以下拉刷新数据
-- (void)setRefreshEnable:(int)refreshEnable
+- (void)setRefreshEnable:(BOOL) refreshEnable
 {
     if(_refreshEnable != refreshEnable)
     {
@@ -45,14 +47,14 @@
         if(_refreshEnable)
         {
             WeakSelf(self);
-            [self.scrollView addRefreshControlUsingBlock:^(void){
-                
+            [self.scrollView sea_addRefreshWithHandler:^(void){
+               
                 [weakSelf reloadDataSource];
             }];
         }
         else
         {
-            [self.scrollView removeRefreshControl];
+            [self.scrollView sea_removeRefreshControl];
         }
     }
 }
@@ -70,15 +72,15 @@
         if(_loadMoreEnable)
         {
             WeakSelf(self);
-            [self.scrollView addLoadMoreControlUsingBlock:^(void){
-                
+            [self.scrollView sea_addLoadMoreWithHandler:^(void){
+               
                 [weakSelf setLoadingMore:YES];
                 [weakSelf onLoadMore];
             }];
         }
         else
         {
-            [self.scrollView removeLoadMoreControl];
+            [self.scrollView sea_removeLoadMoreControl];
         }
     }
 }
@@ -97,7 +99,7 @@
 //获取上拉加载时的指示视图
 - (SeaLoadMoreControl*)loadMoreControl
 {
-    return self.scrollView.loadMoreControl;
+    return self.scrollView.sea_loadMoreControl;
 }
 
 - (void)setShouldShowScrollToTopButton:(BOOL)shouldShowScrollToTopButton
@@ -120,8 +122,8 @@
 
 - (void)dealloc
 {
-    [_scrollView removeRefreshControl];
-    [_scrollView removeLoadMoreControl];
+    [_scrollView sea_removeRefreshControl];
+    [_scrollView sea_removeLoadMoreControl];
 }
 
 - (void)viewDidLoad

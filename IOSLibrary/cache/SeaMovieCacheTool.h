@@ -44,7 +44,7 @@ typedef void(^SeaMovieCacheCompletionHandler)(SeaMovieCacheInfo *cacheInfo);
  @param image 视频第一帧图片
  @return 一个实例
  */
-+ (instancetype)infoWithDuration:(long long) duration image:(UIImage*) image;
+- (instancetype)initWithDuration:(long long) duration image:(UIImage*) image;
 
 @end
 
@@ -82,6 +82,11 @@ typedef void(^SeaMovieCacheCompletionHandler)(SeaMovieCacheInfo *cacheInfo);
  @return 视频时长
  */
 - (long long)durationForURL:(NSString*) URL;
+
+/**
+ 清空
+ */
+- (void)clear;
 
 
 @end
@@ -131,9 +136,9 @@ typedef void(^SeaMovieCacheCompletionHandler)(SeaMovieCacheInfo *cacheInfo);
 
  @param URL 视频链接
  @param size 第一帧图片缩率图大小
- @param completion 完成回调 同步调用
+ @return 视频信息
  */
-- (void)movieInfoFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size completion:(SeaMovieCacheCompletionHandler) completion;
+- (SeaMovieCacheInfo*)movieInfoFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size;
 
 #pragma mark- format
 

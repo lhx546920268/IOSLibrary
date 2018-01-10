@@ -7,7 +7,7 @@
 
 #import "UINavigationController+Utils.h"
 #import <objc/runtime.h>
-#import "UIColor+colorUtilities.h"
+#import "UIColor+Utils.h"
 #import "UIView+Utils.h"
 #import "SeaBasic.h"
 

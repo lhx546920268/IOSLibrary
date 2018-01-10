@@ -41,12 +41,12 @@
 - (void)setTopView:(UIView *)topView height:(CGFloat) height;
 
 /**
- 设置内容视图
+ 设置底部视图
  
- @param contentView 内容视图
- @param height 视图高度
+ @param bottomView 底部视图
+ @param height 视图高度，SeaWrapContent 为自适应
  */
-- (void)setContentView:(UIView *)contentView height:(CGFloat) height;
+- (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
 
 /**
  设置顶部视图隐藏 视图必须有高度约束

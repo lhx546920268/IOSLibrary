@@ -7,6 +7,7 @@
 #import "UIViewController+Utils.h"
 #import "UIView+SeaAutoLayout.h"
 #import "NSString+Utils.h"
+#import "UIView+SeaEmptyView.h"
 
 @interface SeaTableViewController ()
 
@@ -14,6 +15,9 @@
 @end
 
 @implementation SeaTableViewController
+{
+    UITableView *_tableView;
+}
 
 /**构造方法
  *@param style 列表风格
@@ -38,6 +42,12 @@
 {
     [super viewDidLoad];
     _separatorEdgeInsets = UIEdgeInsetsMake(0, 15.0, 0, 0);
+}
+
+- (UITableView*)tableView
+{
+    [self initTableView];
+    return _tableView;
 }
 
 #pragma mark- public method
@@ -83,7 +93,6 @@
 
 - (void)registerNib:(UINib*) nib forCellReuseIdentifier:(NSString*) identifier
 {
-    [self initTableView];
     [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
 }
 
@@ -94,7 +103,6 @@
 
 - (void)registerClass:(Class) cellClass forCellReuseIdentifier:(NSString*) identifier
 {
-    [self initTableView];
     [self.tableView registerClass:cellClass forCellReuseIdentifier:identifier];
 }
 
@@ -105,7 +113,6 @@
 
 - (void)registerNib:(UINib*) nib forHeaderFooterViewReuseIdentifier:(NSString*) identifier
 {
-    [self initTableView];
     [self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:identifier];
 }
 
@@ -116,7 +123,6 @@
 
 - (void)registerClass:(Class) clazz forHeaderFooterViewReuseIdentifier:(NSString*) identifier
 {
-    [self initTableView];
     [self.tableView registerClass:clazz forHeaderFooterViewReuseIdentifier:identifier];
 }
 
@@ -180,5 +186,11 @@
     }
 }
 
+#pragma mark- 屏幕旋转
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [self.tableView reloadData];
+}
 
 @end

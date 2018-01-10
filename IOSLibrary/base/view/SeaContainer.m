@@ -54,12 +54,6 @@
     [self setTopView:topView height:SeaWrapContent];
 }
 
-/**
- 设置顶部视图
- 
- @param topView 顶部视图
- @param height 视图高度，SeaWrapContent 为自适应
- */
 - (void)setTopView:(UIView *)topView height:(CGFloat) height
 {
     if(_topView != topView){
@@ -98,17 +92,6 @@
 #pragma mark- contentView
 
 - (void)setContentView:(UIView *)contentView
-{
-    [self setContentView:contentView height:SeaWrapContent];
-}
-
-/**
- 设置内容视图
-
- @param contentView 内容视图
- @param height 视图高度
- */
-- (void)setContentView:(UIView *)contentView height:(CGFloat) height
 {
     if(_contentView != contentView){
         if(_contentView){
@@ -208,7 +191,7 @@
         } completion:^(BOOL finished){
             
             weakSelf.topView.hidden = hidden;
-        }]
+        }];
     }
 }
 
@@ -234,7 +217,7 @@
         } completion:^(BOOL finished){
             
             weakSelf.bottomView.hidden = hidden;
-        }]
+        }];
     }
 }
 

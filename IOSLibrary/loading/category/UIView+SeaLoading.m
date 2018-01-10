@@ -76,11 +76,11 @@ static char SeaReloadDataHandlerKey;
         if(sea_showNetworkActivity){
             UIView *networkActivity = self.sea_networkActivity;
             if(!networkActivity){
-                self.sea_networkActivity = [SeaNetworkActivityKey new];
+                self.sea_networkActivity = [SeaNetworkActivityView new];
             }
             [self bringSubviewToFront:networkActivity];
         }else{
-            self.sea_showNetworkActivity = nil;
+            self.sea_networkActivity = nil;
         }
     }
 }
@@ -175,7 +175,7 @@ static char SeaReloadDataHandlerKey;
 //点击失败视图
 - (void)handlerTapFailPage:(UITapGestureRecognizer*) tap
 {
-    void(^)(void) handler = self.sea_reloadDataHandler;
+    void(^handler)(void) = self.sea_reloadDataHandler;
     self.sea_showFailPage = NO;
     !handler ?: handler();
 }

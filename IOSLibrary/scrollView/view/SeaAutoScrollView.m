@@ -5,7 +5,7 @@
 
 #import "SeaAutoScrollView.h"
 #import "SeaBasic.h"
-
+#import "UIView+Utils.h"
 
 @implementation SeaPageControl
 

@@ -24,4 +24,20 @@
 ///视图容器 self.view
 @property(nonatomic, readonly) SeaContainer *container;
 
+/**
+ 设置顶部视图
+ 
+ @param topView 顶部视图
+ @param height 视图高度，SeaWrapContent 为自适应
+ */
+- (void)setTopView:(UIView *)topView height:(CGFloat) height;
+
+/**
+ 设置底部视图
+ 
+ @param bottomView 底部视图
+ @param height 视图高度，SeaWrapContent 为自适应
+ */
+- (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
+
 @end

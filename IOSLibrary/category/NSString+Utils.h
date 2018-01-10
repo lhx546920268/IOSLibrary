@@ -8,6 +8,27 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ 文字类型类型
+ */
+typedef NS_OPTIONS(NSUInteger, SeaTextType){
+    
+    ///全部
+    SeaTextTypeAll = 1,
+    
+    ///数字
+    SeaTextTypeDigital = 1 << 1,
+    
+    ///英文字母
+    SeaTextTypeAlphabet = 1 << 2,
+    
+    ///中文
+    SeaTextTypeChinese = 1 << 3,
+    
+    ///小数 单独使用
+    SeaTextTypeDecimal = 1 << 4,
+};
+
 @interface NSString (Utils)
 
 #pragma mark- 空判断
@@ -71,12 +92,34 @@
 - (NSInteger)sea_lastIndexOfCharacter:(char) c;
 
 /**
+  return sea_stringSizeWithFont:(UIFont*) font contraintWith:CGFLOAT_MAX
+ */
+- (CGSize)sea_stringSizeWithFont:(UIFont*) font;
+
+/**
  获取字符串所占位置大小
  *@param font 字符串要显示的字体
  *@param width 每行最大宽度
  *@return 字符串大小
  */
 - (CGSize)sea_stringSizeWithFont:(UIFont*) font contraintWith:(CGFloat) width;
+
+/**
+ 过滤字符串
+ 
+ @param type 文字输入类型
+ @return 过滤后的字符串
+ */
+- (NSString*)sea_stringByFilterWithType:(SeaTextType)type;
+
+/**
+ 过滤字符串
+ 
+ @param type 文字输入类型
+ @param range 要过滤的范围
+ @return 过滤后的字符串
+ */
+- (NSString*)sea_stringByFilterWithType:(SeaTextType) type range:(NSRange) range;
 
 #pragma mark- chinese
 

@@ -6,6 +6,9 @@
 #import "SeaImageCropViewController.h"
 #import "SeaAlbumDelegate.h"
 #import "SeaBasic.h"
+#import "UIViewController+Utils.h"
+#import "UIView+Utils.h"
+#import "UIImage+Utils.h"
 
 #define BOUNDCE_DURATION 0.3f
 
@@ -118,24 +121,18 @@
     self.view.backgroundColor = [UIColor blackColor];
     [self initView];
     //[self initControlBtn];
-    [self setBarItemsWithTitle:@"完成" icon:nil action:@selector(confirm) position:SeaNavigationItemPositionRight];
+    [self sea_setRightItemWithTitle:@"完成" action:@selector(confirm)];
 }
 
 //初始化视图
 - (void)initView
 {
-    self.backItem = YES;
+    self.sea_showBackItem = YES;
     
-    CGSize cropSize = self.settings.cropSize;
-    if(self.settings.useFullScreenCropFrame)
-    {
-        cropSize = CGSizeMake(SeaScreenWidth, SeaScreenWidth * cropSize.height / cropSize.width);
-        self.settings.cropCornerRadius *= cropSize.width / self.settings.cropSize.width;
-    }
+    self.contentView = [UIView new];
     
-    _cropFrame = CGRectMake((SeaScreenWidth - cropSize.width) / 2.0, (self.contentHeight - cropSize.height) / 2.0, cropSize.width, cropSize.height);
     //显示图片
-    self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
+    self.showImgView = [UIImageView new];
     [self.showImgView setMultipleTouchEnabled:YES];
     [self.showImgView setUserInteractionEnabled:YES];
     [self.showImgView setImage:self.settings.image];
@@ -145,11 +142,11 @@
     CGFloat oriWidth = MIN(SeaScreenWidth, self.settings.image.size.width);
     CGFloat oriHeight = self.settings.image.size.height * (oriWidth / self.settings.image.size.width);
     
-    if(self.settings.useFullScreenCropFrame)
-    {
-        if(oriWidth < _cropFrame.size.width || oriHeight < _cropFrame.size.height)
+    
+    if(self.settings.useFullScreenCropFrame){
+        if(oriWidth < self.cropFrame.size.width || oriHeight < self.cropFrame.size.height)
         {
-            CGFloat scale = MAX(_cropFrame.size.width / oriWidth, _cropFrame.size.height / oriHeight);
+            CGFloat scale = MAX(self.cropFrame.size.width / oriWidth, self.cropFrame.size.height / oriHeight);
             oriWidth *= scale;
             oriHeight *= scale;
         }
@@ -174,7 +171,7 @@
     [self.view addSubview:self.showImgView];
     
     //裁剪区分图层
-    self.overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, self.contentHeight)];
+    self.overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 0)];
     self.overlayView.alpha = .5f;
     self.overlayView.backgroundColor = [UIColor blackColor];
     self.overlayView.userInteractionEnabled = NO;
@@ -192,6 +189,25 @@
     
     //
     [self overlayClipping];
+}
+
+///裁剪框大小
+- (CGSize)cropSize
+{
+    CGSize cropSize = self.settings.cropSize;
+    if(self.settings.useFullScreenCropFrame){
+        cropSize = CGSizeMake(SeaScreenWidth, SeaScreenWidth * cropSize.height / cropSize.width);
+        self.settings.cropCornerRadius *= cropSize.width / self.settings.cropSize.width;
+    }
+    
+    return cropSize;
+}
+
+///裁剪范围
+- (CGRect)cropFrame
+{
+    CGSize cropSize = [self cropSize];
+    return CGRectMake((SeaScreenWidth - cropSize.width) / 2.0, (self.view.height - cropSize.height) / 2.0, cropSize.width, cropSize.height);
 }
 
 //初始化控制按钮
@@ -229,23 +245,6 @@
 
 #pragma mark- private method
 
-//取消编辑
-- (void)back
-{
-    if(self.present)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
-
-- (void)longPressBack:(UILongPressGestureRecognizer *)longPress
-{
-    
-}
 
 //确认编辑
 - (void)confirm
@@ -255,14 +254,7 @@
         [self.delegate albumDidFinishSelectImages:[NSArray arrayWithObject:[self cropImage]]];
     }
     
-    if(self.presentingViewController != nil)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    [self sea_back];
 }
 
 //绘制裁剪区分图层
@@ -426,6 +418,7 @@
 //裁剪图片
 - (UIImage*)cropImage
 {
+    
     //隐藏编辑框和控制按钮
     self.overlayView.hidden = YES;
     self.ratioView.hidden = YES;
@@ -438,7 +431,7 @@
     }
     
     //裁剪图片
-    CGFloat height = self.contentHeight;
+    CGFloat height = self.view.height;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(SeaScreenWidth, height), NO, SeaImageScale);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -447,7 +440,7 @@
     CGImageRef imageRef = viewImage.CGImage;
     
     CGFloat scale = viewImage.scale;
-    CGRect rect = CGRectMake(floor(_cropFrame.origin.x * scale), floor(_cropFrame.origin.y * scale), floor(_cropFrame.size.width * scale), floor(_cropFrame.size.height * scale));//这里可以设置想要截图的区域
+    CGRect rect = CGRectMake(floor(self.cropFrame.origin.x * scale), floor(self.cropFrame.origin.y * scale), floor(self.cropFrame.size.width * scale), floor(self.cropFrame.size.height * scale));//这里可以设置想要截图的区域
     
     CGImageRef imageRefRect = CGImageCreateWithImageInRect(imageRef, rect);
     UIImage *sendImage = [[UIImage alloc] initWithCGImage:imageRefRect];
@@ -455,7 +448,7 @@
     
     if(sendImage.size.width > self.settings.cropSize.width)
     {
-        sendImage = [sendImage aspectFitthumbnailWithSize:self.settings.cropSize];
+        sendImage = [sendImage sea_aspectFillWithSize:self.settings.cropSize];
     }
     
     return sendImage;

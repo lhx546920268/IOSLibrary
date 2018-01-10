@@ -21,18 +21,23 @@
 
 - (NSString*)formatDuration
 {
-    return [SeaMovieCacheTool format:self.duration]
+    return [SeaMovieCacheTool format:self.duration];
 }
 
-- (instancetype)infoWithDuration:(long long)duration image:(UIImage *)image
+- (instancetype)initWithDuration:(long long) duration image:(UIImage*) image
 {
-    _duration = duration;
-    _firstImage = image;
+    self = [super init];
+    if(self){
+        _duration = duration;
+        _firstImage = image;
+    }
+    
+    return self;
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone
 {
-    SeaMovieCacheInfo *info = [SeaMovieCacheInfo infoWithDuration:self.duration image:self.firstImage];
+    SeaMovieCacheInfo *info = [[SeaMovieCacheInfo allocWithZone:zone] initWithDuration:self.duration image:self.firstImage];
     
     return info;
 }
@@ -200,9 +205,7 @@
         if(duration > 0){
             UIImage *image = [[SeaImageCacheTool sharedInstance] imageFromDiskForURL:URL thumbnailSize:CGSizeZero];
             if(image){
-                SeaMovieCacheInfo *info = [SeaMovieCacheInfo new];
-                info.firstImage = image;
-                info.duration = duration;
+                SeaMovieCacheInfo *info = [[SeaMovieCacheInfo alloc] initWithDuration:duration image:image];
                 
                 [self executeWithInfo:info URL:URL];
                 exist = YES;
@@ -232,9 +235,9 @@
         NSURL *url = [NSURL URLWithString:URL];
         if(!url){
             @synchronized (self.badURLs){
-                [self.badURLs addObject:url];
+                [self.badURLs addObject:URL];
             }
-            [self executeWithImage:nil duration:0 URL:URL];
+            [self executeWithInfo:nil URL:URL];
             return;
         }
         AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:opts];
@@ -250,7 +253,6 @@
         CGImageRef img = [generator copyCGImageAtTime:CMTimeMake(1, 2) actualTime:NULL error:&error];
         UIImage *image = [UIImage imageWithCGImage:img];
         
-        NSString *duration = nil;
         if(image){
             
             image = [[SeaImageCacheTool sharedInstance] saveImageToDisk:image forURL:URL thumbnailSize:CGSizeZero saveToMemory:NO];
@@ -258,7 +260,7 @@
             ///获取视频时长
             long long duration = asset.duration.value / asset.duration.timescale;
 
-            info = [SeaMovieCacheInfo infoWithDuration:duration image:image];
+            info = [[SeaMovieCacheInfo alloc] initWithDuration:duration image:image];
             [[SeaMovieCacheTool defaultCache] setObject:info forKey:URL];
             [[SeaMovieDurationDataBase sharedInstance] insertDuration:duration URL:URL];
         }
@@ -280,17 +282,14 @@
         if(task){
             for(SeaMovieCacheHandler *handler in task.handlers){
                 if(info){
-                    __block SeaMovieCacheInfo *cacheInfo = nil;
-                    [self movieInfoFromMemoryForURL:URL thumbnailSize:handler.thumbnailSize completion:^(SeaMovieCacheInfo *movieCacheInfo){
-                        cacheInfo = movieCacheInfo;
-                    }];
+                    SeaMovieCacheInfo *cacheInfo = [self movieInfoFromMemoryForURL:URL thumbnailSize:handler.thumbnailSize];
                     if(cacheInfo == nil){
                         cacheInfo = [self saveInfoToMemory:info thumbnailSize:handler.thumbnailSize forURL:URL];
                     }
                     
                     !handler.completionHandler ?: handler.completionHandler(cacheInfo);
                 }else{
-                    NSLog(@"%@  图片读取失败", url);
+                    NSLog(@"%@  图片读取失败", URL);
                     !handler.completionHandler ?: handler.completionHandler(nil);
                 }
             }
@@ -299,7 +298,7 @@
     });
 }
 
-- (void)movieInfoFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size completion:(SeaMovieCacheCompletionHandler) completion
+- (SeaMovieCacheInfo*)movieInfoFromMemoryForURL:(NSString*) URL thumbnailSize:(CGSize) size
 {
     NSCache *cache = [SeaMovieCacheTool defaultCache];
     if(!CGSizeEqualToSize(size, CGSizeZero)){
@@ -331,7 +330,7 @@
         UIImage *thumbnail = [info.firstImage sea_aspectFillWithSize:size];
         
         if(thumbnail){
-            info = [SeaMovieCacheInfo infoWithDuration:info.duration image:info.firstImage];
+            info = [[SeaMovieCacheInfo alloc] initWithDuration:info.duration image:info.firstImage];
             [cache setObject:info forKey:URL];
         }
     }
@@ -345,8 +344,8 @@
 
 + (NSString*)format:(long long) duration
 {
-    long long result = timeInterval / 60;
-    int second = (int)((long long)timeInterval % 60);
+    long long result = duration / 60;
+    int second = (int)((long long)duration % 60);
     int minute = (int) result % 60;
     int hour = (int)(result / 60);
     
@@ -358,9 +357,6 @@
 
 @implementation SeaMovieDurationDataBase
 
-/**
- 单例
- */
 + (instancetype)sharedInstance
 {
     static dispatch_once_t once = 0;
@@ -391,13 +387,6 @@
     return self;
 }
 
-/**
- 插入一条数据
-
- @param duration 视频时长
- @param URL 视频链接
- @return 是否成功
- */
 - (BOOL)insertDuration:(long long) duration URL:(NSString*) URL
 {
     if([NSString isEmpty:URL])
@@ -405,18 +394,12 @@
     __block BOOL result = NO;
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        result = [db executeUpdateWithFormat:@"insert into video_cache(duration, url) values(?,?)", @(duration), URL];
+        result = [db executeUpdate:@"insert into video_cache(duration, url) values(?,?)", @(duration), URL];
     }];
     
     return result;
 }
 
-/**
- 删除小于或等于对应时间的视频数据
-
- @param date 要小于等于的时间
- @return 是否成功
- */
 - (BOOL)deleteCachesEarlierOrEqualDate:(NSDate*) date
 {
     if(!date)
@@ -425,18 +408,12 @@
     __block BOOL result = NO;
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        result = [db executeUpdateWithFormat:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate sea_timeFromDate:date format:SeaDateFormatYMdHms]];
+        result = [db executeUpdate:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate sea_timeFromDate:date format:SeaDateFormatYMdHms]];
     }];
     
     return result;
 }
 
-/**
- 获取对应视频链接的时长
-
- @param URL 视频链接
- @return 视频时长
- */
 - (long long)durationForURL:(NSString*) URL
 {
     if([NSString isEmpty:URL])
@@ -454,6 +431,14 @@
     }];
     
     return duration;
+}
+
+- (void)clear
+{
+    [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
+       
+        [db executeUpdate:@"delete from video_cache"];
+    }];
 }
 
 @end

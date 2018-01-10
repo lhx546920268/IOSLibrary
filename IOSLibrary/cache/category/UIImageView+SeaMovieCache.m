@@ -70,10 +70,7 @@ static char SeaMovieURLKey;
     self.sea_movieURL = URL;
     
     //判断内存中是否有图片
-    __block SeaMovieCacheInfo *info = nil;
-    [cache movieInfoFromMemoryForURL:URL thumbnailSize:size completion:^(SeaMovieCacheInfo *cacheInfo){
-        info = cacheInfo;
-    }];
+    SeaMovieCacheInfo *info = [cache movieInfoFromMemoryForURL:URL thumbnailSize:size];;
     
     if(info){
         

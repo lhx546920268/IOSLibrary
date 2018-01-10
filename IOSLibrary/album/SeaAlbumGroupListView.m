@@ -11,6 +11,7 @@
 #import "SeaAlbumGroupListCell.h"
 #import "SeaBasic.h"
 #import "UIViewController+Utils.h"
+#import "UIView+Utils.h"
 
 @interface SeaAlbumGroupListView ()
 

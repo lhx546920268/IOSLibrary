@@ -9,6 +9,7 @@
 #import "UIImagePickerController+Utils.h"
 #import <AVFoundation/AVFoundation.h>
 #import "UIAlertController+Utils.h"
+#import "SeaTools.h"
 
 @implementation UIImagePickerController (Utils)
 

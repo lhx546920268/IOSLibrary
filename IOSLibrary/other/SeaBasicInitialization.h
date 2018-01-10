@@ -46,9 +46,17 @@
 + (void)sea_setButtonBackgroundColor:(UIColor*) color;
 + (UIColor*)sea_buttonBackgroundColor;
 
+///按钮不能点击时的背景颜色
++ (void)sea_setButtonDisableBackgroundColor:(UIColor*) color;
++ (UIColor*)sea_buttonDisableBackgroundColor;
+
 ///按钮字体颜色
 + (void)sea_setButtonTitleColor:(UIColor*) color;
 + (UIColor*)sea_buttonTitleColor;
+
+///按钮字体不能点击时的颜色
++ (void)sea_setButtonDisableTitleColor:(UIColor*) color;
++ (UIColor*)sea_buttonDisableTitleColor;
 
 ///导航栏颜色
 + (void)sea_setNavigationBarColor:(UIColor*) color;

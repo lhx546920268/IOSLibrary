@@ -15,16 +15,16 @@
 #import "NSString+Utils.h"
 #import "UIImage+Utils.h"
 #import "SeaImageCacheTask.h"
-#import "SeaMovieCacheTool.m"
+#import "SeaMovieCacheTool.h"
 
 //图片文件后缀
 static NSString *const SeaImageCacheToolImageJPG = @"jpg";
 
 //缓存的文件夹
-static NSString *const SeaImageCacheDirectory @"SeaImageCache";
+static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
 
 
-@interface SeaImageCacheTool ()<SeaHttpTaskDelegate>
+@interface SeaImageCacheTool()<SeaHttpTaskDelegate>
 {
     //获取图片队列
     dispatch_queue_t _cacheQueue;
@@ -217,7 +217,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 ///取消所有任务
 - (void)cancelAllTasks
 {
-    [self.downloadTasks enumerateKeysAndObjectsUsingBlock:^(SeaImageCacheTask *task, NSString *URL, BOOL *stop){
+    [self.downloadTasks enumerateKeysAndObjectsUsingBlock:^(NSString *URL, SeaImageCacheTask *task, BOOL *stop){
        
         [task.downloadTask cancel];
     }];
@@ -300,9 +300,9 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 {
     NSString *URL = [task.originalRequest.URL absoluteString];
     
-    SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
-    for(SeaImageCacheHandler *handler in task.handlers){
-        !handler.progressHandler ?: handler.progressHandler(progress.fractionCompleted);
+    SeaImageCacheTask *cacheTask = [self.downloadTasks objectForKey:URL];
+    for(SeaImageCacheHandler *handler in cacheTask.handlers){
+        !handler.progressHandler ?: handler.progressHandler(progress);
     }}
 
 #pragma mark- private method
@@ -327,7 +327,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
 //执行图片加载完回调
 - (void)executeWithImage:(UIImage*) image URL:(NSString*) URL
 {
-    if(!url)
+    if(!URL)
         return;
     dispatch_main_async_safe(^(void){
         
@@ -342,7 +342,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
                     
                     !handler.completionHandler ?: handler.completionHandler(ret);
                 }else{
-                    NSLog(@"%@  图片读取失败", url);
+                    NSLog(@"%@  图片读取失败", URL);
                     !handler.completionHandler ?: handler.completionHandler(nil);
                 }
             }
@@ -486,7 +486,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
     }
     
     dispatch_async(_cacheQueue,  ^(void){
-        NSString *imagePath = [self pathForURL:url];
+        NSString *imagePath = [self pathForURL:URL];
         
         //获取图片的透明通道，判断图片是否是png
         CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(image.CGImage);
@@ -601,7 +601,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
         NSError *error = nil;
         
-        [[SeaMovieCacheTool sharedInstance] clearMovieCacheWithCompletion:nil];
+        [[SeaMovieDurationDataBase sharedInstance] clear];
         
         NSString *path = [[SeaImageCacheTool sharedInstance] getCachePath];
         [_fileManager removeItemAtPath:path error:&error];
@@ -641,7 +641,7 @@ static NSString *const SeaImageCacheDirectory @"SeaImageCache";
         
         //获取已过期的图片
         for(NSURL *URL in enumerator){
-            NSDictionary *dic = [url resourceValuesForKeys:resourceKeys error:nil];
+            NSDictionary *dic = [URL resourceValuesForKeys:resourceKeys error:nil];
             
             if([[expirationDate laterDate:[dic objectForKey:NSURLContentModificationDateKey]] isEqualToDate:expirationDate]){
                 [URLsToDelete addObject:URL];

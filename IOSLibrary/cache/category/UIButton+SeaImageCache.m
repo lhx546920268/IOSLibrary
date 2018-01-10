@@ -162,7 +162,7 @@ static char SeaImageCacheBackgroundImageURLDictionaryKey;
             [self setImage:options.placeholderImage forState:state];
             self.contentMode = options.placeholderContentMode;
         }else{
-            self.image = nil;
+            [self setImage:nil forState:state];
         }
     }
     
@@ -185,11 +185,11 @@ static char SeaImageCacheBackgroundImageURLDictionaryKey;
  */
 - (NSMutableDictionary*)sea_backgroundImageURLDictionary
 {
-    NSMutableDictionary *dic = objc_getAssociatedObject(self, &SeaImageCacheBackgroundImageURLDictionary);
+    NSMutableDictionary *dic = objc_getAssociatedObject(self, &SeaImageCacheBackgroundImageURLDictionaryKey);
     
     if(dic == nil){
         dic = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, &SeaImageCacheBackgroundImageURLDictionary, dic, OBJC_ASSOCIATION_RETAIN);
+        objc_setAssociatedObject(self, &SeaImageCacheBackgroundImageURLDictionaryKey, dic, OBJC_ASSOCIATION_RETAIN);
     }
     
     return dic;
@@ -223,6 +223,11 @@ static char SeaImageCacheBackgroundImageURLDictionaryKey;
 - (void)sea_setBackgroundImageWithURL:(NSString *)URL forState:(UIControlState)state options:(SeaImageCacheOptions *)options completion:(SeaImageCacheCompletionHandler)completion
 {
     [self sea_setBackgroundImageWithURL:URL forState:state options:options completion:completion progress:nil];
+}
+
+- (void)sea_setBackgroundImageWithURL:(NSString *)URL forState:(UIControlState)state options:(SeaImageCacheOptions *)options progress:(SeaImageCacheProgressHandler)progress
+{
+    [self sea_setBackgroundImageWithURL:URL forState:state options:options completion:nil progress:progress];
 }
 
 - (void)sea_setBackgroundImageWithURL:(NSString *)URL forState:(UIControlState)state options:(SeaImageCacheOptions *)options completion:(SeaImageCacheCompletionHandler)completion progress:(SeaImageCacheProgressHandler)progress
@@ -298,7 +303,7 @@ static char SeaImageCacheBackgroundImageURLDictionaryKey;
             [self setBackgroundImage:options.placeholderImage forState:state];
             self.contentMode = options.placeholderContentMode;
         }else{
-            self.image = nil;
+            [self setBackgroundImage:nil forState:state];
         }
     }
     

@@ -8,6 +8,8 @@
 
 #import "SeaAlbumGroupListCell.h"
 #import "UIView+Utils.h"
+#import "UIColor+Utils.h"
+#import "SeaBasic.h"
 
 @implementation SeaAlbumGroupListCell
 
@@ -21,7 +23,7 @@
         
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImageView.right + SeaAlbumGroupListCellMargin, _iconImageView.top, SeaScreenWidth - SeaAlbumGroupListCellMargin * 3 - SeaAlbumGroupListCellImageSize, SeaAlbumGroupListCellImageSize)];
-        _nameLabel.textColor = [UIColor colorWithR:153 G:153 B:153 a:1.0];
+        _nameLabel.textColor = [UIColor sea_colorWithRed:153 green:153 blue:153 alpha:1.0];
         _nameLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
         [self.contentView addSubview:_nameLabel];
     }
