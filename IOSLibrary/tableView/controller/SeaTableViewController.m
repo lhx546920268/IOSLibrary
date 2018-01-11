@@ -178,10 +178,10 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     [self.tableView setSeparatorInset:self.separatorEdgeInsets];
     
-    if([self.tableView respondsToSelector:@selector(setLayoutMargins:)])
-    {
+    if([self.tableView respondsToSelector:@selector(setLayoutMargins:)]){
         [self.tableView setLayoutMargins:self.separatorEdgeInsets];
     }
 }

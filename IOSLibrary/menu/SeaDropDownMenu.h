@@ -7,77 +7,91 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIButton+Utils.h"
 
 //下拉菜单高度
-#define SeaDropDownMenuHeight 40.0
+static const CGFloat SeaDropDownMenuHeight = 40.0;
 
-/**下拉菜单按钮信息
+/**
+ 下拉菜单按钮信息
  *@warning 下拉列表的的数量以titleLists为准
  */
 @interface SeaDropDownMenuItem : NSObject
 
-/**一级菜单下标
+/**
+ 一级菜单下标
  */
 @property(nonatomic,assign) NSInteger itemIndex;
 
-/**按钮标题，如果为空，将使用 [titleLists firstObject]
+/**
+ 按钮标题，如果为空，将使用 [titleLists firstObject]
  */
 @property(nonatomic,copy) NSString *title;
 
-/**下拉的列表标题信息，数组元素是NSString，如果不为nil则显示指示器 三角图标
+/**
+ 下拉的列表标题信息，数组元素是NSString，如果不为nil则显示指示器 三角图标
  */
 @property(nonatomic,strong) NSArray *titleLists;
 
-/**下拉的列表图标信息，数组元素是 UIImage
+/**
+ 下拉的列表图标信息，数组元素是 UIImage
  */
 @property(nonatomic,strong) NSArray *iconLists;
 
-/**选中的列表标题
+/**
+ 选中的列表标题
  */
 @property(nonatomic,assign) NSInteger selectedIndex;
 
-/**高亮背景颜色
+/**
+ 高亮背景颜色
  */
 @property(nonatomic,strong) UIColor *highlightedBackgroundColor;
 
 ///一下图片为空时，使用默认图标
 
-/**正常的图片
+/**
+ 正常的图片
  */
 @property(nonatomic,strong) UIImage *normalImage;
 
-/**高亮的图片1
+/**
+ 高亮的图片1
  */
 @property(nonatomic,strong) UIImage *highlightedImage1;
 
-/**高亮的图片2 如果不为nil，点击的时候与 highlightedImage1 来回切换
+/**
+ 高亮的图片2 如果不为nil，点击的时候与 highlightedImage1 来回切换
  */
 @property(nonatomic,strong) UIImage *highlightedImage2;
+
+/**
+ 图标位置 default is 'SeaButtonImagePositionRight'
+ */
+@property(nonatomic, assign) SeaButtonImagePosition imagePosition;
+
+/**
+ 图标和标题的间隔 default is '5.0'
+ */
+@property(nonatomic,assign) CGFloat imagePadding;
 
 @end
 
 
-/**下拉菜单按钮
+/**
+ 下拉菜单按钮
  */
-@interface SeaDropDownMenuCell : UIView
+@interface SeaDropDownMenuCell : UICollectionViewCell
 
-/**标题
+/**
+ 按钮
  */
-@property(nonatomic,readonly) UILabel *titleLabel;
+@property(nonatomic,readonly) UIButton *button;
 
-/**指示图标
+/**
+ 分割线
  */
-@property(nonatomic,readonly) UIImageView *imageView;
-
-/**分割线
- */
-@property(nonatomic,readonly) UIView *separatorLine;
-
-/**获取默认的三角形指示图标
- *@param color 图标颜色
- *@param size 图标大小
- */
-+ (UIImage*)defaultIndicatorWithColor:(UIColor*) color size:(CGSize) size;
+@property(nonatomic,readonly) UIView *separator;
 
 @end
 
@@ -119,103 +133,137 @@
 
 @end
 
-/**下拉菜单，如果下拉列表的数量为0，将不显示三角箭头
+/**
+ 下拉菜单，如果下拉列表的数量为0，将不显示三角箭头
  */
 @interface SeaDropDownMenu : UIView
 
-/**按钮信息，数组元素是 SeaDropDownMenuItem
+/**
+ 按钮信息
  */
-@property(nonatomic,readonly) NSArray *items;
+@property(nonatomic,readonly) NSArray<SeaDropDownMenuItem*> *items;
 
-/**下拉列表
+/**
+ 下拉列表
  */
-@property(nonatomic,strong) UITableView *tableView;
+@property(nonatomic,readonly) UITableView *tableView;
 
-/**按钮字体
+/**
+ 按钮字体
  */
 @property(nonatomic,strong) UIFont *buttonTitleFont;
 
-/**按钮字体颜色
+/**
+ 按钮字体颜色
  */
 @property(nonatomic,strong) UIColor *buttonNormalTitleColor;
 
-/**按钮字体高亮颜色
+/**
+ 按钮字体高亮颜色
  */
 @property(nonatomic,strong) UIColor *buttonHighlightTitleColor;
 
-/**下拉列表字体
+/**
+ 下拉列表字体
  */
 @property(nonatomic,strong) UIFont *listTitleFont;
 
-/**下拉列表字体颜色
+/**
+ 下拉列表字体颜色
  */
 @property(nonatomic,strong) UIColor *listNormalTitleColor;
 
-/**下拉列表字体高亮颜色
+/**
+ 下拉列表字体高亮颜色
  */
 @property(nonatomic,strong) UIColor *listHighLightColor;
 
-/**下拉列表选中标识 default is 'nil'
+/**
+ 下拉列表选中标识 default is 'nil'
  */
-@property(nonatomic,strong) UIImage *indicatorImage;
+@property(nonatomic,strong) UIImage *listIndicatorImage;
 
-/**选中的按钮 default is 'NSNotFound'
+/**
+ 选中的按钮 default is 'NSNotFound'
  */
 @property(nonatomic,assign) NSInteger selectedIndex;
 
-/**当下拉列表消失时是否需要保持选中状态 default is 'YES'
+/**
+ 当下拉列表消失时是否需要保持选中状态 default is 'YES'
  */
 @property(nonatomic,assign) BOOL keepHighlightWhenDismissList;
 
-
-/**阴影颜色
+/**
+ 阴影颜色
  */
 @property(nonatomic,strong) UIColor *shadowColor;
 
-/**高亮下划线 当 shouldShowUnderline = NO时为nil
+/**
+ 高亮下划线 当 shouldShowUnderline = NO时为nil
  */
-@property(nonatomic,readonly) UIView *underLine;
+@property(nonatomic,readonly) UIView *indicator;
 
-/**下拉列表的最大高度，default is 列表父视图的高度
+/**
+ 下拉列表的最大高度，default is 列表父视图的高度
  */
 @property(nonatomic,assign) CGFloat listMaxHeight;
 
-/**是否需要高亮 default is 'YES'
+/**
+ 是否需要高亮 default is 'YES'
  */
 @property(nonatomic,assign) BOOL shouldHighlighted;
 
-/**是否需要显示高亮下划线 default is 'NO'
+/**
+ 是否需要显示高亮下划线 default is 'NO'
  */
-@property(nonatomic,assign) BOOL shouldShowUnderline;
+@property(nonatomic,assign) BOOL shouldShowIndicator;
 
-/**列表是否正在显示
+/**
+ 列表是否正在显示
  */
 @property(nonatomic, readonly) BOOL listShowing;
 
+/**
+ 代理
+ */
 @property(nonatomic,weak) id<SeaDropDownMenuDelegate> delegate;
 
-/**下拉列表的父视图，如果不设置，将视图菜单的俯视图
- *@warning 如果是把菜单放在导航栏上，最好设置该值，可设置当前viewController.view 作为下拉列表的俯视图
+/**
+ 下拉列表的父视图，如果不设置，将视图菜单的俯视图
+ @warning 如果是把菜单放在导航栏上，最好设置该值，可设置当前viewController.view 作为下拉列表的俯视图
  */
 @property(nonatomic,weak) UIView *listSuperview;
 
-/**构造方法
- *@param items 按钮信息，数组元素是 SeaDropDownMenuItem
+/**
+ [self initWithFrame:CGRectZero items:items]
  */
-- (id)initWithFrame:(CGRect)frame items:(NSArray*) items;
+- (instancetype)initWithItems:(NSArray<SeaDropDownMenuItem*> *) items;
 
-///关闭下拉列表
+/**
+ 构造方法
+ @param items 按钮信息
+ @return 一个实例
+ */
+- (instancetype)initWithFrame:(CGRect)frame items:(NSArray<SeaDropDownMenuItem*> *) items;
+
+/**
+ 关闭下拉列表
+ */
 - (void)closeList;
 
-/**通过下标获取按钮
+/**
+ 通过下标获取按钮
  */
 - (SeaDropDownMenuCell*)cellForIndex:(NSInteger) index;
 
-/**设置标题
+/**
+ 设置标题
  */
 - (void)setTitle:(NSString*) title forIndex:(NSInteger) index;
 
-///取消选中
+/**
+ 取消选中
+ */
 - (void)deselectItem;
 
 @end

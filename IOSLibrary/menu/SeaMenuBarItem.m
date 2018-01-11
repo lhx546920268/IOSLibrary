@@ -7,7 +7,6 @@
 #import "SeaNumberBadge.h"
 #import "SeaBasic.h"
 #import "UIButton+Utils.h"
-#import "UIView+Utils.h"
 #import "SeaMenuBar.h"
 #import "UIView+SeaAutoLayout.h"
 
@@ -18,13 +17,14 @@
     self = [super initWithFrame:frame];
     if(self){
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
-        _button.frame = self.bounds;
+        _button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _button.titleLabel.textAlignment = NSTextAlignmentCenter;
         _button.userInteractionEnabled = NO;
         [self.contentView addSubview:_button];
         
         _separator = [UIView new];
         _separator.backgroundColor = SeaSeparatorColor;
+        _separator.userInteractionEnabled = NO;
         [self.contentView addSubview:_separator];
         
         _numberBadge = [SeaNumberBadge new];

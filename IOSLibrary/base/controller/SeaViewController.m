@@ -38,8 +38,7 @@
     [super viewWillAppear:animated];
     
     SeaTabBarController *tabBarController = self.sea_tabBarController;
-    if(tabBarController)
-    {
+    if(tabBarController){
         [tabBarController setTabBarHidden:self.sea_hideTabBar animated:YES];
     }
 }
@@ -106,6 +105,11 @@
 - (BOOL)prefersStatusBarHidden
 {
     return self.sea_statusBarHidden;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    
 }
 
 @end

@@ -450,6 +450,28 @@
     }
 }
 
+///获取下划线x轴位置
+- (CGFloat)indicatorXForIndex:(NSUInteger) index
+{
+    SeaMenuBarItem *item = [self itemForIndex:index];
+    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:index];
+    
+    CGFloat x = 0;
+    if(!CGRectEqualToRect(CGRectZero, item.frame)){
+        x = item.left + (item.width - info.itemWidth) / 2.0;
+    }else{
+        switch (_style) {
+            case SeaMenuBarStyleFit :
+                x = _contentInset.left;
+                break;
+            case SeaMenuBarStyleFill :
+                x = _contentInset.left + (_fillItemWidth - info.itemWidth) / 2;
+                break;
+        }
+    }
+    return x;
+}
+
 ///设置下划线的位置
 - (void)layoutIndicatorWithAnimate:(BOOL) flag
 {
@@ -457,25 +479,13 @@
         return;
     SeaMenuBarItem *item = [self itemForIndex:_selectedIndex];
     item.tick = YES;
-    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:_selectedIndex];
     CGRect frame = _indicator.frame;
-    
-    if(!CGRectEqualToRect(CGRectZero, item.frame)){
-        frame.origin.x = item.left + (item.width - info.itemWidth) / 2.0;
-    }else{
-        switch (_style) {
-            case SeaMenuBarStyleFit :
-                frame.origin.x = _contentInset.left;
-                break;
-            case SeaMenuBarStyleFill :
-                frame.origin.x = _contentInset.left + (_fillItemWidth - info.itemWidth) / 2;
-                break;
-        }
-    }
-    
+
+    frame.origin.x = [self indicatorXForIndex:_selectedIndex];
     frame.size.height = self.indicatorHeight;
     frame.origin.y = self.height - self.indicatorHeight;
     
+    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:_selectedIndex];
     frame.size.width = info.itemWidth;
     
     if(flag){
@@ -486,6 +496,33 @@
     }else{
         _indicator.frame = frame;
     }
+}
+
+- (void)setPercent:(float) percent forIndex:(NSUInteger) index
+{
+    if(!self.mesureEnable)
+        return;
+    
+#if SeaDebug
+    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setPercent: forIndex:，index %ld 已越界", (long)index);
+#endif
+    if(percent > 1.0){
+        percent = 1.0;
+    }else if(percent < 0){
+        percent = 0;
+    }
+    
+    CGRect frame = _indicator.frame;
+
+    CGFloat x = [self indicatorXForIndex:_selectedIndex];
+    CGFloat offset = percent * ([self indicatorXForIndex:index] - x);
+
+    SeaMenuItemInfo *info1 = [self.itemInfos objectAtIndex:_selectedIndex];
+    SeaMenuItemInfo *info2 = [self.itemInfos objectAtIndex:index];
+    
+    frame.origin.x = x + offset;
+    frame.size.width = info1.itemWidth + (info2.itemWidth - info1.itemWidth) * percent;
+    _indicator.frame = frame;
 }
 
 ///滚动到可见位置
@@ -499,7 +536,7 @@
 - (void)setBadgeValue:(NSString*) badgeValue forIndex:(NSUInteger) index
 {
 #if SeaDebug
-    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setBadgeValue: forIndex:，index 已越界");
+    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setBadgeValue: forIndex:，index %ld 已越界", (long)index);
 #endif
     
     SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:index];
@@ -511,7 +548,7 @@
 - (void)setIcon:(UIImage*) icon forIndex:(NSUInteger) index
 {
 #if SeaDebug
-    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setBadgeValue: forIndex:，index 已越界");
+    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setBadgeValue: forIndex:，index %ld 已越界", (long)index);
 #endif
     
     SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:index];

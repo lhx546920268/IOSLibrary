@@ -23,18 +23,14 @@
 - (id)initWithFlowLayout:(UICollectionViewFlowLayout*) layout
 {
     self = [super initWithNibName:nil bundle:nil];
-    if(self)
-    {
+    if(self){
         self.curPage = 1;
-        if(layout == nil)
-        {
+        if(layout == nil){
             _layout = [[UICollectionViewFlowLayout alloc] init];
             _layout.scrollDirection = UICollectionViewScrollDirectionVertical;
             _layout.minimumInteritemSpacing = 0;
             _layout.minimumLineSpacing = 0;
-        }
-        else
-        {
+        }else{
             self.layout = layout;
         }
     }
@@ -58,8 +54,7 @@
 
 - (void)initCollectionView
 {
-    if(_collectionView == nil)
-    {
+    if(_collectionView == nil){
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.layout];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;

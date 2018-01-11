@@ -7,14 +7,18 @@
 //
 
 #import "SeaImageGenerator.h"
+#import "UIImage+Utils.h"
 
 @implementation SeaImageGenerator
 
-///未打钩图片
-+ (UIImage*)untickIconWithColor:(UIColor*) color
++ (UIImage*)untickWithColor:(UIColor *)color
 {
-    CGSize size = CGSizeMake(21, 21);
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    return [self untickWithColor:color size:CGSizeMake(21, 21)];
+}
+
++ (UIImage*)untickWithColor:(UIColor*) color size:(CGSize)size
+{
+    UIGraphicsBeginImageContextWithOptions(size, NO, SeaImageScale);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -27,12 +31,15 @@
     
     return icon;
 }
-    
-///打钩的选中图标
-+ (UIImage*)tickingIconWithBackgroundColor:(UIColor*) backgroundColor tickColor:(UIColor*) tickColor
+
++ (UIImage*)tickWithFillColor:(UIColor *)fillColor tickColor:(UIColor *)tickColor
 {
-    CGSize size = CGSizeMake(21, 21);
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    return [self tickWithFillColor:fillColor tickColor:tickColor size:CGSizeMake(21, 21)];
+}
+
++ (UIImage*)tickWithFillColor:(UIColor*) backgroundColor tickColor:(UIColor*) tickColor size:(CGSize)size
+{
+    UIGraphicsBeginImageContextWithOptions(size, NO, SeaImageScale);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -52,6 +59,26 @@
     UIGraphicsEndImageContext();
     
     return icon;
+}
+
++ (UIImage*)triangleWithColor:(UIColor *)color size:(CGSize)size
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(floor(size.width), floor(size.height)), NO, SeaImageScale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, color.CGColor);
+    
+    CGContextMoveToPoint(context, 0, 0);
+    CGContextAddLineToPoint(context, size.width, 0);
+    CGContextAddLineToPoint(context, size.width / 2.0, size.height);
+    CGContextAddLineToPoint(context, 0, 0);
+    
+    CGContextFillPath(context);
+    
+    UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return retImage;
 }
 
 @end

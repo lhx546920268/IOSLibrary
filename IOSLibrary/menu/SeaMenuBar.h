@@ -56,7 +56,7 @@
 @end
 
 ///默认高度
-static CGFloat SeaMenuBarHeight = 40.0;
+static const CGFloat SeaMenuBarHeight = 40.0;
 
 ///SeaMenuBar 样式
 typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
@@ -234,5 +234,14 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
  *@param index 按钮下标
  */
 - (void)setIcon:(UIImage*) icon forIndex:(NSUInteger) index;
+
+/**
+ 设置将要到某个item的偏移量比例
+
+ @param percent 比例 0 ~ 1.0
+ @param index 将要到的下标
+ */
+- (void)setPercent:(float) percent forIndex:(NSUInteger) index;
+
 
 @end

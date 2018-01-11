@@ -226,7 +226,7 @@
 		10CB0A972005BCD70067ADDB /* SeaNumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A4C2005BCA90067ADDB /* SeaNumberKeyboard.m */; };
 		10CB0A9A2005BDCD0067ADDB /* SeaCountDownTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A982005BDCD0067ADDB /* SeaCountDownTimer.m */; };
 		10CB0A9B2005BDF30067ADDB /* SeaCountDownTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A992005BDCD0067ADDB /* SeaCountDownTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E3A51B200617FC0062A23D /* SeaPageViewController.h */; };
+		10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E3A51B200617FC0062A23D /* SeaPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E3A51E200617FC0062A23D /* SeaPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E3A51C200617FC0062A23D /* SeaPageViewController.m */; };
 		10E7B17D1F9F2D38006A83D8 /* SeaMovieCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1031F9F2D13006A83D8 /* SeaMovieCacheTool.m */; };
 		10E7B17F1F9F2D38006A83D8 /* SeaUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1081F9F2D13006A83D8 /* SeaUserDefaults.m */; };
@@ -1299,6 +1299,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */,
 				10CB0A9B2005BDF30067ADDB /* SeaCountDownTimer.h in Headers */,
 				10CB0A542005BCB70067ADDB /* UICollectionView+SeaEmptyView.h in Headers */,
 				10CB0A552005BCB70067ADDB /* UIScrollView+SeaEmptyView.h in Headers */,
@@ -1329,7 +1330,6 @@
 				10CB0A6F2005BCB70067ADDB /* SeaCountDownButton.h in Headers */,
 				10CB0A702005BCB70067ADDB /* SeaHighlightButton.h in Headers */,
 				10CB0A712005BCB70067ADDB /* SeaCheckBox.h in Headers */,
-				10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */,
 				10CB0A722005BCB70067ADDB /* SeaDashView.h in Headers */,
 				10CB0A732005BCB70067ADDB /* SeaRadarView.h in Headers */,
 				10CB0A742005BCB70067ADDB /* SeaHighlightView.h in Headers */,

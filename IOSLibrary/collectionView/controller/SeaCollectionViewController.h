@@ -35,4 +35,7 @@
 - (void)registerClass:(Class) cellClas forSupplementaryViewOfKind:(NSString*) kind;
 - (void)registerClass:(Class) cellClass forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier;
 
+/// 系统的需要添加 __kindof 否则代码不会提示
+- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+
 @end

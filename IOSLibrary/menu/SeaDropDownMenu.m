@@ -14,8 +14,21 @@
 #import "UIFont+Utils.h"
 #import "UIColor+Utils.h"
 #import "NSMutableArray+Utils.h"
+#import "UIView+SeaAutoLayout.h"
+#import "SeaImageGenerator.h"
 
 @implementation SeaDropDownMenuItem
+
+- (instancetype)init
+{
+    self = [super init];
+    if(self){
+        self.imagePadding = 5.0;
+        self.imagePosition = SeaButtonImagePositionRight;
+    }
+    
+    return self;
+}
 
 - (NSString*)title
 {
@@ -34,75 +47,28 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
+    if(self){
         self.backgroundColor = [UIColor clearColor];
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        _titleLabel.backgroundColor = [UIColor clearColor];
-        [self addSubview:_titleLabel];
+       
+        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _button.titleLabel.textAlignment = NSTextAlignmentCenter;
+        _button.userInteractionEnabled = NO;
+        [self.contentView addSubview:_button];
         
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        _imageView.contentMode = UIViewContentModeRight;
-        [self addSubview:_imageView];
+        _separator = [UIView new];
+        _separator.userInteractionEnabled = NO;
+        _separator.backgroundColor = SeaSeparatorColor;
+        [self.contentView addSubview:_separator];
         
-        CGFloat height = frame.size.height;
-        _separatorLine = [[UIView alloc] initWithFrame:CGRectMake(frame.size.width - SeaSeparatorHeight, (frame.size.height - height) / 2.0, SeaSeparatorHeight, height)];
-        _separatorLine.userInteractionEnabled = NO;
-        _separatorLine.backgroundColor = SeaSeparatorColor;
-        [self addSubview:_separatorLine];
+        [_button sea_insetsInSuperview:UIEdgeInsetsZero];
+        
+        [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorHeight, 15.0)];
+        [_separator sea_rightToSuperview];
+        [_separator sea_centerInSuperview];
     }
     
     return self;
-}
-
-//调整按钮标题位置
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    UIImage *image = _imageView.image;
-    
-    CGFloat interval = 3.0;
-    CGFloat margin = 5.0;
-    
-    CGFloat maxWidth = self.width - image.size.width - margin * 2 - interval - _separatorLine.width;
-    CGSize size = [_titleLabel.text sea_stringSizeWithFont:_titleLabel.font contraintWith:maxWidth];
-    
-    CGFloat x = (self.width - size.width - image.size.width - interval - margin * 2) / 2.0 + margin;
-    CGRect frame = _titleLabel.frame;
-    frame.origin.x = x;
-    frame.size.width = size.width;
-    _titleLabel.frame = frame;
-    
-    frame = _imageView.frame;
-    frame.size.width = _imageView.image.size.width;
-    frame.origin.x = _titleLabel.right + interval;
-    _imageView.frame = frame;
-}
-
-
-/**获取默认的三角形指示图标
- *@param color 图标颜色
- *@param size 图标大小
- */
-+ (UIImage*)defaultIndicatorWithColor:(UIColor*) color size:(CGSize) size
-{
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(floor(size.width), floor(size.height)), NO, SeaImageScale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetFillColorWithColor(context, color.CGColor);
-    
-    CGContextMoveToPoint(context, 0, 0);
-    CGContextAddLineToPoint(context, size.width, 0);
-    CGContextAddLineToPoint(context, size.width / 2.0, size.height);
-    CGContextAddLineToPoint(context, 0, 0);
-
-    CGContextFillPath(context);
-    
-    UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return retImage;
 }
 
 @end
@@ -110,7 +76,7 @@
 //cell起始tag
 #define SeaDropDownMenuCellStartTag 3402
 
-@interface SeaDropDownMenu ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
+@interface SeaDropDownMenu ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
 
 /**下拉列表背景
  */
@@ -124,18 +90,31 @@
  */
 @property(nonatomic,strong) UIView *shadowLine;
 
+@property(nonatomic,strong) UICollectionView *collectionView;
+
+/**
+ 默认三角形
+ */
+@property(nonatomic, strong) UIImage *icon;
+
+/**
+ 默认三角形 高亮
+ */
+@property(nonatomic, strong) UIImage *highlightedIcon;
+
 @end
 
 @implementation SeaDropDownMenu
 
-/**构造方法
- *@param items 按钮信息，数组元素是 SeaDropDownMenuItem
- */
-- (id)initWithFrame:(CGRect)frame items:(NSArray*) items
+- (instancetype)initWithItems:(NSArray<SeaDropDownMenuItem*> *) items
+{
+    return [self initWithFrame:CGRectZero items:items];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame items:(NSArray<SeaDropDownMenuItem*> *) items
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
+    if(self){
         self.backgroundColor = [UIColor whiteColor];
         _items = items;
         _selectedIndex = NSNotFound;
@@ -148,10 +127,10 @@
 //初始化
 - (void)intialization
 {
-    self.shadowColor = SeaSeparatorColor;
+    _shadowColor = SeaSeparatorColor;
     _keepHighlightWhenDismissList = YES;
     _shouldHighlighted = YES;
-    _shouldShowUnderline = NO;
+    _shouldShowIndicator = NO;
     _buttonTitleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
     _buttonNormalTitleColor = [UIColor blackColor];
     _buttonHighlightTitleColor = SeaAppMainColor;
@@ -160,29 +139,45 @@
     _listNormalTitleColor = _buttonNormalTitleColor;
     _listHighLightColor = _buttonHighlightTitleColor;
     
-    UIImage *icon = [self iconWithColor:_buttonNormalTitleColor];
-    UIImage *highlightIcon = [self iconWithColor:_buttonHighlightTitleColor];
+    self.icon = [self iconWithColor:_buttonNormalTitleColor];
+    self.highlightedIcon = [self iconWithColor:_buttonHighlightTitleColor];
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.minimumLineSpacing = 0;
+    layout.minimumInteritemSpacing = 0;
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.scrollsToTop = NO;
+    collectionView.delegate = self;
+    collectionView.dataSource = self;
+    [collectionView registerClass:[SeaDropDownMenuCell class] forCellWithReuseIdentifier:@"SeaDropDownMenuCell"];
+    [self addSubview:collectionView];
+    self.collectionView = collectionView;
+    
+   
     
     CGFloat width = self.width / _items.count;
-    for(NSInteger i = 0; i < _items.count;i ++)
-    {
+    SeaDropDownMenuCell *previousCell = nil;
+    for(NSInteger i = 0; i < _items.count;i ++){
         SeaDropDownMenuItem *item = [_items objectAtIndex:i];
         item.itemIndex = i;
         SeaDropDownMenuCell *cell = [[SeaDropDownMenuCell alloc] initWithFrame:CGRectMake(i * width, 0, width, self.height)];
-        cell.titleLabel.font = _buttonTitleFont;
-        cell.titleLabel.textColor = _buttonNormalTitleColor;
-        cell.titleLabel.text = item.title;
-        cell.separatorLine.hidden = i == _items.count - 1;
+        cell.button.titleLabel.font = _buttonTitleFont;
+        [cell.button setTitleColor:_buttonNormalTitleColor forState:UIControlStateNormal];
+        [cell.button setTitleColor:_buttonHighlightTitleColor forState:UIControlStateSelected];
+        [cell.button setTitle:item.title forState:UIControlStateNormal];
+        cell.separator.hidden = i == _items.count - 1;
         
-        if(item.titleLists != nil)
-        {
-            cell.imageView.image = item.normalImage == nil ? icon : item.normalImage;
-            cell.imageView.highlightedImage = item.highlightedImage1 == nil ? highlightIcon : item.highlightedImage1;
-        }
-        else
-        {
-            cell.imageView.image = item.normalImage;
-            cell.imageView.highlightedImage = item.highlightedImage1;
+        if(item.titleLists != nil){
+            [cell.button setImage:item.normalImage == nil ? icon : item.normalImage forState:UIControlStateNormal];
+             [cell.button setImage:item.highlightedImage1 == nil ? highlightIcon : item.highlightedImage1 forState:UIControlStateSelected];
+        }else{
+            [cell.button setImage:item.normalImage forState:UIControlStateNormal];
+            [cell.button setImage:item.highlightedImage1 forState:UIControlStateSelected];
         }
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -191,51 +186,69 @@
         cell.tag = i + SeaDropDownMenuCellStartTag;
         
         [self addSubview:cell];
+        
+        if(previousCell){
+            [cell sea_leftToItemRight:previousCell];
+            [cell sea_widthToItem:previousCell];
+        }else{
+            [cell sea_leftToSuperview];
+        }
+        
+        [cell sea_topToSuperview];
+        [cell sea_bottomToSuperview];
+        if(i == _items.count - 1){
+            [cell sea_rightToSuperview];
+        }
+        
+        
+        previousCell = cell;
     }
     
-    [self bringSubviewToFront:_shadowLine];
+    _shadowLine = [UIView new];
+    _shadowLine.backgroundColor = _shadowColor
+    _shadowLine.userInteractionEnabled = NO;
+    [self addSubview:_shadowLine];
+    
+    [_shadowLine sea_leftToSuperview];
+    [_shadowLine sea_rightToSuperview];
+    [_shadowLine sea_bottomToSuperview];
+    [_shadowLine sea_heightToSelf:SeaSeparatorHeight];
+}
+
+- (void)layoutSubviews
+{
+    [self layoutIndicator];
 }
 
 #pragma mark- public method
 
-///关闭下拉列表
 - (void)closeList
 {
     [self handleCancelTap:nil];
 }
 
-///取消选中
 - (void)deselectItem
 {
     [self setCellHighlight:NO forIndex:_selectedIndex];
     _selectedIndex = NSNotFound;
 }
 
-/**通过颜色获取按钮指示图标
- */
 - (UIImage*)iconWithColor:(UIColor*) color
 {
-    return [SeaDropDownMenuCell defaultIndicatorWithColor:color size:CGSizeMake(10.0, 7.0)];
+    return [SeaImageGenerator triangleWithColor:color size:CGSizeMake(10.0, 7.0)];
 }
 
-/**通过下标获取按钮
- */
 - (SeaDropDownMenuCell*)cellForIndex:(NSInteger) index
 {
     return (SeaDropDownMenuCell*)[self viewWithTag:index + SeaDropDownMenuCellStartTag];
 }
 
-/**设置标题
- */
 - (void)setTitle:(NSString*) title forIndex:(NSInteger) index
 {
     SeaDropDownMenuCell *cell = [self cellForIndex:index];
-    cell.titleLabel.text = title;
-    [cell setNeedsLayout];
+    [cell.button setTitle:title forState:UIControlStateNormal];
 }
 
-/**设置按钮高亮
- */
 - (void)setCellHighlight:(BOOL) highlight forIndex:(NSInteger) index
 {
     if(index >= 0 && index < self.items.count)
@@ -246,171 +259,129 @@
         SeaDropDownMenuItem *item = [self.items objectAtIndex:index];
         
         cell.backgroundColor = highlight ? item.highlightedBackgroundColor : [UIColor clearColor];
-        cell.imageView.highlighted = highlight;
-        
-        cell.titleLabel.textColor = highlight ? _buttonHighlightTitleColor : _buttonNormalTitleColor;
+        cell.button.selected = highlight;
     }
 }
 
-///刷新下划线的位置
-- (void)updateUnderlinePosition
+///调整下划线位置
+- (void)layoutIndicator
 {
-    if(_underLine)
-    {
-        if(self.selectedIndex != NSNotFound)
-        {
+    if(_indicator){
+        if(self.selectedIndex != NSNotFound){
             CGFloat margin = 5.0;
             SeaDropDownMenuCell *cell = [self cellForIndex:_selectedIndex];
             [cell layoutIfNeeded];
-            CGRect frame = _underLine.frame;
-            frame.origin.x = cell.titleLabel.left - margin + cell.left;
-            frame.size.width = cell.imageView.right + margin - cell.titleLabel.left;
             
             [UIView animateWithDuration:0.25 animations:^(void){
                 
-                _underLine.frame = frame;
+                _indicator.sea_leftLayoutConstraint.constant = cell.button.left - margin + cell.left;
+                _indicator.sea_widthLayoutConstraint.constant = cell.button.right + margin - cell.button.left;
+                [_indicator layoutIfNeeded];
             }];
             
-            _underLine.hidden = !cell.imageView.highlighted;
-        }
-        else
-        {
-            _underLine.hidden = YES;
+            _indicator.hidden = !cell.button.selected;
+        }else{
+            _indicator.hidden = YES;
         }
     }
 }
 
-#pragma mark- property setup
+#pragma mark- property
 
-/**按钮字体
- */
+
 - (void)setButtonTitleFont:(UIFont *)buttonTitleFont
 {
-    if(![_buttonTitleFont isEqualToFont:buttonTitleFont])
-    {
+    if(![_buttonTitleFont isEqualToFont:buttonTitleFont]){
         if(buttonTitleFont == nil)
             buttonTitleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
         
         _buttonTitleFont = buttonTitleFont;
-        for(NSInteger i = 0;i < _items.count;i ++)
-        {
+        for(NSInteger i = 0;i < _items.count;i ++){
             SeaDropDownMenuCell *cell = [self cellForIndex:i];
-            cell.titleLabel.font = _buttonTitleFont;
+            cell.button.titleLabel.font = _buttonTitleFont;
             [cell setNeedsLayout];
         }
     }
 }
 
-/**按钮字体颜色
- */
 - (void)setButtonNormalTitleColor:(UIColor *)buttonNormalTitleColor
 {
-    if(![_buttonNormalTitleColor isEqualToColor:buttonNormalTitleColor])
-    {
+    if(![_buttonNormalTitleColor isEqualToColor:buttonNormalTitleColor]){
         if(buttonNormalTitleColor == nil)
             buttonNormalTitleColor = [UIColor blackColor];
         _buttonNormalTitleColor = buttonNormalTitleColor;
         UIImage *icon = [self iconWithColor:_buttonNormalTitleColor];
         
-        for(NSInteger i = 0;i < _items.count;i ++)
-        {
+        for(NSInteger i = 0;i < _items.count;i ++){
             SeaDropDownMenuCell *cell = [self cellForIndex:i];
-            if(i != _selectedIndex)
-            {
-                cell.titleLabel.textColor = _buttonNormalTitleColor;
-            }
+            [cell.button setTitleColor:_buttonNormalTitleColor forState:UIControlStateNormal];
             
             SeaDropDownMenuItem *item = [_items objectAtIndex:i];
-            if(item.titleLists && item.normalImage == nil)
-            {
-                cell.imageView.image = icon;
+            if(item.titleLists && item.normalImage == nil){
+                [cell.button setImage:icon forState:UIControlStateNormal];
             }
         }
     }
 }
 
-/**按钮字体高亮颜色
- */
+
 - (void)setButtonHighlightTitleColor:(UIColor *)buttonHighlightTitleColor
 {
-    if(![_buttonHighlightTitleColor isEqualToColor:buttonHighlightTitleColor])
-    {
+    if(![_buttonHighlightTitleColor isEqualToColor:buttonHighlightTitleColor]){
         if(buttonHighlightTitleColor == nil)
             buttonHighlightTitleColor = SeaAppMainColor;
         _buttonHighlightTitleColor = buttonHighlightTitleColor;
         
-        SeaDropDownMenuCell *cell = [self cellForIndex:_selectedIndex];
-        cell.titleLabel.textColor = _buttonHighlightTitleColor;
         UIImage *icon = [self iconWithColor:_buttonHighlightTitleColor];
         
-        for(NSInteger i = 0;i < _items.count;i ++)
-        {
+        for(NSInteger i = 0;i < _items.count;i ++){
             SeaDropDownMenuCell *cell = [self cellForIndex:i];
-            if(i != _selectedIndex)
-            {
-                cell.titleLabel.textColor = _buttonNormalTitleColor;
-            }
+            [cell.button setTitleColor:_buttonHighlightTitleColor forState:UIControlStateSelected];
            
             SeaDropDownMenuItem *item = [_items objectAtIndex:i];
-            if(item.titleLists && item.highlightedImage1 == nil)
-            {
-                cell.imageView.highlightedImage = icon;
+            if(item.titleLists && item.highlightedImage1 == nil){
+                [cell.button setImage:icon forState:UIControlStateSelected];
             }
         }
     }
 }
 
-/**阴影颜色
- */
 - (void)setShadowColor:(UIColor *)shadowColor
 {
-    if(![_shadowColor isEqualToColor:shadowColor])
-    {
+    if(![_shadowColor isEqualToColor:shadowColor]){
         _shadowColor = shadowColor;
-        
-        if(!_shadowLine)
-        {
-            _shadowLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - SeaSeparatorHeight, self.width, SeaSeparatorHeight)];
-            _shadowLine.backgroundColor = [UIColor clearColor];
-            _shadowLine.userInteractionEnabled = NO;
-            [self addSubview:_shadowLine];
-        }
-        
         _shadowLine.backgroundColor = _shadowColor;
     }
 }
 
-/**是否需要高亮 default is 'YES'
- */
 - (void)setShouldHighlighted:(BOOL)shouldHighlighted
 {
-    if(_shouldHighlighted != shouldHighlighted)
-    {
+    if(_shouldHighlighted != shouldHighlighted){
         _shouldHighlighted = shouldHighlighted;
         [self setCellHighlight:_shouldHighlighted forIndex:_selectedIndex];
     }
 }
 
-/**是否需要显示高亮下划线 default is 'NO'
- */
-- (void)setShouldShowUnderline:(BOOL)shouldShowUnderline
+- (void)setShouldShowIndicator:(BOOL)shouldShowUnderline
 {
-    if(_shouldShowUnderline != shouldShowUnderline)
-    {
-        _shouldShowUnderline = shouldShowUnderline;
-        if(_shouldShowUnderline)
-        {
+    if(_shouldShowIndicator != shouldShowUnderline){
+        _shouldShowIndicator = shouldShowUnderline;
+        if(_shouldShowIndicator){
             CGFloat height = 2.0;
-            _underLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - height, 0, height)];
-            _underLine.backgroundColor = SeaAppMainColor;
-            _underLine.userInteractionEnabled = NO;
-            [self addSubview:_underLine];
-            [self updateUnderlinePosition];
-        }
-        else
-        {
-            [_underLine removeFromSuperview];
-            _underLine = nil;
+            _indicator = [UIView new];
+            _indicator.backgroundColor = SeaAppMainColor;
+            _indicator.userInteractionEnabled = NO;
+            [self addSubview:_indicator];
+            
+            [_indicator sea_heightToSelf:2.0];
+            [_indicator sea_widthToSelf:0];
+            [_indicator sea_bottomToSuperview];
+            [_indicator sea_leftToSuperview];
+            
+            [self layoutIndicator];
+        }else{
+            [_indicator removeFromSuperview];
+            _indicator = nil;
         }
     }
 }
@@ -526,7 +497,7 @@
         }
     }
     
-    [self updateUnderlinePosition];
+    [self layoutIndicator];
 }
 
 - (void)setIsAnimating:(BOOL)isAnimating
@@ -668,7 +639,52 @@
             }
         }
     }
-    [self updateUnderlinePosition];
+    [self layoutIndicator];
+}
+
+#pragma mark- UICollectionView delegate
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.items.count;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(collectionView.width / self.items.count, collectionView.height);
+}
+
+- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"SeaMenuBarItem";
+    SeaMenuBarItem *item = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    
+    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:indexPath.item];
+    [item.button setTitleColor:_selectedTextColor forState:UIControlStateSelected];
+    [item.button setTitleColor:_normalTextColor forState:UIControlStateNormal];
+    [item.button.titleLabel setFont:_selectedIndex == indexPath.item ? _selectedFont : _normalFont];
+    item.info = info;
+    item.tick = self.selectedIndex == indexPath.item;
+    item.separator.hidden = !self.showSeparator || indexPath.item == _itemInfos.count - 1 || _style == SeaMenuBarStyleFit;
+    
+    return item;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    
+    BOOL enable = YES;
+    
+    if([self.delegate respondsToSelector:@selector(menuBar:shouldSelectItemAtIndex:)]){
+        enable = [self.delegate menuBar:self shouldSelectItemAtIndex:indexPath.item];
+    }
+    
+    if(enable){
+        self.isTapItem = YES;
+        [self setSelectedIndex:indexPath.item animated:YES];
+        self.isTapItem = NO;
+    }
 }
 
 #pragma mark- UITableView delegate
@@ -692,7 +708,7 @@
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
         
-        cell.accessoryView = [[UIImageView alloc] initWithImage:self.indicatorImage];
+        cell.accessoryView = [[UIImageView alloc] initWithImage:self.listIndicatorImage];
         cell.accessoryView.contentMode = UIViewContentModeCenter;
     }
     

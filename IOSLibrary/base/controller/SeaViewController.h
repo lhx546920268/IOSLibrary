@@ -8,7 +8,9 @@
 
 @class SeaContainer;
 
-/**控制视图的基类
+/**
+ 控制视图的基类
+ @warning 如果你需要使用 xib，请继承 UIViewController
  */
 @interface SeaViewController : UIViewController
 
@@ -39,5 +41,7 @@
  @param height 视图高度，SeaWrapContent 为自适应
  */
 - (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
+
+- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
 @end
