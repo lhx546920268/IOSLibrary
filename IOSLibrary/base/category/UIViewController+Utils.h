@@ -207,6 +207,12 @@ SeaEmptyView;
  */
 - (void)sea_alerBadNetworkMsg:(NSString*) msg;
 
+#pragma mark- navigation
+
+/**
+ [self.navigationController pushViewController:viewController animated:YES]
+ */
+- (void)sea_pushViewController:(UIViewController*) viewController;
 
 #pragma mark- Class Method
 

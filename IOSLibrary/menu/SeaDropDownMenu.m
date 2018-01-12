@@ -17,14 +17,21 @@
 #import "UIView+SeaAutoLayout.h"
 #import "SeaImageGenerator.h"
 
+@interface SeaDropDownMenuItem()
+
+///当前显示的图标
+@property(nonatomic, strong) UIImage *currentImage;
+
+@end
+
 @implementation SeaDropDownMenuItem
 
 - (instancetype)init
 {
     self = [super init];
     if(self){
-        self.imagePadding = 5.0;
-        self.imagePosition = SeaButtonImagePositionRight;
+        self.iconPadding = 5.0;
+        self.iconPosition = SeaDropDownMenuIconPositionRight;
     }
     
     return self;
@@ -40,6 +47,33 @@
     return _title;
 }
 
+- (UIImage*)displayIconWithTick:(BOOL) tick
+{
+    if(tick){
+        if(self.highlightedImage2){
+            return self.highlightedImage1 == self.currentImage ? self.highlightedImage2 : self.highlightedImage1;
+        }else{
+            return self.highlightedImage1;
+        }
+    }else{
+        return self.normalImage;
+    }
+}
+
+@end
+
+@interface SeaDropDownMenuCell()
+
+///标题约束
+@property(nonatomic, strong) NSLayoutConstraint *titleRightToSuperConstraint;
+@property(nonatomic, strong) NSLayoutConstraint *titleLeftToSuperConstraint;
+@property(nonatomic, strong) NSLayoutConstraint *titleLeftToIconRightConstraint;
+
+///图标约束
+@property(nonatomic, strong) NSLayoutConstraint *iconLeftToSuperConstraint;
+@property(nonatomic, strong) NSLayoutConstraint *iconRightToSuperConstraint;
+@property(nonatomic, strong) NSLayoutConstraint *iconLeftToTitleRightConstraint;
+
 @end
 
 @implementation SeaDropDownMenuCell
@@ -50,31 +84,79 @@
     if(self){
         self.backgroundColor = [UIColor clearColor];
        
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
-        _button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _button.titleLabel.textAlignment = NSTextAlignmentCenter;
-        _button.userInteractionEnabled = NO;
-        [self.contentView addSubview:_button];
+        UIView *contentView = [UIView new];
+        [self.contentView addSubview:contentView];
+        
+        _titleLabel = [UILabel new];
+        [_titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [contentView addSubview:_titleLabel];
+        
+        _imageView = [UIImageView new];
+        [_imageView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [contentView addSubview:_imageView];
+        _ctView = contentView;
         
         _separator = [UIView new];
         _separator.userInteractionEnabled = NO;
         _separator.backgroundColor = SeaSeparatorColor;
         [self.contentView addSubview:_separator];
         
-        [_button sea_insetsInSuperview:UIEdgeInsetsZero];
-        
         [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorHeight, 15.0)];
         [_separator sea_rightToSuperview];
         [_separator sea_centerInSuperview];
+        
+        [contentView sea_centerXInSuperview];
+        [contentView sea_topToSuperview];
+        [contentView sea_bottomToSuperview];
+        contentView.sea_alb.leftToSuperview.greaterThanOrEqual.margin(8).build();
+        contentView.sea_alb.rightToSuperview.greaterThanOrEqual.margin(8).build();
+        
+        self.titleLeftToSuperConstraint = _titleLabel.sea_alb.leftToSuperview.build();
+        [_titleLabel sea_centerYInSuperview];
+
+        [_imageView sea_centerYInSuperview];
+        self.iconRightToSuperConstraint = [_imageView sea_rightToSuperview];
+        self.iconLeftToTitleRightConstraint = _imageView.sea_alb.leftToRight(_titleLabel).build();
+        
+        self.iconPadding = 5.0;
     }
     
     return self;
 }
 
-@end
+- (void)setIconPosition:(SeaDropDownMenuIconPosition)iconPosition
+{
+    if(_iconPosition != iconPosition){
+        _iconPosition = iconPosition;
+        
+        BOOL left = _iconPosition == SeaDropDownMenuIconPositionLeft;
+        if(!self.iconLeftToSuperConstraint){
+            self.iconLeftToSuperConstraint = [_imageView sea_leftToSuperview];
+            self.titleRightToSuperConstraint = [_titleLabel sea_rightToSuperview];
+            self.titleLeftToIconRightConstraint = [_titleLabel sea_leftToItemRight:_imageView margin:_iconPadding];
+        }
+        
+        self.titleLeftToSuperConstraint.active = !left;
+        self.iconLeftToTitleRightConstraint.active = !left;
+        self.iconRightToSuperConstraint.active = !left;
+        
+        self.iconLeftToSuperConstraint.active = left;
+        self.titleLeftToIconRightConstraint.active = left;
+        self.titleRightToSuperConstraint.active = left;
+    }
+}
 
-//cell起始tag
-#define SeaDropDownMenuCellStartTag 3402
+- (void)setIconPadding:(CGFloat)iconPadding
+{
+    if(_iconPadding != iconPadding){
+        _iconPadding = iconPadding;
+        
+        self.titleLeftToIconRightConstraint.constant = _iconPadding;
+        self.iconLeftToTitleRightConstraint.constant = _iconPadding;
+    }
+}
+
+@end
 
 @interface SeaDropDownMenu ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
 
@@ -101,6 +183,17 @@
  默认三角形 高亮
  */
 @property(nonatomic, strong) UIImage *highlightedIcon;
+
+/**
+ 是否已经可以计算item
+ */
+@property(nonatomic,assign) BOOL mesureEnable;
+
+/**
+ 内容宽度
+ */
+@property(nonatomic,readonly) CGFloat contentWidth;
+
 
 @end
 
@@ -131,6 +224,8 @@
     _keepHighlightWhenDismissList = YES;
     _shouldHighlighted = YES;
     _shouldShowIndicator = NO;
+    _indicatorHeight = 2.0;
+    _indicatorColor = SeaAppMainColor;
     _buttonTitleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
     _buttonNormalTitleColor = [UIColor blackColor];
     _buttonHighlightTitleColor = SeaAppMainColor;
@@ -158,54 +253,10 @@
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-   
-    
-    CGFloat width = self.width / _items.count;
-    SeaDropDownMenuCell *previousCell = nil;
-    for(NSInteger i = 0; i < _items.count;i ++){
-        SeaDropDownMenuItem *item = [_items objectAtIndex:i];
-        item.itemIndex = i;
-        SeaDropDownMenuCell *cell = [[SeaDropDownMenuCell alloc] initWithFrame:CGRectMake(i * width, 0, width, self.height)];
-        cell.button.titleLabel.font = _buttonTitleFont;
-        [cell.button setTitleColor:_buttonNormalTitleColor forState:UIControlStateNormal];
-        [cell.button setTitleColor:_buttonHighlightTitleColor forState:UIControlStateSelected];
-        [cell.button setTitle:item.title forState:UIControlStateNormal];
-        cell.separator.hidden = i == _items.count - 1;
-        
-        if(item.titleLists != nil){
-            [cell.button setImage:item.normalImage == nil ? icon : item.normalImage forState:UIControlStateNormal];
-             [cell.button setImage:item.highlightedImage1 == nil ? highlightIcon : item.highlightedImage1 forState:UIControlStateSelected];
-        }else{
-            [cell.button setImage:item.normalImage forState:UIControlStateNormal];
-            [cell.button setImage:item.highlightedImage1 forState:UIControlStateSelected];
-        }
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [cell addGestureRecognizer:tap];
-        
-        cell.tag = i + SeaDropDownMenuCellStartTag;
-        
-        [self addSubview:cell];
-        
-        if(previousCell){
-            [cell sea_leftToItemRight:previousCell];
-            [cell sea_widthToItem:previousCell];
-        }else{
-            [cell sea_leftToSuperview];
-        }
-        
-        [cell sea_topToSuperview];
-        [cell sea_bottomToSuperview];
-        if(i == _items.count - 1){
-            [cell sea_rightToSuperview];
-        }
-        
-        
-        previousCell = cell;
-    }
+    [collectionView sea_insetsInSuperview:UIEdgeInsetsZero];
     
     _shadowLine = [UIView new];
-    _shadowLine.backgroundColor = _shadowColor
+    _shadowLine.backgroundColor = _shadowColor;
     _shadowLine.userInteractionEnabled = NO;
     [self addSubview:_shadowLine];
     
@@ -217,8 +268,17 @@
 
 - (void)layoutSubviews
 {
-    [self layoutIndicator];
+    self.mesureEnable = YES;
+    [self layoutIndicatorAnimate:NO];
+    [self.collectionView reloadData];
 }
+
+///内容宽度
+- (CGFloat)contentWidth
+{
+    return self.collectionView.width;
+}
+
 
 #pragma mark- public method
 
@@ -229,8 +289,11 @@
 
 - (void)deselectItem
 {
-    [self setCellHighlight:NO forIndex:_selectedIndex];
-    _selectedIndex = NSNotFound;
+    if(_selectedIndex < self.items.count){
+        NSUInteger selectedIndex = _selectedIndex;
+        _selectedIndex = NSNotFound;
+        [self reloadItemAtIndex:selectedIndex];
+    }
 }
 
 - (UIImage*)iconWithColor:(UIColor*) color
@@ -238,48 +301,54 @@
     return [SeaImageGenerator triangleWithColor:color size:CGSizeMake(10.0, 7.0)];
 }
 
-- (SeaDropDownMenuCell*)cellForIndex:(NSInteger) index
+- (SeaDropDownMenuCell*)cellForIndex:(NSUInteger) index
 {
-    return (SeaDropDownMenuCell*)[self viewWithTag:index + SeaDropDownMenuCellStartTag];
+    return (SeaDropDownMenuCell*)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
 }
 
-- (void)setTitle:(NSString*) title forIndex:(NSInteger) index
+- (void)setTitle:(NSString*) title forIndex:(NSUInteger) index
 {
-    SeaDropDownMenuCell *cell = [self cellForIndex:index];
-    [cell.button setTitle:title forState:UIControlStateNormal];
+    if(index >= self.items.count)
+        return;
+    SeaDropDownMenuItem *item = [self.items objectAtIndex:index];
+    item.title = title;
+    [self reloadItemAtIndex:index];
 }
 
-- (void)setCellHighlight:(BOOL) highlight forIndex:(NSInteger) index
+- (void)reloadItemAtIndex:(NSUInteger) index
 {
-    if(index >= 0 && index < self.items.count)
-    {
-        highlight = highlight && _shouldHighlighted;
-        
-        SeaDropDownMenuCell *cell = [self cellForIndex:index];
-        SeaDropDownMenuItem *item = [self.items objectAtIndex:index];
-        
-        cell.backgroundColor = highlight ? item.highlightedBackgroundColor : [UIColor clearColor];
-        cell.button.selected = highlight;
+    if(index < self.items.count){
+        [UIView setAnimationsEnabled:NO];
+        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+        [UIView setAnimationsEnabled:YES];
     }
 }
 
 ///调整下划线位置
-- (void)layoutIndicator
+- (void)layoutIndicatorAnimate:(BOOL) animate
 {
+    if(!self.mesureEnable)
+        return;
     if(_indicator){
         if(self.selectedIndex != NSNotFound){
             CGFloat margin = 5.0;
             SeaDropDownMenuCell *cell = [self cellForIndex:_selectedIndex];
             [cell layoutIfNeeded];
+            CGRect frame = self.indicator.frame;
+            frame.origin.x = self.contentWidth / self.items.count * _selectedIndex + cell.ctView.left - margin;
+            frame.origin.y = self.height - _indicatorHeight;
+            frame.size.height = _indicatorHeight;
+            frame.size.width = cell.ctView.width + margin * 2;
             
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                _indicator.sea_leftLayoutConstraint.constant = cell.button.left - margin + cell.left;
-                _indicator.sea_widthLayoutConstraint.constant = cell.button.right + margin - cell.button.left;
-                [_indicator layoutIfNeeded];
-            }];
-            
-            _indicator.hidden = !cell.button.selected;
+            if(animate && !CGRectEqualToRect(_indicator.frame, CGRectZero)){
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    
+                    _indicator.frame = frame;
+                }];
+            }else{
+                _indicator.frame = frame;
+            }
+            _indicator.hidden = !self.shouldHighlighted;
         }else{
             _indicator.hidden = YES;
         }
@@ -288,7 +357,6 @@
 
 #pragma mark- property
 
-
 - (void)setButtonTitleFont:(UIFont *)buttonTitleFont
 {
     if(![_buttonTitleFont isEqualToFont:buttonTitleFont]){
@@ -296,11 +364,7 @@
             buttonTitleFont = [UIFont fontWithName:SeaMainFontName size:15.0];
         
         _buttonTitleFont = buttonTitleFont;
-        for(NSInteger i = 0;i < _items.count;i ++){
-            SeaDropDownMenuCell *cell = [self cellForIndex:i];
-            cell.button.titleLabel.font = _buttonTitleFont;
-            [cell setNeedsLayout];
-        }
+        [self.collectionView reloadData];
     }
 }
 
@@ -310,20 +374,11 @@
         if(buttonNormalTitleColor == nil)
             buttonNormalTitleColor = [UIColor blackColor];
         _buttonNormalTitleColor = buttonNormalTitleColor;
-        UIImage *icon = [self iconWithColor:_buttonNormalTitleColor];
         
-        for(NSInteger i = 0;i < _items.count;i ++){
-            SeaDropDownMenuCell *cell = [self cellForIndex:i];
-            [cell.button setTitleColor:_buttonNormalTitleColor forState:UIControlStateNormal];
-            
-            SeaDropDownMenuItem *item = [_items objectAtIndex:i];
-            if(item.titleLists && item.normalImage == nil){
-                [cell.button setImage:icon forState:UIControlStateNormal];
-            }
-        }
+        self.icon = [self iconWithColor:_buttonNormalTitleColor];
+        [self.collectionView reloadData];
     }
 }
-
 
 - (void)setButtonHighlightTitleColor:(UIColor *)buttonHighlightTitleColor
 {
@@ -332,17 +387,8 @@
             buttonHighlightTitleColor = SeaAppMainColor;
         _buttonHighlightTitleColor = buttonHighlightTitleColor;
         
-        UIImage *icon = [self iconWithColor:_buttonHighlightTitleColor];
-        
-        for(NSInteger i = 0;i < _items.count;i ++){
-            SeaDropDownMenuCell *cell = [self cellForIndex:i];
-            [cell.button setTitleColor:_buttonHighlightTitleColor forState:UIControlStateSelected];
-           
-            SeaDropDownMenuItem *item = [_items objectAtIndex:i];
-            if(item.titleLists && item.highlightedImage1 == nil){
-                [cell.button setImage:icon forState:UIControlStateSelected];
-            }
-        }
+        self.highlightedIcon = [self iconWithColor:_buttonHighlightTitleColor];
+        [self.collectionView reloadData];
     }
 }
 
@@ -358,7 +404,7 @@
 {
     if(_shouldHighlighted != shouldHighlighted){
         _shouldHighlighted = shouldHighlighted;
-        [self setCellHighlight:_shouldHighlighted forIndex:_selectedIndex];
+        [self reloadItemAtIndex:_selectedIndex];
     }
 }
 
@@ -367,18 +413,13 @@
     if(_shouldShowIndicator != shouldShowUnderline){
         _shouldShowIndicator = shouldShowUnderline;
         if(_shouldShowIndicator){
-            CGFloat height = 2.0;
             _indicator = [UIView new];
             _indicator.backgroundColor = SeaAppMainColor;
             _indicator.userInteractionEnabled = NO;
+            _indicator.hidden = YES;
             [self addSubview:_indicator];
             
-            [_indicator sea_heightToSelf:2.0];
-            [_indicator sea_widthToSelf:0];
-            [_indicator sea_bottomToSuperview];
-            [_indicator sea_leftToSuperview];
-            
-            [self layoutIndicator];
+            [self layoutIndicatorAnimate:NO];
         }else{
             [_indicator removeFromSuperview];
             _indicator = nil;
@@ -386,118 +427,91 @@
     }
 }
 
-#pragma mark- 选中
-
-//点击菜单按钮
-- (void)handleTap:(UITapGestureRecognizer*) tap
+- (void)setIndicatorHeight:(CGFloat)indicatorHeight
 {
-    NSInteger index = tap.view.tag - SeaDropDownMenuCellStartTag;
-    self.selectedIndex = index;
+    if(_indicatorHeight != indicatorHeight){
+        _indicatorHeight = indicatorHeight;
+        _indicator.height = _indicatorHeight;
+    }
 }
 
-//改变选中
-- (void)setSelectedIndex:(NSInteger)selectedIndex
+- (void)setIndicatorColor:(UIColor *)indicatorColor
 {
-    if(selectedIndex < 0)
-        selectedIndex = 0;
+    if(![_indicatorColor isEqualToColor:indicatorColor]){
+        _indicatorColor = indicatorColor;
+        _indicator.backgroundColor = _indicatorColor;
+    }
+}
+
+#pragma mark- 选中
+
+//改变选中
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
     if(selectedIndex > _items.count - 1)
         selectedIndex = _items.count - 1;
     
-    if(_selectedIndex != selectedIndex)
-    {
-
+    if(_selectedIndex != selectedIndex){
         SeaDropDownMenuItem *item = [_items objectAtIndex:selectedIndex];
 
         ///判断是否可以点击
         BOOL enable = YES;
-        if([self.delegate respondsToSelector:@selector(dropDownMenu:shouldSelectItem:)])
-        {
+        if([self.delegate respondsToSelector:@selector(dropDownMenu:shouldSelectItem:)]){
             enable = [self.delegate dropDownMenu:self shouldSelectItem:item];
         }
 
         if(!enable)
             return;
 
-        [self setCellHighlight:NO forIndex:_selectedIndex];
+        NSUInteger oldIndex = _selectedIndex;
         _selectedIndex = selectedIndex;
-        [self setCellHighlight:YES forIndex:_selectedIndex];
-
         
-        if([self.delegate respondsToSelector:@selector(dropDownMenu:didSelectItem:)])
-        {
+        [self reloadItemAtIndex:oldIndex];
+        [self reloadItemAtIndex:_selectedIndex];
+
+        if([self.delegate respondsToSelector:@selector(dropDownMenu:didSelectItem:)]){
             [self.delegate dropDownMenu:self didSelectItem:item];
         }
         
-        
         //显示下拉菜单
-        if(item.titleLists.count > 0)
-        {
+        if(item.titleLists.count > 0){
             BOOL show = NO;
-            if([self.delegate respondsToSelector:@selector(dropDownMenu:shouldShowListInItem:)])
-            {
+            if([self.delegate respondsToSelector:@selector(dropDownMenu:shouldShowListInItem:)]){
                 show = [self.delegate dropDownMenu:self shouldShowListInItem:item];
             }
-            if(show)
-            {
+            
+            if(show){
                 [self showList];
-            }
-            else
-            {
+            }else{
                 [self dismissList];
             }
-        }
-        else
-        {
+        }else{
             [self dismissList];
         }
-    }
-    else
-    {
+    }else{
         SeaDropDownMenuItem *item = [_items objectAtIndex:_selectedIndex];
-        if(item.titleLists.count > 0)
-        {
+        if(item.titleLists.count > 0){
             //判断下拉的菜单是否已显示
-            if(self.tableView.superview != nil)
-            {
+            if(self.tableView.superview != nil){
                 [self handleCancelTap:nil];
-            }
-            else
-            {
+            }else{
                 [self showList];
             }
-        }
-        else
-        {
+        }else{
             ///两个高亮图片来回切换
-            if(item.highlightedImage2)
-            {
-                SeaDropDownMenuCell *cell = [self cellForIndex:_selectedIndex];
-
-                cell.imageView.highlighted = NO;
-                if([cell.imageView.highlightedImage isEqual:item.highlightedImage1])
-                {
-                    cell.imageView.highlightedImage = item.highlightedImage2;
-                }
-                else
-                {
-                    cell.imageView.highlightedImage = item.highlightedImage1;
-                }
-
-                cell.imageView.highlighted = YES && _shouldHighlighted;
-
-                if([self.delegate respondsToSelector:@selector(dropDownMenu:didSelectItem:)])
-                {
+            if(item.highlightedImage2){
+                
+                [self reloadItemAtIndex:_selectedIndex];
+                if([self.delegate respondsToSelector:@selector(dropDownMenu:didSelectItem:)]){
                     [self.delegate dropDownMenu:self didSelectItem:item];
                 }
-            }
-            else
-            {
+            }else{
                 [self handleCancelTap:nil];
             }
         }
     }
     
-    [self layoutIndicator];
+    [self layoutIndicatorAnimate:YES];
 }
 
 - (void)setIsAnimating:(BOOL)isAnimating
@@ -534,8 +548,7 @@
 {
     _listShowing = YES;
     
-    if(!self.tableView)
-    {
+    if(!self.tableView){
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -553,19 +566,15 @@
     
     SeaDropDownMenuItem *item = [_items objectAtIndex:_selectedIndex];
     
-    if(item.highlightedBackgroundColor != nil)
-    {
+    if(item.highlightedBackgroundColor != nil){
         self.tableView.backgroundColor = item.highlightedBackgroundColor;
-    }
-    else
-    {
+    }else{
         self.tableView.backgroundColor = [UIColor whiteColor];
     }
     [self.tableView reloadData];
     
     self.isAnimating = YES;
-    if(self.tableView.superview != nil)
-    {
+    if(self.tableView.superview != nil){
         [UIView animateWithDuration:0.25 animations:^(void){
             
             self.tableView.height = MIN(_tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - _tableView.top : self.listMaxHeight);
@@ -575,20 +584,16 @@
             self.isAnimating = NO;
             self.tableView.scrollEnabled = self.tableView.contentSize.height > self.tableView.height;
         }];
-    }
-    else
-    {
+    }else{
         UIView *superview = self.listSuperview;
         _tableView.top = 0;
         
         CGFloat y = self.bottom;
-        if([self.delegate respondsToSelector:@selector(YAsixAtListInDropDwonMenu:)])
-        {
+        if([self.delegate respondsToSelector:@selector(YAsixAtListInDropDwonMenu:)]){
             y = [self.delegate YAsixAtListInDropDwonMenu:self];
         }
         
-        if(superview == nil)
-        {
+        if(superview == nil){
             superview = self.superview;
         }
         
@@ -639,13 +644,17 @@
             }
         }
     }
-    [self layoutIndicator];
+    [self layoutIndicatorAnimate:NO];
 }
+
 
 #pragma mark- UICollectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if(!self.mesureEnable){
+        return 0;
+    }
     return self.items.count;
 }
 
@@ -654,37 +663,39 @@
     return CGSizeMake(collectionView.width / self.items.count, collectionView.height);
 }
 
-- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (__kindof UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"SeaMenuBarItem";
-    SeaMenuBarItem *item = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    static NSString *cellIdentifier = @"SeaDropDownMenuCell";
+    SeaDropDownMenuCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:indexPath.item];
-    [item.button setTitleColor:_selectedTextColor forState:UIControlStateSelected];
-    [item.button setTitleColor:_normalTextColor forState:UIControlStateNormal];
-    [item.button.titleLabel setFont:_selectedIndex == indexPath.item ? _selectedFont : _normalFont];
-    item.info = info;
-    item.tick = self.selectedIndex == indexPath.item;
-    item.separator.hidden = !self.showSeparator || indexPath.item == _itemInfos.count - 1 || _style == SeaMenuBarStyleFit;
+    SeaDropDownMenuItem *item = [_items objectAtIndex:indexPath.item];
+    item.itemIndex = indexPath.item;
+   
+    BOOL tick = indexPath.item == _selectedIndex;
+    cell.titleLabel.font = _buttonTitleFont;
+    cell.titleLabel.textColor = tick ? _buttonHighlightTitleColor : _buttonNormalTitleColor;
+    cell.titleLabel.text = item.title;
+    cell.separator.hidden = indexPath.item == _items.count - 1;
     
-    return item;
+    UIImage *icon = [item displayIconWithTick:tick];
+    if(item.titleLists && !icon){
+        icon = tick ? self.highlightedIcon : self.icon;
+    }
+    
+    cell.imageView.image = icon;
+    item.currentImage = icon;
+    
+    cell.iconPosition = item.iconPosition;
+    cell.iconPadding = item.iconPadding;
+    cell.contentView.backgroundColor = indexPath.item == self.selectedIndex ? item.highlightedBackgroundColor : [UIColor clearColor];
+    
+    return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
-    
-    BOOL enable = YES;
-    
-    if([self.delegate respondsToSelector:@selector(menuBar:shouldSelectItemAtIndex:)]){
-        enable = [self.delegate menuBar:self shouldSelectItemAtIndex:indexPath.item];
-    }
-    
-    if(enable){
-        self.isTapItem = YES;
-        [self setSelectedIndex:indexPath.item animated:YES];
-        self.isTapItem = NO;
-    }
+    self.selectedIndex = indexPath.item;
 }
 
 #pragma mark- UITableView delegate
@@ -719,12 +730,9 @@
     cell.textLabel.text = [item.titleLists objectAtIndex:indexPath.row];
     cell.imageView.image = [item.iconLists sea_objectAtIndex:indexPath.row];
     
-    if(item.selectedIndex == indexPath.row)
-    {
+    if(item.selectedIndex == indexPath.row){
         cell.textLabel.textColor = _listHighLightColor;
-    }
-    else
-    {
+    }else{
         cell.textLabel.textColor = _listNormalTitleColor;
     }
     
@@ -738,8 +746,7 @@
     SeaDropDownMenuItem *item = [_items objectAtIndex:_selectedIndex];
     item.selectedIndex = indexPath.row;
     
-    if([self.delegate respondsToSelector:@selector(dropDownMenu:didSelectItemWithSecondMenu:)])
-    {
+    if([self.delegate respondsToSelector:@selector(dropDownMenu:didSelectItemWithSecondMenu:)]){
         [self.delegate dropDownMenu:self didSelectItemWithSecondMenu:item];
     }
     
@@ -757,8 +764,7 @@
 {
     CGPoint point = [gestureRecognizer locationInView:_listBackgroundView];
     point.y += _listBackgroundView.top;
-    if(CGRectContainsPoint(_tableView.frame, point))
-    {
+    if(CGRectContainsPoint(_tableView.frame, point)){
         return NO;
     }
     

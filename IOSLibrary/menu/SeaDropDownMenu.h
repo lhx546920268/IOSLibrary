@@ -7,10 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIButton+Utils.h"
 
 //下拉菜单高度
 static const CGFloat SeaDropDownMenuHeight = 40.0;
+
+///下拉菜单按钮图标位置
+typedef NS_ENUM(NSInteger, SeaDropDownMenuIconPosition){
+    
+    ///右边
+    SeaDropDownMenuIconPositionRight = 0,
+    
+    ///左边
+    SeaDropDownMenuIconPositionLeft = 1,
+};
 
 /**
  下拉菜单按钮信息
@@ -68,12 +77,19 @@ static const CGFloat SeaDropDownMenuHeight = 40.0;
 /**
  图标位置 default is 'SeaButtonImagePositionRight'
  */
-@property(nonatomic, assign) SeaButtonImagePosition imagePosition;
+@property(nonatomic, assign) SeaDropDownMenuIconPosition iconPosition;
 
 /**
  图标和标题的间隔 default is '5.0'
  */
-@property(nonatomic,assign) CGFloat imagePadding;
+@property(nonatomic,assign) CGFloat iconPadding;
+
+/**
+ 获取显示的图标
+ 
+ @param tick 是否选中
+ */
+- (UIImage*)displayIconWithTick:(BOOL) tick;
 
 @end
 
@@ -84,14 +100,34 @@ static const CGFloat SeaDropDownMenuHeight = 40.0;
 @interface SeaDropDownMenuCell : UICollectionViewCell
 
 /**
- 按钮
+ 标题
  */
-@property(nonatomic,readonly) UIButton *button;
+@property(nonatomic,readonly) UILabel *titleLabel;
+
+/**
+ 图标
+ */
+@property(nonatomic,readonly) UIImageView *imageView;
 
 /**
  分割线
  */
 @property(nonatomic,readonly) UIView *separator;
+
+/**
+ 图标位置
+ */
+@property(nonatomic,assign) SeaDropDownMenuIconPosition iconPosition;
+
+/**
+ 图标和标题的间隔 default is '5.0'
+ */
+@property(nonatomic,assign) CGFloat iconPadding;
+
+/**
+ 内容视图
+ */
+@property(nonatomic,readonly) UIView *ctView;
 
 @end
 
@@ -186,7 +222,7 @@ static const CGFloat SeaDropDownMenuHeight = 40.0;
 /**
  选中的按钮 default is 'NSNotFound'
  */
-@property(nonatomic,assign) NSInteger selectedIndex;
+@property(nonatomic,assign) NSUInteger selectedIndex;
 
 /**
  当下拉列表消失时是否需要保持选中状态 default is 'YES'
@@ -202,6 +238,16 @@ static const CGFloat SeaDropDownMenuHeight = 40.0;
  高亮下划线 当 shouldShowUnderline = NO时为nil
  */
 @property(nonatomic,readonly) UIView *indicator;
+
+/**
+ 按钮选中下划线高度 default is '2.0'
+ */
+@property(nonatomic,assign) CGFloat indicatorHeight;
+
+/**
+ 按钮选中下划线颜色 default is 'SeaAppMainColor'
+ */
+@property(nonatomic,strong) UIColor *indicatorColor;
 
 /**
  下拉列表的最大高度，default is 列表父视图的高度
@@ -254,12 +300,17 @@ static const CGFloat SeaDropDownMenuHeight = 40.0;
 /**
  通过下标获取按钮
  */
-- (SeaDropDownMenuCell*)cellForIndex:(NSInteger) index;
+- (SeaDropDownMenuCell*)cellForIndex:(NSUInteger) index;
 
 /**
  设置标题
  */
-- (void)setTitle:(NSString*) title forIndex:(NSInteger) index;
+- (void)setTitle:(NSString*) title forIndex:(NSUInteger) index;
+
+/**
+ 刷新item
+ */
+- (void)reloadItemAtIndex:(NSUInteger) index;
 
 /**
  取消选中

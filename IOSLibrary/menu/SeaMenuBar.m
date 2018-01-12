@@ -43,7 +43,7 @@
 /**
  内容宽度
  */
-@property(nonatomic,assign) CGFloat contentWidth;
+@property(nonatomic,readonly) CGFloat contentWidth;
 
 /**
  是否自动检测菜单样式 default is 'YES'
@@ -209,6 +209,9 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if(!self.mesureEnable){
+        return 0;
+    }
     return _itemInfos.count;
 }
 
@@ -400,7 +403,7 @@
 {
     if(_indicatorHeight != indicatorHeight){
         _indicatorHeight = indicatorHeight;
-        _indicator.sea_heightLayoutConstraint.constant = _indicatorHeight;
+        _indicator.height = _indicatorHeight;
     }
 }
 

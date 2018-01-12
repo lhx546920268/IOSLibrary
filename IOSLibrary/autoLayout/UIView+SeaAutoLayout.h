@@ -542,7 +542,7 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
 /**
  自动布局 构造器
  */
-@property(nonatomic, readonly) SeaAutoLayoutBuilder *sea_autoLayoutBuilder;
+@property(nonatomic, readonly) SeaAutoLayoutBuilder *sea_alb;
 
 #pragma mark- 获取约束 constraint
 

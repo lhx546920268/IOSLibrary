@@ -88,7 +88,7 @@
  */
 - (NSLayoutConstraint*)sea_centerXInItem:(id) item offset:(CGFloat) offset
 {
-    return self.sea_autoLayoutBuilder.centerX(item).margin(offset).build();
+    return self.sea_alb.centerX(item).margin(offset).build();
 }
 
 
@@ -129,7 +129,7 @@
  */
 - (NSLayoutConstraint*)sea_centerYInItem:(id) item offset:(CGFloat) offset
 {
-    return self.sea_autoLayoutBuilder.centerY(item).margin(offset).build();
+    return self.sea_alb.centerY(item).margin(offset).build();
 }
 
 /**
@@ -139,7 +139,7 @@
  */
 - (NSLayoutConstraint*)sea_centerXInItemLeft:(id) item
 {
-    return self.sea_autoLayoutBuilder.centerXToLeft(item).build();
+    return self.sea_alb.centerXToLeft(item).build();
 }
 
 /**
@@ -149,7 +149,7 @@
  */
 - (NSLayoutConstraint*)sea_centerXInItemRight:(id) item
 {
-    return self.sea_autoLayoutBuilder.centerXToRight(item).build();
+    return self.sea_alb.centerXToRight(item).build();
 }
 
 /**
@@ -159,7 +159,7 @@
  */
 - (NSLayoutConstraint*)sea_centerYInItemTop:(id) item
 {
-    return self.sea_autoLayoutBuilder.centerYToTop(item).build();
+    return self.sea_alb.centerYToTop(item).build();
 }
 
 /**
@@ -169,7 +169,7 @@
  */
 - (NSLayoutConstraint*)sea_centerYInItemBottom:(id) item
 {
-    return self.sea_autoLayoutBuilder.centerYToBottom(item).build();
+    return self.sea_alb.centerYToBottom(item).build();
 }
 
 #pragma mark- insets
@@ -251,7 +251,7 @@
  */
 - (NSLayoutConstraint*)sea_topToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.top(item).margin(margin).relation(relation).build();
+    return self.sea_alb.top(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -284,7 +284,7 @@
  */
 - (NSLayoutConstraint*)sea_topToItemBottom:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.topToBottom(item).margin(margin).relation(relation).build();
+    return self.sea_alb.topToBottom(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -294,7 +294,7 @@
  */
 - (NSLayoutConstraint*)sea_topToItemCenterY:(id) item
 {
-    return self.sea_autoLayoutBuilder.topToCenterY(item).build();
+    return self.sea_alb.topToCenterY(item).build();
 }
 
 #pragma mark- left
@@ -348,7 +348,7 @@
  */
 - (NSLayoutConstraint*)sea_leftToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.left(item).margin(margin).relation(relation).build();
+    return self.sea_alb.left(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -381,12 +381,12 @@
  */
 - (NSLayoutConstraint*)sea_leftToItemRight:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.leftToRight(item).margin(margin).relation(relation).build();
+    return self.sea_alb.leftToRight(item).margin(margin).relation(relation).build();
 }
 
 - (NSLayoutConstraint*)sea_leftToItemCenterX:(id) item
 {
-    return self.sea_autoLayoutBuilder.leftToCenterX(item).build();
+    return self.sea_alb.leftToCenterX(item).build();
 }
 
 #pragma mark- bottom
@@ -440,7 +440,7 @@
  */
 - (NSLayoutConstraint*)sea_bottomToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.bottom(item).margin(margin).relation(relation).build();
+    return self.sea_alb.bottom(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -473,12 +473,12 @@
  */
 - (NSLayoutConstraint*)sea_bottomToItemTop:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.bottomToTop(item).margin(margin).relation(relation).build();
+    return self.sea_alb.bottomToTop(item).margin(margin).relation(relation).build();
 }
 
 - (NSLayoutConstraint*)sea_bottomToItemCenterY:(id) item
 {
-    return self.sea_autoLayoutBuilder.bottomToCenterY(item).build();
+    return self.sea_alb.bottomToCenterY(item).build();
 }
 
 #pragma mark- right
@@ -532,7 +532,7 @@
  */
 - (NSLayoutConstraint*)sea_rightToItem:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.right(item).margin(margin).relation(relation).build();
+    return self.sea_alb.right(item).margin(margin).relation(relation).build();
 }
 
 /**
@@ -565,12 +565,12 @@
  */
 - (NSLayoutConstraint*)sea_rightToItemLeft:(id) item margin:(CGFloat) margin relation:(NSLayoutRelation) relation
 {
-    return self.sea_autoLayoutBuilder.rightToLeft(item).margin(margin).relation(relation).build();
+    return self.sea_alb.rightToLeft(item).margin(margin).relation(relation).build();
 }
 
 - (NSLayoutConstraint*)sea_rightToItemCenterX:(id) item
 {
-    return self.sea_autoLayoutBuilder.rightToCenterX(item).build();
+    return self.sea_alb.rightToCenterX(item).build();
 }
 
 #pragma mark- size
@@ -678,7 +678,7 @@
  */
 - (NSLayoutConstraint*)sea_widthToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
-    return self.sea_autoLayoutBuilder.widthTo(item).margin(constant).multiplier(multiplier).build();
+    return self.sea_alb.widthTo(item).margin(constant).multiplier(multiplier).build();
 }
 
 /**
@@ -690,7 +690,7 @@
  */
 - (NSLayoutConstraint*)sea_heightToItem:(id) item multiplier:(CGFloat) multiplier constant:(CGFloat) constant
 {
-    return self.sea_autoLayoutBuilder.heightTo(item).margin(constant).multiplier(multiplier).build();
+    return self.sea_alb.heightTo(item).margin(constant).multiplier(multiplier).build();
 }
 
 /**
@@ -700,7 +700,7 @@
  */
 - (NSLayoutConstraint*)sea_aspectRatio:(CGFloat) ratio
 {
-    return self.sea_autoLayoutBuilder.aspectRatio(ratio).build();
+    return self.sea_alb.aspectRatio(ratio).build();
 }
 
 /**
@@ -708,7 +708,7 @@
  
  @return 自动布局 构造器
  */
-- (SeaAutoLayoutBuilder*)sea_autoLayoutBuilder
+- (SeaAutoLayoutBuilder*)sea_alb
 {
     return [SeaAutoLayoutBuilder builderWithView:self];
 }

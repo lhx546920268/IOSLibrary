@@ -452,16 +452,19 @@
 
 - (SeaAutoLayoutBuilder*)priorityRequired
 {
-    return self.priority(UILayoutPriorityRequired);
+    self.sea_priority = UILayoutPriorityRequired;
+    return self;
 }
 - (SeaAutoLayoutBuilder*)priorityHigh
 {
-    return self.priority(UILayoutPriorityDefaultHigh);
+    self.sea_priority = UILayoutPriorityDefaultHigh;
+    return self;
 }
 
 - (SeaAutoLayoutBuilder*)priorityLow
 {
-    return self.priority(UILayoutPriorityRequired);
+    self.sea_priority = UILayoutPriorityDefaultLow;
+    return self;
 }
 
 /**
@@ -539,12 +542,20 @@
     return ^(void){
         
         [self adjustAutoLayout];
+        id item1 = self.sea_item1;
+        id item2 = [self fitItem:self.sea_item2 attribute:self.sea_attr2];
         
-        if((self.sea_attr1 == NSLayoutAttributeTrailing && self.sea_attr2 == NSLayoutAttributeTrailing) || (self.sea_attr1 == NSLayoutAttributeBottom && self.sea_attr2 == NSLayoutAttributeBottom)){
-            self.sea_constant = -self.sea_constant;
+        if((self.sea_attr1 == NSLayoutAttributeTrailing
+            && self.sea_attr2 == NSLayoutAttributeTrailing)
+           ||
+           (self.sea_attr1 == NSLayoutAttributeBottom
+            && self.sea_attr2 == NSLayoutAttributeBottom)){
+            id item = item2;
+            item2 = item1;
+            item1 = item;
         }
         
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.sea_item1 attribute:self.sea_attr1 relatedBy:self.sea_relation toItem:[self fitItem:self.sea_item2 attribute:self.sea_attr2] attribute:self.sea_attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:item1 attribute:self.sea_attr1 relatedBy:self.sea_relation toItem:item2 attribute:self.sea_attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
         constraint.priority = self.sea_priority;
         
         if(self.sea_item2){

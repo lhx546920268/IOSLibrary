@@ -534,6 +534,12 @@ static char SeaTransitioningDelegateKey;
     [self sea_alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaAlertMsgWhenBadNetwork, msg]];
 }
 
+#pragma mark- navigation
+
+- (void)sea_pushViewController:(UIViewController*) viewController
+{
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 #pragma mark- sea_tabBar
 
