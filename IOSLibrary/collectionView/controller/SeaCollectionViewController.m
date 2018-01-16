@@ -62,7 +62,6 @@
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.backgroundView = nil;
         _collectionView.sea_emptyViewDelegate = self;
-        self.scrollView = _collectionView;
     }
 }
 
@@ -71,7 +70,7 @@
 - (void)initialization
 {
     [self initCollectionView];
-    [self.view addSubview:_collectionView];
+    self.scrollView = _collectionView;
 }
 
 - (void)registerNib:(Class)clazz

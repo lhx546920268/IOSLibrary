@@ -70,8 +70,10 @@
     
     [_textLabel sea_topToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_bottomToSuperview:10.0];
-    [_textLabel sea_leftToItemRight:_activityIndicatorView margin:10.0];
+    [_textLabel sea_leftToItemRight:_activityIndicatorView margin:5.0];
     [_textLabel sea_rightToSuperview:10.0];
+    
+    [_activityIndicatorView startAnimating];
 }
 
 #pragma mark- property
@@ -80,12 +82,9 @@
 {
     [super setHidden:hidden];
     
-    if(!hidden)
-    {
+    if(!hidden){
         [self.activityIndicatorView startAnimating];
-    }
-    else
-    {
+    }else{
         [self.activityIndicatorView stopAnimating];
     }
 }

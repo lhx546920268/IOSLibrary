@@ -31,6 +31,9 @@
 {
     if(_scrollView != scrollView){
         _scrollView = scrollView;
+        if (@available(iOS 11.0, *)) {
+            [_scrollView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+        }
         self.contentView = _scrollView;
     }
 }

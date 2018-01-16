@@ -29,8 +29,10 @@
  */
 @property(nonatomic,readonly) SeaAlbumAssetsOverlay *overlay;
 
-
-- (void)setSelected:(BOOL)selected animated:(BOOL) animated;
+/**
+ 选中
+ */
+@property(nonatomic,assign) BOOL tick;
 
 
 @end

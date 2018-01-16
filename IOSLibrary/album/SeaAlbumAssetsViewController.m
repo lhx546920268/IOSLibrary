@@ -18,6 +18,7 @@
 #import "SeaBasic.h"
 #import "UIScrollView+SeaEmptyView.h"
 #import "SeaTools.h"
+#import "SeaImageGenerator.h"
 
 @interface SeaAlbumAssetsViewController ()<SeaAlbumGroupListViewDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
@@ -48,7 +49,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.target = SeaAlbumAssetsViewControllerTargetSelected;
         self.maxSelectedCount = 1;
         self.numberOfItemsPerRow = 3;
         self.gridInterval = 3.0;
@@ -92,13 +92,11 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-    if([self.delegate respondsToSelector:@selector(albumDidFinishSelectImages:)])
-    {
+    if([self.delegate respondsToSelector:@selector(albumDidFinishSelectImages:)]){
         [self.delegate albumDidFinishSelectImages:[NSArray arrayWithObject:image]];
     }
     
-    if(self.delegate)
-    {
+    if(self.delegate){
         [self sea_back];
     }
 }
@@ -106,19 +104,6 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-#pragma mark- 视图消失出现
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 #pragma mark- 加载视图
@@ -144,28 +129,22 @@
     [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop){
         
         //遍历完成
-        if(group == nil)
-        {
+        if(group == nil){
             //显示图片数量最多的分组
             NSInteger count = 0;
-            for(ALAssetsGroup *g in _infos)
-            {
-                if(g.numberOfAssets > count)
-                {
+            for(ALAssetsGroup *g in _infos){
+                if(g.numberOfAssets > count){
                     self.group = g;
                     count = g.numberOfAssets;
                 }
             }
             
             [self assetFromGroup];
-        }
-        else
-        {
+        }else{
             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
             
             //只要有图片的分组
-            if(group.numberOfAssets > 0)
-            {
+            if(group.numberOfAssets > 0){
                 [_infos addObject:group];
             }
         }
@@ -187,39 +166,39 @@
     self.layout.sectionInset = UIEdgeInsetsMake(self.gridInterval, self.gridInterval, self.gridInterval, self.gridInterval);
     self.layout.itemSize = CGSizeMake(size, size);
     
-    [super initialization];
     [self.collectionView registerClass:[SeaAlbumAssetsThumbnail class] forCellWithReuseIdentifier:@"cell"];
     
-    if(self.infos.count > 1)
-    {
-        UIImage *arrow = [UIImage imageNamed:@"triangle_down"];
+    [super initialization];
+    
+    
+    if(self.infos.count > 1){
+        
+        UIImage *arrow = [SeaImageGenerator triangleWithColor:SeaNavigationBarTitleColor size:CGSizeMake(10, 8)];
+        
         UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         titleButton.frame = CGRectMake(0, 0, 100.0, 30.0);
         [titleButton setTitle:@"相册" forState:UIControlStateNormal];
         [titleButton setTitleColor:self.sea_iconTintColor forState:UIControlStateNormal];
-        titleButton.titleLabel.font = [UIFont systemFontOfSize:19.0];
+        titleButton.titleLabel.font = SeaNavigationBarTitleFont;
         [titleButton setImage:arrow forState:UIControlStateNormal];
-        [titleButton setImage:[UIImage imageNamed:@"triangle_up"] forState:UIControlStateSelected];
         [titleButton sea_setImagePosition:SeaButtonImagePositionRight margin:2.0];
         titleButton.adjustsImageWhenDisabled = NO;
         titleButton.tintColor = self.sea_iconTintColor;
         titleButton.adjustsImageWhenHighlighted = NO;
         
         [titleButton addTarget:self action:@selector(seeGroup:) forControlEvents:UIControlEventTouchUpInside];
+        
         self.navigationItem.titleView = titleButton;
         self.titleButton = titleButton;
-    }
-    else
-    {
+    }else{
         self.title = @"相册";
     }
 
     self.collectionView.sea_shouldShowEmptyView = YES;
     //[self setBarItemsWithTitle:@"拍照" icon:nil action:@selector(camera) position:SeaNavigationItemPositionRight];
     
-    if(_assetInfos.count > 0)
-    {
+    if(_assetInfos.count > 0){
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_assetInfos.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
     }
     
@@ -233,8 +212,7 @@
 //    [button setFrame:CGRectMake(margin, self.contentHeight - margin - image.size.height , image.size.width, image.size.height)];
 //    [self.view addSubview:button];
     
-    if(self.target == SeaAlbumAssetsViewControllerTargetSelected)
-    {
+    if(!self.settings){
         [self sea_setRightItemWithTitle:@"使用" action:@selector(useMultiImage)];
     }
 }
@@ -242,33 +220,24 @@
 //从相册分组中获取照片信息
 - (void)assetFromGroup
 {
-    if(self.group)
-    {
+    if(self.group){
         NSMutableArray *infos = [NSMutableArray array];
         [self.group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
             
-            if(result)
-            {
+            if(result){
                 [infos addObject:result];
-            }
-            else
-            {
+            }else{
                 //遍历完成
                 _assetInfos = infos;
                 
-                if(self.collectionView)
-                {
+                if(self.collectionView.superview){
                     [self.collectionView reloadData];
-                }
-                else
-                {
+                }else{
                     [self initialization];
                 }
             }
         }];
-    }
-    else
-    {
+    }else{
         [self initialization];
     }
 }
@@ -276,8 +245,7 @@
 //查看相册分组列表
 - (void)seeGroup:(UIButton*) button
 {
-    if(!self.listView)
-    {
+    if(!self.listView){
         _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.sea_statusBarHeight - self.sea_navigationBarHeight) groups:self.infos];
         _listView.delegate = self;
         [self.view addSubview:_listView];
@@ -290,8 +258,7 @@
 ///使用多张图片
 - (void)useMultiImage
 {
-    if(self.selectedAssetInfos.count == 0)
-    {
+    if(self.selectedAssetInfos.count == 0){
         [self sea_alertMsg:@"请选择图片"];
         return;
     }
@@ -304,12 +271,9 @@
 - (void)emptyViewWillAppear:(SeaEmptyView *)view
 {
     NSString *msg = nil;
-    if([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied)
-    {
+    if([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied){
         msg = [NSString stringWithFormat:@"无法访问您的照片，请在本机的“设置-隐私-照片”中设置,允许%@访问您的照片", appName()];
-    }
-    else
-    {
+    }else{
         msg = @"暂无照片信息";
     }
     view.textLabel.text = msg;
@@ -344,7 +308,7 @@
     ALAsset *asset = [_assetInfos objectAtIndex:indexPath.row];
 
     cell.imageView.image = [UIImage imageWithCGImage:asset.thumbnail];
-    cell.selected = [self.selectedAssetInfos containsObject:asset];
+    cell.tick = [self.selectedAssetInfos containsObject:asset];
     
     return cell;
 }
@@ -356,33 +320,23 @@
     
     ALAsset *asset = [self.assetInfos objectAtIndex:indexPath.row];
     
-    if(self.target != SeaAlbumAssetsViewControllerTargetSelected)
-    {
+    if(self.settings){
         [self.selectedAssetInfos removeAllObjects];
         [self.selectedAssetInfos addObject:asset];
         
         [self useImages];
-    }
-    else
-    {
-        if([self.selectedAssetInfos containsObject:asset])
-        {
+    }else{
+        if([self.selectedAssetInfos containsObject:asset]){
             [self.selectedAssetInfos removeObject:asset];
             SeaAlbumAssetsThumbnail *cell = (SeaAlbumAssetsThumbnail*)[self.collectionView cellForItemAtIndexPath:indexPath];
             cell.selected = NO;
-        }
-        else
-        {
-            if(self.maxSelectedCount == 1)
-            {
+        }else{
+            if(self.maxSelectedCount == 1){
                 [self.selectedAssetInfos removeAllObjects];
                 [self.selectedAssetInfos addObject:asset];
                 [self.collectionView reloadData];
-            }
-            else
-            {
-                if(self.selectedAssetInfos.count >= self.maxSelectedCount)
-                {
+            }else{
+                if(self.selectedAssetInfos.count >= self.maxSelectedCount){
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"您最多可选择%d图片", (int)self.maxSelectedCount] message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertView show];
                     return;
@@ -416,75 +370,58 @@
 //使用图片
 - (void)useImages
 {
-    switch (self.target)
-    {
-        case SeaAlbumAssetsViewControllerTargetSelected :
-        {
-            BOOL flag = NO;
-            if([self.delegate respondsToSelector:@selector(albumDidFinishSelectImages:)])
-            {
-                flag = YES;
-            }
+    if(self.settings){
+        self.sea_showNetworkActivity = YES;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
             
-            self.sea_showNetworkActivity = YES;
-
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-               
-                NSMutableArray *images = nil;
-                if(flag)
-                {
-                    images = [NSMutableArray arrayWithCapacity:self.selectedAssetInfos.count];
-                    for(ALAsset *asset in self.selectedAssetInfos)
-                    {
-                        UIImage *image = [UIImage sea_imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
-                        if(image)
-                        {
-                            [images addObject:image];
-                        }
+            UIImage *image = [UIImage sea_imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                
+                self.sea_showNetworkActivity = NO;
+                [self cropImage:image];
+            });
+        });
+    }else{
+        BOOL flag = NO;
+        if([self.delegate respondsToSelector:@selector(albumDidFinishSelectImages:)]){
+            flag = YES;
+        }
+        
+        self.sea_showNetworkActivity = YES;
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+            
+            NSMutableArray *images = nil;
+            if(flag){
+                images = [NSMutableArray arrayWithCapacity:self.selectedAssetInfos.count];
+                for(ALAsset *asset in self.selectedAssetInfos){
+                    UIImage *image = [UIImage sea_imageFromAsset:asset options:SeaAssetImageOptionsResolutionImage];
+                    if(image){
+                        [images addObject:image];
                     }
                 }
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void){
                 
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                   
-                    self.sea_showNetworkActivity = NO;
-                    [self.delegate albumDidFinishSelectImages:images];
-                    
-                    if([self.delegate respondsToSelector:@selector(albumDidFinishSelectAssets:)])
-                    {
-                        [self.delegate albumDidFinishSelectAssets:self.selectedAssetInfos];
-                    }
-                    
-                    [self sea_back];
-                });
+                self.sea_showNetworkActivity = NO;
+                [self.delegate albumDidFinishSelectImages:images];
+                
+                if([self.delegate respondsToSelector:@selector(albumDidFinishSelectAssets:)]){
+                    [self.delegate albumDidFinishSelectAssets:self.selectedAssetInfos];
+                }
+                
+                [self sea_back];
             });
-            
-            
-        }
-            break;
-        case SeaAlbumAssetsViewControllerImageCrop :
-        {
-            self.sea_showNetworkActivity = YES;
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                
-                UIImage *image = [UIImage sea_imageFromAsset:[self.selectedAssetInfos firstObject] options:SeaAssetImageOptionsResolutionImage];
-                
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    
-                    self.sea_showNetworkActivity = NO;
-                    [self cropImage:image];
-                });
-            });
-        }
-            break;
-            
+        });
     }
 }
 
 ///裁剪图片
 - (void)cropImage:(UIImage*) image
 {
-    if(image)
-    {
+    if(image){
         self.settings.image = image;
         SeaImageCropViewController *imageCrop = [[SeaImageCropViewController alloc] initWithSettings:self.settings];
         imageCrop.delegate = self.delegate;

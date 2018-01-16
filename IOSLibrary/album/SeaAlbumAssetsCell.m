@@ -27,7 +27,7 @@
         
         [_checkBox sea_sizeToSelf:CGSizeMake(size, size)];
         [_checkBox sea_rightToSuperview:margin];
-        [_checkBox sea_rightToSuperview:margin];
+        [_checkBox sea_topToSuperview:margin];
     }
     
     return self;
@@ -57,20 +57,15 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected
+- (void)setTick:(BOOL)tick
 {
-    [self setSelected:selected animated:NO];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL) animated
-{
-    [super setSelected:selected];
-    _overlay.hidden = !self.selected;
-    if(selected)
-    {
-        [_overlay.checkBox setSelected:selected];
+    if(_tick != tick){
+        _tick = tick;
+        _overlay.hidden = !self.selected;
+        [_overlay.checkBox setSelected:_tick];
     }
 }
+
 
 @end
 

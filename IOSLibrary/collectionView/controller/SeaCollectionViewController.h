@@ -10,17 +10,20 @@
  */
 @interface SeaCollectionViewController : SeaScrollViewController<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
-/**构造方法
+/**
+ 构造方法
  *@param layout 布局方式，传nil会使用默认的布局
  *@return 一个初始化的 SeaCollectionViewController 对象
  */
 - (id)initWithFlowLayout:(UICollectionViewLayout*) layout;
 
-/**信息列表
+/**
+ 信息列表
  */
 @property(nonatomic,readonly) UICollectionView *collectionView;
 
-/**布局方式
+/**
+ 布局方式
  */
 @property(nonatomic,strong) UICollectionViewFlowLayout *layout;
 

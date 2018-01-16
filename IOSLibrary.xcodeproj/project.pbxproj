@@ -226,6 +226,8 @@
 		10CB0A972005BCD70067ADDB /* SeaNumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A4C2005BCA90067ADDB /* SeaNumberKeyboard.m */; };
 		10CB0A9A2005BDCD0067ADDB /* SeaCountDownTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A982005BDCD0067ADDB /* SeaCountDownTimer.m */; };
 		10CB0A9B2005BDF30067ADDB /* SeaCountDownTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A992005BDCD0067ADDB /* SeaCountDownTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		10CF26F6200DDA80009A9295 /* SeaNavigationBarTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CF26F4200DDA80009A9295 /* SeaNavigationBarTitleView.h */; };
+		10CF26F7200DDA80009A9295 /* SeaNavigationBarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CF26F5200DDA80009A9295 /* SeaNavigationBarTitleView.m */; };
 		10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E3A51B200617FC0062A23D /* SeaPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E3A51E200617FC0062A23D /* SeaPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E3A51C200617FC0062A23D /* SeaPageViewController.m */; };
 		10E7B17D1F9F2D38006A83D8 /* SeaMovieCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1031F9F2D13006A83D8 /* SeaMovieCacheTool.m */; };
@@ -506,6 +508,8 @@
 		10CB0A532005BCA90067ADDB /* SeaTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTabBarController.m; sourceTree = "<group>"; };
 		10CB0A982005BDCD0067ADDB /* SeaCountDownTimer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCountDownTimer.m; sourceTree = "<group>"; };
 		10CB0A992005BDCD0067ADDB /* SeaCountDownTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaCountDownTimer.h; sourceTree = "<group>"; };
+		10CF26F4200DDA80009A9295 /* SeaNavigationBarTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaNavigationBarTitleView.h; sourceTree = "<group>"; };
+		10CF26F5200DDA80009A9295 /* SeaNavigationBarTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNavigationBarTitleView.m; sourceTree = "<group>"; };
 		10E3A51B200617FC0062A23D /* SeaPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPageViewController.h; sourceTree = "<group>"; };
 		10E3A51C200617FC0062A23D /* SeaPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPageViewController.m; sourceTree = "<group>"; };
 		10E7B0461F9F2CAD006A83D8 /* IOSLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IOSLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -746,6 +750,7 @@
 		10509CA81FE8F28D003468EB /* navigationBar */ = {
 			isa = PBXGroup;
 			children = (
+				10CF26F3200DDA66009A9295 /* view */,
 				10509CA91FE8F28D003468EB /* category */,
 				10509CAE1FE8F28D003468EB /* controller */,
 			);
@@ -1036,6 +1041,15 @@
 				10CB0A532005BCA90067ADDB /* SeaTabBarController.m */,
 			);
 			path = tabBar;
+			sourceTree = "<group>";
+		};
+		10CF26F3200DDA66009A9295 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				10CF26F4200DDA80009A9295 /* SeaNavigationBarTitleView.h */,
+				10CF26F5200DDA80009A9295 /* SeaNavigationBarTitleView.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		10E7B03C1F9F2CAD006A83D8 = {
@@ -1333,6 +1347,7 @@
 				10CB0A722005BCB70067ADDB /* SeaDashView.h in Headers */,
 				10CB0A732005BCB70067ADDB /* SeaRadarView.h in Headers */,
 				10CB0A742005BCB70067ADDB /* SeaHighlightView.h in Headers */,
+				10CF26F6200DDA80009A9295 /* SeaNavigationBarTitleView.h in Headers */,
 				10CB0A752005BCB80067ADDB /* SeaNumberBadge.h in Headers */,
 				107CE06A20031CB500D17E82 /* SeaWebViewController.h in Headers */,
 				100E481B1FF1E86E00CAB10A /* NSMutableArray+Utils.h in Headers */,
@@ -1567,6 +1582,7 @@
 				1068F9CA1FF3981C00DB0C3F /* NSAttributedString+Utils.m in Sources */,
 				10509CB61FE8F46D003468EB /* SeaNavigationController.m in Sources */,
 				108E6F091FDF860700F1B121 /* UIScrollView+SeaDataControl.m in Sources */,
+				10CF26F7200DDA80009A9295 /* SeaNavigationBarTitleView.m in Sources */,
 				108E6F0A1FDF860700F1B121 /* SeaRefreshControl.m in Sources */,
 				108E6F0B1FDF860700F1B121 /* SeaLoadMoreControl.m in Sources */,
 				108E6F0C1FDF860700F1B121 /* SeaDataControl.m in Sources */,
