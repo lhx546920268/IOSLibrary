@@ -50,8 +50,7 @@
     self.adjustsImageWhenDisabled = NO;
     self.adjustsImageWhenHighlighted = NO;
     
-    if(self.normalImage == nil || self.selectedImage == nil)
-    {
+    if(self.normalImage == nil || self.selectedImage == nil){
         self.normalImage = [SeaImageGenerator untickWithColor:[UIColor grayColor]];
         self.selectedImage = [SeaImageGenerator tickWithFillColor:SeaAppMainColor tickColor:SeaTintColor];
     }
@@ -61,8 +60,7 @@
 
 - (void)setNormalImage:(UIImage *)normalImage
 {
-    if(_normalImage != normalImage)
-    {
+    if(_normalImage != normalImage){
         _normalImage = normalImage;
         [self setImage:_normalImage forState:UIControlStateNormal];
     }
@@ -70,8 +68,7 @@
 
 - (void)setSelectedImage:(UIImage *)selectedImage
 {
-    if(_selectedImage != selectedImage)
-    {
+    if(_selectedImage != selectedImage){
         _selectedImage = selectedImage;
         [self setImage:_selectedImage forState:UIControlStateSelected];
     }

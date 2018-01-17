@@ -61,7 +61,7 @@
 {
     if(_tick != tick){
         _tick = tick;
-        _overlay.hidden = !self.selected;
+        _overlay.hidden = !_tick;
         [_overlay.checkBox setSelected:_tick];
     }
 }

@@ -4,13 +4,11 @@
 //
 
 #import "SeaImageCropViewController.h"
-#import "SeaAlbumDelegate.h"
 #import "SeaBasic.h"
 #import "UIViewController+Utils.h"
 #import "UIView+Utils.h"
 #import "UIImage+Utils.h"
-
-#define BOUNDCE_DURATION 0.3f
+#import "SeaAlbumAssetsViewController.h"
 
 @implementation SeaImageCropSettings
 
@@ -76,39 +74,11 @@
 - (id)initWithSettings:(SeaImageCropSettings*) settings
 {
     self = [super init];
-    if (self)
-    {
+    if(self){
         self.settings = settings;
     }
     return self;
 }
-
-#pragma mark- dealloc
-
-- (void)dealloc
-{
-    self.delegate = nil;
-}
-//
-//#pragma mark- 视图消失出现
-//
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    
-//    //隐藏导航栏和状态栏
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    
-//    //显示导航栏和状态栏
-//    [self.navigationController setNavigationBarHidden:NO];
-//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
-//}
 
 #pragma mark- 加载视图
 
@@ -119,42 +89,50 @@
     self.view.clipsToBounds = YES;
     self.title = @"裁图";
     self.view.backgroundColor = [UIColor blackColor];
-    [self initView];
+    
     //[self initControlBtn];
     [self sea_setRightItemWithTitle:@"完成" action:@selector(confirm)];
 }
 
-//初始化视图
-- (void)initView
+- (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+    [self initialization];
+}
+
+//初始化视图
+- (void)initialization
+{
+    if(self.showImgView)
+        return;
     self.sea_showBackItem = YES;
     
-    self.contentView = [UIView new];
-    
     //显示图片
+    UIImage *image = self.settings.image;
     self.showImgView = [UIImageView new];
-    [self.showImgView setMultipleTouchEnabled:YES];
-    [self.showImgView setUserInteractionEnabled:YES];
-    [self.showImgView setImage:self.settings.image];
+    self.showImgView.multipleTouchEnabled = YES;
+    self.showImgView.userInteractionEnabled = YES;
+    self.showImgView.image = image;
 
+    CGRect cropFrame = self.cropFrame;
     
     //把图片适配屏幕
-    CGFloat oriWidth = MIN(SeaScreenWidth, self.settings.image.size.width);
-    CGFloat oriHeight = self.settings.image.size.height * (oriWidth / self.settings.image.size.width);
+    CGFloat width = MIN(self.view.width, image.size.width);
+    CGFloat height = image.size.height * (width / image.size.width);
     
     
     if(self.settings.useFullScreenCropFrame){
-        if(oriWidth < self.cropFrame.size.width || oriHeight < self.cropFrame.size.height)
-        {
-            CGFloat scale = MAX(self.cropFrame.size.width / oriWidth, self.cropFrame.size.height / oriHeight);
-            oriWidth *= scale;
-            oriHeight *= scale;
+        if(width < cropFrame.size.width || height < cropFrame.size.height){
+            CGFloat scale = MAX(cropFrame.size.width / width, cropFrame.size.height / height);
+            width *= scale;
+            height *= scale;
         }
     }
     
-    CGFloat oriX = self.cropFrame.origin.x + (self.cropFrame.size.width - oriWidth) / 2;
-    CGFloat oriY = self.cropFrame.origin.y + (self.cropFrame.size.height - oriHeight) / 2;
-    self.oldFrame = CGRectMake(oriX, oriY, oriWidth, oriHeight);
+    CGFloat x = cropFrame.origin.x + (cropFrame.size.width - width) / 2;
+    CGFloat y = cropFrame.origin.y + (cropFrame.size.height - height) / 2;
+    
+    self.oldFrame = CGRectMake(x, y, width, height);
     self.latestFrame = self.oldFrame;
     self.showImgView.frame = self.oldFrame;
     
@@ -171,14 +149,14 @@
     [self.view addSubview:self.showImgView];
     
     //裁剪区分图层
-    self.overlayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 0)];
+    self.overlayView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.overlayView.alpha = .5f;
     self.overlayView.backgroundColor = [UIColor blackColor];
     self.overlayView.userInteractionEnabled = NO;
     [self.view addSubview:self.overlayView];
     
     //编辑框
-    self.ratioView = [[UIView alloc] initWithFrame:self.cropFrame];
+    self.ratioView = [[UIView alloc] initWithFrame:cropFrame];
     self.ratioView.layer.borderColor = [UIColor whiteColor].CGColor;
     self.ratioView.layer.borderWidth = 1.0f;
     self.ratioView.layer.cornerRadius = self.settings.cropCornerRadius;
@@ -196,7 +174,7 @@
 {
     CGSize cropSize = self.settings.cropSize;
     if(self.settings.useFullScreenCropFrame){
-        cropSize = CGSizeMake(SeaScreenWidth, SeaScreenWidth * cropSize.height / cropSize.width);
+        cropSize = CGSizeMake(self.view.width, self.view.width * cropSize.height / cropSize.width);
         self.settings.cropCornerRadius *= cropSize.width / self.settings.cropSize.width;
     }
     
@@ -207,7 +185,7 @@
 - (CGRect)cropFrame
 {
     CGSize cropSize = [self cropSize];
-    return CGRectMake((SeaScreenWidth - cropSize.width) / 2.0, (self.view.height - cropSize.height) / 2.0, cropSize.width, cropSize.height);
+    return CGRectMake((self.view.width - cropSize.width) / 2.0, (self.view.height - cropSize.height) / 2.0, cropSize.width, cropSize.height);
 }
 
 //初始化控制按钮
@@ -245,16 +223,26 @@
 
 #pragma mark- private method
 
-
 //确认编辑
 - (void)confirm
 {
-    if ([self.delegate respondsToSelector:@selector(albumDidFinishSelectImages:)])
-    {
-        [self.delegate albumDidFinishSelectImages:[NSArray arrayWithObject:[self cropImage]]];
+    if([self.delegate respondsToSelector:@selector(albumDidFinishSelectImages:)]){
+        [self.delegate albumDidFinishSelectImages:@[[self cropImage]]];
     }
     
-    [self sea_back];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    if(viewControllers.count >= 2){
+        UIViewController *vc = [viewControllers objectAtIndex:viewControllers.count - 2];
+        if([vc isKindOfClass:[SeaAlbumAssetsViewController class]]){
+            if(viewControllers.count > 2){
+                [self.navigationController popToViewController:[viewControllers objectAtIndex:viewControllers.count - 3] animated:YES];
+            }else{
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+        }
+    }else{
+        [self sea_back];
+    }
 }
 
 //绘制裁剪区分图层
@@ -263,8 +251,7 @@
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     CGMutablePathRef path = CGPathCreateMutable();
     
-    if(self.settings.cropCornerRadius == 0)
-    {
+    if(self.settings.cropCornerRadius == 0){
         //编辑框左边
         CGPathAddRect(path, NULL, CGRectMake(0, 0,
                                             self.ratioView.left,
@@ -284,9 +271,7 @@
                                             self.ratioView.bottom,
                                             self.overlayView.width,
                                             self.overlayView.height - self.ratioView.bottom));
-    }
-    else
-    {
+    }else{
         CGPoint point1 = CGPointMake(0, self.ratioView.top + self.ratioView.height / 2.0);
         CGPoint point2 = CGPointMake(self.ratioView.width, self.ratioView.top + self.ratioView.height / 2.0);
         
@@ -322,17 +307,14 @@
 - (void)pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer
 {
     UIView *view = self.showImgView;
-    if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
-    {
+    if(pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged){
         view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
         pinchGestureRecognizer.scale = 1;
-    }
-    else if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
+    }else if(pinchGestureRecognizer.state == UIGestureRecognizerStateEnded){
         CGRect newFrame = self.showImgView.frame;
         newFrame = [self handleScaleOverflow:newFrame];
         newFrame = [self handleBorderOverflow:newFrame];
-        [UIView animateWithDuration:BOUNDCE_DURATION animations:^{
+        [UIView animateWithDuration:0.25 animations:^{
             self.showImgView.frame = newFrame;
             self.latestFrame = newFrame;
         }];
@@ -343,8 +325,7 @@
 - (void)panView:(UIPanGestureRecognizer *)panGestureRecognizer
 {
     UIView *view = self.showImgView;
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged)
-    {
+    if(panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged){
         CGFloat absCenterX = self.cropFrame.origin.x + self.cropFrame.size.width / 2;
         CGFloat absCenterY = self.cropFrame.origin.y + self.cropFrame.size.height / 2;
         CGFloat scaleRatio = self.showImgView.frame.size.width / self.cropFrame.size.width;
@@ -355,12 +336,10 @@
         
         [view setCenter:(CGPoint){view.center.x + translation.x * acceleratorX, view.center.y + translation.y * acceleratorY}];
         [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
-    }
-    else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
+    }else if(panGestureRecognizer.state == UIGestureRecognizerStateEnded){
         CGRect newFrame = self.showImgView.frame;
         newFrame = [self handleBorderOverflow:newFrame];
-        [UIView animateWithDuration:BOUNDCE_DURATION animations:^{
+        [UIView animateWithDuration:0.25 animations:^{
             self.showImgView.frame = newFrame;
             self.latestFrame = newFrame;
         }];
@@ -371,12 +350,10 @@
 - (CGRect)handleScaleOverflow:(CGRect)newFrame
 {
     CGPoint oriCenter = CGPointMake(newFrame.origin.x + newFrame.size.width / 2, newFrame.origin.y + newFrame.size.height / 2);
-    if (newFrame.size.width < self.oldFrame.size.width)
-    {
+    if(newFrame.size.width < self.oldFrame.size.width){
         newFrame = self.oldFrame;
     }
-    if (newFrame.size.width > self.largeFrame.size.width)
-    {
+    if(newFrame.size.width > self.largeFrame.size.width){
         newFrame = self.largeFrame;
     }
     newFrame.origin.x = oriCenter.x - newFrame.size.width / 2;
@@ -388,27 +365,25 @@
 - (CGRect)handleBorderOverflow:(CGRect)newFrame
 {
     //水平方向
-    if (newFrame.origin.x > self.cropFrame.origin.x)
+    if(newFrame.origin.x > self.cropFrame.origin.x)
         newFrame.origin.x = self.cropFrame.origin.x;
     
-    if (CGRectGetMaxX(newFrame) < self.cropFrame.origin.x + self.cropFrame.size.width)
+    if(CGRectGetMaxX(newFrame) < self.cropFrame.origin.x + self.cropFrame.size.width)
         newFrame.origin.x = self.cropFrame.origin.x + self.cropFrame.size.width - newFrame.size.width;
     
     //垂直方向
-    if (newFrame.origin.y > self.cropFrame.origin.y)
+    if(newFrame.origin.y > self.cropFrame.origin.y)
         newFrame.origin.y = self.cropFrame.origin.y;
 
-    if (CGRectGetMaxY(newFrame) < self.cropFrame.origin.y + self.cropFrame.size.height)
+    if(CGRectGetMaxY(newFrame) < self.cropFrame.origin.y + self.cropFrame.size.height)
         newFrame.origin.y = self.cropFrame.origin.y + self.cropFrame.size.height - newFrame.size.height;
     
     //图片小于裁剪框 让图片居中
-    if (newFrame.size.height <= self.cropFrame.size.height)
-    {
+    if(newFrame.size.height <= self.cropFrame.size.height){
         newFrame.origin.y = self.cropFrame.origin.y + (self.cropFrame.size.height - newFrame.size.height) / 2;
     }
     
-    if (newFrame.size.width <= self.cropFrame.size.width)
-    {
+    if(newFrame.size.width <= self.cropFrame.size.width){
         newFrame.origin.x = self.cropFrame.origin.x + (self.cropFrame.size.width - newFrame.size.width) / 2.0;
     }
     
@@ -425,8 +400,7 @@
     self.cancelButton.superview.hidden = YES;
     
     //如果图片小于编辑框，使用白色背景替代
-    if(self.showImgView.width < self.cropFrame.size.width || self.showImgView.height < self.cropFrame.size.height)
-    {
+    if(self.showImgView.width < self.cropFrame.size.width || self.showImgView.height < self.cropFrame.size.height){
         self.view.backgroundColor = [UIColor whiteColor];
     }
     
@@ -446,8 +420,7 @@
     UIImage *sendImage = [[UIImage alloc] initWithCGImage:imageRefRect];
     CFRelease(imageRefRect);
     
-    if(sendImage.size.width > self.settings.cropSize.width)
-    {
+    if(sendImage.size.width > self.settings.cropSize.width){
         sendImage = [sendImage sea_aspectFillWithSize:self.settings.cropSize];
     }
     

@@ -3,7 +3,8 @@
 
 //
 
-#import "SeaViewController.h"
+#import <UIKit/UIKit.h>
+#import "SeaAlbumDelegate.h"
 
 ///裁剪设置
 @interface SeaImageCropSettings : NSObject
@@ -28,17 +29,13 @@
 
 /**图片裁剪
  */
-@interface SeaImageCropViewController : SeaViewController
+@interface SeaImageCropViewController : UIViewController
 
-@property (nonatomic, weak) id delegate;
+@property (nonatomic, weak) id<SeaAlbumDelegate> delegate;
 
 /**裁剪框的位置 大小
  */
 @property (nonatomic, readonly) CGRect cropFrame;
-
-/**是否是弹出视图 default is 'NO'
-*/
-@property(nonatomic,assign) BOOL present;
 
 /**构造方法
  *@param settings 裁剪设置

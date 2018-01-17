@@ -56,13 +56,14 @@
     _translucentView = [[UIView alloc] init];
     _translucentView.layer.cornerRadius = 8.0;
     _translucentView.layer.masksToBounds = YES;
-    _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
+    _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
     [self addSubview:_translucentView];
     
     _contentView = [[UIView alloc] init];
     [_translucentView addSubview:_contentView];
     
     _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [_activityIndicatorView startAnimating];
     [_contentView addSubview:_activityIndicatorView];
     
     _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -79,7 +80,7 @@
     
     [_contentView sea_leftToSuperview:10.0];
     [_contentView sea_rightToSuperview:10.0];
-    [_contentView sea_centerXInSuperview];
+    [_contentView sea_centerYInSuperview];
 
     [_activityIndicatorView sea_centerXInSuperview];
     [_activityIndicatorView sea_topToSuperview:10.0];
@@ -87,7 +88,8 @@
     [_activityIndicatorView sea_rightToItemLeft:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
     
     [_textLabel sea_leftToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_textLabel sea_rightToSuperview:10.0];
+    [_textLabel sea_rightToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_textLabel sea_centerXInSuperview];
     [_textLabel sea_topToItemBottom:_activityIndicatorView margin:10.0];
     [_textLabel sea_bottomToSuperview:10.0];
 }
@@ -105,12 +107,9 @@
 {
     [super setHidden:hidden];
     
-    if(self.hidden)
-    {
+    if(self.hidden){
         [self stopAnimating];
-    }
-    else
-    {
+    }else{
         [self startAnimating];
     }
 }

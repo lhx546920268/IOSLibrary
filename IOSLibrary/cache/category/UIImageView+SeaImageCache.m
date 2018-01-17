@@ -27,6 +27,11 @@ static char SeaImageURLKey;
     return objc_getAssociatedObject(self, &SeaImageURLKey);
 }
 
+- (void)sea_cancelDownloadImage
+{
+    [[SeaImageCacheTool sharedInstance] cancelDownloadForURL:self.sea_imageURL target:self];
+}
+
 #pragma mark- get Image
 
 - (void)sea_setImageWithURL:(NSString*) URL

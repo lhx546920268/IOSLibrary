@@ -9,7 +9,6 @@
 #import "SeaAlbumAssetsCell.h"
 #import "SeaAlbumGroupListView.h"
 #import <AVFoundation/AVFoundation.h>
-#import "SeaImageCropViewController.h"
 #import "UIImagePickerController+Utils.h"
 #import "UIViewController+Utils.h"
 #import "UIView+Utils.h"
@@ -22,15 +21,15 @@
 
 @interface SeaAlbumAssetsViewController ()<SeaAlbumGroupListViewDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
-//选中的图片资源信息 数组元素是 ALAssets
-@property(nonatomic,strong) NSMutableArray *selectedAssetInfos;
+//选中的图片资源信息
+@property(nonatomic,strong) NSMutableArray<ALAsset*> *selectedAssetInfos;
 
-//图片资源信息 数组元素是 ALAssets
-@property(nonatomic,strong) NSMutableArray *assetInfos;
+//图片资源信息
+@property(nonatomic,strong) NSMutableArray<ALAsset*> *assetInfos;
 
-/**图片分组信息 数组元素是 ALAssetsGroup 对象
+/**图片分组信息
  */
-@property(nonatomic,strong) NSMutableArray *infos;
+@property(nonatomic,strong) NSMutableArray<ALAssetsGroup*> *groupInfos;
 
 /**分组视图
  */
@@ -123,7 +122,7 @@
     
     ALAssetsLibrary *library = [SeaAlbumAssetsViewController sharedAssetsLibrary];
     
-    self.infos = [NSMutableArray array];
+    self.groupInfos = [NSMutableArray array];
 
     //遍历相册资源，获取相册分组信息
     [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop){
@@ -132,7 +131,7 @@
         if(group == nil){
             //显示图片数量最多的分组
             NSInteger count = 0;
-            for(ALAssetsGroup *g in _infos){
+            for(ALAssetsGroup *g in _groupInfos){
                 if(g.numberOfAssets > count){
                     self.group = g;
                     count = g.numberOfAssets;
@@ -145,7 +144,7 @@
             
             //只要有图片的分组
             if(group.numberOfAssets > 0){
-                [_infos addObject:group];
+                [_groupInfos addObject:group];
             }
         }
     }failureBlock:^(NSError *error){
@@ -171,7 +170,7 @@
     [super initialization];
     
     
-    if(self.infos.count > 1){
+    if(self.groupInfos.count > 1){
         
         UIImage *arrow = [SeaImageGenerator triangleWithColor:SeaNavigationBarTitleColor size:CGSizeMake(10, 8)];
         
@@ -246,7 +245,7 @@
 - (void)seeGroup:(UIButton*) button
 {
     if(!self.listView){
-        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.sea_statusBarHeight - self.sea_navigationBarHeight) groups:self.infos];
+        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.sea_statusBarHeight - self.sea_navigationBarHeight) groups:self.groupInfos];
         _listView.delegate = self;
         [self.view addSubview:_listView];
     }
@@ -324,6 +323,9 @@
         [self.selectedAssetInfos removeAllObjects];
         [self.selectedAssetInfos addObject:asset];
         
+        [self useImages];
+    }else if(self.singleSelect){
+        [self.selectedAssetInfos addObject:asset];
         [self useImages];
     }else{
         if([self.selectedAssetInfos containsObject:asset]){

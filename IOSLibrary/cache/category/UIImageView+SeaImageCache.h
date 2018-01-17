@@ -19,6 +19,11 @@
  */
 @property(nonatomic,readonly) NSString *sea_imageURL;
 
+/**
+ 取消当前下载
+ */
+- (void)sea_cancelDownloadImage;
+
 /**设置图片路径
  *@param URL 图片路径
  */

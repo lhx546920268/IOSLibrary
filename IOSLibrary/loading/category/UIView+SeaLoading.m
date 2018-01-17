@@ -98,7 +98,7 @@ static char SeaReloadDataHandlerKey;
     if(networkActivity){
         [networkActivity removeFromSuperview];
     }
-    objc_setAssociatedObject(self, &SeaNetworkActivityKey, networkActivity, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &SeaNetworkActivityKey, sea_networkActivity, OBJC_ASSOCIATION_RETAIN);
     
     if(sea_networkActivity){
         [self addSubview:sea_networkActivity];

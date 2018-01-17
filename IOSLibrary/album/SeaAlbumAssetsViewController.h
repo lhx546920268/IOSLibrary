@@ -5,8 +5,9 @@
 
 #import "SeaCollectionViewController.h"
 #import "SeaAlbumDelegate.h"
+#import "SeaImageCropViewController.h"
 
-@class ALAssetsGroup, ALAssetsLibrary,SeaImageCropSettings;
+@class ALAssetsGroup, ALAssetsLibrary;
 
 /**
  相册分组内容列表
@@ -25,6 +26,11 @@
  图片最大选择数量 default is '1'
  */
 @property(nonatomic,assign) int maxSelectedCount;
+
+/**
+ 单选 default is 'NO'
+ */
+@property(nonatomic,assign) BOOL singleSelect;
 
 /**
  网格图片间距 default is '3.0'
