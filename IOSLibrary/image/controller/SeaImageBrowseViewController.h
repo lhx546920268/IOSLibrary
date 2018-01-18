@@ -130,6 +130,11 @@
 @interface SeaImageBrowseViewController : SeaCollectionViewController
 
 /**
+ 动画时间长度 default is '0.3'
+ */
+@property(nonatomic, assign) CGFloat animateDuration;
+
+/**
  图片信息
  */
 @property(nonatomic,readonly) NSArray<SeaImageBrowseInfo*> *infos;

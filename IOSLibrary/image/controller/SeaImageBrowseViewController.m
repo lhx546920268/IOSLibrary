@@ -13,6 +13,7 @@
 #import "UIView+Utils.h"
 #import "UIViewController+Utils.h"
 #import "SeaBasic.h"
+#import "UIView+SeaAutoLayout.h"
 
 @implementation SeaImageBrowseInfo
 
@@ -61,6 +62,8 @@
         
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _imageView.backgroundColor = [UIColor clearColor];
+        _imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _imageView.clipsToBounds = YES;
         [_scrollView addSubview:_imageView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -143,11 +146,6 @@
 }
 
 /**
- 图片集合
- */
-@property(nonatomic,readonly) UICollectionView *collectionView;
-
-/**
  是否正在动画
  */
 @property(nonatomic,assign) BOOL isAnimating;
@@ -166,6 +164,11 @@
  背景
  */
 @property(nonatomic,readonly) UIView *backgroundView;
+
+/**
+ 是否滑动到可见位置
+ */
+@property(nonatomic,assign) BOOL shouldScrollToVisible;
 
 @end
 
@@ -220,11 +223,16 @@
 {
     [super viewDidLoad];
     
+    self.animateDuration = 0.3;
     _backgroundView = [UIView new];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.userInteractionEnabled = NO;
     _backgroundView.alpha = 0;
     [self.view addSubview:_backgroundView];
+    
+    [_backgroundView sea_insetsInSuperview:UIEdgeInsetsZero];
+    
+    self.shouldScrollToVisible = YES;
     
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -238,26 +246,39 @@
     
     [super initialization];
     
-    if(_visibleIndex > 0){
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_visibleIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
-    }
-    
-    _pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.backgroundView.height - 40.0, self.backgroundView.width, 20.0)];
+    _pageLabel = [UILabel new];
     _pageLabel.textAlignment = NSTextAlignmentCenter;
     _pageLabel.textColor = [UIColor whiteColor];
     _pageLabel.font = [UIFont fontWithName:SeaMainFontName size:14.0];
     _pageLabel.shadowColor = [UIColor blackColor];
-    _pageLabel.text = [NSString stringWithFormat:@"%d/%d", (int)_visibleIndex + 1, (int)self.source.count];
+    _pageLabel.text = [NSString stringWithFormat:@"%d/%d", (int)_visibleIndex + 1, (int)self.infos.count];
     _pageLabel.hidden = YES;
     [self.view addSubview:_pageLabel];
+    
+    [_pageLabel sea_leftToSuperview];
+    [_pageLabel sea_rightToSuperview];
+    [_pageLabel sea_bottomToSuperview:20];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if(self.shouldScrollToVisible && _visibleIndex > 0){
+        self.shouldScrollToVisible = NO;
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_visibleIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    }
 }
 
 #pragma mark- property
 
-- (NSInteger)visibleIndex
+- (NSUInteger)visibleIndex
 {
     NSIndexPath *indexPath = [[self.collectionView indexPathsForVisibleItems] firstObject];
-    return indexPath.item;
+    if(indexPath){
+        return indexPath.item;
+    }else{
+        return _visibleIndex;
+    }
 }
 
 #pragma mark- public method
@@ -284,6 +305,11 @@
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return self.sea_statusBarHidden;
+}
+
 ///显示完成
 - (void)showCompletion
 {
@@ -304,19 +330,17 @@
     self.backgroundView.hidden = YES;
     self.pageLabel.hidden = YES;
     
-    CGRect rect = CGRectZero;
+    CGRect rect = [self animatedRect];
     
     
     if(cell.imageView.image && animate){
         if([self.delegate respondsToSelector:@selector(imageBrowseViewControllerWillExistFullScreen:)]){
             [self.delegate imageBrowseViewControllerWillExistFullScreen:self];
         }
-        
-        
-        
-        if(!CGRectIntersectsRect(self.view.frame, self.previousFrame)){
+
+        if(!CGRectIntersectsRect(self.view.frame, rect)){
             self.isAnimating = YES;
-            [UIView animateWithDuration:animatedDuration animations:^(void){
+            [UIView animateWithDuration:self.animateDuration animations:^(void){
                 
                 cell.scrollView.zoomScale = 1.5;
                 self.view.alpha = 0;
@@ -330,12 +354,10 @@
             }];
         }else{
             self.isAnimating = YES;
-            [UIView animateWithDuration:animatedDuration animations:^(void){
+            [UIView animateWithDuration:self.animateDuration animations:^(void){
                 
-                if(self.previousImage){
-                    cell.imageView.image = self.previousImage;
-                }
-                cell.imageView.frame = self.previousFrame;
+                cell.imageView.frame = rect;
+     
             }completion:^(BOOL finish){
                 
                 self.isAnimating = NO;
@@ -359,8 +381,12 @@
     CGRect rect = CGRectZero;
     if(self.animatedViewHandler){
         UIView *view = self.animatedViewHandler(self.visibleIndex);
-        rect = [self.view convertRect:view.frame fromView:view];
+        if(view.superview){
+            rect = [view.superview convertRect:view.frame toView:self.view];
+        }
     }
+    
+    return rect;
 }
 
 /**隐藏
@@ -402,12 +428,14 @@
         cell.imageView.image = info.image;
     }else if(info.asset){
         UIImage *image = [UIImage sea_imageFromAsset:info.asset];
-        self.image = image;
+        info.image = image;
         [cell.imageView sea_cancelDownloadImage];
         cell.imageView.image = image;
     }else{
         SeaImageCacheOptions *options = [SeaImageCacheOptions defaultOptions];
         options.shouldShowLoadingActivity = YES;
+        options.shouldAspectRatioFit = NO;
+        options.originalContentMode = UIViewContentModeScaleAspectFill;
         options.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
         
         [cell.imageView sea_setImageWithURL:info.URL options:options completion:^(UIImage *image){
@@ -437,7 +465,7 @@
             image = [UIImage sea_imageFromAsset:info.asset];
             info.image = image;
         }else{
-            UIImage *image = [[SeaImageCacheTool sharedInstance] imageFromMemoryForURL:info.URL thumbnailSize:CGSizeZero];
+            image = [[SeaImageCacheTool sharedInstance] imageFromMemoryForURL:info.URL thumbnailSize:CGSizeZero];
             if(!image){
                 image = [[SeaImageCacheTool sharedInstance] imageFromDiskForURL:info.URL thumbnailSize:CGSizeZero];
             }
@@ -448,22 +476,28 @@
         if(!image){
             image = [SeaImageCacheOptions defaultOptions].placeholderImage;
         }
-        self.view.userInteractionEnabled = NO;
-        
-        CGRect frame = [cell1 rectFromImage:image];
-        cell1.imageView.frame = self.previousFrame;
-        
-        self.isAnimating = YES;
-        [UIView animateWithDuration:0.4 animations:^(void){
+        if(image){
+            self.view.userInteractionEnabled = NO;
             
-            cell1.imageView.image = image;
+            CGRect frame = [cell1 rectFromImage:image];
+            CGRect rect = [self animatedRect];
+            
+            cell1.imageView.frame = rect;
+            
+            self.isAnimating = YES;
+            [UIView animateWithDuration:self.animateDuration animations:^(void){
+                
+                cell1.imageView.image = image;
+                self.backgroundView.alpha = 1.0;
+                cell1.imageView.frame = frame;
+            }completion:^(BOOL finish){
+                
+                [cell1 layoutImageAfterLoad];
+                [self showCompletion];
+            }];
+        }else{
             self.backgroundView.alpha = 1.0;
-            cell1.imageView.frame = frame;
-        }completion:^(BOOL finish){
-            
-            [cell1 layoutImageAfterLoad];
-            [self showCompletion];
-        }];
+        }
     }
 }
 
@@ -483,7 +517,7 @@
         return;
     
     if(cell.scrollView.zoomScale == 1.0){
-        [self setShowFullScreen:NO fromRect:CGRectZero animate:YES];
+        [self dismissAimate:YES];
     }else{
         [cell.scrollView setZoomScale:1.0 animated:YES];
     }

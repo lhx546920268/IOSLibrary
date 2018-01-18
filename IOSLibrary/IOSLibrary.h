@@ -21,4 +21,6 @@
 
 #import <SeaBasic.h>
 
+#import <UIImageView+SeaImageCache.h>
+
 #endif /* IOSLibrary_h */

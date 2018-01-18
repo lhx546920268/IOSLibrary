@@ -44,7 +44,7 @@ static char SeaActivityIndicatorViewKey;
         [self addSubview:view];
         
         [view sea_centerInSuperview];
-        objc_setAssociatedObject(self, &SeaShowActivityIndicatorKey, view, OBJC_ASSOCIATION_RETAIN);
+        objc_setAssociatedObject(self, &SeaActivityIndicatorViewKey, view, OBJC_ASSOCIATION_RETAIN);
     }
     
     return view;

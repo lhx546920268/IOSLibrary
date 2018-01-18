@@ -232,6 +232,7 @@ static NSString *const SeaProgressKeyPath = @"fractionCompleted";
         if(error){
             //取消将忽略
             if(error.code != NSURLErrorCancelled){
+                NSLog(@"%@ \n error = %@", task.originalRequest.URL, error.description);
                 if(self.dataTask){
                     !self.completionHandler ?: self.completionHandler(self.dataTask, nil, error.code);
                     

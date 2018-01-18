@@ -1044,12 +1044,12 @@
 		10CB0A4D2005BCA90067ADDB /* tabBar */ = {
 			isa = PBXGroup;
 			children = (
-				10CB0A4E2005BCA90067ADDB /* SeaTabBar.m */,
-				10CB0A4F2005BCA90067ADDB /* SeaTabBarItem.h */,
-				10CB0A502005BCA90067ADDB /* SeaTabBarController.h */,
-				10CB0A512005BCA90067ADDB /* SeaTabBarItem.m */,
 				10CB0A522005BCA90067ADDB /* SeaTabBar.h */,
+				10CB0A4E2005BCA90067ADDB /* SeaTabBar.m */,
+				10CB0A502005BCA90067ADDB /* SeaTabBarController.h */,
 				10CB0A532005BCA90067ADDB /* SeaTabBarController.m */,
+				10CB0A4F2005BCA90067ADDB /* SeaTabBarItem.h */,
+				10CB0A512005BCA90067ADDB /* SeaTabBarItem.m */,
 			);
 			path = tabBar;
 			sourceTree = "<group>";
