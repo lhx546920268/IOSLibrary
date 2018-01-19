@@ -12,19 +12,18 @@
 
 @interface SeaSearchDisplayViewController()
 
-/**黑色半透明背景
+/**
+ 黑色半透明背景
  */
-@property(nonatomic,strong) UIView *transparentView;
+@property(nonatomic,strong) UIView *translucentView;
 
-/**上一个视图 navigationBar的 translucent
+/**
+ 上一个视图 navigationBar的 translucent
  */
 @property(nonatomic,assign) BOOL previousNavigationBarTranslucent;
 
-/**容器滚动视图
- */
-@property(nonatomic,strong) UIScrollView *containerScrollView;
-
-/**tableView 初始高度
+/**
+ tableView 初始高度
  */
 @property(nonatomic,assign) CGFloat tableViewOriginHeight;
 
@@ -32,15 +31,10 @@
 
 @implementation SeaSearchDisplayViewController
 
-/**构造方法
- *@param position 搜索栏位置
- *@return 一个初始化的 SeaSearchDisplayViewController
- */
 - (id)initWithSearchBarPosition:(SeaSearchBarPosition) position
 {
     self = [super initWithNibName:nil bundle:nil];
-    if(self)
-    {
+    if(self){
         _searchBarPosition = position;
         [self initParams];
     }
@@ -50,8 +44,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nil bundle:nil];
-    if(self)
-    {
+    if(self){
         _searchBarPosition = SeaSearchBarPositionTableViewHeader;
         [self initParams];
     }
@@ -67,13 +60,6 @@
     self.hideNavigationBarWhileSearching = YES;
 }
 
-#pragma mark- dealloc
-
-- (void)dealloc
-{
-    
-}
-
 #pragma mark- 视图消失出现
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -84,26 +70,19 @@
 
 #pragma mark- property
 
-/**搜索栏输入框
- */
 - (UITextField*)searchTextField
 {
     return self.searchBar.sea_searchedTextField;
 }
 
-/**搜索栏取消按钮
- */
 - (UIButton*)searchCancelButton
 {
     return self.searchBar.sea_searchedCancelButton;
 }
 
-/**在搜索期间是否隐藏导航栏，default is 'YES'，如果搜索栏的位置是 SeaSearchBarPositionNavigationBar，将忽略该值，如果搜索栏的位置是 SeaSearchBarPositionShowWhenSearch，此值一定为YES
- */
 - (void)setHideNavigationBarWhileSearching:(BOOL)hideNavigationBarWhileSearching
 {
-    if(_hideNavigationBarWhileSearching != hideNavigationBarWhileSearching)
-    {
+    if(_hideNavigationBarWhileSearching != hideNavigationBarWhileSearching){
         if(_searchBarPosition == SeaSearchBarPositionShowWhenSearch)
             hideNavigationBarWhileSearching = YES;
         
@@ -116,20 +95,6 @@
 
 #pragma mark- public method
 
-
-//把控制视图中view改成UiScrollView，因为只有当UISearchBar的父视图为 UIScrollView时，UIBarPositionTopAttached才会生效
-- (void)loadView
-{
-    UIScrollView *scrollView = [UIScrollView new];
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.bounces = NO;
-    self.view = scrollView;
-    self.containerScrollView = scrollView;
-}
-
-/**初始化 子类必须调用该方法
- */
 - (void)initialization
 {
     [super initialization];
@@ -140,27 +105,22 @@
 //创建搜索栏
 - (void)createSearchBar
 {
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, 45.0)];
-    [_searchBar setImage:[UIImage imageNamed:@"search_icon"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+    _searchBar = [UISearchBar new];
     self.searchBar.delegate = self;
     UITextField *searchField = self.searchTextField;
     searchField.font = [UIFont fontWithName:SeaMainFontName size:15.0];
     self.searchBar.placeholder = @"搜索";
 }
 
-///初始化UISearchBar
 - (void)initializeSearchBar
 {
     if(_searchBar)
         return;
     
-    switch (_searchBarPosition)
-    {
+    switch (_searchBarPosition){
         case SeaSearchBarPositionTableViewHeader :
-        case SeaSearchBarPositionTableViewTop :
-        {
-            if(!self.tableView)
-            {
+        case SeaSearchBarPositionTableViewTop : {
+            if(!self.tableView){
                 return;
             }
         }
@@ -170,16 +130,13 @@
             break;
     }
     
-    if(_searchBarPosition != SeaSearchBarPositionShowWhenSearch)
-    {
+    if(_searchBarPosition != SeaSearchBarPositionShowWhenSearch){
         [self createSearchBar];
     }
     
-    switch (_searchBarPosition)
-    {
+    switch(_searchBarPosition){
         case SeaSearchBarPositionTableViewTop :
-        case SeaSearchBarPositionTableViewHeader :
-        {
+        case SeaSearchBarPositionTableViewHeader : {
             [self.view addSubview:self.searchBar];
             
 //            self.tableView.top = self.searchBar.bottom;
@@ -205,49 +162,34 @@
 
 #pragma mark- 需要重写的方法
 
-/**搜索关键字改变 ,子类可重写该方法
- *@param string 当前搜索的关键字
- */
 - (void)searchStringDidChangeWithString:(NSString*) string
 {
     
 }
 
-/**点击搜索按钮 默认不做任何事，子类可重写该方法
- *@param string 当前关键字
- */
 - (void)searchButtonDidClickWithString:(NSString*) string{}
 
-/**点击取消搜索
- */
 - (void)searchCancelDidClick{
     
 }
 
-/**取消搜索
- */
 - (void)cancelSearch
 {
-    if([self.searchBar isFirstResponder])
-    {
+    if([self.searchBar isFirstResponder]){
         [self.searchBar resignFirstResponder];
     }
     
     _searching = NO;
-    _transparentView.hidden = YES;
-    _transparentView.alpha = 0;
+    _translucentView.hidden = YES;
+    _translucentView.alpha = 0;
     
-    if(self.hideNavigationBarWhileSearching)
-    {
+    if(self.hideNavigationBarWhileSearching){
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
     
-    if(_searchBarPosition != SeaSearchBarPositionShowWhenSearch)
-    {
+    if(_searchBarPosition != SeaSearchBarPositionShowWhenSearch){
         [self.searchBar setShowsCancelButton:NO animated:YES];
-    }
-    else
-    {
+    }else{
         [self setSearchBarHidden:YES];
     }
     
@@ -269,32 +211,27 @@
     self.containerScrollView.contentInset = UIEdgeInsetsZero;
     _searching = YES;
     
-    if(self.showBackgroundWhileSearchingAndEmptyInput)
-    {
-        if(!_transparentView)
-        {
-            _transparentView = [UIView new];
-            _transparentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    if(self.showBackgroundWhileSearchingAndEmptyInput){
+        if(!_translucentView){
+            _translucentView = [UIView new];
+            _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
             
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel:)];
-            [_transparentView addGestureRecognizer:tap];
-            [self.view addSubview:_transparentView];
+            [_translucentView addGestureRecognizer:tap];
+            [self.view addSubview:_translucentView];
             
-            switch (_searchBarPosition)
-            {
+            switch(_searchBarPosition){
                 case SeaSearchBarPositionTableViewTop :
                 case SeaSearchBarPositionTableViewHeader :
-                    case SeaSearchBarPositionShowWhenSearch :
-                {
-                    [_transparentView sea_leftToSuperview];
-                    [_transparentView sea_rightToSuperview];
-                    [_transparentView sea_bottomToSuperview];
-                    [_transparentView sea_topToItemBottom:self.searchBar];
+                    case SeaSearchBarPositionShowWhenSearch : {
+                    [_translucentView sea_leftToSuperview];
+                    [_translucentView sea_rightToSuperview];
+                    [_translucentView sea_bottomToSuperview];
+                    [_translucentView sea_topToItemBottom:self.searchBar];
                 }
                     break;
-                case SeaSearchBarPositionNavigationBar :
-                {
-                    [_transparentView sea_insetsInSuperview:UIEdgeInsetsZero];
+                case SeaSearchBarPositionNavigationBar : {
+                    [_translucentView sea_insetsInSuperview:UIEdgeInsetsZero];
                 }
                     break;
                 default:
@@ -302,39 +239,34 @@
             }
         }
         
-        _transparentView.hidden = NO;
-        _transparentView.alpha = 0;
+        _translucentView.hidden = NO;
+        _translucentView.alpha = 0;
         
         [UIView animateWithDuration:0.25 animations:^(void){
-            _transparentView.alpha = 1.0;
+            _translucentView.alpha = 1.0;
         }];
         
         
     }
     
-    if(self.hideNavigationBarWhileSearching)
-    {
+    if(self.hideNavigationBarWhileSearching){
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
     
-    if(_searchBarPosition != SeaSearchBarPositionShowWhenSearch)
-    {
+    if(_searchBarPosition != SeaSearchBarPositionShowWhenSearch){
         [self.searchBar setShowsCancelButton:YES animated:YES];
     }
     
-    if(self.searchBarPosition == SeaSearchBarPositionNavigationBar)
-    {
+    if(self.searchBarPosition == SeaSearchBarPositionNavigationBar){
         [self.searchCancelButton setTitleColor:self.sea_iconTintColor forState:UIControlStateNormal];
     }
     
-    if(searchBar.text.length > 0)
-    {
+    if(searchBar.text.length > 0){
         [self searchBar:self.searchBar textDidChange:searchBar.text];
     }
     
-    if(_transparentView)
-    {
-        [self.view bringSubviewToFront:_transparentView];
+    if(_translucentView){
+        [self.view bringSubviewToFront:_translucentView];
     }
 }
 
@@ -350,13 +282,11 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if(self.showBackgroundWhileSearchingAndEmptyInput)
-    {
-        _transparentView.hidden = searchText.length > 0 || !_searching;
+    if(self.showBackgroundWhileSearchingAndEmptyInput){
+        _translucentView.hidden = searchText.length > 0 || !_searching;
     }
-    if(_transparentView)
-    {
-        [self.view bringSubviewToFront:_transparentView];
+    if(_translucentView){
+        [self.view bringSubviewToFront:_translucentView];
     }
     
     [self searchStringDidChangeWithString:searchText];
@@ -367,23 +297,17 @@
     [self searchButtonDidClickWithString:searchBar.text];
 }
 
-#ifdef __IPHONE_7_0
-
 - (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
 {
     return UIBarPositionTopAttached;
 }
-
-#endif
-
 
 #pragma mark- private method
 
 //显示搜索栏
 - (void)showSearchBar:(id) sender
 {
-    if(!_searchBar)
-    {
+    if(!_searchBar){
         [self createSearchBar];
         [_searchBar setShowsCancelButton:YES animated:NO];
 //        _searchBar.top = - _searchBar.height - self.statusBarHeight;
@@ -397,8 +321,7 @@
 //设置搜索栏隐藏状态
 - (void)setSearchBarHidden:(BOOL) hidden
 {
-    if(hidden)
-    {
+    if(hidden){
         [UIView animateWithDuration:0.25 animations:^(void){
             
 //            _searchBar.top = - self.statusBarHeight - _searchBar.height;
@@ -412,9 +335,7 @@
             
             _searchBar.hidden = YES;
         }];
-    }
-    else
-    {
+    }else{
         _searchBar.hidden = hidden;
         [UIView animateWithDuration:0.25 animations:^(void){
             
@@ -436,42 +357,9 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if(_hideKeyboardWhileScroll && [self.searchBar isFirstResponder])
-    {
+    if(_hideKeyboardWhileScroll && [self.searchBar isFirstResponder]){
         [self.searchBar resignFirstResponder];
         self.searchCancelButton.enabled = YES;
-    }
-}
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(!_searching)
-    {
-        switch (_searchBarPosition)
-        {
-            case SeaSearchBarPositionTableViewHeader :
-            {
-//                UIScrollView *s = (UIScrollView*)self.view;
-                
-//                CGFloat top = - scrollView.contentOffset.y;
-//                if(top < - self.searchBar.height)
-//                {
-//                    top = - self.searchBar.height;
-//                }
-//                else if(top > 0)
-//                {
-//                    top = 0;
-//                }
-//                s.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
-//                
-//                self.tableView.height = self.tableViewOriginHeight - top;
-            }
-                break;
-                
-            default:
-                break;
-        }
     }
 }
 

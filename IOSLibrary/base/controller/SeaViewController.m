@@ -24,7 +24,6 @@
     if (self)
     {
         self.sea_statusBarHidden = NO;
-        self.sea_hideTabBar = YES;
         self.sea_iconTintColor = SeaTintColor;
     }
     return self;
@@ -32,16 +31,6 @@
 
 
 #pragma mark- 视图消失出现
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    SeaTabBarController *tabBarController = self.sea_tabBarController;
-    if(tabBarController){
-        [tabBarController setTabBarHidden:self.sea_hideTabBar animated:YES];
-    }
-}
 
 - (void)loadView
 {

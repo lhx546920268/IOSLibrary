@@ -56,12 +56,15 @@
  */
 - (void)initialization
 {
+    [super initialization];
+    
     [self initTableView];
     self.scrollView = _tableView;
 }
 
 - (void)initTableView
 {
+    [super initialization];
     if(!_tableView){
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:_style];
         _tableView.dataSource = self;

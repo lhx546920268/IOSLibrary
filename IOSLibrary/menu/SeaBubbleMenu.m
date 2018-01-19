@@ -258,7 +258,7 @@
     }
 }
 
-/**字体 default is '[UIFont systemFontOfSize:15.0]'
+/**字体 default is '[UIFont fontWithName:SeaMainFontName size:15.0]'
  */
 - (void)setFont:(UIFont *)font
 {

@@ -34,55 +34,46 @@
         if (@available(iOS 11.0, *)) {
             [_scrollView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
         }
+        
         self.contentView = _scrollView;
     }
 }
 
-//设置是否可以下拉刷新数据
 - (void)setRefreshEnable:(BOOL) refreshEnable
 {
-    if(_refreshEnable != refreshEnable)
-    {
+    if(_refreshEnable != refreshEnable){
 #if SeaDebug
         NSAssert(_scrollView != nil, @"%@ 设置下拉刷新 scrollView 不能为nil", NSStringFromClass([self class]));
 #endif
         _refreshEnable = refreshEnable;
-        if(_refreshEnable)
-        {
+        if(_refreshEnable){
             WeakSelf(self);
             [self.scrollView sea_addRefreshWithHandler:^(void){
                
                 [weakSelf reloadDataSource];
             }];
-        }
-        else
-        {
+        }else{
             [self.scrollView sea_removeRefreshControl];
         }
     }
 }
 
-//设置是否可以上拉加载数据
 - (void)setLoadMoreEnable:(BOOL)loadMoreEnable
 {
-    if(_loadMoreEnable != loadMoreEnable)
-    {
+    if(_loadMoreEnable != loadMoreEnable){
 #if SeaDebug
         NSAssert(_scrollView != nil, @"%@ 设置上拉加载 scrollView 不能为nil", NSStringFromClass([self class]));
 #endif
         _loadMoreEnable = loadMoreEnable;
         
-        if(_loadMoreEnable)
-        {
+        if(_loadMoreEnable){
             WeakSelf(self);
             [self.scrollView sea_addLoadMoreWithHandler:^(void){
                
                 [weakSelf setLoadingMore:YES];
                 [weakSelf onLoadMore];
             }];
-        }
-        else
-        {
+        }else{
             [self.scrollView sea_removeLoadMoreControl];
         }
     }
@@ -107,15 +98,11 @@
 
 - (void)setShouldShowScrollToTopButton:(BOOL)shouldShowScrollToTopButton
 {
-    if(_shouldShowScrollToTopButton != shouldShowScrollToTopButton)
-    {
+    if(_shouldShowScrollToTopButton != shouldShowScrollToTopButton){
         _shouldShowScrollToTopButton = shouldShowScrollToTopButton;
-        if(_shouldShowScrollToTopButton)
-        {
+        if(_shouldShowScrollToTopButton){
             [self scrollViewDidScroll:self.scrollView];
-        }
-        else
-        {
+        }else{
             self.showScrollToTopButton = NO;
         }
     }
@@ -133,6 +120,7 @@
 {
     [super viewDidLoad];
     _shouldShowScrollToTopButton = YES;
+    _keyboardHidden = YES;
 }
 
 #pragma mark- public method
@@ -241,11 +229,12 @@
 - (void)keyboardWillChangeFrame:(NSNotification*) notification
 {
     UIEdgeInsets insets = self.contentInsets;
-    if(!self.keyboardHidden)
-    {
+    if(!self.keyboardHidden){
         _keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
         
         insets.bottom += _keyboardFrame.size.height;
+    }else{
+        _keyboardFrame = CGRectZero;
     }
     
     [UIView animateWithDuration:0.25 animations:^(void){
@@ -276,8 +265,7 @@
 
 - (UIButton*)scrollToTopButton
 {
-    if(!_scrollToTopButton)
-    {
+    if(!_scrollToTopButton){
         CGFloat margin = 15.0;
         UIImage *image = [UIImage imageNamed:@"scroll_to_top"];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -299,8 +287,7 @@
 ///设置是否显示回到顶部的按钮
 - (void)setShowScrollToTopButton:(BOOL)showScrollToTopButton
 {
-    if(_showScrollToTopButton != showScrollToTopButton)
-    {
+    if(_showScrollToTopButton != showScrollToTopButton){
         _showScrollToTopButton = showScrollToTopButton;
         
         if(!self.scrollView)
@@ -313,8 +300,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(self.shouldShowScrollToTopButton)
-    {
+    if(self.shouldShowScrollToTopButton){
         self.showScrollToTopButton = scrollView.contentOffset.y >= self.scrollView.height * 3;
     }
 }

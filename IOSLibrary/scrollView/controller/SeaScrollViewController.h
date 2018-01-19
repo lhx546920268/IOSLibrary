@@ -67,7 +67,7 @@
 
 /**初始化视图 默认不做任何事 ，子类按需实现该方法
  */
-- (void)initialization;
+- (void)initialization NS_REQUIRES_SUPER;
 
 ///以下的两个方法默认不做任何事，子类按需实现
 
@@ -81,7 +81,7 @@
 
 ///以下的两个方法，刷新结束或加载结束时调用，如果子类重写，必须调用 super方法
 
-- (void)stopRefresh;
+- (void)stopRefresh NS_REQUIRES_SUPER;
 
 /**结束下拉刷新
  *@param msg 提示的信息，nil则提示 “刷新成功”

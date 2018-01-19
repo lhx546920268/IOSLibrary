@@ -627,14 +627,14 @@
 		100B1C801FDA97BD00FBCD62 /* layout */ = {
 			isa = PBXGroup;
 			children = (
-				100B1C811FDA97BD00FBCD62 /* SeaCollectionViewFlowLayout.m */,
-				100B1C821FDA97BD00FBCD62 /* SeaCollectionViewWaterLayout.m */,
-				100B1C831FDA97BD00FBCD62 /* SeaCollectionViewFlowFillLayout.h */,
-				100B1C841FDA97BD00FBCD62 /* SeaCollectionViewDraggableLayout.m */,
-				100B1C851FDA97BD00FBCD62 /* SeaCollectionViewWaterLayout.h */,
-				100B1C861FDA97BD00FBCD62 /* SeaCollectionViewFlowLayout.h */,
-				100B1C871FDA97BD00FBCD62 /* SeaCollectionViewFlowFillLayout.m */,
 				100B1C881FDA97BD00FBCD62 /* SeaCollectionViewDraggableLayout.h */,
+				100B1C841FDA97BD00FBCD62 /* SeaCollectionViewDraggableLayout.m */,
+				100B1C831FDA97BD00FBCD62 /* SeaCollectionViewFlowFillLayout.h */,
+				100B1C871FDA97BD00FBCD62 /* SeaCollectionViewFlowFillLayout.m */,
+				100B1C861FDA97BD00FBCD62 /* SeaCollectionViewFlowLayout.h */,
+				100B1C811FDA97BD00FBCD62 /* SeaCollectionViewFlowLayout.m */,
+				100B1C851FDA97BD00FBCD62 /* SeaCollectionViewWaterLayout.h */,
+				100B1C821FDA97BD00FBCD62 /* SeaCollectionViewWaterLayout.m */,
 			);
 			path = layout;
 			sourceTree = "<group>";
@@ -987,20 +987,20 @@
 			isa = PBXGroup;
 			children = (
 				10CB0A202005BCA80067ADDB /* SeaTextCell.h */,
-				10CB0A212005BCA80067ADDB /* SeaTextLoadingListCell.m */,
-				10CB0A222005BCA80067ADDB /* SeaTextListCell.xib */,
-				10CB0A232005BCA80067ADDB /* SeaTitleContentCell.h */,
-				10CB0A242005BCA80067ADDB /* SeaTextFieldCell.h */,
-				10CB0A252005BCA80067ADDB /* SeaTextListCell.h */,
-				10CB0A262005BCA80067ADDB /* SeaTextSwitchListCell.m */,
-				10CB0A272005BCA80067ADDB /* SeaTextLoadingListCell.h */,
 				10CB0A282005BCA80067ADDB /* SeaTextCell.m */,
-				10CB0A292005BCA80067ADDB /* SeaTitleContentCell.m */,
-				10CB0A2A2005BCA80067ADDB /* SeaTextSwitchListCell.xib */,
-				10CB0A2B2005BCA80067ADDB /* SeaTextLoadingListCell.xib */,
+				10CB0A242005BCA80067ADDB /* SeaTextFieldCell.h */,
 				10CB0A2C2005BCA80067ADDB /* SeaTextFieldCell.m */,
-				10CB0A2D2005BCA80067ADDB /* SeaTextSwitchListCell.h */,
+				10CB0A252005BCA80067ADDB /* SeaTextListCell.h */,
 				10CB0A2E2005BCA80067ADDB /* SeaTextListCell.m */,
+				10CB0A222005BCA80067ADDB /* SeaTextListCell.xib */,
+				10CB0A272005BCA80067ADDB /* SeaTextLoadingListCell.h */,
+				10CB0A212005BCA80067ADDB /* SeaTextLoadingListCell.m */,
+				10CB0A2B2005BCA80067ADDB /* SeaTextLoadingListCell.xib */,
+				10CB0A2D2005BCA80067ADDB /* SeaTextSwitchListCell.h */,
+				10CB0A262005BCA80067ADDB /* SeaTextSwitchListCell.m */,
+				10CB0A2A2005BCA80067ADDB /* SeaTextSwitchListCell.xib */,
+				10CB0A232005BCA80067ADDB /* SeaTitleContentCell.h */,
+				10CB0A292005BCA80067ADDB /* SeaTitleContentCell.m */,
 			);
 			path = tableViewCell;
 			sourceTree = "<group>";

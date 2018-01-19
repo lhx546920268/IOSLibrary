@@ -9,9 +9,9 @@
 #import "SeaRadarView.h"
 #import "UIColor+Utils.h"
 #import "NSString+Utils.h"
+#import "SeaBasic.h"
 
 @implementation SeaRadarInfo
-
 
 
 @end
@@ -160,7 +160,7 @@
     CGContextSetStrokeColorWithColor(cx, self.dataStrokeColor.CGColor);
     CGContextStrokePath(cx);
     
-    UIFont *font = [UIFont systemFontOfSize:9.0];
+    UIFont *font = [UIFont fontWithName:SeaMainFontName size:9.0];
     UIColor *textColor = self.dataStrokeColor;
 
     float fontHeight = font.descender - font.ascender;

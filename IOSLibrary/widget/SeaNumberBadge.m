@@ -1,12 +1,26 @@
 //
 //  SeaNumberBadge.m
-
+//  IOSLibrary
 //
+//  Created by 罗海雄 on 2017/12/15.
+//  Copyright © 2017年 罗海雄. All rights reserved.
 //
 
 #import "SeaNumberBadge.h"
-#import "SeaBasic.h"
 #import "NSString+Utils.h"
+#import "UIFont+Utils.h"
+#import "UIColor+Utils.h"
+#import "SeaBasic.h"
+
+@interface SeaNumberBadge()
+
+///内容大小
+@property(nonatomic, assign) CGSize contentSize;
+
+///文字大小
+@property(nonatomic, assign) CGSize textSize;
+
+@end
 
 @implementation SeaNumberBadge
 
@@ -33,98 +47,71 @@
 {
     self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;
+    self.shouldAutoAdjustSize = YES;
+    _contentInsets = UIEdgeInsetsMake(3, 5, 3, 5);
     
-    self.fillColor = [UIColor redColor];
-    self.strokeColor = [UIColor clearColor];
-    self.textColor = [UIColor whiteColor];
-    self.font = [UIFont fontWithName:SeaMainFontName size:13.0];
-    self.point = NO;
-    self.pointRadius = 5.0;
-    self.pointCenter = CGPointMake(self.frame.size.width / 2.0, self.frame.size.height / 2.0);
-    self.hiddenWhenZero = YES;
-    self.maxNum = 99;
+    _fillColor = [UIColor redColor];
+    _strokeColor = [UIColor clearColor];
+    _textColor = [UIColor whiteColor];
+    _font = [UIFont fontWithName:SeaMainFontName size:16];
+    _pointRadius = 5.0;
+    _hideWhenZero = YES;
+    _max = 99;
     self.hidden = YES;
+}
+
+- (CGSize)intrinsicContentSize
+{
+    return self.contentSize;
+}
+
+- (void)setContentInsets:(UIEdgeInsets)contentInsets
+{
+    if(!UIEdgeInsetsEqualToEdgeInsets(_contentInsets, contentInsets)){
+        _contentInsets = contentInsets;
+        [self refresh];
+    }
+}
+
+- (void)setContentSize:(CGSize)contentSize
+{
+    if(!CGSizeEqualToSize(_contentSize, contentSize)){
+        _contentSize = contentSize;
+        if(self.shouldAutoAdjustSize){
+            self.bounds = CGRectMake(0, 0, _contentSize.width, _contentSize.height);
+        }
+        [self invalidateIntrinsicContentSize];
+    }
 }
 
 - (void)drawRect:(CGRect)rect
 {
-    if(_point){
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, self.fillColor.CGColor);
-        CGContextAddArc(context, _pointCenter.x, _pointCenter.y, self.pointRadius, 0, 2.0 * M_PI, YES);
-        CGContextFillPath(context);
+    CGContextRef cx = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(cx);
+    CGFloat width = rect.size.width;
+    CGFloat height = rect.size.height;
+    
+    CGContextSetFillColorWithColor(cx, self.fillColor.CGColor );
+    CGContextSetStrokeColorWithColor(cx, self.strokeColor.CGColor);
+    CGContextSetLineWidth(cx, 1);
+    
+    if(self.point){
+        CGContextAddArc(cx, width / 2, height / 2, self.pointRadius, 0, 2.0 * M_PI, YES);
+        CGContextFillPath(cx);
     }else{
         
-        CGContextRef cx = UIGraphicsGetCurrentContext();
-        NSString *numberString = self.value;
-        
-        CGSize numberSize = [numberString sea_stringSizeWithFont:self.font contraintWith:CGFLOAT_MAX];
-        
-        CGPathRef badgePath = [self newBadgePathForTextSize:numberSize];
-        
-        CGRect badgeRect = CGPathGetBoundingBox(badgePath);
-        
-        badgeRect.origin.x = 0;
-        badgeRect.origin.y = 0;
-        badgeRect.size.width = ceil( badgeRect.size.width );
-        badgeRect.size.height = ceil( badgeRect.size.height );
-        
-        CGContextSaveGState(cx);
-        CGContextSetFillColorWithColor(cx, self.fillColor.CGColor );
-        CGContextSetStrokeColorWithColor(cx, self.strokeColor.CGColor);
-        
-        CGPoint point = CGPointZero;
-        point = CGPointMake(round((rect.size.width - rect.size.width) / 2.0), round((rect.size.height - badgeRect.size.height) / 2.0));
-        
-        if(numberString.length >= 3){
-            point.x -= 3.0;
-        }
-        
-        CGContextTranslateCTM(cx, point.x, point.y);
-        
-        CGContextBeginPath(cx);
-        CGContextAddPath(cx, badgePath);
-        CGContextClosePath(cx);
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:height / 2];
+        CGContextAddPath(cx, path.CGPath);
         CGContextDrawPath(cx, kCGPathFillStroke);
         
-        CGContextRestoreGState(cx);
-        CGPathRelease(badgePath);
-        
-        CGContextSaveGState(cx);
-        CGContextSetFillColorWithColor(cx, self.textColor.CGColor);
-        
-        CGPoint textPt = CGPointMake(point.x + (badgeRect.size.width - numberSize.width) / 2.0 , point.y + (badgeRect.size.height - numberSize.height) / 2.0);
-    
-        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:self.font, NSFontAttributeName, self.textColor, NSForegroundColorAttributeName, nil];
-        [numberString drawAtPoint:textPt withAttributes:attributes];
-
-        CGContextRestoreGState(cx);
+        //绘制文字
+        CGPoint point = CGPointMake((width - _textSize.width) / 2, (height - _textSize.height) / 2);
+        NSDictionary *attrs = @{NSFontAttributeName : _font,
+                                NSForegroundColorAttributeName : _textColor
+                                };
+        [self.value drawAtPoint:point withAttributes:attrs];
     }
-}
-
-- (CGPathRef)newBadgePathForTextSize:(CGSize)inSize
-{
-    CGFloat expand = self.value.length >= 4 ? 0 : 2.0;
-    CGFloat arcRadius = ceil((inSize.height + expand) / 2.0);
-    
-    CGFloat badgeWidthAdjustment = inSize.width - inSize.height / 2.0;
-    CGFloat badgeWidth = 2.0 * arcRadius;
-    
-    if (badgeWidthAdjustment > 0.0){
-        badgeWidth += badgeWidthAdjustment;
-    }
-    
-    
-    CGMutablePathRef badgePath = CGPathCreateMutable();
-    
-    CGPathMoveToPoint(badgePath, NULL, arcRadius, 0);
-    CGPathAddArc(badgePath, NULL, arcRadius, arcRadius, arcRadius, 3.0 * M_PI_2, M_PI_2, YES);
-    CGPathAddLineToPoint(badgePath, NULL, badgeWidth - arcRadius, 2.0 * arcRadius);
-    CGPathAddArc(badgePath, NULL, badgeWidth - arcRadius, arcRadius, arcRadius, M_PI_2, 3.0 * M_PI_2, YES);
-    CGPathAddLineToPoint(badgePath, NULL, arcRadius, 0);
-    
-    return badgePath;
-    
+    CGContextRestoreGState(cx);
 }
 
 #pragma mark- private method
@@ -133,6 +120,58 @@
 {
     if(_point != point){
         _point = point;
+        [self refresh];
+    }
+}
+
+- (void)setPointRadius:(CGFloat)pointRadius
+{
+    if(_pointRadius != pointRadius){
+        _pointRadius = pointRadius;
+        [self refresh];
+    }
+}
+
+- (void)setTextColor:(UIColor *)textColor
+{
+    if(![_textColor isEqualToColor:textColor]){
+        if(!textColor){
+            textColor = [UIColor whiteColor];
+        }
+        _textColor = textColor;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setFont:(UIFont *)font
+{
+    if(![_font isEqualToFont:font]){
+        if(!font){
+            font = [UIFont fontWithName:SeaMainFontName size:16.0];
+        }
+        _font = font;
+        [self refresh];
+    }
+}
+
+- (void)setFillColor:(UIColor *)fillColor
+{
+    if(![_fillColor isEqualToColor:fillColor]){
+        if(!fillColor){
+            fillColor = [UIColor redColor];
+        }
+        _fillColor = fillColor;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setStrokeColor:(UIColor *)strokeColor
+{
+    if(![_strokeColor isEqualToColor:strokeColor]){
+        if(!strokeColor){
+            strokeColor = [UIColor clearColor];
+        }
+        _strokeColor = strokeColor;
         [self setNeedsDisplay];
     }
 }
@@ -144,21 +183,44 @@
             value = @"0";
         
         if([value isInteger]){
-            NSInteger num = [value integerValue];
-            if(num < 0)
-                num = 0;
-            if(num <= self.maxNum){
-                _value = [[NSString stringWithFormat:@"%d", (int)num] copy];
+            NSInteger number = [value integerValue];
+            if(number < 0)
+                number = 0;
+            if(number <= self.max){
+                _value = [NSString stringWithFormat:@"%d", (int)number];
             }else{
-                _value = [[NSString stringWithFormat:@"%d+", self.maxNum] copy];
+                _value = [NSString stringWithFormat:@"%d+", self.max];
             }
-            self.hidden = self.hiddenWhenZero && num == 0;
+            self.hidden = self.hideWhenZero && number == 0;
         }else{
+            self.hidden = NO;
             _value = [value copy];
         }
         
-        [self setNeedsDisplay];
+        [self refresh];
     }
 }
 
+///刷新
+- (void)refresh
+{
+    CGSize contentSize = CGSizeZero;
+    if(self.point){
+        contentSize = CGSizeMake(self.pointRadius * 2, self.pointRadius * 2);
+    }else{
+        _textSize = [self.value sizeWithAttributes:@{NSFontAttributeName : _font}];
+        
+        CGFloat width = _textSize.width + self.contentInsets.left + self.contentInsets.right;
+        CGFloat height = _textSize.height + self.contentInsets.top + self.contentInsets.bottom;
+        
+        contentSize.width = MAX(width, height);
+        contentSize.height = height;
+    }
+    
+    self.contentSize = contentSize;
+    
+    [self setNeedsDisplay];
+}
+
 @end
+

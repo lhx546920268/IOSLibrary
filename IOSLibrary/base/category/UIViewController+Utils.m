@@ -19,6 +19,7 @@
 #import "SeaNetworkActivityView.h"
 #import "UIColor+Utils.h"
 #import "UIView+SeaEmptyView.h"
+#import "SeaPresentTransitionDelegate.h"
 
 /**导航条按钮位置
  */
@@ -37,14 +38,6 @@ static char SeaStatusBarHiddenKey;
 /**按钮标题颜色
  */
 static char SeaIconTintColorKey;
-
-/**自定义tabBar
- */
-static char SeaTabBarControllerKey;
-
-/**是否隐藏
- */
-static char SeaHideTabBarKey;
 
 /**过渡代理
  */
@@ -170,13 +163,10 @@ static char SeaTransitioningDelegateKey;
  */
 - (CGFloat)sea_tabBarHeight
 {
-    if(self.sea_tabBarController)
-    {
-        return self.sea_tabBarController.tabBar.height;
-    }
-    else
-    {
+    if(self.tabBarController){
         return self.tabBarController.tabBar.height;
+    }else{
+        return SeaTabBarHeight;
     }
 }
 
@@ -308,83 +298,57 @@ static char SeaTransitioningDelegateKey;
 
 #pragma mark- back
 
-//返回方法
 - (void)sea_back
 {
     [self sea_backAnimated:YES];
 }
 
-/**返回方法 支持present和push出来的视图
- *@param flag 是否动画
- */
 - (void)sea_backAnimated:(BOOL) flag
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
     
-    if(self.navigationController.viewControllers.count == 1)
-    {
+    if(self.navigationController.viewControllers.count == 1){
         [self dismissViewControllerAnimated:flag completion:nil];
-    }
-    else
-    {
+    }else{
         [self.navigationController popViewControllerAnimated:flag];
     }
 }
 
-/**返回根视图，支持present和push出来的视图
- *@param flag 是否动画
- */
 - (void)sea_backToRootViewControllerAnimated:(BOOL) flag
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
 
     ///是present出来的
-    if(self.presentingViewController)
-    {
+    if(self.presentingViewController){
         UIViewController *root = [self sea_rootPresentingViewController];
-        if(root.navigationController.viewControllers.count > 1)
-        {
+        if(root.navigationController.viewControllers.count > 1){
             ///dismiss 之后还有 pop,所以dismiss无动画
             [root dismissViewControllerAnimated:NO completion:nil];
             [root.navigationController popToRootViewControllerAnimated:flag];
-        }
-        else
-        {
+        }else{
             [root dismissViewControllerAnimated:flag completion:nil];
         }
-    }
-    else
-    {
+    }else{
         [self.navigationController popToRootViewControllerAnimated:flag];
     }
 }
 
-/**获取最上层的 presentedViewController
- */
 - (UIViewController*)sea_topestPresentedViewController
 {
-    if(self.presentedViewController)
-    {
+    if(self.presentedViewController){
         return [self.presentedViewController sea_topestPresentedViewController];
-    }
-    else
-    {
+    }else{
         return self;
     }
 }
 
-/**获取最底层的 presentingViewController
- */
 - (UIViewController*)sea_rootPresentingViewController
 {
-    if(self.presentingViewController)
-    {
+    if(self.presentingViewController){
         return [self.presentingViewController sea_rootPresentingViewController];
-    }
-    else
-    {
+    }else{
         return self;
     }
 }
@@ -392,8 +356,7 @@ static char SeaTransitioningDelegateKey;
 //长按返回第一个视图
 - (void)longPressBack:(UILongPressGestureRecognizer*) longPress
 {
-    if(longPress.state == UIGestureRecognizerStateBegan)
-    {
+    if(longPress.state == UIGestureRecognizerStateBegan){
         [self sea_backToRootViewControllerAnimated:YES];
     }
 }
@@ -541,30 +504,9 @@ static char SeaTransitioningDelegateKey;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark- sea_tabBar
-
-/**关联的选项卡 default is 'nil'
- */
-- (void)setSea_tabBarController:(SeaTabBarController *) tabBarController
+- (void)sea_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController
 {
-    objc_setAssociatedObject(self, &SeaTabBarControllerKey, tabBarController, OBJC_ASSOCIATION_ASSIGN);
-}
-
-- (SeaTabBarController*)sea_tabBarController
-{
-    return objc_getAssociatedObject(self, &SeaTabBarControllerKey);
-}
-
-/**当viewWillAppear时是否隐藏选项卡 default is 'YES'
- */
-- (void)setSea_hideTabBar:(BOOL) hideTabBar
-{
-    objc_setAssociatedObject(self, &SeaHideTabBarKey, @(hideTabBar), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (BOOL)sea_hideTabBar
-{
-    return [objc_getAssociatedObject(self, &SeaHideTabBarKey) boolValue];
+    [SeaPresentTransitionDelegate pushViewController:viewController useNavigationBar:YES parentedViewConttroller:self];
 }
 
 #pragma mark- Class Method

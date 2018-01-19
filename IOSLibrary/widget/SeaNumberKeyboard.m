@@ -99,7 +99,7 @@
             }
             
             [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            btn.titleLabel.font = [UIFont systemFontOfSize:27.0];
+            btn.titleLabel.font = [UIFont fontWithName:SeaMainFontName size:27.0];
             [btn addTarget:self action:@selector(buttonDidClick:) forControlEvents:UIControlEventTouchUpInside];
             btn.tag = i;
             btn.frame = CGRectMake(currentColumn * (buttonWidth + margin), (buttonHeight + margin) * (currentRow - 1), buttonWidth, buttonHeight);

@@ -46,8 +46,7 @@
 - (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
+    if(self){
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         self.duration = 0.35;
         self.dismissWhenTapBackground = YES;
@@ -68,8 +67,7 @@
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    if(!self.animator)
-    {
+    if(!self.animator){
         self.animator = [[SeaPartialPresentTransitionAnimator alloc] init];
         self.animator.delegate = self;
     }
@@ -90,15 +88,10 @@
 ///背后的ViewController视图，由于present动画完成后，背后的viewController会被移除，所以要生成一张图片，放在后面
 @property(nonatomic,strong) UIImageView *backgroundImageView;
 
-
 @end
 
 @implementation SeaPartialPresentTransitionAnimator
 
-- (void)dealloc
-{
-
-}
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
@@ -115,13 +108,10 @@
     UIView *toView;
 
     ///ios 8 才有的api
-    if([transitionContext respondsToSelector:@selector(viewForKey:)])
-    {
+    if([transitionContext respondsToSelector:@selector(viewForKey:)]){
         fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
         toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    }
-    else
-    {
+    }else{
         fromView = fromViewController.view;
         toView = toViewController.view;
     }
@@ -130,21 +120,17 @@
     BOOL isPresenting = toViewController.presentingViewController == fromViewController;
 
     ///背景视图
-    if(isPresenting)
-    {
+    if(isPresenting){
         self.backgroundView = [[UIView alloc] initWithFrame:containerView.bounds];
         self.backgroundView.backgroundColor = self.delegate.backgroundColor;
-        if(self.delegate.dismissWhenTapBackground)
-        {
+        if(self.delegate.dismissWhenTapBackground){
             ///防止手势冲突
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
             tap.delegate = self;
             self.presentedViewController = toViewController;
             [self.backgroundView addGestureRecognizer:tap];
             self.backgroundView.userInteractionEnabled = YES;
-        }
-        else
-        {
+        }else{
             self.backgroundView.userInteractionEnabled = NO;
         }
         self.backgroundView.alpha = 0;
@@ -157,23 +143,18 @@
     CGRect fromFrame = fromView.frame;
     CGRect toFrame = toView.frame;
 
-
-    if(isPresenting)
-    {
+    if(isPresenting){
         fromView.frame = fromFrame;
         fromView.hidden = YES;
 
-        switch (self.delegate.transitionStyle)
-        {
-            case SeaPresentTransitionStyleCoverVertical :
-            {
+        switch (self.delegate.transitionStyle){
+            case SeaPresentTransitionStyleCoverVertical : {
                 toFrame.origin.y = containerView.height - toFrame.size.height;
                 toFrame.origin.x = (containerView.width - toFrame.size.width) / 2.0;
                 toView.frame = CGRectOffset(toFrame, 0, toFrame.size.height);
             }
                 break;
-            case SeaPresentTransitionStyleCoverHorizontal :
-            {
+            case SeaPresentTransitionStyleCoverHorizontal : {
                 toFrame.origin.y = (containerView.height - toFrame.size.height) / 2.0;
                 toFrame.origin.x = containerView.width - toFrame.size.width;
                 toView.frame = CGRectOffset(toFrame, toFrame.size.width, 0);
@@ -184,9 +165,7 @@
         [containerView addSubview:toView];
         [containerView insertSubview:self.backgroundView belowSubview:toView];
         [containerView insertSubview:self.backgroundImageView atIndex:0];
-    }
-    else
-    {
+    }else{
         toView.hidden = YES;
         fromView.frame = fromFrame;
         toView.frame = toFrame;
@@ -195,23 +174,17 @@
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^(void){
 
-        if(isPresenting)
-        {
+        if(isPresenting){
             toView.frame = toFrame;
             self.backgroundImageView.transform = self.delegate.backTransform;
             self.backgroundView.alpha = 1.0;
-        }
-        else
-        {
-            switch (self.delegate.transitionStyle)
-            {
-                case SeaPresentTransitionStyleCoverHorizontal :
-                {
+        }else{
+            switch (self.delegate.transitionStyle){
+                case SeaPresentTransitionStyleCoverHorizontal : {
                     fromView.frame = CGRectOffset(fromFrame, toFrame.size.width, 0);
                 }
                     break;
-                case SeaPresentTransitionStyleCoverVertical :
-                {
+                case SeaPresentTransitionStyleCoverVertical : {
                     fromView.frame = CGRectOffset(fromFrame, 0, toFrame.size.height);
                 }
                     break;
@@ -226,8 +199,7 @@
         [transitionContext completeTransition:YES];
 
         ///移除背景视图
-        if(!isPresenting)
-        {
+        if(!isPresenting){
             [self.backgroundView removeFromSuperview];
             [self.backgroundImageView removeFromSuperview];
             toView.hidden = NO;
@@ -250,8 +222,7 @@
 {
     CGPoint point = [gestureRecognizer locationInView:gestureRecognizer.view];
 
-    if(CGRectContainsPoint(self.presentedViewController.view.frame, point))
-    {
+    if(CGRectContainsPoint(self.presentedViewController.view.frame, point)){
         return NO;
     }
 

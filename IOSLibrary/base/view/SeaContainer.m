@@ -12,7 +12,6 @@
 
 @interface SeaContainer()
 
-
 @end
 
 @implementation SeaContainer
@@ -78,13 +77,14 @@
             }
             
             if(self.contentView){
-                self.contentView.sea_topLayoutConstraint.priority = UILayoutPriorityDefaultLow;
-                [self.contentView sea_topToItemBottom:_topView].priority = UILayoutPriorityDefaultHigh;
+                self.contentView.sea_topLayoutConstraint.active = NO;
+                [self.contentView sea_topToItemBottom:_topView];
             }
             [_topView layoutIfNeeded];
             _topViewOriginalHeight = _topView.bounds.size.height;
         }else{
             _topViewOriginalHeight = 0;
+            [self.contentView sea_topToSuperview];
         }
     }
 }
@@ -107,15 +107,17 @@
             
             [_contentView sea_leftToSuperview];
             [_contentView sea_rightToSuperview];
-            [_contentView sea_topToSuperview].priority = UILayoutPriorityDefaultLow;
-            [_contentView sea_bottomToSuperview].priority = UILayoutPriorityDefaultLow;
             
             if(_topView){
-                [_contentView sea_topToItemBottom:_topView].priority = UILayoutPriorityDefaultHigh;
+                [_contentView sea_topToItemBottom:_topView];
+            }else{
+                [_contentView sea_topToSuperview];
             }
             
             if(_bottomView){
-                [_contentView sea_bottomToItemTop:_bottomView].priority = UILayoutPriorityDefaultHigh;
+                [_contentView sea_bottomToItemTop:_bottomView];
+            }else{
+                [_contentView sea_bottomToSuperview];
             }
         }
     }
@@ -128,12 +130,6 @@
     [self setBottomView:bottomView height:SeaWrapContent];
 }
 
-/**
- 设置底部视图
- 
- @param bottomView 底部视图
- @param height 视图高度，SeaWrapContent 为自适应
- */
 - (void)setBottomView:(UIView *)bottomView height:(CGFloat) height
 {
     if(_bottomView != bottomView){
@@ -158,35 +154,30 @@
             }
             
             if(self.contentView){
-                self.contentView.sea_bottomLayoutConstraint.priority = UILayoutPriorityDefaultLow;
-                [self.contentView sea_bottomToItemTop:_bottomView].priority = UILayoutPriorityDefaultHigh;
+                self.contentView.sea_bottomLayoutConstraint.active = NO;
+                [self.contentView sea_bottomToItemTop:_bottomView];
             }
             [_bottomView layoutIfNeeded];
             _bottomViewOriginalHeight = _bottomView.bounds.size.height;
         }else{
             _bottomViewOriginalHeight = 0;
+            [self.contentView sea_bottomToSuperview];
         }
     }
 }
 
-/**
- 设置顶部视图隐藏 视图必须有高度约束
- 
- @param hidden 是否隐藏
- @param animate 是否动画
- */
 - (void)setTopViewHidden:(BOOL) hidden animate:(BOOL) animate
 {
-    NSLayoutConstraint *constraint = self.topView.sea_heightLayoutConstraint;
+    NSLayoutConstraint *constraint = self.topView.sea_bottomLayoutConstraint;
     if(constraint){
         if(!hidden){
             self.topView.hidden = hidden;
         }
         
         WeakSelf(self);
-        [UIView animateWithDuration:0.35 animations:^(void){
+        [UIView animateWithDuration:0.25 animations:^(void){
             
-            constraint.constant = hidden ? 0 : weakSelf.topViewOriginalHeight;
+            constraint.constant = hidden ? 0 : -weakSelf.topViewOriginalHeight;
             [weakSelf layoutIfNeeded];
         } completion:^(BOOL finished){
             
@@ -195,24 +186,18 @@
     }
 }
 
-/**
- 设置底部视图隐藏 视图必须有高度约束
- 
- @param hidden 是否隐藏
- @param animate 是否动画
- */
 - (void)setBottomViewHidden:(BOOL) hidden animate:(BOOL) animate
 {
-    NSLayoutConstraint *constraint = self.bottomView.sea_heightLayoutConstraint;
+    NSLayoutConstraint *constraint = self.bottomView.sea_bottomLayoutConstraint;
     if(constraint){
         if(!hidden){
             self.bottomView.hidden = hidden;
         }
         
         WeakSelf(self);
-        [UIView animateWithDuration:0.35 animations:^(void){
+        [UIView animateWithDuration:0.25 animations:^(void){
             
-            constraint.constant = hidden ? 0 : weakSelf.bottomViewOriginalHeight;
+            constraint.constant = !hidden ? 0 : -weakSelf.bottomViewOriginalHeight;
             [weakSelf layoutIfNeeded];
         } completion:^(BOOL finished){
             

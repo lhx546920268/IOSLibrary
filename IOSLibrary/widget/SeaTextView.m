@@ -8,6 +8,7 @@
 
 #import "SeaTextView.h"
 #import "NSString+Utils.h"
+#import "SeaBasic.h"
 
 @protocol UITextPasteConfigurationSupporting;
 
@@ -112,7 +113,7 @@
 - (void)setTextLengthAttributes:(NSDictionary *)textLengthAttributes
 {
     if(textLengthAttributes.count == 0)
-        textLengthAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13.0], NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
+        textLengthAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:SeaMainFontName size:13.0], NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
     _textLengthAttributes = textLengthAttributes;
     [self updatePlaceholder];
 }
@@ -180,7 +181,7 @@
     _maxLength = NSUIntegerMax;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sea_textDidChange:) name:UITextViewTextDidChangeNotification object:self];
     
-    self.placeholderFont = [UIFont systemFontOfSize:15.0];
+    self.placeholderFont = [UIFont fontWithName:SeaMainFontName size:15.0];
     self.placeholderTextColor = nil;
     self.placeholderOffset = CGPointMake(8.0f, 8.0f);
     self.textLengthAttributes = nil;

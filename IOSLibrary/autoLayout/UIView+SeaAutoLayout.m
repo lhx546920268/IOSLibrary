@@ -821,9 +821,9 @@
             //item2.attribute2 = item1.attribute1 - constant
             constraints = self.superview.constraints;
             for(NSLayoutConstraint *constraint in constraints){
-                if(constraint.firstItem == self && constraint.firstAttribute == attribute && constraint.constant >= 0){
+                if(constraint.firstItem == self && constraint.firstAttribute == attribute){
                     [matchs addObject:constraint];
-                }else if (constraint.secondItem == self && constraint.secondAttribute == attribute && constraint.constant <= 0){
+                }else if (constraint.secondItem == self && constraint.secondAttribute == attribute){
                     [matchs addObject:constraint];
                 }
             }
@@ -836,9 +836,9 @@
             //item2.attribute2 = item1.attribute1 + constant
             constraints = self.superview.constraints;
             for(NSLayoutConstraint *constraint in constraints){
-                if(constraint.firstItem == self && constraint.firstAttribute == attribute && constraint.constant <= 0){
+                if(constraint.firstItem == self && constraint.firstAttribute == attribute){
                     [matchs addObject:constraint];
-                }else if (constraint.secondItem == self && constraint.secondAttribute == attribute && constraint.constant >= 0){
+                }else if (constraint.secondItem == self && constraint.secondAttribute == attribute){
                     [matchs addObject:constraint];
                 }
             }

@@ -8,6 +8,7 @@
 
 #import "SeaLabel.h"
 #import <CoreText/CoreText.h>
+#import "SeaBasic.h"
 
 //系统默认的蓝色
 #define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
@@ -230,7 +231,7 @@ static NSString *const SeaURLRegex = @"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\
 {
     if(!font)
     {
-        font = [UIFont systemFontOfSize:17.0];
+        font = [UIFont fontWithName:SeaMainFontName size:17.0];
     }
     if(_font != font)
     {

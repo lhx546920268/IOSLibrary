@@ -9,6 +9,7 @@
 #import "SeaProgressView.h"
 #import "UIView+SeaAutoLayout.h"
 #import "UIColor+Utils.h"
+#import "SeaBasic.h"
 
 @interface SeaProgressView ()<CAAnimationDelegate>
 
@@ -153,7 +154,7 @@
             if(!self.percentLabel){
                 _percentLabel = [UILabel new];
                 _percentLabel.textColor = [UIColor blackColor];
-                _percentLabel.font = [UIFont systemFontOfSize:20];
+                _percentLabel.font = [UIFont fontWithName:SeaMainFontName size:20];
                 _percentLabel.textAlignment = NSTextAlignmentCenter;
                 [self addSubview:_percentLabel];
                 

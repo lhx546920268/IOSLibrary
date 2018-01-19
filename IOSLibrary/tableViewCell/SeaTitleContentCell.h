@@ -15,7 +15,7 @@
 #define _SeaTitleContentCellHeight_ 45.0
 
 //字体
-#define _SeaTitleContentCellFont_ [UIFont systemFontOfSize:15.0]
+#define _SeaTitleContentCellFont_ [UIFont fontWithName:SeaMainFontName size:15.0]
 
 //标题宽度
 #define _SeaTitleContentCellTitleWidth_ 70.0

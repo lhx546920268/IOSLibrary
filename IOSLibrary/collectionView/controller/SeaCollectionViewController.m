@@ -69,6 +69,7 @@
  */
 - (void)initialization
 {
+    [super initialization];
     [self initCollectionView];
     self.scrollView = _collectionView;
 }

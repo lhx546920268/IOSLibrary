@@ -11,7 +11,6 @@
 @class SeaFailPageView,
 SeaPageLoadingView,
 SeaNavigationController,
-SeaTabBarController,
 SeaNetworkActivityView,
 SeaToast,
 SeaEmptyView;
@@ -72,14 +71,6 @@ SeaEmptyView;
 
 ///设置显示空视图
 @property(nonatomic,assign) BOOL sea_showEmptyView;
-
-/**关联的选项卡 default is 'nil'
- */
-@property(nonatomic,weak) SeaTabBarController *sea_tabBarController;
-
-/**当viewWillAppear时是否隐藏选项卡 default is 'YES'
- */
-@property(nonatomic,assign) BOOL sea_hideTabBar;
 
 /**重新加载数据 默认不做任何事，子类可以重写该方法
  */
@@ -213,6 +204,11 @@ SeaEmptyView;
  [self.navigationController pushViewController:viewController animated:YES]
  */
 - (void)sea_pushViewController:(UIViewController*) viewController;
+
+/**
+ 使用自定义过渡方式
+ */
+- (void)sea_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController;
 
 #pragma mark- Class Method
 

@@ -13,6 +13,7 @@
 #import <SeaCollectionViewController.h>
 #import <SeaPageViewController.h>
 #import <SeaTableViewController.h>
+#import <SeaDialogViewController.h>
 #import <UIViewController+Utils.h>
 
 

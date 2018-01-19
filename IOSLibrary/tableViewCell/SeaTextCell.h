@@ -9,7 +9,7 @@
 #define _SeaTextCellMargin_ 15.0
 
 //字体
-#define _SeaTextCellFont_ [UIFont systemFontOfSize:15.0]
+#define _SeaTextCellFont_ [UIFont fontWithName:SeaMainFontName size:15.0]
 
 /**单文本
  */

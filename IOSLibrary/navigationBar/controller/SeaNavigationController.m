@@ -39,24 +39,8 @@
     return self;
 }
 
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//   
-//    //这里要把状态栏样式还原
-//}
-
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    //设置选项卡和隐藏状态
-    if([viewController isKindOfClass:[SeaViewController class]]){
-        SeaViewController *tmp = [self.viewControllers lastObject];
-        if([tmp isKindOfClass:[SeaViewController class]]){
-            SeaViewController *vc = (SeaViewController*)viewController;
-            vc.sea_tabBarController = tmp.sea_tabBarController;
-        }
-    }
-    
     if([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES){
         self.interactivePopGestureRecognizer.enabled = NO;
     }
@@ -74,13 +58,11 @@
     
     if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.interactivePopGestureRecognizer.delegate = weakSelf;
-        
         self.delegate = weakSelf;
     }
-    
 }
 
-- (NSArray *)popToRootViewControllerAnimated:(BOOL)animated
+- (NSArray*)popToRootViewControllerAnimated:(BOOL)animated
 {
     if([self respondsToSelector:@selector(interactivePopGestureRecognizer)] && animated == YES){
         self.interactivePopGestureRecognizer.enabled = NO;
@@ -89,7 +71,7 @@
     return [super popToRootViewControllerAnimated:animated];
 }
 
-- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (NSArray*)popToViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if([self respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.interactivePopGestureRecognizer.enabled = NO;
@@ -112,9 +94,8 @@
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (gestureRecognizer == self.interactivePopGestureRecognizer)
-    {
-        if (self.viewControllers.count < 2 || self.visibleViewController == [self.viewControllers firstObject] ){
+    if (gestureRecognizer == self.interactivePopGestureRecognizer){
+        if (self.viewControllers.count < 2 || self.visibleViewController == [self.viewControllers firstObject]){
             return NO;
         }else{
             [[UIApplication sharedApplication].keyWindow endEditing:YES];
@@ -140,17 +121,10 @@
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
-    SeaViewController *vc = [self.viewControllers lastObject];
-    
     UIViewController *viewController = viewControllerToPresent;
     
     if([viewController isKindOfClass:[UINavigationController class]]){
         viewController = [[(UINavigationController*)viewControllerToPresent viewControllers] lastObject];
-    }
-    
-    if([vc isKindOfClass:[SeaViewController class]] && [viewController isKindOfClass:[SeaViewController class]]){
-        SeaViewController *tmp = (SeaViewController*)viewController;
-        tmp.sea_tabBarController = vc.sea_tabBarController;
     }
     
     [super presentViewController:viewControllerToPresent animated:flag completion:completion];

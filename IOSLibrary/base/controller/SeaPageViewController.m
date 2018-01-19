@@ -156,17 +156,11 @@
     
     //向左还是向右
     NSUInteger willIndex = toRight ? self.menuBar.selectedIndex + 1 : self.menuBar.selectedIndex - 1;
+
     [self.menuBar setPercent:percent forIndex:willIndex];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate){
-        [self scrollToVisibleIndex];
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self scrollToVisibleIndex];
 }

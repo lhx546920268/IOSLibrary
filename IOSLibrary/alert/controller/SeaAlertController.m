@@ -15,6 +15,7 @@
 #import "UIColor+Utils.h"
 #import "UIFont+Utils.h"
 
+
 //系统默认的蓝色
 #define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
@@ -1045,7 +1046,7 @@
     if(![_messageFont isEqualToFont:messageFont])
     {
         if(messageFont == nil)
-            messageFont = [UIFont systemFontOfSize:13.0];
+            messageFont = [UIFont fontWithName:SeaMainFontName size:13.0];
         _messageFont = messageFont;
         self.header.messageLabel.font = _messageFont;
     }
@@ -1079,7 +1080,7 @@
     if(![_butttonFont isEqualToFont:butttonFont])
     {
         if(butttonFont == nil)
-            butttonFont = [UIFont systemFontOfSize:18.0];
+            butttonFont = [UIFont fontWithName:SeaMainFontName size:18.0];
         _butttonFont = butttonFont;
         
         [self.collectionView reloadData];
@@ -1108,7 +1109,7 @@
     if(![_destructiveButtonFont isEqualToFont:destructiveButtonFont])
     {
         if(destructiveButtonFont == nil)
-            destructiveButtonFont = [UIFont systemFontOfSize:18.0];
+            destructiveButtonFont = [UIFont fontWithName:SeaMainFontName size:18.0];
         _destructiveButtonFont = destructiveButtonFont;
         
         if(self.destructiveButtonIndex < self.actions.count)

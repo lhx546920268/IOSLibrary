@@ -11,188 +11,187 @@
 #import "SeaBasic.h"
 #import "UIViewController+Utils.h"
 #import "SeaNavigationController.h"
+#import "UIView+SeaAutoLayout.h"
 
-@interface SeaDialog ()
+@interface SeaDialogViewController ()
 
-/**键盘是否隐藏
- */
-@property(nonatomic,readonly) BOOL keyboardHidden;
+///是否要动画
+@property(nonatomic, assign) BOOL shouldAnimate;
 
-/**键盘大小
- */
-@property(nonatomic,readonly) CGRect keyboardFrame;
-
+///状态栏样式
+@property(nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
 @end
 
-@implementation SeaDialog
+@implementation SeaDialogViewController
 
-- (instancetype)init
+- (instancetype)initWithDialog:(UIView*) dialog
 {
-    return [self initWithFrame:CGRectZero];
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if(self)
-    {
-        [self initlization];
+    self = [super init];
+    if(self){
+        
+        self.dialog = dialog;
     }
     
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+#pragma mark- 视图消失出现
+
+- (void)viewWillAppear:(BOOL)animated
 {
-    self = [super initWithFrame:frame];
-    if(self)
-    {
-        [self initlization];
-    }
-    return self;
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self addKeyboardNotification];
 }
 
-///初始化
-- (void)initlization
+- (void)viewWillDisappear:(BOOL)animated
 {
-    self.alpha = 0.0;
-    self.showAnimate = SeaDialogAnimateNone;
-    self.dismissAnimate = SeaDialogAnimateNone;
-}
-
-- (void)dealloc
-{
+    [super viewWillDisappear:animated];
     [self removeKeyboardNotification];
 }
 
-/**显示
- */
-- (void)show;
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-   if(self.dialogViewController)
-   {
-       switch (self.showAnimate)
-       {
-           case SeaDialogAnimateNone :
-           {
-               self.alpha = 1.0;
-               [self showDidFinish];
-           }
-               break;
-           case SeaDialogAnimateScale :
-           {
-               [UIView animateWithDuration:0.25 animations:^(void){
-                   
-                   self.alpha = 1.0;
-                   
-                   CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                   animation.fromValue = [NSNumber numberWithFloat:1.3];
-                   animation.toValue = [NSNumber numberWithFloat:1.0];
-                   animation.duration = 0.25;
-                   [self.layer addAnimation:animation forKey:@"scale"];
-                   
-               }completion:^(BOOL finish){
-                   
-                   [self showDidFinish];
-               }];
-           }
-               break;
-           case SeaDialogAnimateUpDown :
-           {
-               self.alpha = 1.0;
-               self.top = -self.height;
-               
-               [UIView animateWithDuration:0.25 animations:^(void){
-                   
-                   if(CGRectEqualToRect(CGRectZero, self.targetFrame))
-                   {
-                       self.top = (self.dialogViewController.view.height - self.height) / 2.0;
-                   }
-                   else
-                   {
-                       self.frame = self.targetFrame;
-                   }
-               }completion:^(BOOL finish){
-                   
-                   [self showDidFinish];
-               }];
-           }
-               break;
-       }
-    }
-    else
-    {
-        [self showWithDialogViewController];
-    }
+    return self.statusBarStyle;
 }
 
-/**显示 自动创建 视图控制器 SeaDialogViewController
- */
-- (void)showWithDialogViewController
-{
-#if SeaDebug
-    NSAssert(self.dialogViewController == nil, @"dialog 弹窗已经显示");
-#endif
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    ///创建视图控制器，并显示
-    SeaDialogViewController *dialogViewController = [[SeaDialogViewController alloc] init];
-    self.dialogViewController = dialogViewController;
-    dialogViewController.dialog = self;
-    [dialogViewController show];
+    _keyboardHidden = YES;
+    self.statusBarStyle = UIStatusBarStyleLightContent;
+    _backgroundView = [UIView new];
+    _backgroundView.alpha = 0;
+    _backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    [self.view addSubview:_backgroundView];
+    
+    [_backgroundView sea_insetsInSuperview:UIEdgeInsetsZero];
+    
+    self.shouldAnimate = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.view.backgroundColor = [UIColor clearColor];
 }
 
-///显示动画完成
-- (void)showDidFinish
+- (void)viewDidLayoutSubviews
 {
-    self.targetFrame = self.frame;
-    [self addKeyboardNotification];
-    !self.showCompletionHandler ?: self.showCompletionHandler();
-    self.showCompletionHandler = nil;
+    //出场动画
+    if(self.dialog && self.shouldAnimate){
+        self.shouldAnimate = NO;
+        
+        switch (self.showAnimate) {
+            case SeaDialogAnimateNone : {
+                self.backgroundView.alpha = 1.0;
+            }
+                break;
+            case SeaDialogAnimateScale : {
+                
+                self.dialog.alpha = 0;
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    
+                    self.backgroundView.alpha = 1.0;
+                    self.dialog.alpha = 1.0;
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                    animation.fromValue = @(1.3);
+                    animation.toValue = @(1.0);
+                    animation.duration = 0.25;
+                    [self.dialog.layer addAnimation:animation forKey:@"scale"];
+                    
+                }];
+            }
+                break;
+            case SeaDialogAnimateUpDown : {
+                self.backgroundView.alpha = 1.0;
+                
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                animation.fromValue = @(-self.dialog.height / 2.0);
+                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                animation.toValue = @(self.dialog.layer.position.y);
+                animation.duration = 0.25;
+                [self.dialog.layer addAnimation:animation forKey:@"position"];
+            }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
-/**关闭
- */
+- (void)setDialog:(UIView *)dialog
+{
+    if(_dialog != dialog){
+        if(_dialog){
+            [_dialog removeFromSuperview];
+        }
+        _dialog = dialog;
+        [self.view addSubview:_dialog];
+        [_dialog sea_centerInSuperview];
+    }
+}
+
+#pragma mark- public method
+
+- (void)show
+{
+    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
+}
+
+- (void)showInViewController:(UIViewController *)viewController
+{
+    UINavigationController *nav = [self sea_createWithNavigationController];
+    ///设置使背景透明
+    nav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [viewController presentViewController:nav animated:NO completion:self.showCompletionHandler];
+}
+
 - (void)dismiss
 {
-    [self removeKeyboardNotification];
-    
-    switch (self.dismissAnimate)
-    {
-        case SeaDialogAnimateNone :
-        {
+    self.statusBarStyle = UIStatusBarStyleDefault;
+    switch (self.dismissAnimate) {
+        case SeaDialogAnimateNone : {
             [self dismissDidFinish];
         }
             break;
-        case SeaDialogAnimateScale :
-        {
+        case SeaDialogAnimateScale : {
+            
             [UIView animateWithDuration:0.25 animations:^(void){
                 
-                self.alpha = 0;
-                
+                [self setNeedsStatusBarAppearanceUpdate];
+                self.backgroundView.alpha = 0;
+                self.dialog.alpha = 0;
                 CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                animation.fromValue = [NSNumber numberWithFloat:1.0];
-                animation.toValue = [NSNumber numberWithFloat:1.3];
+                animation.fromValue = @(1.0);
+                animation.toValue = @(1.3);
                 animation.duration = 0.25;
-                [self.layer addAnimation:animation forKey:@"scale"];
+                [self.dialog.layer addAnimation:animation forKey:@"scale"];
                 
             }completion:^(BOOL finish){
-                
                 [self dismissDidFinish];
             }];
         }
             break;
-        case SeaDialogAnimateUpDown :
-        {
-
+        case SeaDialogAnimateUpDown : {
+            self.backgroundView.alpha = 1.0;
+            
             [UIView animateWithDuration:0.25 animations:^(void){
                 
-                self.top = - self.height;
-            }completion:^(BOOL finish){
+                [self setNeedsStatusBarAppearanceUpdate];
+                self.backgroundView.alpha = 0;
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                animation.fromValue = @(self.dialog.layer.position.y);
+                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                animation.toValue = @(- self.dialog.height / 2.0);
+                animation.duration = 0.25;
+                animation.fillMode = kCAFillModeForwards;
+                animation.removedOnCompletion = NO;
+                [self.dialog.layer addAnimation:animation forKey:@"position"];
                 
+            }completion:^(BOOL finish){
                 [self dismissDidFinish];
             }];
         }
+            break;
+        default:
             break;
     }
 }
@@ -200,9 +199,15 @@
 ///消失动画完成
 - (void)dismissDidFinish
 {
-    !self.dismissCompletionHandler ?: self.dismissCompletionHandler();
-    self.dismissCompletionHandler = nil;
-    [self.dialogViewController dismiss];
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [self dismissViewControllerAnimated:NO completion:self.dismissCompletionHandler];
+}
+
+#pragma mark- CAAnimationDelegate
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    [self dismissDidFinish];
 }
 
 #pragma mark- 键盘
@@ -230,20 +235,20 @@
 - (void)keyboardWillChangeFrame:(NSNotification*) notification
 {
     CGFloat y = 0;
-    if(self.keyboardHidden)
-    {
-        y = self.targetFrame.origin.y;
-    }
-    else
-    {
+    if(self.keyboardHidden){
+        y = self.view.height / 2.0;
+        _keyboardFrame = CGRectZero;
+    }else{
         _keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
         
-        y = MIN(self.targetFrame.origin.y, SeaScreenHeight - _keyboardFrame.size.height - self.targetFrame.size.height - 20.0);
+        y = MIN(self.view.height / 2.0, self.view.height - _keyboardFrame.size.height - self.dialog.height / 2.0 - 10.0);
     }
     
+    NSLayoutConstraint *constraint = self.dialog.sea_centerYLayoutConstraint;
     [UIView animateWithDuration:0.25 animations:^(void){
         
-        self.top = y;
+        constraint.constant = y - self.view.height / 2.0;
+        [self.view layoutIfNeeded];
     }];
 }
 
@@ -260,105 +265,6 @@
 {
     _keyboardHidden = NO;
     [self keyboardWillChangeFrame:notification];
-}
-
-@end
-
-@interface SeaDialogViewController ()
-
-/**以前的ViewController
- */
-@property(nonatomic,weak) UIViewController *previousPresentViewController;
-
-/**以前的弹出样式
- */
-@property(nonatomic,assign) UIModalPresentationStyle previousPresentationStyle;
-
-@end
-
-@implementation SeaDialogViewController
-
-#pragma mark- 视图消失出现
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    SeaNavigationController *nav = (SeaNavigationController*)self.navigationController;
-    nav.targetStatusBarStyle = UIStatusBarStyleLightContent;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    //[self.navigationController setNavigationBarHidden:NO animated:YES];
-    SeaNavigationController *nav = (SeaNavigationController*)self.navigationController;
-    nav.targetStatusBarStyle = SeaStatusBarStyle;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-    
-    if(self.dialog)
-    {
-        [self.view addSubview:self.dialog];
-        [self.dialog show];
-    }
-}
-
-- (void)setDialog:(SeaDialog *)dialog
-{
-    if(_dialog != dialog)
-    {
-        [_dialog removeFromSuperview];
-        _dialog = dialog;
-    }
-}
-
-#pragma mark- public method
-
-/**显示 在 window.rootViewController
- */
-- (void)show
-{
-    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
-}
-
-- (void)showInViewController:(UIViewController *)viewController
-{
-    UINavigationController *nav = [self sea_createWithNavigationController];
-    
-    ///设置使背景透明
-    if(_ios8_0_)
-    {
-        nav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    }
-    else
-    {
-        self.previousPresentViewController = viewController;
-        self.previousPresentationStyle = self.previousPresentViewController.modalPresentationStyle;
-        self.previousPresentViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    }
-    
-    [viewController presentViewController:nav animated:NO completion:self.showCompletionHandler];
-}
-
-/**隐藏
- */
-- (void)dismiss
-{
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    self.previousPresentViewController.modalPresentationStyle = self.previousPresentationStyle;
-    [self dismissViewControllerAnimated:NO completion:self.dismissCompletionHandler];
 }
 
 @end

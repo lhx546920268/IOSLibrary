@@ -50,8 +50,7 @@
 - (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
+    if(self){
         self.duration = 0.35;
         self.completePercent = 0.5;
         self.transitionStyle = SeaPresentTransitionStyleCoverHorizontal;
@@ -62,8 +61,7 @@
 
 - (void)setCompletePercent:(float)completePercent
 {
-    if(_completePercent != completePercent)
-    {
+    if(_completePercent != completePercent){
         if(completePercent > 1.0)
             completePercent = 1.0;
         else if(completePercent < 0.1)
@@ -87,8 +85,7 @@
 ///平移手势
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer*) pan
 {
-    if(pan.state == UIGestureRecognizerStateBegan)
-    {
+    if(pan.state == UIGestureRecognizerStateBegan){
         ///回收键盘
         [[UIApplication sharedApplication].keyWindow endEditing:YES];
         self.dismissDirectly = NO;
@@ -123,44 +120,32 @@
 
 - (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
 {
-    if(self.viewController && !self.dismissDirectly)
-    {
+    if(self.viewController && !self.dismissDirectly){
         self.dismissDirectly = YES;
         SeaPresentInteractiveTransition *interactive = [[SeaPresentInteractiveTransition alloc] init];
         interactive.delegate = self;
         
         return interactive;
-    }
-    else
-    {
+    }else{
         return nil;
     }
 }
 
 #pragma mark- Class method
 
-/**快捷的方法使用 SeaPresentTransitionDelegate
- *@param vc 被push的
- *@param flag 是否使用导航栏
- *@param parentedViewConttroller push的
- */
 + (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller
 {
     SeaPresentTransitionDelegate *delegate = [[SeaPresentTransitionDelegate alloc] init];
-    if(flag)
-    {
+    if(flag){
         UINavigationController *nav = [vc sea_createWithNavigationController];
         nav.sea_transitioningDelegate = delegate;
         [parentedViewConttroller presentViewController:nav animated:YES completion:^(void){
             
-            if(vc.navigationController)
-            {
+            if(vc.navigationController){
                 [delegate addInteractiveTransitionToViewController:vc];
             }
         }];
-    }
-    else
-    {
+    }else{
         vc.sea_transitioningDelegate = delegate;
         [parentedViewConttroller presentViewController:vc animated:YES completion:^(void){
             
@@ -170,7 +155,6 @@
     
     return vc.navigationController;
 }
-
 
 @end
 
@@ -198,13 +182,10 @@
     UIView *toView;
 
     ///ios 8 才有的api
-    if ([transitionContext respondsToSelector:@selector(viewForKey:)])
-    {
+    if([transitionContext respondsToSelector:@selector(viewForKey:)]){
         fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
         toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    }
-    else
-    {
+    }else{
         fromView = fromViewController.view;
         toView = toViewController.view;
     }
@@ -214,35 +195,26 @@
     CGRect fromFrame;
     CGRect toFrame;
 
-    switch (self.delegate.transitionStyle)
-    {
-        case SeaPresentTransitionStyleCoverVertical :
-        {
+    switch (self.delegate.transitionStyle){
+        case SeaPresentTransitionStyleCoverVertical : {
             fromFrame = fromView.frame;
             toFrame = toView.frame;
-            if (isPresenting)
-            {
+            if(isPresenting){
                 fromView.frame = fromFrame;
                 toView.frame = CGRectOffset(toFrame, 0, toFrame.size.height);
-            }
-            else
-            {
+            }else{
                 fromView.frame = fromFrame;
                 toView.frame = toFrame;
             }
         }
             break;
-        case SeaPresentTransitionStyleCoverHorizontal :
-        {
+        case SeaPresentTransitionStyleCoverHorizontal : {
             fromFrame = [transitionContext initialFrameForViewController:fromViewController];
             toFrame = [transitionContext finalFrameForViewController:toViewController];
-            if (isPresenting)
-            {
+            if(isPresenting){
                 fromView.frame = fromFrame;
                 toView.frame = CGRectOffset(toFrame, toFrame.size.width,0);
-            }
-            else
-            {
+            }else{
                 fromView.frame = fromFrame;
                 toView.frame = CGRectOffset(toFrame, -toFrame.size.width * 0.5, 0);
             }
@@ -251,15 +223,12 @@
     }
 
 
-    if (isPresenting)
-    {
+    if(isPresenting){
         [containerView addSubview:toView];
         toView.layer.shadowColor = [UIColor grayColor].CGColor;
         toView.layer.shadowOpacity = 0.5;
         toView.layer.shadowOffset = CGSizeMake(-1, 0);
-    }
-    else
-    {
+    }else{
         [containerView insertSubview:toView belowSubview:fromView];
         fromView.layer.shadowColor = [UIColor grayColor].CGColor;
         fromView.layer.shadowOpacity = 0.5;
@@ -268,35 +237,25 @@
 
     NSTimeInterval transitionDuration = [self transitionDuration:transitionContext];
     
-    
     ///视图动画
     [UIView animateWithDuration:transitionDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
-        switch (self.delegate.transitionStyle)
-        {
-            case SeaPresentTransitionStyleCoverVertical :
-            {
-                if (isPresenting)
-                {
+        switch (self.delegate.transitionStyle){
+            case SeaPresentTransitionStyleCoverVertical : {
+                if (isPresenting){
                     toView.frame = toFrame;
                     fromView.frame = fromFrame;
-                }
-                else
-                {
+                }else{
                     fromView.frame = CGRectOffset(fromFrame, 0, fromFrame.size.height);
                     toView.frame = toFrame;
                 }
             }
                 break;
-            case SeaPresentTransitionStyleCoverHorizontal :
-            {
-                if (isPresenting)
-                {
+            case SeaPresentTransitionStyleCoverHorizontal : {
+                if (isPresenting){
                     toView.frame = toFrame;
                     fromView.frame = CGRectOffset(fromFrame, - fromFrame.size.width * 0.5, 0);
-                }
-                else
-                {
+                }else{
                     fromView.frame = CGRectOffset(fromFrame, fromFrame.size.width,0);
                     toView.frame = toFrame;
                 }
@@ -304,18 +263,15 @@
                 break;
         }
 
-    } completion:^(BOOL finished) {
+    }completion:^(BOOL finished){
 
         ///如果过度动画取消，需要移除 toView
         BOOL wasCancelled = [transitionContext transitionWasCancelled];
         
-        if (wasCancelled)
-        {
+        if(wasCancelled){
             [containerView addSubview:fromViewController.view];
             [toView removeFromSuperview];
-        }
-        else
-        {
+        }else{
             fromView.layer.shadowOpacity = 0;
         }
         toView.layer.shadowOpacity = 0;
@@ -328,18 +284,15 @@
 
 @interface SeaPresentInteractiveTransition()
 
-@property (nonatomic, weak) id<UIViewControllerContextTransitioning> transitionContext;
+@property(nonatomic, weak) id<UIViewControllerContextTransitioning> transitionContext;
 
 @end
 
 @implementation SeaPresentInteractiveTransition
 
-
-
 - (void)setDelegate:(SeaPresentTransitionDelegate *)delegate
 {
-    if(_delegate != delegate)
-    {
+    if(_delegate != delegate){
         _delegate = delegate;
 
         ///添加手势监听
@@ -366,9 +319,7 @@
     UIView *containerView = self.transitionContext.containerView;
 
     CGPoint point = [gesture locationInView:containerView];
-
     CGFloat width = CGRectGetWidth(containerView.bounds);
-
     CGFloat percent = gesture.edges == UIRectEdgeLeft ? point.x / width : (width - point.x) / width;
     
     return percent;
@@ -377,33 +328,25 @@
 ///平移手势
 - (void)handlePan:(UIScreenEdgePanGestureRecognizer*) pan
 {
-    switch (pan.state)
-    {
-        case UIGestureRecognizerStateBegan:
-        {
+    switch (pan.state){
+        case UIGestureRecognizerStateBegan : {
             
         }
             break;
-        case UIGestureRecognizerStateChanged:
-        {
+        case UIGestureRecognizerStateChanged: {
             [self updateInteractiveTransition:[self percentForGesture:pan]];
         }
             break;
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-        {
-            if ([self percentForGesture:pan] >= self.delegate.completePercent)
-            {
+        case UIGestureRecognizerStateEnded :
+        case UIGestureRecognizerStateCancelled : {
+            if([self percentForGesture:pan] >= self.delegate.completePercent){
                 [self finishInteractiveTransition];
-            }
-            else
-            {
+            }else{
                 [self cancelInteractiveTransition];
             }
         }
             break;
-        default:
-        {
+        default: {
             [self cancelInteractiveTransition];
         }
             break;

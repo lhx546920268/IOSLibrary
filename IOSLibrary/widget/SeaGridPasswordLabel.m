@@ -41,7 +41,7 @@
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((width + lineWidth) * i, 0, width, self.height)];
             label.textColor = [UIColor blackColor];
-            label.font = [UIFont systemFontOfSize:20.0];
+            label.font = [UIFont fontWithName:SeaMainFontName size:20.0];
             label.tag = SeaGridPasswordItemStartTag + i;
             [self addSubview:label];
             label.textAlignment = NSTextAlignmentCenter;

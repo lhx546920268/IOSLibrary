@@ -10,6 +10,7 @@
 #import "UIView+Utils.h"
 #import "SeaCountDownButton.h"
 #import "UIImageView+SeaImageCache.h"
+#import "SeaBasic.h"
 
 @implementation SeaTextFieldCell
 
@@ -21,7 +22,7 @@
         self.titleWidth = 80.0;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont systemFontOfSize:15.0];
+        _titleLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
         [self.contentView addSubview:_titleLabel];
         
         _textField = [[UITextField alloc] init];
