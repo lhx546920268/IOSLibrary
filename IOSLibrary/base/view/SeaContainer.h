@@ -8,6 +8,28 @@
 
 #import <UIKit/UIKit.h>
 
+///自动布局 安全区域
+typedef NS_OPTIONS(NSUInteger, SeaSafeLayoutGuide){
+    
+    ///没有
+    SeaSafeLayoutGuideNone = 0,
+    
+    ///上
+    SeaSafeLayoutGuideTop = 1 << 0,
+    
+    ///左
+    SeaSafeLayoutGuideLeft = 1 << 2,
+    
+    ///下
+    SeaSafeLayoutGuideBottom = 1 << 3,
+    
+    ///右
+    SeaSafeLayoutGuideRight = 1 << 4,
+    
+    ///全部
+    SeaSafeLayoutGuideAll = SeaSafeLayoutGuideTop | SeaSafeLayoutGuideLeft | SeaSafeLayoutGuideBottom | SeaSafeLayoutGuideRight,
+};
+
 /**
  基础容器视图
  */
@@ -28,9 +50,19 @@
 ///内容视图
 @property(nonatomic, strong) UIView *contentView;
 
+///关联的viewController
+@property(nonatomic, weak, readonly) UIViewController *viewController;
+
+///自动布局 安全区域 default is 'SeaSafeLayoutGuideAll'
+@property(nonatomic, assign) SeaSafeLayoutGuide safeLayoutGuide;
+
 ///初始化
 - (void)initialization;
 
+/**
+ 通过 UIViewController初始化
+ */
+- (instancetype)initWithViewController:(UIViewController*) viewController;
 
 /**
  设置顶部视图
@@ -63,5 +95,6 @@
  @param animate 是否动画
  */
 - (void)setBottomViewHidden:(BOOL) hidden animate:(BOOL) animate;
+
 
 @end

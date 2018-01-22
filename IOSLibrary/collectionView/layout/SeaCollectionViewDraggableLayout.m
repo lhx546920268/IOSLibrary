@@ -1,6 +1,6 @@
 //
 //  SeaCollectionViewDraggableLayout.m
-//  Sea
+//  IOSLibrary
 //
 //  Created by 罗海雄 on 15/9/15.
 //  Copyright (c) 2015年 Sea. All rights reserved.

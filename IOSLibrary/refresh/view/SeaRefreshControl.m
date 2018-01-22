@@ -1,6 +1,6 @@
 //
 //  SeaRefreshControl.m
-//  Sea
+//  IOSLibrary
 //
 //
 

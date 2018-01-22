@@ -7,7 +7,8 @@
 
 @interface UITableView (Utils)
 
-/**隐藏多余的分割线
+/**
+ 隐藏多余的分割线
  */
 - (void)setExtraCellLineHidden;
 

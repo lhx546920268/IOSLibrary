@@ -81,7 +81,7 @@
 - (void)setPlaceholderTextColor:(UIColor *) textColor
 {
     if(!textColor)
-        textColor = [UIColor colorWithWhite:0.702f alpha:0.7];
+        textColor = SeaPlaceholderTextColor;
     _placeholderTextColor = textColor;
     [self updatePlaceholder];
 }

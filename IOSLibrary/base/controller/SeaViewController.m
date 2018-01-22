@@ -9,6 +9,7 @@
 #import "SeaBasic.h"
 #import "SeaContainer.h"
 #import "SeaTabBarController.h"
+#import "UIView+SeaAutoLayout.h"
 
 @interface SeaViewController ()
 
@@ -29,12 +30,11 @@
     return self;
 }
 
-
 #pragma mark- 视图消失出现
 
 - (void)loadView
 {
-    _container = [[SeaContainer alloc] init];
+    _container = [[SeaContainer alloc] initWithViewController:self];
     self.view = self.container;
 }
 

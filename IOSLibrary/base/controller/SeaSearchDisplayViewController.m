@@ -31,26 +31,6 @@
 
 @implementation SeaSearchDisplayViewController
 
-- (id)initWithSearchBarPosition:(SeaSearchBarPosition) position
-{
-    self = [super initWithNibName:nil bundle:nil];
-    if(self){
-        _searchBarPosition = position;
-        [self initParams];
-    }
-    return self;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nil bundle:nil];
-    if(self){
-        _searchBarPosition = SeaSearchBarPositionTableViewHeader;
-        [self initParams];
-    }
-    return self;
-}
-
 ///初始化
 - (void)initParams
 {
@@ -65,7 +45,13 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.translucent = self.previousNavigationBarTranslucent;
+//    self.navigationController.navigationBar.translucent = self.previousNavigationBarTranslucent;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self initParams];
 }
 
 #pragma mark- property
@@ -106,6 +92,7 @@
 - (void)createSearchBar
 {
     _searchBar = [UISearchBar new];
+    
     self.searchBar.delegate = self;
     UITextField *searchField = self.searchTextField;
     searchField.font = [UIFont fontWithName:SeaMainFontName size:15.0];
@@ -137,7 +124,8 @@
     switch(_searchBarPosition){
         case SeaSearchBarPositionTableViewTop :
         case SeaSearchBarPositionTableViewHeader : {
-            [self.view addSubview:self.searchBar];
+            self.searchBar.frame = CGRectMake(0, 0, SeaScreenWidth, 45);
+            self.tableView.tableHeaderView = self.searchBar;
             
 //            self.tableView.top = self.searchBar.bottom;
 //            self.tableView.height = self.contentHeight - self.searchBar.bottom;
@@ -208,36 +196,35 @@
     if(_searching)
         return;
     
-    self.containerScrollView.contentInset = UIEdgeInsetsZero;
     _searching = YES;
     
     if(self.showBackgroundWhileSearchingAndEmptyInput){
-        if(!_translucentView){
-            _translucentView = [UIView new];
-            _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-            
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel:)];
-            [_translucentView addGestureRecognizer:tap];
-            [self.view addSubview:_translucentView];
-            
-            switch(_searchBarPosition){
-                case SeaSearchBarPositionTableViewTop :
-                case SeaSearchBarPositionTableViewHeader :
-                    case SeaSearchBarPositionShowWhenSearch : {
-                    [_translucentView sea_leftToSuperview];
-                    [_translucentView sea_rightToSuperview];
-                    [_translucentView sea_bottomToSuperview];
-                    [_translucentView sea_topToItemBottom:self.searchBar];
-                }
-                    break;
-                case SeaSearchBarPositionNavigationBar : {
-                    [_translucentView sea_insetsInSuperview:UIEdgeInsetsZero];
-                }
-                    break;
-                default:
-                    break;
-            }
-        }
+//        if(!_translucentView){
+//            _translucentView = [UIView new];
+//            _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+//            
+//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel:)];
+//            [_translucentView addGestureRecognizer:tap];
+//            [self.view addSubview:_translucentView];
+//            
+//            switch(_searchBarPosition){
+//                case SeaSearchBarPositionTableViewTop :
+//                case SeaSearchBarPositionTableViewHeader :
+//                    case SeaSearchBarPositionShowWhenSearch : {
+//                    [_translucentView sea_leftToSuperview];
+//                    [_translucentView sea_rightToSuperview];
+//                    [_translucentView sea_bottomToSuperview];
+//                    [_translucentView sea_topToItemBottom:self.searchBar];
+//                }
+//                    break;
+//                case SeaSearchBarPositionNavigationBar : {
+//                    [_translucentView sea_insetsInSuperview:UIEdgeInsetsZero];
+//                }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
         
         _translucentView.hidden = NO;
         _translucentView.alpha = 0;

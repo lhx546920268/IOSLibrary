@@ -123,6 +123,7 @@
     self.font = [UIFont fontWithName:SeaMainFontName size:11];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    self.container.safeLayoutGuide = SeaSafeLayoutGuideBottom;
 
     [self.view addSubview:self.tabBar];
     [self setBottomView:self.tabBar height:SeaTabBarHeight];

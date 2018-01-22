@@ -66,12 +66,6 @@
     return builder;
 }
 
-/**
- 创建一个构造器 使用单例，会 reset
- 
- @param view 要设置约束的view
- @return 构造器
- */
 + (instancetype)builderWithView:(UIView*) view
 {
     SeaAutoLayoutBuilder *builder = [SeaAutoLayoutBuilder shareInstance];
@@ -468,45 +462,6 @@
 }
 
 /**
- 获取合适的item
- */
-- (id)fitItem:(id) item attribute:(NSLayoutAttribute) attribute
-{
-    if([item isKindOfClass:[UIViewController class]]){
-        UIViewController *viewController = (UIViewController*)item;
-        if(@available(iOS 11.0, *)){
-            switch (attribute) {
-                case NSLayoutAttributeTop :
-                case NSLayoutAttributeLeft :
-                case NSLayoutAttributeLeading :
-                case NSLayoutAttributeRight :
-                case NSLayoutAttributeTrailing :
-                case NSLayoutAttributeBottom :
-                    item = viewController.view.safeAreaLayoutGuide;
-                    break;
-                default:
-                    item = viewController.view;
-                    break;
-            }
-        }else{
-            switch (attribute) {
-                case NSLayoutAttributeTop :
-                    item = viewController.topLayoutGuide;
-                    break;
-                case NSLayoutAttributeBottom :
-                    item = viewController.bottomLayoutGuide;
-                    break;
-                default:
-                    item = viewController.view;
-                    break;
-            }
-        }
-    }
-    
-    return item;
-}
-
-/**
  适配自动布局
  */
 - (void)adjustAutoLayout
@@ -543,22 +498,63 @@
         
         [self adjustAutoLayout];
         id item1 = self.sea_item1;
-        id item2 = [self fitItem:self.sea_item2 attribute:self.sea_attr2];
+        id item2 = self.sea_item2;
+        NSLayoutAttribute attr1 = self.sea_attr1;
+        NSLayoutAttribute attr2 = self.sea_attr2;
         
-        if((self.sea_attr1 == NSLayoutAttributeTrailing
-            && self.sea_attr2 == NSLayoutAttributeTrailing)
+        if([item2 isKindOfClass:[UIViewController class]]){
+            UIViewController *viewController = (UIViewController*)item2;
+            if(@available(iOS 11.0, *)){
+                switch (attr1) {
+                    case NSLayoutAttributeTop :
+                    case NSLayoutAttributeLeft :
+                    case NSLayoutAttributeLeading :
+                    case NSLayoutAttributeRight :
+                    case NSLayoutAttributeTrailing :
+                    case NSLayoutAttributeBottom :
+                        item2 = viewController.view.safeAreaLayoutGuide;
+                        break;
+                    default:
+                        item2 = viewController.view;
+                        break;
+                }
+            }else{
+                switch (attr1) {
+                    case NSLayoutAttributeTop :
+                        item2 = viewController.topLayoutGuide;
+                        attr2 = NSLayoutAttributeBottom;
+                        break;
+                    case NSLayoutAttributeBottom :
+                        item2 = viewController.bottomLayoutGuide;
+                        attr2 = NSLayoutAttributeTop;
+                        break;
+                    default:
+                        item2 = viewController.view;
+                        break;
+                }
+            }
+        }
+        
+        if((attr1 == NSLayoutAttributeTrailing&& attr2 == NSLayoutAttributeTrailing)
            ||
-           (self.sea_attr1 == NSLayoutAttributeBottom
-            && self.sea_attr2 == NSLayoutAttributeBottom)){
+           (attr1 == NSLayoutAttributeBottom && attr2 == NSLayoutAttributeBottom)
+           ||
+           (attr1 == NSLayoutAttributeTrailing && attr2 == NSLayoutAttributeLeading)
+           ||
+           (attr1 == NSLayoutAttributeBottom && attr2 == NSLayoutAttributeTop)){
             id item = item2;
             item2 = item1;
             item1 = item;
+            
+            NSLayoutAttribute attr = attr2;
+            attr2 = attr1;
+            attr1 = attr;
         }
         
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:item1 attribute:self.sea_attr1 relatedBy:self.sea_relation toItem:item2 attribute:self.sea_attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:item1 attribute:attr1 relatedBy:self.sea_relation toItem:item2 attribute:attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
         constraint.priority = self.sea_priority;
         
-        if(self.sea_item2){
+        if(attr2){
             [[self superview] addConstraint:constraint];
         }else{
             [self.sea_item1 addConstraint:constraint];

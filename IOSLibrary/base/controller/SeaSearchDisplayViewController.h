@@ -73,12 +73,7 @@ typedef NS_ENUM(NSInteger, SeaSearchBarPosition)
 /**
  搜索栏位置 default is 'SeaSearchBarPositionTableViewTop'
  */
-@property(nonatomic,readonly) SeaSearchBarPosition searchBarPosition;
-
-/**
- 通过搜索栏位置 初始化
- */
-- (id)initWithSearchBarPosition:(SeaSearchBarPosition) position;
+@property(nonatomic,assign) SeaSearchBarPosition searchBarPosition;
 
 /**
  初始化UISearchBar 默认在 initialization中调用该方法，如果searchBarPosition 不是 SeaSearchBarPositionNavigationBar或者SeaSearchBarPositionShowWhenSearch，并且当self.tableView == nil时，不做任何事

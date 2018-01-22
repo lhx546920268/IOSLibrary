@@ -1,6 +1,6 @@
 //
 //  SeaImageCacheTool.h
-//  Sea
+//  IOSLibrary
 //
 //
 //

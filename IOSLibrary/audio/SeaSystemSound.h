@@ -1,6 +1,6 @@
 //
 //  SeaSystemSound.h
-//  sea
+//  IOSLibrary
 //
 //
 

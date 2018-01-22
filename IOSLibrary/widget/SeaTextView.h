@@ -22,7 +22,7 @@ IB_DESIGNABLE
 @property(nonatomic, copy) IBInspectable NSString *placeholder;
 
 /**
- placeholder 的字体颜色. default is '[UIColor colorWithWhite:0.702f alpha:0.7]'.
+ placeholder 的字体颜色. default is 'SeaPlaceholderTextColor'
  */
 @property(nonatomic, strong) UIColor *placeholderTextColor;
 

@@ -1,6 +1,6 @@
 //
 //  UICollectionView+SeaCellSize.m
-//  Sea
+//  IOSLibrary
 //
 //  Created by 罗海雄 on 17/8/23.
 //  Copyright © 2017年 罗海雄. All rights reserved.

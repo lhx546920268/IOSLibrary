@@ -39,16 +39,19 @@
 ///导航栏标题颜色
 #define SeaNavigationBarTitleColor [SeaBasicInitialization sea_navigationBarTitleColor]
 
-//系统默认的蓝色
+///系统默认的蓝色
 #define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
-//图片没加载前默认背景颜色
+///图片没加载前默认背景颜色
 #define SeaImageBackgroundColorBeforeDownload [UIColor colorFromHexadecimal:@"e6e6e6"]
 
 ///导航栏tintColor
 #define SeaTintColor [SeaBasicInitialization sea_tintColor]
 
-//分割线颜色
+///分割线颜色
 #define SeaSeparatorColor [SeaBasicInitialization sea_separatorLineColor]
+
+///输入框 placeholder 颜色
+#define SeaPlaceholderTextColor [UIColor colorWithWhite:0.702f alpha:0.7]
 
 #endif /* SeaColorMacro_h */
