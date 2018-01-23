@@ -14,7 +14,6 @@
 #import <SeaPageViewController.h>
 #import <SeaTableViewController.h>
 #import <SeaDialogViewController.h>
-#import <SeaSearchDisplayViewController.h>
 #import <UIViewController+Utils.h>
 
 
@@ -25,5 +24,8 @@
 #import <SeaBasic.h>
 
 #import <UIImageView+SeaImageCache.h>
+
+#import <SeaPresentTransitionDelegate.h>
+#import <SeaPartialPresentTransitionDelegate.h>
 
 #endif /* IOSLibrary_h */

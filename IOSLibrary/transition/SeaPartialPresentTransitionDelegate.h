@@ -43,7 +43,9 @@
 ///动画样式 default is 'SeaPresentTransitionStyleCoverVertical'
 @property(nonatomic,assign) SeaPresentTransitionStyle transitionStyle;
 
-//消失时的回调
+///消失时的回调
 @property(nonatomic,copy) void(^dismissHandler)(void);
+
++ (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller;
 
 @end

@@ -72,6 +72,11 @@
 @property(nonatomic, readonly) UITextField *textField;
 
 /**
+ 类似 UIBarPositionTopAttached
+ */
+@property(nonatomic, strong) UIView *attachedContent;
+
+/**
  图标 placeholder 容器
  */
 @property(nonatomic, readonly) SeaSearchPlaceholderContainer *placeholderContainer;
@@ -301,6 +306,47 @@
     }
 }
 
+- (void)setText:(NSString *)text
+{
+    if(![self.textField.text isEqualToString:text]){
+        self.textField.text = text;
+        [self adjustPlaceholder];
+        switch (_iconPosition) {
+            case SeaSearchBarIconPositionCenter : {
+                [self setIconLeft:text.length > 0];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+- (NSString*)text
+{
+    return self.textField.text;
+}
+
+- (void)setTextFieldAccessoryView:(UIView *) view
+{
+    self.textField.inputAccessoryView = view;
+}
+
+- (UIView*)textFieldAccessoryView
+{
+    return self.textField.inputAccessoryView;
+}
+
+- (void)setClearButtonMode:(UITextFieldViewMode)clearButtonMode
+{
+    self.textField.clearButtonMode = clearButtonMode;
+}
+
+- (UITextFieldViewMode)clearButtonMode
+{
+    return self.textField.clearButtonMode;
+}
+
 #pragma mark- public method
 
 - (void)becomeFirstResponder
@@ -329,6 +375,29 @@
             }];
         }else{
             [self setCancelButtonHidden:!show];
+        }
+    }
+}
+
+- (void)setShowsAttachedContent:(BOOL) show
+{
+    [self setShowsAttachedContent:show animated:NO];
+}
+
+- (void)setShowsAttachedContent:(BOOL) show animated:(BOOL) animated
+{
+    if(_showsAttachedContent != show){
+        _showsAttachedContent = show;
+
+        if(!isIPhoneX){
+            if(animated){
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    [self setAttachedContentHidden:!show];
+                    [self layoutIfNeeded];
+                }];
+            }else{
+                [self setAttachedContentHidden:!show];
+            }
         }
     }
 }
@@ -411,13 +480,36 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if([self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]){
+        [self.delegate searchBarSearchButtonClicked:self];
+    }
     return NO;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if([self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]){
+        return [self.delegate searchBarShouldBeginEditing:self];
+    }else{
+        return YES;
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if([self.delegate respondsToSelector:@selector(searchBar:shouldChangeTextInRange:replacementText:)]){
+        return [self.delegate searchBar:self shouldChangeTextInRange:range replacementText:string];
+    }else{
+        return YES;
+    }
 }
 
 ///输入框内容改变
 - (void)textFieldTextDidChange:(UITextField*)textField
 {
-    
+    if([self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]){
+        [self.delegate searchBar:self textDidChange:textField.text];
+    }
 }
 
 #pragma mark- private method
@@ -468,6 +560,28 @@
         self.placeholderContainerCenterXConstraint.active = YES;
         self.placehonlderContainerLeftLayConstraint.active = NO;
     }
+}
+
+///设置 attach 隐藏
+- (void)setAttachedContentHidden:(BOOL) hidden
+{
+    if(!self.attachedContent){
+        self.attachedContent = [UIView new];
+        [self addSubview:self.attachedContent];
+        
+        [self.attachedContent sea_leftToSuperview];
+        [self.attachedContent sea_rightToSuperview];
+        [self.attachedContent sea_heightToSelf:0];
+        [self.attachedContent sea_bottomToItemTop:self];
+    }
+    self.attachedContent.backgroundColor = self.backgroundColor;
+    self.attachedContent.sea_heightLayoutConstraint.constant = hidden ? 0 : SeaStatusHeight;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.attachedContent.backgroundColor = self.backgroundColor;
 }
 
 @end

@@ -58,6 +58,9 @@ dispatch_async(dispatch_get_main_queue(), block);\
 //判断是否是5.5寸手机
 #define is5_5Inch (SeaScreenHeight == 736)
 
+//判断是否是IPhone X
+#define isIPhoneX (SeaScreenHeight == 812 && SeaScreenWidth == 375)
+
 //判断是否是4.0寸手机
 #define is4_0Inch (SeaScreenHeight == 568 && SeaScreenWidth == 320)
 

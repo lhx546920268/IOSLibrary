@@ -14,6 +14,7 @@
 #import "UIViewController+Utils.h"
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
+#import "SeaContainer.h"
 
 @implementation SeaImageBrowseInfo
 
@@ -223,7 +224,8 @@
 {
     [super viewDidLoad];
     
-    self.animateDuration = 0.3;
+    self.container.safeLayoutGuide = SeaSafeLayoutGuideNone;
+    self.animateDuration = 0.25;
     _backgroundView = [UIView new];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.userInteractionEnabled = NO;
@@ -285,15 +287,11 @@
 
 - (void)showAnimate:(BOOL) animate
 {
-    UINavigationController *nav = [self sea_createWithNavigationController];
-    nav.navigationBar.translucent = YES;
-    [nav setNavigationBarHidden:YES];
-    
-    UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *viewController = [[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController];
     ///设置使背景透明
-    nav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     
-    [viewController presentViewController:nav animated:NO completion:nil];
+    [viewController presentViewController:self animated:NO completion:nil];
     
     if([self.delegate respondsToSelector:@selector(imageBrowseViewControllerWillEnterFullScreen:)]){
         [self.delegate imageBrowseViewControllerWillEnterFullScreen:self];

@@ -196,7 +196,7 @@
     
     //计算大小
     UICollectionReusableView *cell = [self sea_cellForIdentifier:identifier];
-    configuration(cell);
+    !configuration ?: configuration(cell);
     
     UIView *contentView = cell;
     if([cell isKindOfClass:[UICollectionViewCell class]]){

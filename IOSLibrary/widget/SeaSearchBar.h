@@ -30,6 +30,11 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
 @optional
 
 /**
+ 是否可以成为第一响应者
+ */
+- (BOOL)searchBarShouldBeginEditing:(SeaSearchBar*)searchBar;
+
+/**
  搜索栏成为第一响应者
  */
 - (void)searchBarDidBeginEditing:(SeaSearchBar*)searchBar;
@@ -38,6 +43,21 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
  搜索栏取消第一响应者
  */
 - (void)searchBarDidEndEditing:(SeaSearchBar*)searchBar;
+
+/**
+ 输入内容改变
+ */
+- (void)searchBar:(SeaSearchBar*)searchBar textDidChange:(NSString*)searchText;
+
+/**
+ 输入内容是否可以改变
+ */
+- (BOOL)searchBar:(SeaSearchBar*)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text;
+
+/**
+ 点击键盘上的搜索按钮
+ */
+- (void)searchBarSearchButtonClicked:(SeaSearchBar*)searchBar;
 
 @end
 
@@ -60,6 +80,11 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
  placeholder 类似 UITextField
  */
 @property(nonatomic, copy) NSString *placeholder;
+
+/**
+ 搜索内容
+ */
+@property(nonatomic, copy) NSString *text;
 
 /**
  placeholder 的颜色
@@ -87,9 +112,27 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
 @property(nonatomic, readonly) UIView *contentView;
 
 /**
+ UITextField inputAccessoryView
+ */
+@property(nonatomic, strong) UIView *textFieldAccessoryView;
+
+/**
+ 文本删除按钮 default is 'UITextFieldViewModeWhileEditing'
+ */
+@property(nonatomic, assign) UITextFieldViewMode clearButtonMode;
+
+/**
  是否显示取消按钮 default is 'NO'
  */
 @property(nonatomic, assign) BOOL showsCancelButton;
+
+/**
+ 设置 像 UIBarPositionTopAttached default is 'NO'，父视图clipsToBounds = NO，否则将不生效，如在UITableView.tableViewHeader
+ 顶部约束必须 为 topLayoutGuide.bottom ios11以下，safeAreaLayoutGuide ios11
+ 或者 当父视图为UIScrollView 时，可设置 automaticallyAdjustsScrollViewInsets = YES ios11以下， UIScrollViewContentInsetAdjustmentAutomatic ios11，
+ IPhoneX 将忽略，clipsToBounds = YES 时无效
+ */
+@property(nonatomic, assign) BOOL showsAttachedContent;
 
 /**
  代理
@@ -110,5 +153,10 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
  动画显示取消按钮
  */
 - (void)setShowsCancelButton:(BOOL) show animated:(BOOL) animated;
+
+/**
+ 动画设置 UIBarPositionTopAttached
+ */
+- (void)setShowsAttachedContent:(BOOL) show animated:(BOOL) animated;
 
 @end

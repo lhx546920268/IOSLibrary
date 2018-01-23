@@ -408,7 +408,7 @@
     __block BOOL result = NO;
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        result = [db executeUpdate:@"delete from video_cache where datetime(cache_time)<=datetime(%@)", [NSDate sea_timeFromDate:date format:SeaDateFormatYMdHms]];
+        result = [db executeUpdate:@"delete from video_cache where datetime(cache_time)<=datetime(?)", [NSDate sea_timeFromDate:date format:SeaDateFormatYMdHms]];
     }];
     
     return result;
@@ -423,7 +423,7 @@
     
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        FMResultSet *rs = [db executeQueryWithFormat:@"select duration from video_cache where url='%@'", URL];
+        FMResultSet *rs = [db executeQueryWithFormat:@"select duration from video_cache where url=?", URL];
         while ([rs next]) {
             duration = [rs longLongIntForColumn:@"duration"];
             break;

@@ -554,7 +554,7 @@
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:item1 attribute:attr1 relatedBy:self.sea_relation toItem:item2 attribute:attr2 multiplier:self.sea_multiplier constant:self.sea_constant];
         constraint.priority = self.sea_priority;
         
-        if(attr2){
+        if(item2){
             [[self superview] addConstraint:constraint];
         }else{
             [self.sea_item1 addConstraint:constraint];
