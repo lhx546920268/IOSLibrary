@@ -46,6 +46,10 @@
 ///消失时的回调
 @property(nonatomic,copy) void(^dismissHandler)(void);
 
-+ (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller;
+///显示一个 视图 垂直 可以设置 child.view 的大小
++ (void)presentViewController:(UIViewController*) child inViewController:(UIViewController*) parant;
+
+///显示一个 视图 水平 可以设置 child.view 的大小
++ (void)pushViewController:(UIViewController*) child inViewController:(UIViewController*) parant;
 
 @end

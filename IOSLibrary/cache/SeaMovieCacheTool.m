@@ -423,7 +423,7 @@
     
     [[SeaDataBase sharedInstance].dbQueue inDatabase:^(FMDatabase *db){
        
-        FMResultSet *rs = [db executeQueryWithFormat:@"select duration from video_cache where url=?", URL];
+        FMResultSet *rs = [db executeQuery:@"select duration from video_cache where url=?", URL];
         while ([rs next]) {
             duration = [rs longLongIntForColumn:@"duration"];
             break;

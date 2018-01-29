@@ -10,6 +10,7 @@
 #define IOSLibrary_h
 
 #import <SeaViewController.h>
+#import <SeaNavigationController.h>
 #import <SeaCollectionViewController.h>
 #import <SeaPageViewController.h>
 #import <SeaTableViewController.h>

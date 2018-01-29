@@ -10,6 +10,7 @@
 #import "UIView+Utils.h"
 #import "UIImage+Utils.h"
 #import "SeaBasic.h"
+#import "UIViewController+Utils.h"
 
 ///自定义Present类型的过度动画实现 通过init初始化
 @interface SeaPresentTransitionAnimator : NSObject<UIViewControllerAnimatedTransitioning>
@@ -74,6 +75,21 @@
     return self.animator;
 }
 
++ (void)pushViewController:(UIViewController *)child inViewController:(UIViewController *)parant
+{
+    SeaPartialPresentTransitionDelegate *delegate = [[SeaPartialPresentTransitionDelegate alloc] init];
+    delegate.transitionStyle = SeaPresentTransitionStyleCoverHorizontal;
+    child.sea_transitioningDelegate = delegate;
+    [parant presentViewController:child animated:YES completion:nil];
+}
+
++ (void)presentViewController:(UIViewController *)child inViewController:(UIViewController *)parant
+{
+    SeaPartialPresentTransitionDelegate *delegate = [[SeaPartialPresentTransitionDelegate alloc] init];
+    delegate.transitionStyle = SeaPresentTransitionStyleCoverVertical;
+    child.sea_transitioningDelegate = delegate;
+    [parant presentViewController:child animated:YES completion:nil];
+}
 
 @end
 
