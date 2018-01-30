@@ -85,7 +85,7 @@
     [_activityIndicatorView sea_centerXInSuperview];
     [_activityIndicatorView sea_topToSuperview:10.0];
     [_activityIndicatorView sea_leftToItem:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_activityIndicatorView sea_rightToItemLeft:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_activityIndicatorView sea_rightToItem:_activityIndicatorView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
     
     [_textLabel sea_leftToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_rightToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];

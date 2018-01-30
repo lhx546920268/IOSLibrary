@@ -296,6 +296,28 @@ static char SeaTransitioningDelegateKey;
     return objc_getAssociatedObject(self, &SeaTransitioningDelegateKey);
 }
 
+#pragma mark- tabBar
+
+- (SeaTabBarController*)sea_tabBarController
+{
+    SeaTabBarController *controller = nil;
+    UIViewController *vc = self;
+    //present 出来的
+    if(self.presentingViewController){
+        vc = [self sea_rootPresentingViewController];
+    }else if(self.navigationController){
+        vc = self.navigationController;
+    }
+    
+    if([vc isKindOfClass:[SeaTabBarController class]]){
+        controller = (SeaTabBarController*)vc;
+    }else if ([vc.parentViewController isKindOfClass:[SeaTabBarController class]]){
+        controller = (SeaTabBarController*)vc.parentViewController;
+    }
+    
+    return controller;
+}
+
 #pragma mark- back
 
 - (void)sea_back

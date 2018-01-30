@@ -183,17 +183,15 @@
             value = @"0";
         
         if([value isInteger]){
-            NSInteger number = [value integerValue];
+            int number = [value intValue];
             if(number < 0)
                 number = 0;
             if(number <= self.max){
-                _value = [NSString stringWithFormat:@"%d", (int)number];
+                _value = [NSString stringWithFormat:@"%d", number];
             }else{
                 _value = [NSString stringWithFormat:@"%d+", self.max];
             }
-            self.hidden = self.hideWhenZero && number == 0;
         }else{
-            self.hidden = NO;
             _value = [value copy];
         }
         
@@ -204,6 +202,13 @@
 ///刷新
 - (void)refresh
 {
+    BOOL zero = NO;
+    if([self.value isInteger]){
+        zero = [self.value intValue] == 0;
+    }
+    
+    self.hidden = zero && !self.point;
+    
     CGSize contentSize = CGSizeZero;
     if(self.point){
         contentSize = CGSizeMake(self.pointRadius * 2, self.pointRadius * 2);

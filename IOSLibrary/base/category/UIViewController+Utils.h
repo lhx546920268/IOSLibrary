@@ -13,7 +13,8 @@ SeaPageLoadingView,
 SeaNavigationController,
 SeaNetworkActivityView,
 SeaToast,
-SeaEmptyView;
+SeaEmptyView,
+SeaTabBarController;
 
 
 @interface UIViewController (Utils)
@@ -71,6 +72,9 @@ SeaEmptyView;
 
 ///设置显示空视图
 @property(nonatomic,assign) BOOL sea_showEmptyView;
+
+///tabBar
+@property(nonatomic,readonly) SeaTabBarController *sea_tabBarController;
 
 /**重新加载数据 默认不做任何事，子类可以重写该方法
  */

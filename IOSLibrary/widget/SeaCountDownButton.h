@@ -14,7 +14,7 @@
 
 /**正常时 UIControlStateNormal 按钮背景颜色
  */
-@property(nonatomic,retain) UIColor *normalBackgroundColor;
+@property(nonatomic,strong) UIColor *normalBackgroundColor;
 
 /**倒计时结束回调
  */
@@ -26,7 +26,7 @@
 
 /**倒计时 UIControlStateDisable 按钮背景颜色
  */
-@property(nonatomic,retain) UIColor *disableBackgroundColor;
+@property(nonatomic,strong) UIColor *disableBackgroundColor;
 
 /**倒计时长 单位秒，default is '60'
  */

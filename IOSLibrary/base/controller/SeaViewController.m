@@ -85,6 +85,10 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.translucent = NO;
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    if(self.navigationController.viewControllers.count > 1){
+        self.sea_showBackItem = YES;
+    }
 }
 
 #pragma mark- UIStatusBar

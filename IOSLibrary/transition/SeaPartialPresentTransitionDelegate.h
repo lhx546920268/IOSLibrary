@@ -23,8 +23,10 @@
  [self.navigationController presentViewController:nav animated:YES completion:nil];
  */
 
-/**可部分地显示present出来UIViewController，通过init初始化，设置UIViewController 的 sea_transitionDelegate来使用
- *@warning UIViewController中的 transitioningDelegate 是 weak引用
+/**
+ 可部分地显示present出来UIViewController，通过init初始化，设置UIViewController 的 sea_transitionDelegate来使用
+ @warning UIViewController中的 transitioningDelegate 是 weak引用
+ @warning 如果在 present出来的viewController 中再present, 必须把 present出来的viewController.modelPresentationStyle 设置为 UIModalPresentationCustom
  */
 @interface SeaPartialPresentTransitionDelegate : NSObject<UIViewControllerTransitioningDelegate>
 

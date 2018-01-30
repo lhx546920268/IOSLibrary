@@ -19,6 +19,6 @@
 
 /**虚线颜色 default is 'grayColor'
  */
-@property(nonatomic,retain) UIColor *dashesColor;
+@property(nonatomic,strong) UIColor *dashesColor;
 
 @end

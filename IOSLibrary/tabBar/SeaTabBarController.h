@@ -118,7 +118,7 @@
 
 /**
  设置选项卡边缘值
- *@param badgeValue 边缘值
+ *@param badgeValue 边缘值 @"" 为红点，要隐藏使用 nil
  *@param index 下标
  */
 - (void)setBadgeValue:(NSString*) badgeValue forIndex:(NSInteger) index;

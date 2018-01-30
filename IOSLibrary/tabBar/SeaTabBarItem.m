@@ -11,6 +11,8 @@
 
 @interface SeaTabBarItem ()
 
+@property(nonatomic, strong) UIView *contentView;
+
 @end
 
 @implementation SeaTabBarItem
@@ -20,7 +22,7 @@
     self = [super initWithFrame:frame];
     if(self){
         
-        self.clipsToBounds = YES;
+        self.clipsToBounds = NO;
         UIView *contentView = [UIView new];
         contentView.userInteractionEnabled = NO;
         [self addSubview:contentView];
@@ -44,6 +46,8 @@
         [_textLabel sea_topToItemBottom:_imageView margin:2];
         [_textLabel sea_bottomToSuperview];
         [_textLabel sea_centerXInSuperview];
+        
+        self.contentView = contentView;
     }
     return self;
 }
@@ -55,20 +59,20 @@
     if(_badgeValue != badgeValue){
         _badgeValue = badgeValue;
         
-        if(!self.badge){
+        if(!_badge){
  
-            SeaNumberBadge *badge = [SeaNumberBadge new];
-            [self addSubview:badge];
-            self.badge = badge;
-            [badge sea_leftToItemCenterX:_imageView];
-            [badge sea_topToItemCenterY:_imageView];
+            _badge = [SeaNumberBadge new];
+            _badge.font = [UIFont fontWithName:SeaMainNumberFontName size:13];
+            [self addSubview:_badge];
+            _badge.sea_alb.centerXToRight(_imageView).margin(0).build();
+            [_badge sea_topToSuperview:5];
         }
         
         if([_badgeValue isEqualToString:@""]){
-            self.badge.point = YES;
+            _badge.point = YES;
         }else{
-            self.badge.point = NO;
-            self.badge.value = _badgeValue;
+            _badge.point = NO;
+            _badge.value = _badgeValue;
         }
     }
 }

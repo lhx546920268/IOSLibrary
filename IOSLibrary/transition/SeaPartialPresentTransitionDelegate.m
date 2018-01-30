@@ -182,10 +182,16 @@
         [containerView insertSubview:self.backgroundView belowSubview:toView];
         [containerView insertSubview:self.backgroundImageView atIndex:0];
     }else{
-        toView.hidden = YES;
+        
         fromView.frame = fromFrame;
-        toView.frame = toFrame;
-        [containerView insertSubview:toView belowSubview:fromView];
+        //当 fromViewController.modalPresentationStyle = UIModalPresentationCustom 时， toView 为nil
+        if(toView){
+            toView.hidden = YES;
+            toView.frame = toFrame;
+            [containerView insertSubview:toView belowSubview:fromView];
+        }else{
+            toFrame = CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight);
+        }
     }
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^(void){

@@ -901,8 +901,7 @@
 {
     CGPoint point = [gestureRecognizer locationInView:self.backgroundView];
     point.y += self.backgroundView.top;
-    if(CGRectContainsPoint(self.contentView.frame, point))
-    {
+    if(CGRectContainsPoint(self.contentView.frame, point)){
         return NO;
     }
     

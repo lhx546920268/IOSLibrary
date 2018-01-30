@@ -17,6 +17,8 @@
 #import <SeaDialogViewController.h>
 #import <UIViewController+Utils.h>
 
+#import <SeaTabBarController.h>
+
 
 #import <UIView+Utils.h>
 #import <UIView+SeaAutoLayout.h>

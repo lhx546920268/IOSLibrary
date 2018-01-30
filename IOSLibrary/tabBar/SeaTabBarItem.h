@@ -25,7 +25,7 @@
 /**
  边缘视图
  */
-@property(nonatomic,retain) SeaNumberBadge *badge;
+@property(nonatomic,readonly) SeaNumberBadge *badge;
 
 /**
  图片

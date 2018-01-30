@@ -136,6 +136,7 @@
 + (UINavigationController*)pushViewController:(UIViewController*) vc useNavigationBar:(BOOL) flag parentedViewConttroller:(UIViewController*) parentedViewConttroller
 {
     SeaPresentTransitionDelegate *delegate = [[SeaPresentTransitionDelegate alloc] init];
+    vc.sea_showBackItem = YES;
     if(flag){
         UINavigationController *nav = [vc sea_createWithNavigationController];
         nav.sea_transitioningDelegate = delegate;

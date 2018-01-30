@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
 @interface SeaDialogViewController : UIViewController
 
 /**
- 弹窗 SeaDialog 或其子类 设置后在viewDidLoad中自动添加到self.view
+ 弹窗 子类可在 viewDidLoad中设置，设置后会自动添加到view中，如果dialog不能自己确定大小，要设置对应的 宽高约束
  */
 @property(nonatomic,strong) UIView *dialog;
 

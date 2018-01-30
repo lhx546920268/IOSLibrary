@@ -13,11 +13,11 @@
 
 /**滑动手势
  */
-@property(nonatomic,retain) UIPanGestureRecognizer *panGestureRecognizer;
+@property(nonatomic,strong) UIPanGestureRecognizer *panGestureRecognizer;
 
 /**内容
  */
-@property(nonatomic,retain) UIView *contentView;
+@property(nonatomic,strong) UIView *contentView;
 
 /**middleViewController 起始位置
  */
