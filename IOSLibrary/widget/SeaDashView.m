@@ -30,9 +30,17 @@
 
 - (void)initlization
 {
-    self.dashesColor = [UIColor grayColor];
-    self.dashesInterval = 5.0;
-    self.dashesLength = 10.0;
+    if(!self.dashesColor){
+        self.dashesColor = [UIColor grayColor];
+    }
+    
+    if(self.dashesInterval == 0){
+        self.dashesInterval = 5.0;
+    }
+    
+    if(self.dashesLength == 0){
+        self.dashesLength = 10.0;
+    }
     self.backgroundColor = [UIColor clearColor];
 }
 

@@ -85,7 +85,7 @@
 {
     [self.container setTopView:self.menuBar height:SeaMenuBarHeight];
     
-    self.layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     [self registerClass:[SeaPageCollectionViewCell class]];
     self.collectionView.pagingEnabled = YES;
     self.collectionView.showsVerticalScrollIndicator = NO;
@@ -98,7 +98,7 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    self.layout.itemSize = self.collectionView.frame.size;
+    self.flowLayout.itemSize = self.collectionView.frame.size;
 }
 
 #pragma mark- public method

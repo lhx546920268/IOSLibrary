@@ -12,27 +12,16 @@
 @end
 
 @implementation SeaCollectionViewController
-{
-    UICollectionView *_collectionView;
-}
 
-/**构造方法
- *@param layout 布局方式，传nil会使用默认的布局
- *@return 一个初始化的 SeaCollectionViewController 对象
- */
+@synthesize collectionView = _collectionView;
+@synthesize flowLayout = _flowLayout;
+
 - (id)initWithFlowLayout:(UICollectionViewFlowLayout*) layout
 {
     self = [super initWithNibName:nil bundle:nil];
     if(self){
         self.curPage = 1;
-        if(layout == nil){
-            _layout = [[UICollectionViewFlowLayout alloc] init];
-            _layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-            _layout.minimumInteritemSpacing = 0;
-            _layout.minimumLineSpacing = 0;
-        }else{
-            self.layout = layout;
-        }
+        self.layout = layout;
     }
     
     return self;
@@ -45,6 +34,27 @@
 
 
 #pragma mark- public method
+
+- (UICollectionViewFlowLayout*)flowLayout
+{
+    if(!_flowLayout){
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        _flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        _flowLayout.minimumInteritemSpacing = 0;
+        _flowLayout.minimumLineSpacing = 0;
+    }
+    
+    return _flowLayout;
+}
+
+- (UICollectionViewLayout*)layout
+{
+    if(!_layout){
+        return self.flowLayout;
+    }
+    
+    return _layout;
+}
 
 - (UICollectionView*)collectionView
 {
@@ -125,6 +135,8 @@
 {
     static NSString *cellIdentifier = @"cell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    
+    
 
     return cell;
 }

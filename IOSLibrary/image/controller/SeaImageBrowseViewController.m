@@ -244,7 +244,7 @@
     self.collectionView.alwaysBounceHorizontal = YES;
     self.collectionView.pagingEnabled = YES;
     
-    self.layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     [super initialization];
     

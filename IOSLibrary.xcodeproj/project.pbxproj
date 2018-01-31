@@ -184,12 +184,6 @@
 		10CB0A5F2005BCB70067ADDB /* SeaTabBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A4F2005BCA90067ADDB /* SeaTabBarItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10CB0A602005BCB70067ADDB /* SeaTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A502005BCA90067ADDB /* SeaTabBarController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10CB0A612005BCB70067ADDB /* SeaTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A522005BCA90067ADDB /* SeaTabBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10CB0A622005BCB70067ADDB /* SeaTextCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A202005BCA80067ADDB /* SeaTextCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10CB0A632005BCB70067ADDB /* SeaTitleContentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A232005BCA80067ADDB /* SeaTitleContentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10CB0A642005BCB70067ADDB /* SeaTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A242005BCA80067ADDB /* SeaTextFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10CB0A652005BCB70067ADDB /* SeaTextListCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A252005BCA80067ADDB /* SeaTextListCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10CB0A662005BCB70067ADDB /* SeaTextLoadingListCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A272005BCA80067ADDB /* SeaTextLoadingListCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		10CB0A672005BCB70067ADDB /* SeaTextSwitchListCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A2D2005BCA80067ADDB /* SeaTextSwitchListCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10CB0A682005BCB70067ADDB /* SeaTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A322005BCA90067ADDB /* SeaTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10CB0A692005BCB70067ADDB /* SeaMagnifyingGlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A332005BCA90067ADDB /* SeaMagnifyingGlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10CB0A6A2005BCB70067ADDB /* SeaProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10CB0A362005BCA90067ADDB /* SeaProgressView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -216,12 +210,6 @@
 		10CB0A812005BCD70067ADDB /* SeaTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A4E2005BCA90067ADDB /* SeaTabBar.m */; };
 		10CB0A822005BCD70067ADDB /* SeaTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A512005BCA90067ADDB /* SeaTabBarItem.m */; };
 		10CB0A832005BCD70067ADDB /* SeaTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A532005BCA90067ADDB /* SeaTabBarController.m */; };
-		10CB0A842005BCD70067ADDB /* SeaTextLoadingListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A212005BCA80067ADDB /* SeaTextLoadingListCell.m */; };
-		10CB0A852005BCD70067ADDB /* SeaTextSwitchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A262005BCA80067ADDB /* SeaTextSwitchListCell.m */; };
-		10CB0A862005BCD70067ADDB /* SeaTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A282005BCA80067ADDB /* SeaTextCell.m */; };
-		10CB0A872005BCD70067ADDB /* SeaTitleContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A292005BCA80067ADDB /* SeaTitleContentCell.m */; };
-		10CB0A882005BCD70067ADDB /* SeaTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A2C2005BCA80067ADDB /* SeaTextFieldCell.m */; };
-		10CB0A892005BCD70067ADDB /* SeaTextListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A2E2005BCA80067ADDB /* SeaTextListCell.m */; };
 		10CB0A8A2005BCD70067ADDB /* SeaCountDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A302005BCA90067ADDB /* SeaCountDownButton.m */; };
 		10CB0A8B2005BCD70067ADDB /* SeaRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A312005BCA90067ADDB /* SeaRadarView.m */; };
 		10CB0A8C2005BCD70067ADDB /* SeaDashView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CB0A342005BCA90067ADDB /* SeaDashView.m */; };
@@ -474,21 +462,6 @@
 		10CB0A1C2005BCA80067ADDB /* UIScrollView+SeaEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SeaEmptyView.m"; sourceTree = "<group>"; };
 		10CB0A1D2005BCA80067ADDB /* SeaEmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaEmptyView.h; sourceTree = "<group>"; };
 		10CB0A1E2005BCA80067ADDB /* SeaEmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaEmptyView.m; sourceTree = "<group>"; };
-		10CB0A202005BCA80067ADDB /* SeaTextCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextCell.h; sourceTree = "<group>"; };
-		10CB0A212005BCA80067ADDB /* SeaTextLoadingListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTextLoadingListCell.m; sourceTree = "<group>"; };
-		10CB0A222005BCA80067ADDB /* SeaTextListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeaTextListCell.xib; sourceTree = "<group>"; };
-		10CB0A232005BCA80067ADDB /* SeaTitleContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTitleContentCell.h; sourceTree = "<group>"; };
-		10CB0A242005BCA80067ADDB /* SeaTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextFieldCell.h; sourceTree = "<group>"; };
-		10CB0A252005BCA80067ADDB /* SeaTextListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextListCell.h; sourceTree = "<group>"; };
-		10CB0A262005BCA80067ADDB /* SeaTextSwitchListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTextSwitchListCell.m; sourceTree = "<group>"; };
-		10CB0A272005BCA80067ADDB /* SeaTextLoadingListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextLoadingListCell.h; sourceTree = "<group>"; };
-		10CB0A282005BCA80067ADDB /* SeaTextCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTextCell.m; sourceTree = "<group>"; };
-		10CB0A292005BCA80067ADDB /* SeaTitleContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTitleContentCell.m; sourceTree = "<group>"; };
-		10CB0A2A2005BCA80067ADDB /* SeaTextSwitchListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeaTextSwitchListCell.xib; sourceTree = "<group>"; };
-		10CB0A2B2005BCA80067ADDB /* SeaTextLoadingListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeaTextLoadingListCell.xib; sourceTree = "<group>"; };
-		10CB0A2C2005BCA80067ADDB /* SeaTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTextFieldCell.m; sourceTree = "<group>"; };
-		10CB0A2D2005BCA80067ADDB /* SeaTextSwitchListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextSwitchListCell.h; sourceTree = "<group>"; };
-		10CB0A2E2005BCA80067ADDB /* SeaTextListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaTextListCell.m; sourceTree = "<group>"; };
 		10CB0A302005BCA90067ADDB /* SeaCountDownButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaCountDownButton.m; sourceTree = "<group>"; };
 		10CB0A312005BCA90067ADDB /* SeaRadarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaRadarView.m; sourceTree = "<group>"; };
 		10CB0A322005BCA90067ADDB /* SeaTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaTextView.h; sourceTree = "<group>"; };
@@ -997,28 +970,6 @@
 			path = category;
 			sourceTree = "<group>";
 		};
-		10CB0A1F2005BCA80067ADDB /* tableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				10CB0A202005BCA80067ADDB /* SeaTextCell.h */,
-				10CB0A282005BCA80067ADDB /* SeaTextCell.m */,
-				10CB0A242005BCA80067ADDB /* SeaTextFieldCell.h */,
-				10CB0A2C2005BCA80067ADDB /* SeaTextFieldCell.m */,
-				10CB0A252005BCA80067ADDB /* SeaTextListCell.h */,
-				10CB0A2E2005BCA80067ADDB /* SeaTextListCell.m */,
-				10CB0A222005BCA80067ADDB /* SeaTextListCell.xib */,
-				10CB0A272005BCA80067ADDB /* SeaTextLoadingListCell.h */,
-				10CB0A212005BCA80067ADDB /* SeaTextLoadingListCell.m */,
-				10CB0A2B2005BCA80067ADDB /* SeaTextLoadingListCell.xib */,
-				10CB0A2D2005BCA80067ADDB /* SeaTextSwitchListCell.h */,
-				10CB0A262005BCA80067ADDB /* SeaTextSwitchListCell.m */,
-				10CB0A2A2005BCA80067ADDB /* SeaTextSwitchListCell.xib */,
-				10CB0A232005BCA80067ADDB /* SeaTitleContentCell.h */,
-				10CB0A292005BCA80067ADDB /* SeaTitleContentCell.m */,
-			);
-			path = tableViewCell;
-			sourceTree = "<group>";
-		};
 		10CB0A2F2005BCA90067ADDB /* widget */ = {
 			isa = PBXGroup;
 			children = (
@@ -1123,7 +1074,6 @@
 				100B1C691FDA913A00FBCD62 /* scrollView */,
 				10CB0A4D2005BCA90067ADDB /* tabBar */,
 				1052CAD71FD78CFC00F6F01F /* tableView */,
-				10CB0A1F2005BCA80067ADDB /* tableViewCell */,
 				10E7B0F31F9F2D12006A83D8 /* transition */,
 				109D161A1FF0A25B005E01C7 /* vendors */,
 				10E7B0F81F9F2D12006A83D8 /* version */,
@@ -1356,12 +1306,6 @@
 				10CB0A5F2005BCB70067ADDB /* SeaTabBarItem.h in Headers */,
 				10CB0A602005BCB70067ADDB /* SeaTabBarController.h in Headers */,
 				10CB0A612005BCB70067ADDB /* SeaTabBar.h in Headers */,
-				10CB0A622005BCB70067ADDB /* SeaTextCell.h in Headers */,
-				10CB0A632005BCB70067ADDB /* SeaTitleContentCell.h in Headers */,
-				10CB0A642005BCB70067ADDB /* SeaTextFieldCell.h in Headers */,
-				10CB0A652005BCB70067ADDB /* SeaTextListCell.h in Headers */,
-				10CB0A662005BCB70067ADDB /* SeaTextLoadingListCell.h in Headers */,
-				10CB0A672005BCB70067ADDB /* SeaTextSwitchListCell.h in Headers */,
 				10CB0A682005BCB70067ADDB /* SeaTextView.h in Headers */,
 				10CB0A692005BCB70067ADDB /* SeaMagnifyingGlass.h in Headers */,
 				10CB0A6A2005BCB70067ADDB /* SeaProgressView.h in Headers */,
@@ -1569,12 +1513,6 @@
 				10CB0A812005BCD70067ADDB /* SeaTabBar.m in Sources */,
 				10CB0A822005BCD70067ADDB /* SeaTabBarItem.m in Sources */,
 				10CB0A832005BCD70067ADDB /* SeaTabBarController.m in Sources */,
-				10CB0A842005BCD70067ADDB /* SeaTextLoadingListCell.m in Sources */,
-				10CB0A852005BCD70067ADDB /* SeaTextSwitchListCell.m in Sources */,
-				10CB0A862005BCD70067ADDB /* SeaTextCell.m in Sources */,
-				10CB0A872005BCD70067ADDB /* SeaTitleContentCell.m in Sources */,
-				10CB0A882005BCD70067ADDB /* SeaTextFieldCell.m in Sources */,
-				10CB0A892005BCD70067ADDB /* SeaTextListCell.m in Sources */,
 				10CB0A8A2005BCD70067ADDB /* SeaCountDownButton.m in Sources */,
 				10CB0A8B2005BCD70067ADDB /* SeaRadarView.m in Sources */,
 				10CB0A8C2005BCD70067ADDB /* SeaDashView.m in Sources */,

@@ -159,11 +159,11 @@
     self.selectedAssetInfos = [NSMutableArray array];
 
     int size = (self.view.width - self.gridInterval * (self.numberOfItemsPerRow + 1)) / self.numberOfItemsPerRow;
-    self.layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.layout.minimumInteritemSpacing = self.gridInterval;
-    self.layout.minimumLineSpacing = self.gridInterval;
-    self.layout.sectionInset = UIEdgeInsetsMake(self.gridInterval, self.gridInterval, self.gridInterval, self.gridInterval);
-    self.layout.itemSize = CGSizeMake(size, size);
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.flowLayout.minimumInteritemSpacing = self.gridInterval;
+    self.flowLayout.minimumLineSpacing = self.gridInterval;
+    self.flowLayout.sectionInset = UIEdgeInsetsMake(self.gridInterval, self.gridInterval, self.gridInterval, self.gridInterval);
+    self.flowLayout.itemSize = CGSizeMake(size, size);
     
     [self.collectionView registerClass:[SeaAlbumAssetsThumbnail class] forCellWithReuseIdentifier:@"cell"];
     

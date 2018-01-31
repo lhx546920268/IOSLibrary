@@ -23,9 +23,14 @@
 @property(nonatomic,readonly) UICollectionView *collectionView;
 
 /**
- 布局方式
+ 布局方式 default is 'UICollectionViewFlowLayout'
  */
-@property(nonatomic,strong) UICollectionViewFlowLayout *layout;
+@property(nonatomic,strong) UICollectionViewLayout *layout;
+
+/**
+ 默认流布局方式
+ */
+@property(nonatomic,readonly) UICollectionViewFlowLayout *flowLayout;
 
 ///注册cell
 - (void)registerNib:(Class) clazz;

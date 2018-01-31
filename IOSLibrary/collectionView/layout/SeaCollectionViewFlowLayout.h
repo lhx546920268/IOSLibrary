@@ -25,16 +25,13 @@ typedef NS_ENUM(NSInteger, SeaCollectionViewItemAlignment)
 
 @optional
 
-///是否需要悬浮 只有当 sectionHeaderSuspending == YES时，这个才有效，default is 'YES'
-- (BOOL)collectionViewFlowLayout:(SeaCollectionViewFlowLayout*) layout shouldSuspendHeaderForSection:(NSInteger) section;
+///是否需要悬浮 default is 'NO'
+- (BOOL)collectionViewFlowLayout:(SeaCollectionViewFlowLayout*) layout shouldStickHeaderAtSection:(NSInteger) section;
 
 @end
 
 ///自定义流布局
 @interface SeaCollectionViewFlowLayout : UICollectionViewFlowLayout
-
-///sectionHeader 是否需要悬浮，default is 'NO'
-@property(nonatomic,assign) BOOL sectionHeaderSuspending;
 
 ///对其方式 default is 'SeaCollectionViewItemAlignmentDefault'
 @property(nonatomic,assign) SeaCollectionViewItemAlignment itemAlignment;

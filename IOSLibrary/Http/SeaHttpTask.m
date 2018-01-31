@@ -175,13 +175,13 @@
 ///请求成功
 - (void)onSuccess
 {
-    !self.successHandler ?: self.successHandler(self);
+    
 }
 
 ///请求失败
 - (void)onFail
 {
-    !self.failHandler ?: self.failHandler(self);
+    
 }
 
 ///请求完成
@@ -229,17 +229,30 @@
     if(error == SeaHttpErrorCodeNoError){
         if([self resultFromData:data]){
             
-            [self onSuccess];
+            [self requestDidSuccess];
         }else{
             _errorCode = SeaHttpErrorCodeApiError;
-            [self onFail];
+            [self requestDidFail];
         }
     }else{
         _errorCode = error;
-        [self onFail];
+        [self requestDidFail];
     }
     
     [self onComplete];
 }
+
+- (void)requestDidSuccess
+{
+    [self onSuccess];
+    !self.successHandler ?: self.successHandler(self);
+}
+
+- (void)requestDidFail
+{
+    [self onFail];
+    !self.failHandler ?: self.failHandler(self);
+}
+
 
 @end

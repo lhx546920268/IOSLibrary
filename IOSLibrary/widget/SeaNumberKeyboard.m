@@ -16,13 +16,13 @@
 @interface SeaNumberKeyboard ()
 
 ///其他按钮
-@property(nonatomic,strong) UIButton *other_btn;
+@property(nonatomic,strong) UIButton *otherButton;
 
 ///删除按钮
-@property(nonatomic,strong) UIButton *delete_btn;
+@property(nonatomic,strong) UIButton *deleteButton;
 
 /**
- *  长按删除计时器
+ * 长按删除计时器
  */
 @property(nonatomic,strong) NSTimer *timer;
 
@@ -75,7 +75,7 @@
                 
                 if(i == 9)
                 {
-                    self.other_btn = btn;
+                    self.otherButton = btn;
                     [btn setBackgroundImage:high_light_bg_image forState:UIControlStateNormal];
                     if(title.length > 0)
                     {
@@ -91,11 +91,11 @@
             else
             {
                 [btn setImage:[titles objectAtIndex:i] forState:UIControlStateNormal];
-                self.delete_btn = btn;
+                self.deleteButton = btn;
                 [btn setBackgroundImage:high_light_bg_image forState:UIControlStateNormal];
                 [btn setBackgroundImage:nor_bg_image forState:UIControlStateHighlighted];
-                [self.delete_btn addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
-                [self.delete_btn addTarget:self action:@selector(touchCancel:) forControlEvents:UIControlEventTouchCancel];
+                [self.deleteButton addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
+                [self.deleteButton addTarget:self action:@selector(touchCancel:) forControlEvents:UIControlEventTouchCancel];
             }
             
             [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -117,7 +117,7 @@
 - (void)buttonDidClick:(UIButton*) btn
 {
     
-    if([btn isEqual:self.delete_btn])
+    if([btn isEqual:self.deleteButton])
     {
         [self stopTimer];
     }

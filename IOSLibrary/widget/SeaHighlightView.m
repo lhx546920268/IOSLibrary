@@ -48,8 +48,6 @@
 
 #pragma mark- public method
 
-/**开始点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
- */
 - (void)touchBegan
 {
     if(!_highlightView.hidden)
@@ -59,8 +57,6 @@
     _highlightView.hidden = NO;
 }
 
-/**结束点击 当手势为UITapGestureRecognizer时， 在处理手势的方法中调用该方法
- */
 - (void)touchEnded
 {
     if(self.isAnimating)
@@ -74,8 +70,6 @@
     }];
 }
 
-/**添加单击手势
- */
 - (void)addTarget:(id)target action:(SEL)selector
 {
     self.target = target;
