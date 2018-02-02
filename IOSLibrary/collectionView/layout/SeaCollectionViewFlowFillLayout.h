@@ -19,25 +19,28 @@
 @optional
 
 ///获取每个sectionHeader的高度，宽度使用section的宽度
-- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout sectionHeaderHeightAtSection:(NSInteger) section;
+- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout headerHeightAtSection:(NSInteger) section;
+
+///头部是否需要悬浮 default is 'NO'
+- (BOOL)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout shouldStickHeaderAtSection:(NSInteger) section;
 
 ///获取每个sectionFooter的高度，宽度使用section的宽度
-- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout sectionFooterHeightAtSection:(NSInteger) section;
+- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout footerHeightAtSection:(NSInteger) section;
 
 ///对应的区域偏移量
 - (UIEdgeInsets)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout insetForSectionAtIndex:(NSInteger)section;
 
 ///对应的item上下间距
-- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
+- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout minimumLineSpacingForSection:(NSInteger)section;
 
 ///对应的item左右间距
-- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
+- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout minimumInteritemSpacingForSection:(NSInteger)section;
 
 ///区域头部视图和item之间的间距
-- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout sectionHeaderItemSpaceAtSection:(NSInteger) section;
+- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout headerItemSpaceAtSection:(NSInteger) section;
 
 ///区域底部视图和item之间的间距
-- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout sectionFooterItemSpaceAtSection:(NSInteger)section;
+- (CGFloat)collectionViewFlowFillLayout:(SeaCollectionViewFlowFillLayout *)layout footerItemSpaceAtSection:(NSInteger)section;
 
 @end
 
