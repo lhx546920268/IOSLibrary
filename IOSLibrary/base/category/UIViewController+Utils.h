@@ -197,6 +197,12 @@ SeaTabBarController;
  */
 - (void)sea_alertMsg:(NSString*) msg;
 
+/**提示信息
+ *@param msg 要提示的信息
+ *@param icon 图标
+ */
+- (void)sea_alertMsg:(NSString*) msg icon:(UIImage*) icon;
+
 /**网络不佳的提示信息
  *@param msg 要提示的信息
  */

@@ -8,7 +8,22 @@
 
 #import "SeaCollectionViewFlowLayout.h"
 
+@interface SeaCollectionViewFlowLayout()
+
+/**
+ 是否已实现悬浮头部代理
+ */
+@property(nonatomic,assign) BOOL shouldStickHeaderDelegate;
+
+@end
+
 @implementation SeaCollectionViewFlowLayout
+
+- (void)prepareLayout
+{
+    self.shouldStickHeaderDelegate = [self.s_delegate respondsToSelector:@selector(collectionViewFlowLayout:shouldStickHeaderAtSection:)];
+    [super prepareLayout];
+}
 
 - (id<SeaCollectionViewFlowLayoutDelegate>)s_delegate
 {
@@ -19,8 +34,7 @@
 {
     NSMutableArray *attributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    BOOL stickDelegate = [self.s_delegate respondsToSelector:@selector(collectionViewFlowLayout:shouldStickHeaderAtSection:)];
-    if(self.itemAlignment == SeaCollectionViewItemAlignmentDefault || !stickDelegate)
+    if(self.itemAlignment == SeaCollectionViewItemAlignmentDefault || !self.shouldStickHeaderDelegate)
         return attributes;
 
     UICollectionViewLayoutAttributes *prevousAttr = nil;
@@ -32,7 +46,7 @@
     ///可见的section，如果该section没有cell，则不需要悬浮，所以这里不包含header
     NSMutableArray *visibleSections = nil;
 
-    if(stickDelegate){
+    if(self.shouldStickHeaderDelegate){
         visibleSections = [NSMutableArray array];
         for(UICollectionViewLayoutAttributes *attr in attributes){
             if(![attr.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]){
@@ -45,10 +59,7 @@
         
         ///由于系统会把header移除，所以要重新加入
         for(NSNumber *number in visibleSections){
-            BOOL should = YES;
-            if(stickDelegate){
-                should = [self.s_delegate collectionViewFlowLayout:self shouldStickHeaderAtSection:number.integerValue];
-            }
+            BOOL should = [self.s_delegate collectionViewFlowLayout:self shouldStickHeaderAtSection:number.integerValue];;
             
             if(should){
                 UICollectionViewLayoutAttributes *attr = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:number.integerValue]];
@@ -95,7 +106,7 @@
             }
 
             prevousAttr = attr;
-        }else if (stickDelegate && [attr.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]){
+        }else if (self.shouldStickHeaderDelegate && [attr.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]){
             BOOL should = [self.s_delegate collectionViewFlowLayout:self shouldStickHeaderAtSection:attr.indexPath.section];;
 
             if(should){
@@ -134,8 +145,7 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    BOOL stickDelegate = [self.s_delegate respondsToSelector:@selector(collectionViewFlowLayout:shouldStickHeaderAtSection:)];
-    if(stickDelegate){
+    if(self.shouldStickHeaderDelegate){
         return YES;
     }
     

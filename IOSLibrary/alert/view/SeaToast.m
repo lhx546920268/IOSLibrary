@@ -5,7 +5,8 @@
 
 #import "SeaToast.h"
 #import "SeaBasic.h"
-#import "UIView+SeaAutoLayout.h"
+#import "NSString+Utils.h"
+#import "UIView+Utils.h"
 
 @interface SeaToast()
 
@@ -54,6 +55,7 @@
 {
     self.shouldRemoveOnDismiss = YES;
     self.userInteractionEnabled = NO;
+    _verticalSpace = 5;
     _gravity = SeaToastGravityCenterVertical;
     _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
     _contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
@@ -63,47 +65,38 @@
     _translucentView.layer.cornerRadius = 8;
     _translucentView.layer.masksToBounds = YES;
     [self addSubview:_translucentView];
+}
+
+- (UIImageView*)imageView
+{
+    if(!_imageView){
+        _imageView = [[UIImageView alloc] init];
+        [_translucentView addSubview:_imageView];
+    }
     
-    _imageView = [[UIImageView alloc] init];
-    [self addSubview:_imageView];
+    return _imageView;
+}
+
+- (UILabel*)textLabel
+{
+    if(!_textLabel){
+        _textLabel = [[UILabel alloc] init];
+        _textLabel.textAlignment = NSTextAlignmentCenter;
+        _textLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
+        _textLabel.numberOfLines = 0;
+        _textLabel.backgroundColor = [UIColor clearColor];
+        _textLabel.textColor = [UIColor whiteColor];
+        [_translucentView addSubview:_textLabel];
+    }
     
-    _textLabel = [[UILabel alloc] init];
-    _textLabel.textAlignment = NSTextAlignmentCenter;
-    _textLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
-    _textLabel.numberOfLines = 0;
-    _textLabel.backgroundColor = [UIColor clearColor];
-    _textLabel.textColor = [UIColor whiteColor];
-    [self addSubview:_textLabel];
-    
-    [_translucentView sea_leftToItem:_translucentView.superview margin:_superEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_rightToItem:_translucentView.superview margin:_superEdgeInsets.right relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_bottomToItem:_translucentView.superview margin:_superEdgeInsets.bottom relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_topToItem:_translucentView.superview margin:_superEdgeInsets.top relation:NSLayoutRelationGreaterThanOrEqual];
-    [_translucentView sea_centerInSuperview];
-    
-    [_imageView sea_centerXInSuperview];
-    [_imageView sea_topToSuperview:_contentEdgeInsets.top];
-    [_imageView sea_leftToItem:_imageView.superview margin:_contentEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
-    [_imageView sea_rightToItemLeft:_imageView.superview margin:_contentEdgeInsets.right relation:NSLayoutRelationGreaterThanOrEqual];
-    
-    [_textLabel sea_leftToItem:_textLabel.superview margin:_contentEdgeInsets.left relation:NSLayoutRelationGreaterThanOrEqual];
-    [_textLabel sea_rightToSuperview:_contentEdgeInsets.right];
-    [_textLabel sea_topToItemBottom:_imageView margin:0];
-    [_textLabel sea_bottomToSuperview:_contentEdgeInsets.bottom];
+    return _textLabel;
 }
 
 - (void)setContentEdgeInsets:(UIEdgeInsets)contentEdgeInsets
 {
     if(!UIEdgeInsetsEqualToEdgeInsets(_contentEdgeInsets, contentEdgeInsets)){
         _contentEdgeInsets = contentEdgeInsets;
-        
-        _imageView.sea_topLayoutConstraint.constant = _contentEdgeInsets.top;
-        _imageView.sea_leftLayoutConstraint.constant = _contentEdgeInsets.left;
-        _imageView.sea_rightLayoutConstraint.constant = _contentEdgeInsets.right;
-        
-        _textLabel.sea_leftLayoutConstraint.constant = _contentEdgeInsets.left;
-        _textLabel.sea_rightLayoutConstraint.constant = _contentEdgeInsets.right;
-        _textLabel.sea_bottomLayoutConstraint.constant = _contentEdgeInsets.bottom;
+        [self setNeedsLayout];
     }
 }
 
@@ -111,10 +104,7 @@
 {
     if(!UIEdgeInsetsEqualToEdgeInsets(_superEdgeInsets, superEdgeInsets)){
         _superEdgeInsets = superEdgeInsets;
-        _translucentView.sea_leftLayoutConstraint.constant = _superEdgeInsets.left;
-        _translucentView.sea_rightLayoutConstraint.constant = _superEdgeInsets.right;
-        _translucentView.sea_topLayoutConstraint.constant = _superEdgeInsets.top;
-        _translucentView.sea_bottomLayoutConstraint.constant = _superEdgeInsets.bottom;
+        [self setNeedsLayout];
     }
 }
 
@@ -122,37 +112,95 @@
 {
     if(_gravity != gravity){
         _gravity = gravity;
-        
-        switch (_gravity) {
-            case SeaToastGravityTop :
-
-                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
-                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
-                [self removeConstraint:_translucentView.sea_centerYLayoutConstraint];
-                [_translucentView sea_topToSuperview:_superEdgeInsets.top];
-                break;
-            case SeaToastGravityBottom :
-                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
-                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
-                [self removeConstraint:_translucentView.sea_centerYLayoutConstraint];
-                [_translucentView sea_bottomToSuperview:_superEdgeInsets.bottom];
-                break;
-            case SeaToastGravityCenterVertical :
-                [self removeConstraint:_translucentView.sea_topLayoutConstraint];
-                [self removeConstraint:_translucentView.sea_bottomLayoutConstraint];
-                [_translucentView sea_centerYInSuperview];
-                [_translucentView sea_topToItem:_translucentView.superview margin:_superEdgeInsets.top relation:NSLayoutRelationGreaterThanOrEqual];
-                [_translucentView sea_bottomToItem:_translucentView.superview margin:_superEdgeInsets.bottom relation:NSLayoutRelationGreaterThanOrEqual];
-                break;
-            default:
-                break;
-        }
+        [self setNeedsLayout];
     }
 }
 
 - (void)setText:(NSString *)text
 {
-    self.textLabel.text = text;
+    if(![_text isEqualToString:text]){
+        _text = text;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setIcon:(UIImage *)icon
+{
+    if(_icon != icon){
+        _icon = icon;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setVerticalSpace:(CGFloat)verticalSpace
+{
+    if(_verticalSpace != verticalSpace){
+        _verticalSpace = verticalSpace;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)layoutSubviews
+{
+    //调整位置
+    CGSize textSize = CGSizeZero;
+    CGSize imageSize = CGSizeZero;
+    
+    if(self.icon){
+        self.imageView.hidden = NO;
+        imageSize = self.icon.size;
+        self.imageView.image = self.icon;
+    }else{
+        _imageView.hidden = YES;
+    }
+    
+    CGSize maxTranslucentSize = CGSizeMake(self.width - self.superEdgeInsets.left - self.superEdgeInsets.right, self.height - self.superEdgeInsets.bottom - self.superEdgeInsets.top);
+    
+    if(self.text){
+        self.textLabel.hidden = NO;
+        self.textLabel.text = self.text;
+        textSize = [self.text sea_stringSizeWithFont:self.textLabel.font contraintWith:maxTranslucentSize.width - self.contentEdgeInsets.left - self.contentEdgeInsets.right];
+        textSize.height += 1;
+    }else{
+        _textLabel.hidden = YES;
+    }
+    
+    CGRect frame = self.translucentView.frame;
+    CGFloat contentHeight = imageSize.height + self.verticalSpace + textSize.height;
+    if(!self.text || !self.icon){
+        contentHeight -= self.verticalSpace;
+    }
+    
+    frame.size.width = MIN(maxTranslucentSize.width, MAX(textSize.width, imageSize.width) + self.contentEdgeInsets.left + self.contentEdgeInsets.right);
+    frame.size.height = MIN(maxTranslucentSize.height, self.contentEdgeInsets.top + self.contentEdgeInsets.bottom + contentHeight);
+    frame.origin.x = (self.width - frame.size.width) / 2.0;
+    switch (self.gravity) {
+        case SeaToastGravityTop :
+            frame.origin.y = self.superEdgeInsets.top;
+            break;
+        case SeaToastGravityBottom :
+            frame.origin.y = self.height - frame.size.height - self.superEdgeInsets.bottom;
+            break;
+        case SeaToastGravityCenterVertical :
+            frame.origin.y = (self.height - frame.size.height) / 2.0;
+            break;
+    }
+    
+    self.translucentView.frame = frame;
+    
+    if(self.icon){
+        _imageView.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
+        _imageView.center = CGPointMake(self.translucentView.width / 2.0, self.contentEdgeInsets.top + imageSize.height / 2.0);
+    }
+    
+    if(self.text){
+        CGFloat height = self.translucentView.height - imageSize.height - self.contentEdgeInsets.top - self.contentEdgeInsets.bottom;
+        if(self.icon){
+            height -= self.verticalSpace;
+        }
+        _textLabel.bounds = CGRectMake(0, 0, textSize.width, height);
+        _textLabel.center = CGPointMake(self.translucentView.width / 2.0, self.translucentView.height - self.contentEdgeInsets.bottom - height / 2.0);
+    }
 }
 
 // 显示提示框 2秒后消失
@@ -164,10 +212,15 @@
 // 隐藏
 - (void)dismiss
 {
-    self.hidden = YES;
-    if(self.shouldRemoveOnDismiss){
-        [self removeFromSuperview];
-    }
+    [UIView animateWithDuration:0.25 animations:^(void){
+       
+        self.translucentView.alpha = 0;
+        
+    }completion:^(BOOL finish){
+        if(self.shouldRemoveOnDismiss){
+            [self removeFromSuperview];
+        }
+    }];
     !self.dismissHanlder ?: self.dismissHanlder();
 }
 
@@ -178,6 +231,7 @@
 {
     [self canPerformAction:@selector(dismiss) withSender:self];
     self.hidden = NO;
+    self.translucentView.alpha = 1.0;
     [self performSelector:@selector(dismiss) withObject:nil afterDelay:delay];
 }
 

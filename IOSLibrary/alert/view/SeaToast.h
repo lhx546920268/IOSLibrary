@@ -10,13 +10,13 @@
 typedef NS_ENUM(NSInteger, SeaToastGravity){
     
     ///上
-    SeaToastGravityTop = 1 << 0,
+    SeaToastGravityTop = 0,
     
     ///下
-    SeaToastGravityBottom = 1 << 1,
+    SeaToastGravityBottom,
     
     ///垂直居中
-    SeaToastGravityCenterVertical = 1 << 2,
+    SeaToastGravityCenterVertical,
 };
 
 
@@ -43,6 +43,10 @@ typedef NS_ENUM(NSInteger, SeaToastGravity){
 /**位置 default is 'SeaToastGravityCenterVertical'
  */
 @property(nonatomic,assign) SeaToastGravity gravity;
+
+/**图标和文字的间距 default is ''5
+ */
+@property(nonatomic,assign) CGFloat verticalSpace;
 
 /**是否需要移除父视图 当提示框消失后 default is 'YES'
  */

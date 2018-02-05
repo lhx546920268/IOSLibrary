@@ -252,7 +252,7 @@ static char SeaTransitioningDelegateKey;
             image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
         
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 5.0, 25)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 15.0, 44)];
         imageView.image = image;
         imageView.contentMode = UIViewContentModeLeft;
         imageView.userInteractionEnabled = YES;
@@ -266,9 +266,7 @@ static char SeaTransitioningDelegateKey;
         
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
         self.navigationItem.leftBarButtonItem = item;
-    }
-    else
-    {
+    }else{
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.leftBarButtonItems = nil;
     }
@@ -486,13 +484,8 @@ static char SeaTransitioningDelegateKey;
     return nav;
 }
 
-
-
 #pragma mark- alert
 
-/**网络请求指示器信息
- *@param msg 提示的信息
- */
 - (void)setShowNetworkActivityWithMsg:(NSString*) msg
 {
     self.sea_showNetworkActivity = YES;
@@ -502,18 +495,16 @@ static char SeaTransitioningDelegateKey;
     }
 }
 
-/**提示信息
- *@param msg 要提示的信息
- */
 - (void)sea_alertMsg:(NSString*) msg
 {
     [self.view sea_alertMessage:msg];
 }
 
+- (void)sea_alertMsg:(NSString*) msg icon:(UIImage*) icon
+{
+    [self.view sea_alertMessage:msg icon:icon];
+}
 
-/**网络不佳的提示信息
- *@param msg 要提示的信息
- */
 - (void)sea_alerBadNetworkMsg:(NSString*) msg
 {
     [self sea_alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaAlertMsgWhenBadNetwork, msg]];

@@ -205,12 +205,13 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
         [self goBack];
         
         if(!self.closeBarButtonItem){
-            self.closeBarButtonItem = [self sea_setLeftItemWithTitle:@"关闭" action:@selector(closeWebPage)];
+            self.closeBarButtonItem = [[self class] sea_barItemWithTitle:@"关闭" target:self action:@selector(closeWebPage)];
             
             if([self.closeBarButtonItem.customView isKindOfClass:[UIButton class]]){
                 [(UIButton*)self.closeBarButtonItem.customView setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
             }
             
+            self.backBarButtonItem = self.navigationItem.leftBarButtonItem;
             if(!self.backBarButtonItem){
                 self.backBarButtonItem = [self sea_setLeftItemWithTitle:@"关闭" action:@selector(sea_back)];
             }

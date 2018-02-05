@@ -16,6 +16,9 @@
 ///头部布局信息
 @property(nonatomic,strong) UICollectionViewLayoutAttributes *headerLayoutAttributes;
 
+///悬浮的头部布局信息
+@property(nonatomic,readonly) UICollectionViewLayoutAttributes *stickHeaderLayoutAttributes;
+
 ///底部布局信息
 @property(nonatomic,strong) UICollectionViewLayoutAttributes *footerLayoutAttributes;
 
@@ -24,6 +27,9 @@
 
 ///行信息
 @property(nonatomic,strong) NSMutableArray<SeaCollectionFlowRowInfo*> *rowInfos;
+
+///是否要悬浮头部
+@property(nonatomic,assign) BOOL shouldStickHeader;
 
 ///section起点
 @property(nonatomic,readonly) CGFloat sectionBeginning;
@@ -159,7 +165,7 @@
     return point;
 }
 
-/**便利最外围的item，获取最低的并且适合放size的 item
+/**遍历最外围的item，获取最低的并且适合放size的 item
  *@param size 将要存放的item的大小
  *@return 适合存放item的位置，如果返回NSNotFound，标明没有适合的位置
  */
@@ -248,6 +254,8 @@
 
 @implementation SeaCollectionViewFlowFillLayoutAttributes
 
+@synthesize stickHeaderLayoutAttributes = _stickHeaderLayoutAttributes;
+
 - (instancetype)init
 {
     self = [super init];
@@ -295,24 +303,49 @@
     return self.headerLayoutAttributes != nil || self.itemInfos.count > 0 || self.footerLayoutAttributes != nil;
 }
 
+///获取悬浮的header attr
+- (UICollectionViewLayoutAttributes*)stickHeaderLayoutAttributes
+{
+    if(self.headerLayoutAttributes){
+        if(!_stickHeaderLayoutAttributes){
+            _stickHeaderLayoutAttributes = [self.headerLayoutAttributes copy];
+        }
+        _stickHeaderLayoutAttributes.zIndex = NSNotFound;
+        return _stickHeaderLayoutAttributes;
+    }
+    
+    return nil;
+}
+
+///是否需要悬浮
+- (BOOL)shouldStickHeader
+{
+    return _shouldStickHeader && self.headerLayoutAttributes;
+}
+
 @end
 
 @interface SeaCollectionViewFlowFillLayout()
 
 /**
- * collectonView 代理
+ collectonView 代理
  */
 @property(nonatomic,readonly) id<SeaCollectionViewFlowFillLayoutDelegate> delegate;
 
 /**
- * 内容大小
+ 内容大小
  */
 @property(nonatomic,assign) CGSize contentSize;
 
 /**
- * 布局属性
+ 布局属性
  */
 @property(nonatomic,strong) NSMutableArray<SeaCollectionViewFlowFillLayoutAttributes*> *attributes;
+
+/**
+ 是否已实现悬浮头部代理
+ */
+@property(nonatomic,assign) BOOL shouldStickHeaderDelegate;
 
 @end
 
@@ -385,6 +418,8 @@
     
     BOOL sectionFooterItemSpaceDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:footerItemSpaceAtSection:)];
     BOOL sectionHeaderItemSpaceDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:headerItemSpaceAtSection:)];
+    BOOL shouldStickHeaderDelegate = [self.delegate respondsToSelector:@selector(collectionViewFlowFillLayout:shouldStickHeaderAtSection:)];
+    self.shouldStickHeaderDelegate = shouldStickHeaderDelegate;
 
 #if SeaDebug
     
@@ -399,6 +434,9 @@
     for(NSInteger section = 0;section < numberOfSections;section ++){
         SeaCollectionViewFlowFillLayoutAttributes *layoutAttributes = [[SeaCollectionViewFlowFillLayoutAttributes alloc] init];
         layoutAttributes.layout = self;
+        if(shouldStickHeaderDelegate){
+            layoutAttributes.shouldStickHeader = [self.delegate collectionViewFlowFillLayout:self shouldStickHeaderAtSection:section];
+        }
 
         [self.attributes addObject:layoutAttributes];
 
@@ -606,24 +644,40 @@
     CGFloat top = rect.origin.y;
     CGFloat bottom = top + rect.size.height;
 
-    for(SeaCollectionViewFlowFillLayoutAttributes *attribute in self.attributes){
+    for(NSUInteger i = 0;i < self.attributes.count;i ++){
+        SeaCollectionViewFlowFillLayoutAttributes *attribute = self.attributes[i];
         ///该区域没有元素
         if(!attribute.existElement){
             continue;
         }
 
+        if(attribute.headerLayoutAttributes){
+            
+            if(attribute.shouldStickHeader){
+                
+                //悬浮头部
+                UICollectionViewLayoutAttributes *attr = [self stickHeaderLayoutAttributesFromAttribute:attribute section:i];
+                
+                CGRect frame = attr.frame;
+                //判断还在不在可见区域内
+                if(frame.origin.y + frame.size.height > self.collectionView.contentOffset.y){
+                    [attributes addObject:attr];
+                }
+            }else{
+                if(CGRectIntersectsRect(rect, attribute.headerLayoutAttributes.frame)){
+                    [attributes addObject:attribute.headerLayoutAttributes];
+                }
+            }
+        }
+        
         ///section的头部超过rect的底部，该section以后的元素都不存在于该区域
         if(attribute.sectionBeginning > bottom){
             break;
         }
-
+        
         ///section的底部小于rect的头部，改section的元素不存在该区域，继续查询下一个section
         if(attribute.sectionEnd < top){
             continue;
-        }
-
-        if(attribute.headerLayoutAttributes){
-            [attributes addObject:attribute.headerLayoutAttributes];
         }
 
         for(UICollectionViewLayoutAttributes *layoutAttributes in attribute.itemInfos){
@@ -659,11 +713,76 @@
     if([elementKind isEqualToString:UICollectionElementKindSectionFooter]){
         return attributes.footerLayoutAttributes;
     }else if ([elementKind isEqualToString:UICollectionElementKindSectionHeader]){
-        return attributes.headerLayoutAttributes;
+        if(attributes.shouldStickHeader){
+            return [self stickHeaderLayoutAttributesFromAttribute:attributes section:indexPath.section];
+        }else{
+            return attributes.headerLayoutAttributes;
+        }
     }
     
     return nil;
 }
 
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+    ///当要悬浮头部时要更新 header的frame
+    if(self.shouldStickHeaderDelegate){
+        return YES;
+    }
+    return NO;
+}
+
+///获取悬浮头部属性
+- (UICollectionViewLayoutAttributes*)stickHeaderLayoutAttributesFromAttribute:(SeaCollectionViewFlowFillLayoutAttributes*) attribute section:(NSUInteger) section
+{
+    UICollectionViewLayoutAttributes *attr = attribute.stickHeaderLayoutAttributes;
+    CGRect frame = attr.frame;
+    CGFloat offsetY = self.collectionView.contentOffset.y;
+    frame.origin.y = MAX(offsetY, attribute.headerLayoutAttributes.frame.origin.y);
+    SeaCollectionViewFlowFillLayoutAttributes *nextAttribute = [self nextStickAttributesForSection:section];
+    
+    //下一个悬浮头部要把当前的顶上去
+    if(nextAttribute){
+        CGFloat value = nextAttribute.headerLayoutAttributes.frame.origin.y - offsetY - attribute.headerLayoutAttributes.frame.size.height;
+        if(value < 0){
+            frame.origin.y += value;
+        }
+    }
+    
+    attr.frame = frame;
+
+    return attr;
+}
+
+///获取某个区域对应的头部属性
+- (SeaCollectionViewFlowFillLayoutAttributes*)attributesForBounds:(CGRect) bounds
+{
+    SeaCollectionViewFlowFillLayoutAttributes *attributes = nil;
+    
+    for(NSUInteger i = 0;i < self.attributes.count;i ++){
+        SeaCollectionViewFlowFillLayoutAttributes *attr = self.attributes[i];
+        if(attr.sectionBeginning >= bounds.origin.y || attr.sectionEnd <= bounds.origin.y + bounds.size.height){
+            attributes = attr;
+            break;
+        }
+    }
+    
+    return attributes;
+}
+
+///获取下一个需要悬浮的头部属性
+- (SeaCollectionViewFlowFillLayoutAttributes*)nextStickAttributesForSection:(NSUInteger) section
+{
+    SeaCollectionViewFlowFillLayoutAttributes *attributes = nil;
+    for(NSUInteger i = section + 1;i < self.attributes.count;i ++){
+        SeaCollectionViewFlowFillLayoutAttributes *attr = self.attributes[i];
+        if(attr.shouldStickHeader){
+            attributes = attr;
+            break;
+        }
+    }
+    
+    return attributes;
+}
 
 @end
