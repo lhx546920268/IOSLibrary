@@ -111,8 +111,8 @@ void makePhoneCall(NSString *mobile, BOOL flag)
         return;
     
     if(flag){
-        SeaAlertController *controller = [[SeaAlertController alloc] initWithTitle:[NSString stringWithFormat:@"%@", mobile] message:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:nil otherButtonTitles:@"取消", @"呼叫", nil];
-        controller.selectionHandler = ^(NSInteger index){
+        SeaAlertController *controller = [[SeaAlertController alloc] initWithTitle:[NSString stringWithFormat:@"%@", mobile] message:nil icon:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:nil otherButtonTitles:@"取消", @"拍照", nil];
+        controller.selectionHandler = ^(NSUInteger index){
           
             if(index == 1){
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];

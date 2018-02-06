@@ -370,13 +370,10 @@
     [self removeConstraints:self.constraints];
     NSArray *contraints = self.superview.constraints;
     
-    if(contraints.count > 0)
-    {
+    if(contraints.count > 0){
         NSMutableArray *toClearContraints = [NSMutableArray array];
-        for(NSLayoutConstraint *constraint in contraints)
-        {
-            if(constraint.firstItem == self || constraint.secondItem == self)
-            {
+        for(NSLayoutConstraint *constraint in contraints){
+            if(constraint.firstItem == self || constraint.secondItem == self){
                 [toClearContraints addObject:constraint];
             }
         }

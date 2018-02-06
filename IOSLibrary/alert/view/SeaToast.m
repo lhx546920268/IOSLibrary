@@ -53,12 +53,15 @@
 
 - (void)initialization
 {
+    
     self.shouldRemoveOnDismiss = YES;
     self.userInteractionEnabled = NO;
     _verticalSpace = 5;
     _gravity = SeaToastGravityCenterVertical;
     _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
     _contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+    
+    _minSize = CGSizeMake(_contentEdgeInsets.left + _contentEdgeInsets.right + 80, _contentEdgeInsets.top + _contentEdgeInsets.bottom + 20);
     
     _translucentView = [[UIView alloc] init];
     _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
@@ -173,6 +176,15 @@
     
     frame.size.width = MIN(maxTranslucentSize.width, MAX(textSize.width, imageSize.width) + self.contentEdgeInsets.left + self.contentEdgeInsets.right);
     frame.size.height = MIN(maxTranslucentSize.height, self.contentEdgeInsets.top + self.contentEdgeInsets.bottom + contentHeight);
+    
+    if(frame.size.width < self.minSize.width){
+        frame.size.width = self.minSize.width;
+    }
+    
+    if(frame.size.height < self.minSize.height){
+        frame.size.height = self.minSize.height;
+    }
+    
     frame.origin.x = (self.width - frame.size.width) / 2.0;
     switch (self.gravity) {
         case SeaToastGravityTop :
@@ -188,9 +200,15 @@
     
     self.translucentView.frame = frame;
     
+    contentHeight = imageSize.height;
+    if(self.icon && self.text){
+        contentHeight += self.verticalSpace;
+    }
+    contentHeight += textSize.height;
+    
     if(self.icon){
-        _imageView.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
-        _imageView.center = CGPointMake(self.translucentView.width / 2.0, self.contentEdgeInsets.top + imageSize.height / 2.0);
+        
+        _imageView.frame = CGRectMake((self.translucentView.width - imageSize.width) / 2.0, (self.translucentView.height - contentHeight) / 2.0, imageSize.width, imageSize.height);
     }
     
     if(self.text){
@@ -206,7 +224,7 @@
 // 显示提示框 2秒后消失
 - (void)show
 {
-    [self showAndHideDelay:2.0];
+    [self showAndHideDelay:1.5];
 }
 
 // 隐藏
@@ -217,11 +235,12 @@
         self.translucentView.alpha = 0;
         
     }completion:^(BOOL finish){
+        self.hidden = YES;
         if(self.shouldRemoveOnDismiss){
             [self removeFromSuperview];
         }
+        !self.dismissHanlder ?: self.dismissHanlder();
     }];
-    !self.dismissHanlder ?: self.dismissHanlder();
 }
 
 /**显示提示框并设置多少秒后消失
@@ -229,7 +248,7 @@
  */
 - (void)showAndHideDelay:(NSTimeInterval) delay
 {
-    [self canPerformAction:@selector(dismiss) withSender:self];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
     self.hidden = NO;
     self.translucentView.alpha = 1.0;
     [self performSelector:@selector(dismiss) withObject:nil afterDelay:delay];
@@ -237,7 +256,7 @@
 
 - (void)dealloc
 {
-    [self canPerformAction:@selector(dismiss) withSender:self];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
 }
 
 @end

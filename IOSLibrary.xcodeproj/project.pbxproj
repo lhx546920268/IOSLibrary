@@ -959,13 +959,13 @@
 			isa = PBXGroup;
 			children = (
 				10CB0A152005BCA80067ADDB /* UICollectionView+SeaEmptyView.h */,
-				10CB0A162005BCA80067ADDB /* UITableView+SeaEmptyView.m */,
-				10CB0A172005BCA80067ADDB /* UIView+SeaEmptyView.m */,
-				10CB0A182005BCA80067ADDB /* UIScrollView+SeaEmptyView.h */,
 				10CB0A192005BCA80067ADDB /* UICollectionView+SeaEmptyView.m */,
-				10CB0A1A2005BCA80067ADDB /* UIView+SeaEmptyView.h */,
-				10CB0A1B2005BCA80067ADDB /* UITableView+SeaEmptyView.h */,
+				10CB0A182005BCA80067ADDB /* UIScrollView+SeaEmptyView.h */,
 				10CB0A1C2005BCA80067ADDB /* UIScrollView+SeaEmptyView.m */,
+				10CB0A1B2005BCA80067ADDB /* UITableView+SeaEmptyView.h */,
+				10CB0A162005BCA80067ADDB /* UITableView+SeaEmptyView.m */,
+				10CB0A1A2005BCA80067ADDB /* UIView+SeaEmptyView.h */,
+				10CB0A172005BCA80067ADDB /* UIView+SeaEmptyView.m */,
 			);
 			path = category;
 			sourceTree = "<group>";

@@ -15,10 +15,13 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
     SeaDialogAnimateNone = 0,
     
     ///缩放
-    SeaDialogAnimateScale = 1,
+    SeaDialogAnimateScale,
     
     ///上下
-    SeaDialogAnimateUpDown = 2,
+    SeaDialogAnimateUpDown,
+    
+    ///自定义
+    SeaDialogAnimateCustom,
 };
 
 /**
@@ -27,7 +30,7 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
 @interface SeaDialogViewController : UIViewController
 
 /**
- 弹窗 子类可在 viewDidLoad中设置，设置后会自动添加到view中，如果dialog不能自己确定大小，要设置对应的 宽高约束
+ 弹窗 子类可在 viewDidLoad中设置，设置后会不会自动添加到view中，要自己设置对应的约束
  */
 @property(nonatomic,strong) UIView *dialog;
 
@@ -85,5 +88,15 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
  隐藏
  */
 - (void)dismiss;
+
+/**
+ 执行自定义显示动画 子类重写
+ */
+- (void)didExecuteShowCustomAnimate:(void(^)(BOOL finish)) completion;
+
+/**
+ 执行自定义消失动画 子类重写
+ */
+- (void)didExecuteDismissCustomAnimate:(void(^)(BOOL finish)) completion;
 
 @end

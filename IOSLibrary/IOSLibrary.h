@@ -18,6 +18,7 @@
 #import <UIViewController+Utils.h>
 
 #import <SeaTabBarController.h>
+#import <SeaAlertController.h>
 
 
 #import <UIView+Utils.h>

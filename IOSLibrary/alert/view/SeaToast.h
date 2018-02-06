@@ -56,7 +56,11 @@ typedef NS_ENUM(NSInteger, SeaToastGravity){
  */
 @property(nonatomic,copy) void(^dismissHanlder)(void);
 
-// 显示提示框 2秒后消失
+/**最小大小
+ */
+@property(nonatomic,assign) CGSize minSize;
+
+// 显示提示框 1.5秒后消失
 - (void)show;
 
 // 隐藏

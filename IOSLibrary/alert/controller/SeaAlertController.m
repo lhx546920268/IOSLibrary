@@ -14,22 +14,8 @@
 #import "SeaBasic.h"
 #import "UIColor+Utils.h"
 #import "UIFont+Utils.h"
-
-
-//系统默认的蓝色
-#define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
-
-//边距
-#define SeaAlertControllerMargin 15.0
-
-//文本边距
-#define SeaAlertControllerTextMargin 20.0
-
-//圆角
-#define SeaAlertControllerCornerRadius 8.0
-
-///按钮间距
-#define SeaAlertControllerButtonInterval 0.5
+#import "UIView+SeaAutoLayout.h"
+#import "UIImage+Utils.h"
 
 #pragma mark- button
 
@@ -50,6 +36,7 @@
 
 //方法
 @property(nonatomic,weak) id target;
+
 @property(nonatomic,assign) SEL selector;
 
 @end
@@ -59,10 +46,8 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
+    if(self){
         self.clipsToBounds = YES;
-        self.layer.cornerRadius = SeaAlertControllerCornerRadius;
         self.layer.masksToBounds = YES;
         
         _highlightView = [[UIView alloc] initWithFrame:self.bounds];
@@ -141,12 +126,9 @@
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self.superview];
     
-    if(!CGRectContainsPoint(self.frame, point))
-    {
+    if(!CGRectContainsPoint(self.frame, point)){
         [self touchEnded];
-    }
-    else
-    {
+    }else{
         [self touchBegan];
     }
 }
@@ -183,65 +165,84 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
-        _titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    if(self){
+        
+        _highlightedBackgroundView = [UIView new];
+        _highlightedBackgroundView.hidden = YES;
+        [self.contentView addSubview:_highlightedBackgroundView];
+        
+        _titleLabel = [UILabel new];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_titleLabel];
         
-        _highlightedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
-        _highlightedBackgroundView.hidden = YES;
-        [self.contentView insertSubview:_highlightedBackgroundView belowSubview:_titleLabel];
+        [_titleLabel sea_insetsInSuperview:UIEdgeInsetsZero];
+        [_highlightedBackgroundView sea_insetsInSuperview:UIEdgeInsetsZero];
     }
     
     return self;
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    _titleLabel.frame = self.contentView.bounds;
-    _highlightedBackgroundView.frame = self.contentView.bounds;
-}
-
 @end
 
-/**弹窗头部
+/**
+ 弹窗头部
  */
 @interface SeaAlertHeader : UIScrollView
 
-/**标题
+/**图标
+ */
+@property(nonatomic,readonly) UIImageView *imageView;
+
+/**
+ 标题
  */
 @property(nonatomic,readonly) UILabel *titleLabel;
 
-///信息
+/**
+ 信息
+ */
 @property(nonatomic,readonly) UILabel *messageLabel;
-
-- (void)layout;
 
 @end
 
 @implementation SeaAlertHeader
 
+@synthesize titleLabel = _titleLabel;
+@synthesize imageView = _imageView;
+@synthesize messageLabel = _messageLabel;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
+    if(self){
         self.alwaysBounceHorizontal = NO;
         self.alwaysBounceVertical = NO;
         
         self.backgroundColor = [UIColor clearColor];
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(SeaAlertControllerTextMargin, SeaAlertControllerTextMargin, self.width - SeaAlertControllerTextMargin * 2, 0)];
+    }
+    
+    return self;
+}
+
+- (UILabel*)titleLabel
+{
+    if(!_titleLabel){
+        _titleLabel = [UILabel new];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.numberOfLines = 0;
         _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [self addSubview:_titleLabel];
-        
-        _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(SeaAlertControllerTextMargin, _titleLabel.bottom + SeaAlertControllerTextMargin, SeaAlertControllerTextMargin, SeaAlertControllerTextMargin)];
+    }
+    
+    return _titleLabel;
+}
+
+- (UILabel*)messageLabel
+{
+    if(!_messageLabel){
+        _messageLabel = [UILabel new];
         _messageLabel.textAlignment = NSTextAlignmentCenter;
         _messageLabel.backgroundColor = [UIColor clearColor];
         _messageLabel.numberOfLines = 0;
@@ -249,59 +250,16 @@
         [self addSubview:_messageLabel];
     }
     
-    return self;
+    return _messageLabel;
 }
-
-- (void)layout
+- (UIImageView*)imageView
 {
-    if(_titleLabel)
-    {
-        CGFloat width = self.width - SeaAlertControllerTextMargin * 2;
-        CGSize size;
-        
-        if(_titleLabel.attributedText != nil)
-        {
-            size = [_titleLabel.attributedText sea_boundsWithConstraintWidth:width];
-        }
-        else
-        {
-            size = [_titleLabel.text sea_stringSizeWithFont:_titleLabel.font contraintWith:width];
-        }
-        
-        CGRect frame = _titleLabel.frame;
-        frame.size.width = width;
-        frame.size.height = size.height;
-        _titleLabel.frame = frame;
-        
-        if(_messageLabel.text)
-        {
-            if(_messageLabel.attributedText != nil)
-            {
-                size = [_messageLabel.attributedText sea_boundsWithConstraintWidth:width];
-            }
-            else
-            {
-                size = [_messageLabel.text sea_stringSizeWithFont:_messageLabel.font contraintWith:width];
-            }
-        }
-        else
-        {
-            size = CGSizeZero;
-        }
-        
-        frame = _messageLabel.frame;
-        frame.size.height = size.height;
-        frame.size.width = width;
-        frame.origin.y = _titleLabel.bottom + (_titleLabel.height > 0 ? SeaAlertControllerTextMargin : 0);
-        _messageLabel.frame = frame;
-        
-        self.height = _messageLabel.height > 0 ? _messageLabel.bottom + SeaAlertControllerTextMargin : _titleLabel.bottom + SeaAlertControllerTextMargin;
-        self.contentSize = CGSizeMake(self.width, self.height);
+    if(!_imageView){
+        _imageView = [UIImageView new];
+        [self addSubview:_imageView];
     }
-    else
-    {
-        self.height = 0;
-    }
+    
+    return _imageView;
 }
 
 @end
@@ -313,19 +271,13 @@
 - (instancetype)init
 {
     self = [super init];
-    if(self)
-    {
+    if(self){
         self.enable = YES;
     }
     
     return self;
 }
 
-/**
- *  构造方法
- *  @param title 按钮标题
- *  @return 一个实例
- */
 + (instancetype)alertActionWithTitle:(NSString*) title
 {
     SeaAlertAction *action = [[[self class] alloc] init];
@@ -340,87 +292,97 @@
 
 @interface SeaAlertController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate>
 
-/**按钮列表
+/**
+ 按钮列表
  */
 @property(nonatomic, strong) UICollectionView *collectionView;
 
-///头部
+/**
+ 头部
+ */
 @property(nonatomic, strong) SeaAlertHeader *header;
 
-/**取消按钮 用于 actionSheet
+/**
+ 取消按钮 用于 actionSheet
  */
 @property(nonatomic, strong) SeaAlertButton *cancelButton;
 
-///取消按钮标题
+/**
+ 取消按钮标题
+ */
 @property(nonatomic, copy) NSString *cancelTitle;
 
-/**标题 NSString 或者 NSAttributedString
+/**
+ 标题 NSString 或者 NSAttributedString
  */
 @property(nonatomic, copy) id titleString;
 
-///信息 NSString 或者 NSAttributedString
+/**
+ 信息 NSString 或者 NSAttributedString
+ */
 @property(nonatomic, copy) id message;
 
-/**内容视图
+/**
+ 图标
+ */
+@property(nonatomic, strong) UIImage *icon;
+
+/**
+ 内容视图
  */
 @property(nonatomic, strong) UIView *contentView;
 
-///按钮样式，数组元素是 SeaAlertAction
-@property(nonatomic, strong) NSMutableArray *actions;
-
-///黑色半透明背景
-@property(nonatomic,strong) UIView *backgroundView;
-
-/**以前的ViewController
+/**
+ 按钮
  */
-@property(nonatomic,weak) UIViewController *previousPresentViewController;
-
-/**以前的弹出样式
- */
-@property(nonatomic,assign) UIModalPresentationStyle previousPresentationStyle;
+@property(nonatomic, strong) NSMutableArray<SeaAlertAction*> *actions;
 
 @end
 
 @implementation SeaAlertController
 
-/**
- *  构造方法
- *  @param title             标题 NSString 或者 NSAttributedString
- *  @param message           信息 NSString 或者 NSAttributedString
- *  @param style             样式
- *  @param cancelButtonTitle 取消按钮 default is ‘取消’
- *  @param otherButtonTitles      按钮，必须是字符串NSString，必须以nil结束，否则会崩溃
- *  @return 一个实例
- */
++ (instancetype)alertWithTitle:(id)title message:(id)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
+{
+    return [[SeaAlertController alloc] initWithTitle:title message:message icon:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil];
+}
+
++ (instancetype)actionSheetWithTitle:(id)title message:(id)message otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
+{
+    return [[SeaAlertController alloc] initWithTitle:title message:message icon:nil style:SeaAlertControllerStyleActionSheet cancelButtonTitle:nil otherButtonTitles:otherButtonTitles, nil];
+}
+
 - (instancetype)initWithTitle:(id) title
                       message:(id) message
+                         icon:(UIImage*) icon
                         style:(SeaAlertControllerStyle) style
             cancelButtonTitle:(NSString *) cancelButtonTitle
             otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
 {
+#if SeaDebug
+    NSAssert(!title || [title isKindOfClass:[NSString class]] || [title isKindOfClass:[NSAttributedString class]], @"SeaAlertController title 必须为 nil 或者 NSString 或者 NSAttributedString");
+    NSAssert(!message || [message isKindOfClass:[NSString class]] || [message isKindOfClass:[NSAttributedString class]], @"SeaAlertController message 必须为 nil 或者 NSString 或者 NSAttributedString");
+#endif
     self = [super init];
-    if(self)
-    {
+    
+    if(self){
         self.actions = [NSMutableArray array];
         self.titleString = title;
         self.message = message;
+        self.icon = icon;
         
         self.cancelTitle = cancelButtonTitle;
         
         _style = style;
         
-        if(otherButtonTitles)
-        {
+        if(otherButtonTitles){
             [self.actions addObject:[SeaAlertAction alertActionWithTitle:otherButtonTitles]];
             
             va_list list;
             va_start(list, otherButtonTitles);
             NSString *args;
-            do
-            {
+            do{
                 args = va_arg(list, NSString*);
-                if(args)
-                {
+                if(args){
                     [self.actions addObject:[SeaAlertAction alertActionWithTitle:args]];
                 }
                 
@@ -429,25 +391,23 @@
             va_end(list);
         }
         
-        switch (_style)
-        {
-            case SeaAlertControllerStyleAlert :
-            {
-                if(self.actions.count == 0 && !self.cancelTitle)
-                {
+        switch (_style){
+            case SeaAlertControllerStyleAlert : {
+                if(self.actions.count == 0 && !self.cancelTitle){
                     self.cancelTitle = @"取消";
                 }
                 
-                if(self.cancelTitle)
-                {
-                    [self.actions insertObject:[SeaAlertAction alertActionWithTitle:self.cancelTitle] atIndex:0];
+                if(self.cancelTitle){
+                    if(self.actions.count < 2){
+                        [self.actions insertObject:[SeaAlertAction alertActionWithTitle:self.cancelTitle] atIndex:0];
+                    }else{
+                        [self.actions addObject:[SeaAlertAction alertActionWithTitle:self.cancelTitle]];
+                    }
                 }
             }
                 break;
-            case SeaAlertControllerStyleActionSheet :
-            {
-                if(!self.cancelTitle)
-                {
+            case SeaAlertControllerStyleActionSheet :{
+                if(!self.cancelTitle){
                     self.cancelTitle = @"取消";
                 }
             }
@@ -461,148 +421,32 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor clearColor];
-    CGFloat width = [self alertViewWidth];
-    CGFloat margin = (SeaScreenWidth - width) / 2.0;
-    
-    self.backgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.backgroundView.alpha = 0;
-    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
-    
-    switch (_style)
-    {
-        case SeaAlertControllerStyleActionSheet :
-        {
+    self.showAnimate = SeaDialogAnimateCustom;
+    self.dismissAnimate = SeaDialogAnimateCustom;
+    switch (_style){
+        case SeaAlertControllerStyleActionSheet : {
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
             tap.delegate = self;
             [self.backgroundView addGestureRecognizer:tap];
         }
             break;
-            
         default:
             break;
     }
-    
-    [self.view addSubview:self.backgroundView];
-    
-    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(margin, margin, width, 0)];
-    self.contentView.backgroundColor = [UIColor clearColor];
-    self.contentView.layer.cornerRadius = SeaAlertControllerCornerRadius;
-    self.contentView.layer.masksToBounds = YES;
-    
-    
-    if(self.titleString || self.message)
-    {
-        self.header = [[SeaAlertHeader alloc] initWithFrame:CGRectMake(0, 0, width, 0)];
-        self.header.titleLabel.font = self.titleFont;
-        self.header.titleLabel.textColor = self.titleTextColor;
-        self.header.titleLabel.textAlignment = self.titleTextAlignment;
-        
-        if([self.titleString isKindOfClass:[NSString class]])
-        {
-            self.header.titleLabel.text = self.titleString;
-        }
-        else if([self.titleString isKindOfClass:[NSAttributedString class]])
-        {
-            self.header.titleLabel.attributedText = self.titleString;
-        }
-        
-        self.header.messageLabel.font = self.messageFont;
-        self.header.messageLabel.textColor = self.messageTextColor;
-        self.header.messageLabel.textAlignment = self.messageTextAlignment;
-        
-        if([self.message isKindOfClass:[NSString class]])
-        {
-            self.header.messageLabel.text = self.message;
-        }
-        else if ([self.message isKindOfClass:[NSAttributedString class]])
-        {
-            self.header.messageLabel.attributedText = self.message;
-        }
-        
-        self.header.backgroundColor = self.mainColor;
-        [self.contentView addSubview:self.header];
-    }
-    
-    switch (_style)
-    {
-        case SeaAlertControllerStyleAlert :
-        {
-            
-        }
-            break;
-        case SeaAlertControllerStyleActionSheet :
-        {
-            self.cancelButton = [[SeaAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, self.alertButtonHeight)];
-            self.cancelButton.backgroundColor = self.mainColor;
-            self.cancelButton.titleLabel.text = self.cancelTitle;
-            self.cancelButton.titleLabel.textColor = self.cancelButtonTextColor;
-            self.cancelButton.titleLabel.font = self.cancelButtonFont;
-            self.cancelButton.highlightView.backgroundColor = self.highlightedBackgroundColor;
-            [self.cancelButton addTarget:self action:@selector(cancel:)];
-            [self.view addSubview:self.cancelButton];
-        }
-            break;
-    }
-    
-    if(self.actions.count > 0)
-    {
-        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.header.bottom, width, 0)collectionViewLayout:[self layout]];
-        self.collectionView.backgroundColor = [UIColor colorWithWhite:0.90 alpha:0.9];
-        [self.collectionView registerClass:[SeaAlertButtonCell class] forCellWithReuseIdentifier:@"SeaAlertButtonCell"];
-        self.collectionView.dataSource = self;
-        self.collectionView.delegate = self;
-        self.collectionView.bounces = YES;
-        [self.contentView addSubview:self.collectionView];
-    }
-    
-    [self layoutSubViews];
-    [self.view addSubview:self.contentView];
-    
-    
-    switch (_style)
-    {
-        case SeaAlertControllerStyleAlert :
-        {
-            self.contentView.alpha = 0;
-            [UIView animateWithDuration:0.25 animations:^(void){
-               
-                self.backgroundView.alpha = 1.0;
-                self.contentView.alpha = 1.0;
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                animation.fromValue = [NSNumber numberWithFloat:1.3];
-                animation.toValue = [NSNumber numberWithFloat:1.0];
-                animation.duration = 0.25;
-                [self.contentView.layer addAnimation:animation forKey:@"scale"];
-            }];
-        }
-            break;
-        case SeaAlertControllerStyleActionSheet :
-        {
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                self.backgroundView.alpha = 1.0;
-                self.contentView.top = SeaScreenHeight - _contentView.height - SeaAlertControllerMargin - self.cancelButton.height - SeaAlertControllerMargin;
-                self.cancelButton.top = self.contentView.bottom + SeaAlertControllerMargin;
-            }];
-        }
-            break;
-    }
+}
+
+- (void)setDialog:(UIView *)dialog
+{
+    [super setDialog:dialog];
+    [self.dialog sea_removeAllContraints];
 }
 
 ///属性初始化
 - (void)initilization
 {
-
     self.mainColor = nil;
     self.titleFont = nil;
     self.titleTextColor = nil;
@@ -620,6 +464,21 @@
     _destructiveButtonIndex = NSNotFound;
     _dismissWhenSelectButton = YES;
     self.highlightedBackgroundColor = nil;
+    _cornerRadius = 8.0;
+    _contentInsets = UIEdgeInsetsMake(15, 15, 15, 15);
+    _horizontalSpacing = 15;
+    _verticalSpacing = 8;
+    
+    switch (_style){
+        case SeaAlertControllerStyleAlert : {
+            _buttonHeight = 45.0;
+        }
+            break;
+        case SeaAlertControllerStyleActionSheet : {
+            _buttonHeight = 50.0;
+        }
+            break;
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -629,37 +488,132 @@
 
 #pragma mark- layout
 
+- (void)viewDidLayoutSubviews
+{
+    if(!self.contentView){
+        
+        CGFloat width = [self alertViewWidth];
+        CGFloat margin = (self.view.width - width) / 2.0;
+        
+        self.contentView = [UIView new];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.contentView.layer.cornerRadius = self.cornerRadius;
+        self.contentView.layer.masksToBounds = YES;
+        
+        
+        if(self.titleString || self.message || self.icon){
+            self.header = [[SeaAlertHeader alloc] initWithFrame:CGRectMake(0, 0, width, 0)];
+            CGFloat constraintWidth = self.header.width - self.horizontalSpacing * 2;
+            
+            CGFloat y = self.horizontalSpacing;
+            if(self.icon){
+                self.header.imageView.image = self.icon;
+                if(self.icon.size.width > constraintWidth){
+                    CGSize size = [self.icon sea_fitWithSize:CGSizeMake(constraintWidth, 0) type:SeaImageFitTypeWidth];
+                    self.header.imageView.frame = CGRectMake((self.header.width - size.width) / 2, y, size.width, size.height);
+                }else{
+                    self.header.imageView.frame = CGRectMake((self.header.width - self.icon.size.width) / 2, y, self.icon.size.width, self.icon.size.height);
+                }
+                y += self.header.imageView.height;
+            }
+            
+            if(self.titleString){
+                if(self.icon){
+                    y += self.verticalSpacing;
+                }
+                self.header.titleLabel.font = self.titleFont;
+                self.header.titleLabel.textColor = self.titleTextColor;
+                self.header.titleLabel.textAlignment = self.titleTextAlignment;
+                
+                CGSize size = CGSizeZero;
+                if([self.titleString isKindOfClass:[NSString class]]){
+                    self.header.titleLabel.text = self.titleString;
+                    size = [self.titleString sea_stringSizeWithFont:self.titleFont contraintWith:constraintWidth];
+                }else if([self.titleString isKindOfClass:[NSAttributedString class]]){
+                    self.header.titleLabel.attributedText = self.titleString;
+                    size = [self.titleString sea_boundsWithConstraintWidth:constraintWidth];
+                }
+                
+                self.header.titleLabel.frame = CGRectMake(self.horizontalSpacing, y, constraintWidth, size.height + 1.0);
+                y += self.header.titleLabel.height;
+            }
+            
+            if(self.message){
+                if(self.icon || self.titleString){
+                    y += self.verticalSpacing;
+                }
+                self.header.messageLabel.font = self.messageFont;
+                self.header.messageLabel.textColor = self.messageTextColor;
+                self.header.messageLabel.textAlignment = self.messageTextAlignment;
+                
+                CGSize size = CGSizeZero;
+                if([self.message isKindOfClass:[NSString class]]){
+                    self.header.messageLabel.text = self.message;
+                    size = [self.message sea_stringSizeWithFont:self.messageFont contraintWith:constraintWidth];
+                }else if ([self.message isKindOfClass:[NSAttributedString class]]){
+                    self.header.messageLabel.attributedText = self.message;
+                    size = [self.message sea_boundsWithConstraintWidth:constraintWidth];
+                }
+                self.header.messageLabel.frame = CGRectMake(self.horizontalSpacing, y, constraintWidth, size.height + 1.0);
+                y += self.header.messageLabel.height;
+            }
+            
+            self.header.height = y + self.horizontalSpacing;
+            self.header.contentSize = CGSizeMake(self.header.width, self.header.height);
+            
+            self.header.backgroundColor = self.mainColor;
+            [self.contentView addSubview:self.header];
+        }
+        
+        switch (_style){
+            case SeaAlertControllerStyleAlert : {
+                self.contentView.frame = CGRectMake(margin, margin, width, 0);
+            }
+                break;
+            case SeaAlertControllerStyleActionSheet : {
+                
+                self.contentView.frame = CGRectMake(_contentInsets.left, margin, width, 0);
+                self.cancelButton = [[SeaAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, self.buttonHeight)];
+                self.cancelButton.layer.cornerRadius = self.cornerRadius;
+                self.cancelButton.backgroundColor = self.mainColor;
+                self.cancelButton.titleLabel.text = self.cancelTitle;
+                self.cancelButton.titleLabel.textColor = self.cancelButtonTextColor;
+                self.cancelButton.titleLabel.font = self.cancelButtonFont;
+                self.cancelButton.highlightView.backgroundColor = self.highlightedBackgroundColor;
+                [self.cancelButton addTarget:self action:@selector(cancel:)];
+                [self.view addSubview:self.cancelButton];
+            }
+                break;
+        }
+        
+        if(self.actions.count > 0){
+            self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.header.bottom, width, 0)collectionViewLayout:[self layout]];
+            self.collectionView.backgroundColor = [UIColor colorWithWhite:0.90 alpha:0.9];
+            [self.collectionView registerClass:[SeaAlertButtonCell class] forCellWithReuseIdentifier:@"SeaAlertButtonCell"];
+            self.collectionView.dataSource = self;
+            self.collectionView.delegate = self;
+            self.collectionView.bounces = YES;
+            [self.contentView addSubview:self.collectionView];
+        }
+        
+        [self layoutSubViews];
+        [self.view addSubview:self.contentView];
+        
+        self.dialog = self.contentView;
+    }
+    [super viewDidLayoutSubviews];
+}
+
 ///弹窗宽度
 - (CGFloat)alertViewWidth
 {
-    switch (_style)
-    {
-        case SeaAlertControllerStyleAlert :
-        {
-            return 260 + SeaAlertControllerButtonInterval;
+    switch (_style){
+        case SeaAlertControllerStyleAlert : {
+            return 260 + SeaSeparatorHeight;
         }
             break;
-        case SeaAlertControllerStyleActionSheet :
-        {
-            return SeaScreenWidth - SeaAlertControllerMargin * 2;
-        }
-            break;
-    }
-}
-
-///按钮高度
-- (CGFloat)alertButtonHeight
-{
-    switch (_style)
-    {
-        case SeaAlertControllerStyleAlert :
-        {
-            return 45.0;
-        }
-            break;
-        case SeaAlertControllerStyleActionSheet :
-        {
-            return 50.0;
+        case SeaAlertControllerStyleActionSheet : {
+            return self.view.width - _contentInsets.left - _contentInsets.right;
         }
             break;
     }
@@ -669,19 +623,16 @@
 - (UICollectionViewFlowLayout*)layout
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.minimumInteritemSpacing = SeaAlertControllerButtonInterval;
-    layout.minimumLineSpacing = SeaAlertControllerButtonInterval;
+    layout.minimumInteritemSpacing = SeaSeparatorHeight;
+    layout.minimumLineSpacing = SeaSeparatorHeight;
     
-    switch (_style)
-    {
-        case SeaAlertControllerStyleActionSheet :
-        {
-            layout.itemSize = CGSizeMake(SeaScreenWidth - SeaAlertControllerMargin * 2, self.alertButtonHeight);
+    switch (_style){
+        case SeaAlertControllerStyleActionSheet : {
+            layout.itemSize = CGSizeMake([self alertViewWidth], self.buttonHeight);
         }
             break;
-        case SeaAlertControllerStyleAlert :
-        {
-            layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - SeaAlertControllerButtonInterval) / 2.0 : [self alertViewWidth], self.alertButtonHeight);
+        case SeaAlertControllerStyleAlert : {
+            layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - SeaSeparatorHeight) / 2.0 : [self alertViewWidth], self.buttonHeight);
             layout.scrollDirection = self.actions.count >= 3 ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
         }
             break;
@@ -695,60 +646,45 @@
 {
     ///头部高度
     CGFloat headerHeight = 0;
-    if(self.header)
-    {
-        [self.header layout];
+    if(self.header){
         headerHeight = self.header.height;
     }
     
     ///按钮高度
     CGFloat buttonHeight = 0;
 
-    if(self.actions.count > 0)
-    {
-        switch (_style)
-        {
-            case SeaAlertControllerStyleAlert :
-            {
-                buttonHeight = self.actions.count < 3 ? self.alertButtonHeight : self.actions.count * (SeaAlertControllerButtonInterval + self.alertButtonHeight);
+    if(self.actions.count > 0){
+        switch (_style){
+            case SeaAlertControllerStyleAlert : {
+                buttonHeight = self.actions.count < 3 ? self.buttonHeight : self.actions.count * (SeaSeparatorHeight + self.buttonHeight);
             }
                 break;
-            case SeaAlertControllerStyleActionSheet :
-            {
-                buttonHeight = self.actions.count * self.alertButtonHeight + (self.actions.count - 1) * SeaAlertControllerButtonInterval;
+            case SeaAlertControllerStyleActionSheet : {
+                buttonHeight = self.actions.count * self.buttonHeight + (self.actions.count - 1) * SeaSeparatorHeight;
                 
-                if(headerHeight > 0)
-                {
-                    buttonHeight += SeaAlertControllerButtonInterval;
+                if(headerHeight > 0){
+                    buttonHeight += SeaSeparatorHeight;
                 }
             }
-                break;
-            default:
                 break;
         }
     }
     
     ///取消按钮高度
-    CGFloat cancelHeight = self.cancelButton ? (self.cancelButton.height + SeaAlertControllerMargin) : 0;
+    CGFloat cancelHeight = self.cancelButton ? (self.cancelButton.height + _contentInsets.bottom) : 0;
     
-    CGFloat maxContentHeight = SeaScreenHeight - SeaAlertControllerMargin * 2 - cancelHeight;
+    CGFloat maxContentHeight = self.view.height - _contentInsets.top - _contentInsets.bottom - cancelHeight;
     
     CGRect frame = self.collectionView.frame;
-    if(headerHeight + buttonHeight > maxContentHeight)
-    {
+    if(headerHeight + buttonHeight > maxContentHeight){
         CGFloat contentHeight = maxContentHeight;
-        if(headerHeight >= contentHeight / 2.0 && buttonHeight >= contentHeight / 2.0)
-        {
+        if(headerHeight >= contentHeight / 2.0 && buttonHeight >= contentHeight / 2.0){
             self.header.height = contentHeight / 2.0;
             frame.size.height = buttonHeight;
-        }
-        else if (headerHeight >= contentHeight / 2.0 && buttonHeight < contentHeight / 2.0)
-        {
+        }else if (headerHeight >= contentHeight / 2.0 && buttonHeight < contentHeight / 2.0){
             self.header.height = contentHeight - buttonHeight;
             frame.size.height = buttonHeight;
-        }
-        else
-        {
+        }else{
             self.header.height = headerHeight;
             frame.size.height = contentHeight - headerHeight;
         }
@@ -756,9 +692,7 @@
         frame.origin.y = self.header.bottom;
         self.collectionView.frame = frame;
         self.contentView.height = maxContentHeight;
-    }
-    else
-    {
+    }else{
         
         frame.origin.y = self.header.bottom;
         frame.size.height = buttonHeight;
@@ -766,27 +700,23 @@
         self.contentView.height = headerHeight + buttonHeight;
     }
     
-    if(self.header.height > 0)
-    {
-        self.collectionView.height += SeaAlertControllerButtonInterval;
-        self.contentView.height += SeaAlertControllerButtonInterval;
+    if(self.header.height > 0){
+        self.collectionView.height += SeaSeparatorHeight;
+        self.contentView.height += SeaSeparatorHeight;
     }
     
-    switch (_style)
-    {
-        case SeaAlertControllerStyleActionSheet :
-        {
-            self.contentView.top = SeaScreenHeight;
+    switch (_style){
+        case SeaAlertControllerStyleActionSheet : {
+            self.contentView.top = self.view.height;
         }
             break;
-        case SeaAlertControllerStyleAlert :
-        {
-            self.contentView.top = (SeaScreenHeight - self.contentView.height) / 2.0;
+        case SeaAlertControllerStyleAlert : {
+            self.contentView.top = (self.view.height - self.contentView.height) / 2.0;
         }
             break;
     }
     
-    self.cancelButton.top = self.contentView.bottom + SeaAlertControllerMargin;
+    self.cancelButton.top = self.contentView.bottom + _contentInsets.bottom;
 }
 
 #pragma mark- private method
@@ -794,105 +724,91 @@
 ///取消
 - (void)cancel:(id) sender
 {
-    switch (_style)
-    {
-        case SeaAlertControllerStyleAlert :
-        {
+    switch (_style){
+        case SeaAlertControllerStyleAlert : {
             !self.selectionHandler ?: self.selectionHandler(0);
         }
             break;
-        case SeaAlertControllerStyleActionSheet :
-        {
+        case SeaAlertControllerStyleActionSheet : {
             !self.selectionHandler ?: self.selectionHandler(self.actions.count);
         }
             break;
     }
-    [self close];
+    [self dismiss];
 }
 
 ///点击黑色半透明
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    [self close];
+    [self dismiss];
 }
 
-/**隐藏
- */
-- (void)dismiss
+- (void)didExecuteDismissCustomAnimate:(void (^)(BOOL))completion
 {
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    self.previousPresentViewController.modalPresentationStyle = self.previousPresentationStyle;
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-
-#pragma mark- public method
-
-/**
- *  显示在window.rootViewController
- */
-- (void)show
-{
-    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
-}
-
-/**
- *  可显示在其他视图
- *  @param viewController 要显示的位置
- */
-- (void)showInViewController:(UIViewController *)viewController
-{
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self];
-    
-    ///设置使背景透明
-    if(_ios8_0_)
-    {
-        nav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    }
-    else
-    {
-        self.previousPresentViewController = viewController;
-        self.previousPresentationStyle = self.previousPresentViewController.modalPresentationStyle;
-        self.previousPresentViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    }
-    
-    [viewController presentViewController:nav animated:NO completion:nil];
-}
-
-///关闭视图控制器
-- (void)close
-{
-    switch (_style)
-    {
-        case SeaAlertControllerStyleActionSheet :
-        {
+    switch (_style){
+        case SeaAlertControllerStyleActionSheet : {
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.backgroundView.alpha = 0;
-                self.contentView.top = SeaScreenHeight;
-                self.cancelButton.top = self.contentView.bottom + SeaAlertControllerMargin;
+                self.contentView.top = self.view.height;
+                self.cancelButton.top = self.contentView.bottom + _contentInsets.bottom;
                 
-            }completion:^(BOOL finish){
-                
-                [self dismiss];
-            }];
+            }completion:completion];
         }
             break;
-        case SeaAlertControllerStyleAlert :
-        {
-            [self dismiss];
+        case SeaAlertControllerStyleAlert : {
+            !completion ?: completion(YES);
         }
             break;
     }
 }
 
-///更新某个按钮 不包含actionSheet 的取消按钮
-- (void)reloadWithButtonIndex:(NSInteger) buttonIndex
+- (void)didExecuteShowCustomAnimate:(void (^)(BOOL))completion
 {
-    if(buttonIndex < self.actions.count)
-    {
-        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:buttonIndex inSection:0]]];
+    switch (_style){
+        case SeaAlertControllerStyleAlert : {
+            self.contentView.alpha = 0;
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.backgroundView.alpha = 1.0;
+                self.contentView.alpha = 1.0;
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                animation.fromValue = [NSNumber numberWithFloat:1.3];
+                animation.toValue = [NSNumber numberWithFloat:1.0];
+                animation.duration = 0.25;
+                [self.contentView.layer addAnimation:animation forKey:@"scale"];
+            }completion:completion];
+        }
+            break;
+        case SeaAlertControllerStyleActionSheet : {
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.backgroundView.alpha = 1.0;
+                self.contentView.top = self.view.height - _contentView.height - _contentInsets.bottom - self.cancelButton.height - _contentInsets.bottom;
+                self.cancelButton.top = self.contentView.bottom + _contentInsets.bottom;
+            }completion:completion];
+        }
+            break;
     }
+}
+
+#pragma mark- public method
+
+- (void)reloadButtonForIndex:(NSUInteger) index
+{
+    if(index < self.actions.count){
+        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:index inSection:0]]];
+    }
+}
+
+- (NSString*)buttonTitleForIndex:(NSUInteger) index
+{
+    if(index < self.actions.count){
+        SeaAlertAction *action = self.actions[index];
+        return action.title;
+    }
+    
+    return nil;
 }
 
 #pragma mark- UITapGestureRecognizer delegate
@@ -917,12 +833,9 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    if(self.header.height > 0)
-    {
-        return UIEdgeInsetsMake(SeaAlertControllerButtonInterval, 0, 0, 0);
-    }
-    else
-    {
+    if(self.header.height > 0){
+        return UIEdgeInsetsMake(SeaSeparatorHeight, 0, 0, 0);
+    }else{
         return UIEdgeInsetsZero;
     }
 }
@@ -933,18 +846,18 @@
     
     SeaAlertAction *action = [self.actions objectAtIndex:indexPath.item];
     
-    if(indexPath.item == 0 && self.cancelTitle && self.style == SeaAlertControllerStyleAlert)
-    {
+    BOOL isCancel = NO;
+    if(self.style == SeaAlertControllerStyleAlert && self.cancelTitle){
+        isCancel = (indexPath.item == 0 && self.actions.count < 3) || (indexPath.item == self.actions.count - 1 && self.actions.count >= 3);
+    }
+    
+    if(isCancel){
         cell.titleLabel.textColor = action.textColor ? action.textColor : self.cancelButtonTextColor;
         cell.titleLabel.font = action.font ? action.font : self.cancelButtonFont;
-    }
-    else if(indexPath.item == _destructiveButtonIndex)
-    {
+    }else if(indexPath.item == _destructiveButtonIndex){
         cell.titleLabel.textColor = action.textColor ? action.textColor : self.destructiveButtonTextColor;
         cell.titleLabel.font = action.font ? action.font : self.destructiveButtonFont;
-    }
-    else
-    {
+    }else{
         cell.titleLabel.textColor = action.textColor ? action.textColor : self.buttonTextColor;
         cell.titleLabel.font = action.font ? action.font : self.butttonFont;
     }
@@ -961,10 +874,9 @@
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
     SeaAlertAction *action = [self.actions objectAtIndex:indexPath.item];
-    if(action.enable)
-    {
+    if(action.enable){
         !self.selectionHandler ?: self.selectionHandler(indexPath.item);
-        !self.dismissWhenSelectButton ?: [self close];
+        !self.dismissWhenSelectButton ?: [self dismiss];
     }
 }
 
@@ -989,12 +901,9 @@
 
 #pragma mark- property
 
-/**主题颜色
- */
 - (void)setMainColor:(UIColor *)mainColor
 {
-    if(![_mainColor isEqualToColor:mainColor])
-    {
+    if(![_mainColor isEqualToColor:mainColor]){
         if(mainColor == nil)
             mainColor = [UIColor whiteColor];
         _mainColor = mainColor;
@@ -1002,12 +911,9 @@
     }
 }
 
-/**标题字体
- */
 - (void)setTitleFont:(UIFont *)titleFont
 {
-    if(![_titleFont isEqualToFont:titleFont])
-    {
+    if(![_titleFont isEqualToFont:titleFont]){
         if(titleFont == nil)
             titleFont = [UIFont boldSystemFontOfSize:17.0];
         _titleFont = titleFont;
@@ -1015,12 +921,9 @@
     }
 }
 
-/**标题字体颜色
- */
 - (void)setTitleTextColor:(UIColor *)titleTextColor
 {
-    if(![_titleTextColor isEqualToColor:titleTextColor])
-    {
+    if(![_titleTextColor isEqualToColor:titleTextColor]){
         if(titleTextColor == nil)
             titleTextColor = [UIColor blackColor];
         _titleTextColor = titleTextColor;
@@ -1029,21 +932,17 @@
     }
 }
 
-///标题对其方式
 - (void)setTitleTextAlignment:(NSTextAlignment)titleTextAlignment
 {
-    if(_titleTextAlignment != titleTextAlignment)
-    {
+    if(_titleTextAlignment != titleTextAlignment){
         _titleTextAlignment = titleTextAlignment;
         self.header.titleLabel.textAlignment = _titleTextAlignment;
     }
 }
 
-///信息字体
 - (void)setMessageFont:(UIFont *)messageFont
 {
-    if(![_messageFont isEqualToFont:messageFont])
-    {
+    if(![_messageFont isEqualToFont:messageFont]){
         if(messageFont == nil)
             messageFont = [UIFont fontWithName:SeaMainFontName size:13.0];
         _messageFont = messageFont;
@@ -1051,47 +950,37 @@
     }
 }
 
-///信息字体颜色
 - (void)setMessageTextColor:(UIColor *)messageTextColor
 {
-    if(![_messageTextColor isEqualToColor:messageTextColor])
-    {
+    if(![_messageTextColor isEqualToColor:messageTextColor]){
         if(messageTextColor == nil)
             _messageTextColor = messageTextColor;
         self.header.messageLabel.textColor = messageTextColor;
     }
 }
 
-///信息对其方式
 - (void)setMessageTextAlignment:(NSTextAlignment)messageTextAlignment
 {
-    if(_messageTextAlignment != messageTextAlignment)
-    {
+    if(_messageTextAlignment != messageTextAlignment){
         _messageTextAlignment = messageTextAlignment;
         self.header.messageLabel.textAlignment = _messageTextAlignment;
     }
 }
 
-/**按钮字体
- */
 - (void)setButttonFont:(UIFont *)butttonFont
 {
-    if(![_butttonFont isEqualToFont:butttonFont])
-    {
+    if(![_butttonFont isEqualToFont:butttonFont]){
         if(butttonFont == nil)
-            butttonFont = [UIFont fontWithName:SeaMainFontName size:18.0];
+            butttonFont = [UIFont fontWithName:SeaMainFontName size:17.0];
         _butttonFont = butttonFont;
         
         [self.collectionView reloadData];
     }
 }
 
-/**按钮字体颜色
- */
 - (void)setButtonTextColor:(UIColor *)buttonTextColor
 {
-    if(![_buttonTextColor isEqualToColor:buttonTextColor])
-    {
+    if(![_buttonTextColor isEqualToColor:buttonTextColor]){
         if(buttonTextColor == nil)
             buttonTextColor = UIKitTintColor;
         
@@ -1101,62 +990,47 @@
     }
 }
 
-/**警示按钮字体
- */
 - (void)setDestructiveButtonFont:(UIFont *)destructiveButtonFont
 {
-    if(![_destructiveButtonFont isEqualToFont:destructiveButtonFont])
-    {
+    if(![_destructiveButtonFont isEqualToFont:destructiveButtonFont]){
         if(destructiveButtonFont == nil)
-            destructiveButtonFont = [UIFont fontWithName:SeaMainFontName size:18.0];
+            destructiveButtonFont = [UIFont fontWithName:SeaMainFontName size:17.0];
         _destructiveButtonFont = destructiveButtonFont;
         
-        if(self.destructiveButtonIndex < self.actions.count)
-        {
+        if(self.destructiveButtonIndex < self.actions.count){
             [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.destructiveButtonIndex inSection:0]]];
         }
     }
 }
 
-/**警示按钮字体颜色
- */
 - (void)setDestructiveButtonTextColor:(UIColor *)destructiveButtonTextColor
 {
-    if(![_destructiveButtonTextColor isEqualToColor:destructiveButtonTextColor])
-    {
+    if(![_destructiveButtonTextColor isEqualToColor:destructiveButtonTextColor]){
         if(destructiveButtonTextColor == nil)
             destructiveButtonTextColor = [UIColor redColor];
         _destructiveButtonTextColor = destructiveButtonTextColor;
         
-        if(self.destructiveButtonIndex < self.actions.count)
-        {
+        if(self.destructiveButtonIndex < self.actions.count){
             [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:self.destructiveButtonIndex inSection:0]]];
         }
     }
 }
 
-/**取消按钮字体
- */
 - (void)setCancelButtonFont:(UIFont *)cancelButtonFont
 {
-    if(![_cancelButtonFont isEqualToFont:cancelButtonFont])
-    {
+    if(![_cancelButtonFont isEqualToFont:cancelButtonFont]){
         if(cancelButtonFont == nil)
-            cancelButtonFont = [UIFont boldSystemFontOfSize:18.0];
+            cancelButtonFont = [UIFont boldSystemFontOfSize:17.0];
         
         _cancelButtonFont = cancelButtonFont;
         
-        switch (_style)
-        {
-            case SeaAlertControllerStyleActionSheet :
-            {
+        switch (_style){
+            case SeaAlertControllerStyleActionSheet : {
                 self.cancelButton.titleLabel.font = _cancelButtonFont;
             }
                 break;
-            case SeaAlertControllerStyleAlert :
-            {
-                if(self.cancelTitle)
-                {
+            case SeaAlertControllerStyleAlert : {
+                if(self.cancelTitle){
                     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]]];
                 }
             }
@@ -1165,27 +1039,20 @@
     }
 }
 
-/**取消按钮字体颜色
- */
 - (void)setCancelButtonTextColor:(UIColor *)cancelButtonTextColor
 {
-    if(![_cancelButtonTextColor isEqualToColor:cancelButtonTextColor])
-    {
+    if(![_cancelButtonTextColor isEqualToColor:cancelButtonTextColor]){
         if(cancelButtonTextColor == nil)
             cancelButtonTextColor = UIKitTintColor;
         _cancelButtonTextColor = cancelButtonTextColor;
         
-        switch (_style)
-        {
-            case SeaAlertControllerStyleActionSheet :
-            {
+        switch (_style){
+            case SeaAlertControllerStyleActionSheet : {
                 self.cancelButton.titleLabel.textColor = _cancelButtonTextColor;
             }
                 break;
-            case SeaAlertControllerStyleAlert :
-            {
-                if(self.cancelTitle)
-                {
+            case SeaAlertControllerStyleAlert : {
+                if(self.cancelTitle){
                     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]]];
                 }
             }
@@ -1194,11 +1061,9 @@
     }
 }
 
-///按钮无法点击时的字体颜色
 - (void)setDisableButtonTextColor:(UIColor *)disableButtonTextColor
 {
-    if(![_disableButtonTextColor isEqualToColor:disableButtonTextColor])
-    {
+    if(![_disableButtonTextColor isEqualToColor:disableButtonTextColor]){
         if(disableButtonTextColor == nil)
             disableButtonTextColor = [UIColor grayColor];
         _disableButtonTextColor = disableButtonTextColor;
@@ -1207,11 +1072,9 @@
     }
 }
 
-///高亮背景
 - (void)setHighlightedBackgroundColor:(UIColor *)highlightedBackgroundColor
 {
-    if(![_highlightedBackgroundColor isEqualToColor:highlightedBackgroundColor])
-    {
+    if(![_highlightedBackgroundColor isEqualToColor:highlightedBackgroundColor]){
         if(highlightedBackgroundColor == nil)
             highlightedBackgroundColor = [UIColor colorWithWhite:0.6 alpha:0.3];
         
@@ -1222,7 +1085,7 @@
     }
 }
 
-- (NSArray*)alertActions
+- (NSArray<SeaAlertAction*>*)alertActions
 {
     return [self.actions copy];
 }

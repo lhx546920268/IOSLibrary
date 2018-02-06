@@ -6,10 +6,10 @@
 //  Copyright (c) 2016年 罗海雄. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SeaDialogViewController.h"
 
 ///弹窗样式
-typedef NS_ENUM(NSInteger, SeaAlertControllerStyle)
+typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
 {
     ///UIActionSheet 样式
     SeaAlertControllerStyleActionSheet = 0,
@@ -34,37 +34,67 @@ typedef NS_ENUM(NSInteger, SeaAlertControllerStyle)
 @property(nonatomic,copy) NSString *title;
 
 /**
- *  构造方法
- *  @param title 按钮标题
- *  @return 一个实例
+ 构造方法
+ @param title 按钮标题
+ @return 一个实例
  */
 + (instancetype)alertActionWithTitle:(NSString*) title;
 
 @end
 
-///弹窗控制器 AlertView 和 ActionSheet的整合
-@interface SeaAlertController : UIViewController
+/**
+ 弹窗控制器 AlertView 和 ActionSheet的整合
+ @warning 在显示show前设置好属性
+ */
+@interface SeaAlertController : SeaDialogViewController
 
-///样式
+/**
+ 样式
+ */
 @property(nonatomic,readonly) SeaAlertControllerStyle style;
 
-/**取消按钮字体
+/**
+ 内容边距
+ */
+@property(nonatomic,assign) UIEdgeInsets contentInsets;
+
+/**
+ 圆角
+ */
+@property(nonatomic,assign) CGFloat cornerRadius;
+
+/**
+ 内容水平间距
+ */
+@property(nonatomic,assign) CGFloat horizontalSpacing;
+
+/**
+ 内容垂直间距
+ */
+@property(nonatomic,assign) CGFloat verticalSpacing;
+
+/**
+ 取消按钮字体
  */
 @property(nonatomic, strong) UIFont *cancelButtonFont;
 
-/**取消按钮字体颜色
+/**
+ 取消按钮字体颜色
  */
 @property(nonatomic, strong) UIColor *cancelButtonTextColor;
 
-/**主题颜色
+/**
+ 主题颜色
  */
 @property(nonatomic, strong) UIColor *mainColor;
 
-/**标题字体
+/**
+ 标题字体
  */
 @property(nonatomic, strong) UIFont *titleFont;
 
-/**标题字体颜色
+/**
+ 标题字体颜色
  */
 @property(nonatomic, strong) UIColor *titleTextColor;
 
@@ -80,23 +110,33 @@ typedef NS_ENUM(NSInteger, SeaAlertControllerStyle)
 ///信息对其方式
 @property(nonatomic, assign) NSTextAlignment messageTextAlignment;
 
-/**按钮字体
+/**
+ 按钮高度 alert 45，actionSheet 50
+ */
+@property(nonatomic, assign) CGFloat buttonHeight;
+
+/**
+ 按钮字体
  */
 @property(nonatomic, strong) UIFont *butttonFont;
 
-/**按钮字体颜色
+/**
+ 按钮字体颜色
  */
 @property(nonatomic, strong) UIColor *buttonTextColor;
 
-/**警示按钮字体
+/**
+ 警示按钮字体
  */
 @property(nonatomic, strong) UIFont *destructiveButtonFont;
 
-/**警示按钮字体颜色
+/**
+ 警示按钮字体颜色
  */
 @property(nonatomic, strong) UIColor *destructiveButtonTextColor;
 
-/**具有警示意义的按钮 下标，default is ’NSNotFound‘，表示没有这个按钮
+/**
+ 具有警示意义的按钮 下标，default is ’NSNotFound‘，表示没有这个按钮
  */
 @property(nonatomic, assign) NSUInteger destructiveButtonIndex;
 
@@ -109,44 +149,41 @@ typedef NS_ENUM(NSInteger, SeaAlertControllerStyle)
 ///是否关闭弹窗当点击某一个按钮的时候 default is 'YES'
 @property(nonatomic, assign) BOOL dismissWhenSelectButton;
 
-///按钮样式，数组元素是 SeaAlertAction，不包含actionSheet 的取消按钮
-@property(nonatomic, readonly, copy) NSArray *alertActions;
+///按钮 不包含actionSheet 的取消按钮
+@property(nonatomic, readonly, copy) NSArray<SeaAlertAction*> *alertActions;
 
 ///点击回调 index 按钮下标 包含取消按钮 actionSheet 从上到下， alert 从左到右
-@property(nonatomic,copy) void(^selectionHandler)(NSInteger index);
+@property(nonatomic,copy) void(^selectionHandler)(NSUInteger index);
+
++ (instancetype)alertWithTitle:(id) title message:(id) message cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
+
++ (instancetype)actionSheetWithTitle:(id) title message:(id) message otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
 /**
- *  构造方法
- *  @param title             标题 NSString 或者 NSAttributedString
- *  @param message           信息 NSString 或者 NSAttributedString
- *  @param style             样式
- *  @param cancelButtonTitle 取消按钮 default is ‘取消’
- *  @param otherButtonTitles      按钮，必须是字符串NSString，必须以nil结束，否则会崩溃
- *  @return 一个实例
+ 实例化一个弹窗
+ @param title 标题 NSString 或者 NSAttributedString
+ @param message 信息 NSString 或者 NSAttributedString
+ @param icon 图标
+ @param style 样式
+ @param cancelButtonTitle 取消按钮 default is ‘取消’
+ @param otherButtonTitles 按钮，必须是字符串NSString，必须以nil结束，否则会崩溃
+ @return 一个实例
  */
 - (instancetype)initWithTitle:(id) title
                       message:(id) message
+                         icon:(UIImage*) icon
                         style:(SeaAlertControllerStyle) style
             cancelButtonTitle:(NSString *) cancelButtonTitle
             otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
 /**
- *  显示在window.rootViewController
+ 更新某个按钮 不包含actionSheet 的取消按钮
  */
-- (void)show;
+- (void)reloadButtonForIndex:(NSUInteger) index;
 
 /**
- *  可显示在其他视图
- *  @param viewController 要显示的位置
+ 通过下标回去按钮标题
  */
-- (void)showInViewController:(UIViewController*) viewController;
-
-/**
- *  关闭弹窗
- */
-- (void)close;
-
-///更新某个按钮 不包含actionSheet 的取消按钮
-- (void)reloadWithButtonIndex:(NSInteger) buttonIndex;
+- (NSString*)buttonTitleForIndex:(NSUInteger) index;
 
 @end

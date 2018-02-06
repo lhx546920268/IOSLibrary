@@ -41,7 +41,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self addKeyboardNotification];
 }
 
@@ -111,21 +110,14 @@
                 [self.dialog.layer addAnimation:animation forKey:@"position"];
             }
                 break;
-            default:
+            case SeaDialogAnimateCustom : {
+
+                [self didExecuteShowCustomAnimate:^(BOOL finish){
+                    
+                }];
+            }
                 break;
         }
-    }
-}
-
-- (void)setDialog:(UIView *)dialog
-{
-    if(_dialog != dialog){
-        if(_dialog){
-            [_dialog removeFromSuperview];
-        }
-        _dialog = dialog;
-        [self.view addSubview:_dialog];
-        [_dialog sea_centerInSuperview];
     }
 }
 
@@ -138,10 +130,9 @@
 
 - (void)showInViewController:(UIViewController *)viewController
 {
-    UINavigationController *nav = [self sea_createWithNavigationController];
     ///设置使背景透明
-    nav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [viewController presentViewController:nav animated:NO completion:self.showCompletionHandler];
+    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [viewController presentViewController:self animated:NO completion:self.showCompletionHandler];
 }
 
 - (void)dismiss
@@ -191,7 +182,14 @@
             }];
         }
             break;
-        default:
+        case SeaDialogAnimateCustom : {
+            
+            WeakSelf(self);
+            [self didExecuteDismissCustomAnimate:^(BOOL finish){
+               
+                [weakSelf dismissDidFinish];
+            }];
+        }
             break;
     }
 }
@@ -201,6 +199,16 @@
 {
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [self dismissViewControllerAnimated:NO completion:self.dismissCompletionHandler];
+}
+
+- (void)didExecuteShowCustomAnimate:(void(^)(BOOL finish)) completion
+{
+    !completion ?: completion(YES);
+}
+
+- (void)didExecuteDismissCustomAnimate:(void(^)(BOOL finish)) completion
+{
+    !completion ?: completion(YES);
 }
 
 #pragma mark- CAAnimationDelegate
@@ -247,8 +255,12 @@
     NSLayoutConstraint *constraint = self.dialog.sea_centerYLayoutConstraint;
     [UIView animateWithDuration:0.25 animations:^(void){
         
-        constraint.constant = y - self.view.height / 2.0;
-        [self.view layoutIfNeeded];
+        if(constraint){
+            constraint.constant = y - self.view.height / 2.0;
+            [self.view layoutIfNeeded];
+        }else{
+            self.dialog.centerY = y - self.view.height / 2.0;
+        }
     }];
 }
 
