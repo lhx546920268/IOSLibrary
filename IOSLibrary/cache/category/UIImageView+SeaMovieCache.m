@@ -54,7 +54,7 @@ static char SeaMovieURLKey;
     if([NSString isEmpty:URL]){
         
         options.shouldShowLoadingActivity = NO;
-        [self setLoading:YES options:options];
+        [self sea_setLoading:YES options:options];
         
         self.sea_movieURL = nil;
         !completion ?: completion(nil);
@@ -76,17 +76,17 @@ static char SeaMovieURLKey;
         
         self.contentMode = options.originalContentMode;
         self.image = info.firstImage;
-        [self setLoading:NO options:options];
+        [self sea_setLoading:NO options:options];
         !completion ?: completion(info);
     }else{
-        [self setLoading:YES options:options];
+        [self sea_setLoading:YES options:options];
         //重新加载图片
         
         __weak UIImageView *weakSelf = self;
         [cache movieInfoForURL:URL thumbnailSize:size completion:^(SeaMovieCacheInfo *cacheInfo){
             
             if(cacheInfo){
-                [weakSelf setLoading:NO options:options];
+                [weakSelf sea_setLoading:NO options:options];
                 weakSelf.contentMode = options.originalContentMode;
                 weakSelf.image = cacheInfo.firstImage;
                 weakSelf.backgroundColor = options.originalBackgroundColor;
@@ -97,7 +97,7 @@ static char SeaMovieURLKey;
     }
 }
 
-- (void)setLoading:(BOOL) loading options:(SeaImageCacheOptions*) options
+- (void)sea_setLoading:(BOOL) loading options:(SeaImageCacheOptions*) options
 {
     if(loading){
         if(options.placeholderColor){

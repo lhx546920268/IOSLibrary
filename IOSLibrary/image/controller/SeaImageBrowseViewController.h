@@ -48,51 +48,6 @@
 
 @end
 
-@class SeaimageBrowseViewControllerCell;
-@class SeaImageBrowseCell;
-
-/**
- 图片浏览器cell代理
- */
-@protocol SeaImageBrowseCellDelegate<NSObject>
-
-//单击图片
-- (void)imageBrowseCellDidTap:(SeaImageBrowseCell*) cell;
-
-@end
-
-/**
- 图片浏览器cell
- */
-@interface SeaImageBrowseCell : UICollectionViewCell<UIScrollViewDelegate>
-
-/**
- 滚动视图，用于图片放大缩小
- */
-@property(nonatomic,readonly) UIScrollView *scrollView;
-
-/**
- 图片
- */
-@property(nonatomic,readonly) UIImageView *imageView;
-
-/**
- 代理
- */
-@property(nonatomic,weak) id<SeaImageBrowseCellDelegate> delegate;
-
-/**
- 重新布局图片当图片加载完成时
- */
-- (void)layoutImageAfterLoad;
-
-/**
- 计算imageView的位置大小
- */
-- (CGRect)rectFromImage:(UIImage*) image;
-
-@end
-
 @class SeaImageBrowseViewController;
 
 /**

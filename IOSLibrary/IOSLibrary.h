@@ -28,8 +28,13 @@
 #import <SeaBasic.h>
 
 #import <UIImageView+SeaImageCache.h>
+#import <SeaTiledImageView+SeaImageCache.h>
+#import <UIButton+SeaImageCache.h>
 
 #import <SeaPresentTransitionDelegate.h>
 #import <SeaPartialPresentTransitionDelegate.h>
+
+#import <UIImage+Utils.h>
+#import <SeaTiledImageView.h>
 
 #endif /* IOSLibrary_h */

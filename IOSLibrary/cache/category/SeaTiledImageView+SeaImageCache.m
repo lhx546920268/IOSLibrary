@@ -1,22 +1,22 @@
 //
-//  UIImageView+SeaImageCache.m
+//  SeaTiledImageView+SeaImageCache.m
 //  IOSLibrary
 //
-//  Created by 罗海雄 on 2017/12/22.
-//  Copyright © 2017年 罗海雄. All rights reserved.
+//  Created by 罗海雄 on 2018/3/2.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
-#import "UIImageView+SeaImageCache.h"
+#import "SeaTiledImageView+SeaImageCache.h"
 
-@implementation UIImageView (SeaImageCache)
+@implementation SeaTiledImageView (SeaImageCache)
 
 - (void)sea_setLoading:(BOOL) loading options:(SeaImageCacheOptions*) options
 {
     [super sea_setLoading:loading options:options];
     if(loading){
         if(options.placeholderImage){
-            self.image = options.placeholderImage;
             self.contentMode = options.placeholderContentMode;
+            self.image = options.placeholderImage;
         }else{
             self.image = nil;
         }
@@ -27,5 +27,6 @@
 {
     self.image = image;
 }
+
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "SeaImageBrowseViewController.h"
-#import "UIImageView+SeaImageCache.h"
+#import "SeaTiledImageView+SeaImageCache.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIImage+Utils.h"
 #import "UIView+Utils.h"
@@ -15,6 +15,7 @@
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
 #import "SeaContainer.h"
+#import "SeaTiledImageView.h"
 
 @implementation SeaImageBrowseInfo
 
@@ -44,6 +45,50 @@
 
 @end
 
+@class SeaImageBrowseCell;
+
+/**
+ 图片浏览器cell代理
+ */
+@protocol SeaImageBrowseCellDelegate<NSObject>
+
+//单击图片
+- (void)imageBrowseCellDidTap:(SeaImageBrowseCell*) cell;
+
+@end
+
+/**
+ 图片浏览器cell
+ */
+@interface SeaImageBrowseCell : UICollectionViewCell<UIScrollViewDelegate>
+
+/**
+ 滚动视图，用于图片放大缩小
+ */
+@property(nonatomic,readonly) UIScrollView *scrollView;
+
+/**
+ 图片
+ */
+@property(nonatomic,readonly) SeaTiledImageView *imageView;
+
+/**
+ 代理
+ */
+@property(nonatomic,weak) id<SeaImageBrowseCellDelegate> delegate;
+
+/**
+ 重新布局图片当图片加载完成时
+ */
+- (void)layoutImageAfterLoad;
+
+/**
+ 计算imageView的位置大小
+ */
+- (CGRect)rectFromImage:(UIImage*) image;
+
+@end
+
 @implementation SeaImageBrowseCell
 
 - (id)initWithFrame:(CGRect)frame
@@ -51,20 +96,20 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+        self.backgroundColor = [UIColor clearColor];
+        
         _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scrollView.showsHorizontalScrollIndicator = NO;
-        self.backgroundColor = [UIColor clearColor];
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.minimumZoomScale = 1.0;
         _scrollView.maximumZoomScale = 5.0;
         _scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
         _scrollView.delegate = self;
+        _scrollView.scrollsToTop = NO;
+        _scrollView.bouncesZoom = YES;
         [self.contentView addSubview:_scrollView];
         
-        _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        _imageView.backgroundColor = [UIColor clearColor];
-        _imageView.contentMode = UIViewContentModeScaleAspectFill;
-        _imageView.clipsToBounds = YES;
+        _imageView = [[SeaTiledImageView alloc] initWithFrame:self.bounds];
         [_scrollView addSubview:_imageView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -110,12 +155,13 @@
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
-    CGFloat x = (self.frame.size.width - _imageView.frame.size.width) / 2;
+    //缩放完后把视图居中
+    CGFloat x = (self.width - _imageView.width) / 2;
     x = x < 0 ? 0 : x;
-    CGFloat y = (self.frame.size.height - _imageView.frame.size.height) / 2;
+    CGFloat y = (self.height - _imageView.height) / 2;
     y = y < 0 ? 0 : y;
     
-    _imageView.center = CGPointMake(x + _imageView.frame.size.width / 2.0, y + _imageView.frame.size.height / 2.0);
+    _imageView.center = CGPointMake(x + _imageView.width / 2.0, y + _imageView.height / 2.0);
 }
 
 - (void)layoutImageAfterLoad
@@ -299,6 +345,7 @@
     
     self.shouldShowAnimate = animate;
     if(!animate){
+        self.backgroundView.alpha = 1.0;
         [self showCompletion];
     }
 }
