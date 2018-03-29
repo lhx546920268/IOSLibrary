@@ -67,7 +67,7 @@ static char SeaAlphaOverlayKey;
         
         
         
-        if(_ios11_0_){
+        if(@available(iOS 11, *)){
             ///ios 11 overlay会一直被放在最前面
             overlay.top = 0;
             UIView *view = [self.navigationBar.subviews firstObject];
@@ -107,9 +107,6 @@ static char SeaAlphaOverlayKey;
 {
     [self.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     self.sea_alphaOverlay.hidden = YES;
-    // [self.navigationBar setShadowImage:nil];
-    //    self.navigationBar.translucent = NO;
-    self.navigationBar.barTintColor = SeaNavigationBarBackgroundColor;
 }
 
 ///启动导航栏透明功能

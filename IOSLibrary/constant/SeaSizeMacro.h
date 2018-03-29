@@ -26,7 +26,7 @@ static const CGFloat SeaStatusHeight = 20.0;
 static const CGFloat SeaToolBarHeight = 44.0;
 
 ///分割线高度
-#define SeaSeparatorHeight [SeaBasicInitialization sea_separatorLineWidth]
+#define SeaSeparatorWidth [SeaConstant separatorWidth]
 
 ///手机屏幕的宽度
 #define SeaScreenWidth MIN([UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height)

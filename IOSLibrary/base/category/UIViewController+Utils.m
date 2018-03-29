@@ -204,12 +204,10 @@ static char SeaTransitioningDelegateKey;
  */
 - (void)setSea_iconTintColor:(UIColor *)sea_iconTintColor
 {
-    if(![self.sea_iconTintColor isEqualToColor:sea_iconTintColor])
-    {
+    if(![self.sea_iconTintColor isEqualToColor:sea_iconTintColor]){
         objc_setAssociatedObject(self, &SeaIconTintColorKey, sea_iconTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if(!sea_iconTintColor)
-        {
-            sea_iconTintColor = [SeaBasicInitialization sea_tintColor];
+        if(!sea_iconTintColor){
+            sea_iconTintColor = [UIColor blackColor];
         }
         NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:self.navigationController.navigationBar.titleTextAttributes];
         [dic setObject:sea_iconTintColor forKey:NSForegroundColorAttributeName];
@@ -222,7 +220,7 @@ static char SeaTransitioningDelegateKey;
 {
     UIColor *color = objc_getAssociatedObject(self, &SeaIconTintColorKey);
     if(color == nil)
-        color = [SeaBasicInitialization sea_tintColor];
+        color = [UIColor blackColor];
     
     return color;
 }
@@ -462,20 +460,6 @@ static char SeaTransitioningDelegateKey;
     return item;
 }
 
-- (void)sea_setNavigationBarWithBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor
-{
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    [[self class] setupNavigationBar:navigationBar withBackgroundColor:backgroundColor titleColor:titleColor titleFont:font tintColor:tintColor];
-}
-
-- (void)sea_setDefaultNavigationBar
-{
-    //设置默认导航条
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-   // navigationBar.translucent = NO;
-    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:SeaNavigationBarBackgroundColor titleColor:SeaNavigationBarTitleColor titleFont:[UIFont fontWithName:SeaMainFontName size:17.0] tintColor:SeaTintColor];
-}
-
 /**创建导航栏并返回 UINavigationController
  */
 - (UINavigationController*)sea_createWithNavigationController
@@ -507,7 +491,7 @@ static char SeaTransitioningDelegateKey;
 
 - (void)sea_alerBadNetworkMsg:(NSString*) msg
 {
-    [self sea_alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaAlertMsgWhenBadNetwork, msg]];
+    [self sea_alertMsg:[NSString stringWithFormat:@"%@\n%@", SeaBadNetworkText, msg]];
 }
 
 #pragma mark- navigation
@@ -544,23 +528,16 @@ static char SeaTransitioningDelegateKey;
     return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:target action:action];
 }
 
-/**设置导航条样式 默认不透明
- *@param navigationBar 要设置的导航栏
- *@param backgroundColor 背景颜色
- *@param titleColor 标题颜色
- *@param font 标题字体
- *@param tintColor 着色，如返回按钮颜色
- */
-+ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor
++ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor backgroundImage:(UIImage*) backgroundImage titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 
     if(!titleColor)
-        titleColor = SeaNavigationBarTitleColor;
+        titleColor = [UIColor blackColor];
     if(!font)
-        font = SeaNavigationBarTitleFont;
+        font = [UIFont systemFontOfSize:17];
     if(!tintColor)
-        tintColor = SeaTintColor;
+        tintColor = [UIColor blackColor];
 
     [dic setObject:titleColor forKey:NSForegroundColorAttributeName];
     [dic setObject:font forKey:NSFontAttributeName];
@@ -569,12 +546,11 @@ static char SeaTransitioningDelegateKey;
 
     navigationBar.tintColor = tintColor;
 
-    if(backgroundColor)
-    {
+    if(backgroundColor){
         navigationBar.barTintColor = backgroundColor;
-       // UIImage *image = [UIImage imageWithColor:backgroundColor size:CGSizeMake(1,1)];
-      //  [navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-       // navigationBar.shadowImage = [UIImage new];
+    }
+    if(backgroundImage){
+        [navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
     }
 }
 

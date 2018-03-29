@@ -13,9 +13,11 @@
 
 + (void)load
 {
-    Method method1 = class_getInstanceMethod(self, @selector(layoutSubviews));
-    Method method2 = class_getInstanceMethod(self, @selector(sea_layoutSubviews));
-    method_exchangeImplementations(method1, method2);
+    if(@available(iOS 11, *)){
+        Method method1 = class_getInstanceMethod(self, @selector(layoutSubviews));
+        Method method2 = class_getInstanceMethod(self, @selector(sea_layoutSubviews));
+        method_exchangeImplementations(method1, method2);
+    }
 }
 
 - (void)sea_layoutSubviews

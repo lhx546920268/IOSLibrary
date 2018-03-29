@@ -14,12 +14,10 @@
  */
 
 ///主要字体名称
-#define SeaMainFontName [SeaBasicInitialization sea_SeaMainFontName]
+#define SeaMainFontName [SeaConstant mainFontName]
 
 ///数字字体、英文字体
-#define SeaMainNumberFontName [SeaBasicInitialization sea_SeaMainNumberFontName]
+#define SeaMainNumberFontName [SeaConstant mainNumberFontName]
 
-///导航栏标题字体
-#define SeaNavigationBarTitleFont [SeaBasicInitialization sea_navigationBarTitleFont]
 
 #endif /* SeaFontMacro_h */

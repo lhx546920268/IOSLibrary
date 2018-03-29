@@ -10,6 +10,7 @@
 #import "SeaContainer.h"
 #import "SeaTabBarController.h"
 #import "UIView+SeaAutoLayout.h"
+#import "NSObject+Utils.h"
 
 @interface SeaViewController ()
 
@@ -19,13 +20,12 @@
 @implementation SeaViewController
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.sea_statusBarHidden = NO;
-        self.sea_iconTintColor = SeaTintColor;
+        
     }
     return self;
 }
@@ -34,8 +34,13 @@
 
 - (void)loadView
 {
-    _container = [[SeaContainer alloc] initWithViewController:self];
-    self.view = self.container;
+    //如果有 xib 则加载对应的xib
+    if([[NSBundle mainBundle] pathForResource:self.sea_nameOfClass ofType:@"nib"]){
+        self.view = [[[NSBundle mainBundle] loadNibNamed:self.sea_nameOfClass owner:self options:nil] lastObject];
+    }else{
+        _container = [[SeaContainer alloc] initWithViewController:self];
+        self.view = self.container;
+    }
 }
 
 - (void)setTopView:(UIView *)topView

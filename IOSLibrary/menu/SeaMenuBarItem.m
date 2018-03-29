@@ -34,7 +34,7 @@
         
         [_button sea_insetsInSuperview:UIEdgeInsetsZero];
         
-        [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorHeight, 15.0)];
+        [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorWidth, 15.0)];
         [_separator sea_rightToSuperview];
         [_separator sea_centerInSuperview];
         

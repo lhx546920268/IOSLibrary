@@ -19,10 +19,6 @@
     UITableView *_tableView;
 }
 
-/**构造方法
- *@param style 列表风格
- *@return 一个初始化的 SeaTableViewController 对象
- */
 - (id)initWithStyle:(UITableViewStyle) style
 {
     self = [super initWithNibName:nil bundle:nil];
@@ -139,16 +135,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

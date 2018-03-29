@@ -45,7 +45,7 @@
 ///初始化
 - (void)initialization
 {
-    self.backgroundColor = SeaViewControllerBackgroundColor;
+    self.backgroundColor = SeaGrayBackgroundColor;
     
     _contentView = [[UIView alloc] init];
     [self addSubview:_contentView];

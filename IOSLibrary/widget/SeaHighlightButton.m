@@ -43,7 +43,7 @@
         _selected = selected;
         if(_selected)
         {
-            self.layer.borderWidth = SeaSeparatorHeight;
+            self.layer.borderWidth = SeaSeparatorWidth;
             self.layer.borderColor = self.selectedColor.CGColor;
             _titleLabel.textColor = self.selectedColor;
         }

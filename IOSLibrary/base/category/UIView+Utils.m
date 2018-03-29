@@ -5,6 +5,7 @@
 
 #import "UIView+Utils.h"
 #import <objc/runtime.h>
+#import "NSObject+Utils.h"
 
 /** 虚线边框图层
  */
@@ -180,6 +181,16 @@ static char SeaDashBorderLayerKey;
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
     [layer setPath:path.CGPath];
     self.layer.mask = layer;
+}
+
+#pragma mark- init
+
+/**
+ 通过xib加载
+ */
++ (instancetype)loadFromNib
+{
+    return [[[NSBundle mainBundle] loadNibNamed:[self sea_nameOfClass] owner:nil options:nil] lastObject];
 }
 
 @end

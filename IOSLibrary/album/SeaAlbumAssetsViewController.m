@@ -172,14 +172,22 @@
     
     if(self.groupInfos.count > 1){
         
-        UIImage *arrow = [SeaImageGenerator triangleWithColor:SeaNavigationBarTitleColor size:CGSizeMake(10, 8)];
+        NSDictionary *attrs = self.navigationController.navigationBar.titleTextAttributes;
+        UIColor *color = attrs[NSForegroundColorAttributeName];
+        UIImage *arrow = [SeaImageGenerator triangleWithColor:color size:CGSizeMake(10, 8)];
         
         UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         titleButton.frame = CGRectMake(0, 0, 100.0, 30.0);
         [titleButton setTitle:@"相册" forState:UIControlStateNormal];
         [titleButton setTitleColor:self.sea_iconTintColor forState:UIControlStateNormal];
-        titleButton.titleLabel.font = SeaNavigationBarTitleFont;
+        
+        UIFont *font = attrs[NSFontAttributeName];
+        if(![font isKindOfClass:[UIFont class]]){
+            font = [UIFont systemFontOfSize:17];
+        }
+        
+        titleButton.titleLabel.font = font;
         [titleButton setImage:arrow forState:UIControlStateNormal];
         [titleButton sea_setImagePosition:SeaButtonImagePositionRight margin:2.0];
         titleButton.adjustsImageWhenDisabled = NO;

@@ -10,7 +10,6 @@
 #import "SeaProgressView.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "SeaImageCacheTool.h"
-#import <WebKit/WebKit.h>
 #import "SeaBasic.h"
 #import "UIView+SeaAutoLayout.h"
 #import "UIViewController+Utils.h"
@@ -55,7 +54,7 @@ static NSString *const SeaWebViewSaveImage = @"存储图像";
  */
 static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 
-@interface SeaWebViewController ()<WKNavigationDelegate, UIActionSheetDelegate>
+@interface SeaWebViewController ()<UIActionSheetDelegate>
 
 /**加载进度条
  */
@@ -111,7 +110,6 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 - (void)initilization
 {
     self.hidesBottomBarWhenPushed = YES;
-    _loadWebContentWhileViewDidLoad = YES;
     self.useWebTitle = YES;
     self.useCumsterLongPressGesture = NO;
 }
@@ -239,10 +237,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     [super viewDidLoad];
     
     [self initWebView];
-    if(self.loadWebContentWhileViewDidLoad)
-    {
-        [self loadWebContent];
-    }
+    [self loadWebContent];
 }
 
 /**初始化webView
@@ -312,6 +307,11 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     }else{
         decisionHandler(WKNavigationActionPolicyCancel);
     }
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    
 }
 
 #pragma mark- progress handle

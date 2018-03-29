@@ -86,7 +86,7 @@ NSString *const SeaColorAlpha = @"alpha";
     hex = [hex stringByReplacingOccurrencesOfString:@"#" withString:@""];
     hex = [hex lowercaseString];
     
-    CGFloat alpha = 1.0;
+    CGFloat alpha = 255.0f;
     CGFloat red = 0;
     CGFloat green = 0;
     CGFloat blue = 0;

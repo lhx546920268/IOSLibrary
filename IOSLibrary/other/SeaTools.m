@@ -27,7 +27,12 @@ NSString* appName()
         infoStringsDictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"InfoPlist" ofType:@"strings"]];
     });
     
-    return [infoStringsDictionary objectForKey:@"CFBundleDisplayName"];
+    NSString *name = [infoStringsDictionary objectForKey:@"CFBundleDisplayName"];
+    if([NSString isEmpty:name]){
+        name = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    }
+    
+    return name;
 }
 
 UIImage* appIcon()
@@ -66,23 +71,14 @@ void registerRemoteNotification()
 //        }
     }
     
-    if(@available(iOS 8.0, *)){
-        if(![application.delegate respondsToSelector:@selector(application:didRegisterUserNotificationSettings:)]){
-            NSLog(@"需要在 appDelegate 中实现 'application:didRegisterUserNotificationSettings:'");
-            //在方法中调用
-            //[application registerForRemoteNotifications];
-        }
-       
-#ifdef __IPHONE_8_0
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
-        [application registerUserNotificationSettings:settings];
-#endif
-    }else{
-#ifdef __IPHONE_8_0
-#else
-        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
-#endif
+    if(![application.delegate respondsToSelector:@selector(application:didRegisterUserNotificationSettings:)]){
+        NSLog(@"需要在 appDelegate 中实现 'application:didRegisterUserNotificationSettings:'");
+        //在方法中调用
+        //[application registerForRemoteNotifications];
     }
+    
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+    [application registerUserNotificationSettings:settings];
 }
 
 void unregisterRemoteNotification()
@@ -95,8 +91,7 @@ void openSystemSettings()
     NSURL *url;
     if(@available(iOS 8.0, *)){
         url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    }
-    else{
+    }else{
         url = [NSURL URLWithString:@"app-settings:"];
     }
     

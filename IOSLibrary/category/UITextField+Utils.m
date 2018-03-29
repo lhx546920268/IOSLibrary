@@ -43,7 +43,7 @@ static char SeaExtraStringKey;
 
 - (UIView*)sea_setDefaultSeparator
 {
-    return [self sea_setSeparatorWithColor:SeaSeparatorColor height:SeaSeparatorHeight];
+    return [self sea_setSeparatorWithColor:SeaSeparatorColor height:SeaSeparatorWidth];
 }
 
 - (UIView*)sea_setSeparatorWithColor:(UIColor *)color height:(CGFloat)height
@@ -65,7 +65,7 @@ static char SeaExtraStringKey;
         [separator sea_leftToSuperview];
         [separator sea_rightToSuperview];
         [separator sea_bottomToSuperview];
-        [separator sea_heightToSelf:SeaSeparatorHeight];
+        [separator sea_heightToSelf:SeaSeparatorWidth];
         
         objc_setAssociatedObject(self, _cmd, separator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }

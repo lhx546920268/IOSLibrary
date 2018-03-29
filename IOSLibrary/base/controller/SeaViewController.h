@@ -10,20 +10,19 @@
 
 /**
  控制视图的基类
- @warning 如果你需要使用 xib，请继承 UIViewController
  */
 @interface SeaViewController : UIViewController
 
-///固定在顶部的视图
+///固定在顶部的视图 xib不要用
 @property(nonatomic, strong) UIView *topView;
 
-///固定在底部的视图
+///固定在底部的视图 xib不要用
 @property(nonatomic, strong) UIView *bottomView;
 
-///内容视图
+///内容视图 xib 不要用
 @property(nonatomic, strong) UIView *contentView;
 
-///视图容器 self.view
+///视图容器 self.view xib 不要用
 @property(nonatomic, readonly) SeaContainer *container;
 
 /**

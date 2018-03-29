@@ -101,7 +101,7 @@
         _separator.backgroundColor = SeaSeparatorColor;
         [self.contentView addSubview:_separator];
         
-        [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorHeight, 15.0)];
+        [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorWidth, 15.0)];
         [_separator sea_rightToSuperview];
         [_separator sea_centerInSuperview];
         
@@ -263,7 +263,7 @@
     [_shadowLine sea_leftToSuperview];
     [_shadowLine sea_rightToSuperview];
     [_shadowLine sea_bottomToSuperview];
-    [_shadowLine sea_heightToSelf:SeaSeparatorHeight];
+    [_shadowLine sea_heightToSelf:SeaSeparatorWidth];
 }
 
 - (void)layoutSubviews

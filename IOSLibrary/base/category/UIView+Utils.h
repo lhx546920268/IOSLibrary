@@ -39,6 +39,8 @@
  */
 @property (nonatomic) CGFloat centerY;
 
+
+
 #pragma mark- 虚线 dash
 
 /** 虚线边框图层
@@ -70,5 +72,12 @@
  *@param rect 视图大小，如果使用autoLayout
  */
 - (void)sea_setCornerRadius:(CGFloat) cornerRadius corners:(UIRectCorner) corners rect:(CGRect) rect;
+
+#pragma mark- init
+
+/**
+ 通过xib加载
+ */
++ (instancetype)loadFromNib;
 
 @end

@@ -21,14 +21,6 @@
 @implementation SeaNavigationController
 
 
-+ (void)initialize
-{
-    //设置默认导航条
-    UINavigationBar *navigationBar = [UINavigationBar appearanceWhenContainedIn:[SeaNavigationController class], nil];
-    [UIViewController setupNavigationBar:navigationBar withBackgroundColor:SeaNavigationBarBackgroundColor titleColor:SeaNavigationBarTitleColor titleFont:SeaNavigationBarTitleFont tintColor:SeaTintColor];
-   // navigationBar.translucent = NO; ios 7.0会崩溃
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

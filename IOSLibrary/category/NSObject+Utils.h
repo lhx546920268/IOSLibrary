@@ -15,4 +15,10 @@
  */
 - (NSArray<NSString*>*)sea_propertyNames;
 
+/**
+ 获取 class name
+ */
++ (NSString*)sea_nameOfClass;
+- (NSString*)sea_nameOfClass;
+
 @end

@@ -52,7 +52,7 @@
     
     if(self.normalImage == nil || self.selectedImage == nil){
         self.normalImage = [SeaImageGenerator untickWithColor:[UIColor grayColor]];
-        self.selectedImage = [SeaImageGenerator tickWithFillColor:SeaAppMainColor tickColor:SeaTintColor];
+        self.selectedImage = [SeaImageGenerator tickWithFillColor:SeaAppMainColor tickColor:SeaAppMainTintColor];
     }
 }
 

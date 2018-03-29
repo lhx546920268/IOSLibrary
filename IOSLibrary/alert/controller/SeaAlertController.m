@@ -609,7 +609,7 @@
 {
     switch (_style){
         case SeaAlertControllerStyleAlert : {
-            return 260 + SeaSeparatorHeight;
+            return 260 + SeaSeparatorWidth;
         }
             break;
         case SeaAlertControllerStyleActionSheet : {
@@ -623,8 +623,8 @@
 - (UICollectionViewFlowLayout*)layout
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.minimumInteritemSpacing = SeaSeparatorHeight;
-    layout.minimumLineSpacing = SeaSeparatorHeight;
+    layout.minimumInteritemSpacing = SeaSeparatorWidth;
+    layout.minimumLineSpacing = SeaSeparatorWidth;
     
     switch (_style){
         case SeaAlertControllerStyleActionSheet : {
@@ -632,7 +632,7 @@
         }
             break;
         case SeaAlertControllerStyleAlert : {
-            layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - SeaSeparatorHeight) / 2.0 : [self alertViewWidth], self.buttonHeight);
+            layout.itemSize = CGSizeMake(self.actions.count == 2 ? ([self alertViewWidth] - SeaSeparatorWidth) / 2.0 : [self alertViewWidth], self.buttonHeight);
             layout.scrollDirection = self.actions.count >= 3 ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
         }
             break;
@@ -656,14 +656,14 @@
     if(self.actions.count > 0){
         switch (_style){
             case SeaAlertControllerStyleAlert : {
-                buttonHeight = self.actions.count < 3 ? self.buttonHeight : self.actions.count * (SeaSeparatorHeight + self.buttonHeight);
+                buttonHeight = self.actions.count < 3 ? self.buttonHeight : self.actions.count * (SeaSeparatorWidth + self.buttonHeight);
             }
                 break;
             case SeaAlertControllerStyleActionSheet : {
-                buttonHeight = self.actions.count * self.buttonHeight + (self.actions.count - 1) * SeaSeparatorHeight;
+                buttonHeight = self.actions.count * self.buttonHeight + (self.actions.count - 1) * SeaSeparatorWidth;
                 
                 if(headerHeight > 0){
-                    buttonHeight += SeaSeparatorHeight;
+                    buttonHeight += SeaSeparatorWidth;
                 }
             }
                 break;
@@ -701,8 +701,8 @@
     }
     
     if(self.header.height > 0){
-        self.collectionView.height += SeaSeparatorHeight;
-        self.contentView.height += SeaSeparatorHeight;
+        self.collectionView.height += SeaSeparatorWidth;
+        self.contentView.height += SeaSeparatorWidth;
     }
     
     switch (_style){
@@ -834,7 +834,7 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     if(self.header.height > 0){
-        return UIEdgeInsetsMake(SeaSeparatorHeight, 0, 0, 0);
+        return UIEdgeInsetsMake(SeaSeparatorWidth, 0, 0, 0);
     }else{
         return UIEdgeInsetsZero;
     }

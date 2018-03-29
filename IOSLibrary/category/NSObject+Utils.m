@@ -27,4 +27,14 @@
     return propertyNames;
 }
 
+- (NSString*)sea_nameOfClass
+{
+    return NSStringFromClass(self.class);
+}
+
++ (NSString*)sea_nameOfClass
+{
+    return NSStringFromClass(self.class);
+}
+
 @end

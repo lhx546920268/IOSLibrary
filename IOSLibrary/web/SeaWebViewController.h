@@ -7,10 +7,9 @@
 //
 
 #import "SeaViewController.h"
+#import <WebKit/WebKit.h>
 
-@class WKWebView;
-
-@interface SeaWebViewController : SeaViewController
+@interface SeaWebViewController : SeaViewController<WKNavigationDelegate>
 
 /**网页视图，ios8.0新出的api，更高效地显示网页
  */
@@ -56,11 +55,6 @@
  将要打开的html
  */
 @property(nonatomic,copy) NSString *htmlString;
-
-/**
- 是否直接加载内容当viewDidLoad default is 'YES'
- */
-@property(nonatomic,assign) BOOL loadWebContentWhileViewDidLoad;
 
 /**
  是否使用 web里面的标题，使用会self.title 替换成web的标题，default is 'YES'

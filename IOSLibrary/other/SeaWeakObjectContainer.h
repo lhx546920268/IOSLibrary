@@ -11,6 +11,7 @@
 ///主要用于类目中设置 weak的属性， 因为 objc_setAssociatedObject 是没有weak的
 @interface SeaWeakObjectContainer : NSObject
 
+///需要weak引用的对象
 @property(nonatomic,weak) id weakObject;
 
 + (instancetype)containerWithObject:(id) object;

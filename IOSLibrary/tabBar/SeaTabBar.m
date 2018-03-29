@@ -48,7 +48,7 @@
         [_separator sea_leftToSuperview];
         [_separator sea_rightToSuperview];
         [_separator sea_topToSuperview];
-        [_separator sea_heightToSelf:SeaSeparatorHeight];
+        [_separator sea_heightToSelf:SeaSeparatorWidth];
     }
     
     return self;

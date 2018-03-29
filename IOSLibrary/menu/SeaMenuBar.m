@@ -159,12 +159,12 @@
     [_topSeparator sea_leftToSuperview];
     [_topSeparator sea_rightToSuperview];
     [_topSeparator sea_topToSuperview];
-    [_topSeparator sea_heightToSelf:SeaSeparatorHeight];
+    [_topSeparator sea_heightToSelf:SeaSeparatorWidth];
     
     [_bottomSeparator sea_leftToSuperview];
     [_bottomSeparator sea_rightToSuperview];
     [_bottomSeparator sea_bottomToSuperview];
-    [_bottomSeparator sea_heightToSelf:SeaSeparatorHeight];
+    [_bottomSeparator sea_heightToSelf:SeaSeparatorWidth];
 }
 
 - (void)layoutSubviews

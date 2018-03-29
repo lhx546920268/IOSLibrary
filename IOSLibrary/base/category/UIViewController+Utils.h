@@ -173,19 +173,6 @@ SeaTabBarController;
  */
 - (UIBarButtonItem*)sea_setRightItemWithCustomView:(UIView*) customView;
 
-
-/**设置导航条样式 默认不透明
- *@param backgroundColor 背景颜色
- *@param titleColor 标题颜色
- *@param font 标题字体
- *@param tintColor 着色
- */
-- (void)sea_setNavigationBarWithBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor;
-
-/**设置默认导航栏样式
- */
-- (void)sea_setDefaultNavigationBar;
-
 /**创建导航栏并返回 UINavigationController
  */
 - (UINavigationController*)sea_createWithNavigationController;
@@ -227,13 +214,15 @@ SeaTabBarController;
 + (UIBarButtonItem*)sea_barItemWithCustomView:(UIView*) customView;
 + (UIBarButtonItem*)sea_barItemWithSystemItem:(UIBarButtonSystemItem) systemItem target:(id) target action:(SEL) action;
 
-/**设置导航条样式 默认不透明
+/**
+ 设置导航条样式 默认不透明
  *@param navigationBar 要设置的导航栏
  *@param backgroundColor 背景颜色
+ *@param backgroundImage 背景图片
  *@param titleColor 标题颜色
  *@param font 标题字体
  *@param tintColor 着色，如返回按钮颜色
  */
-+ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor;
++ (void)setupNavigationBar:(UINavigationBar*)navigationBar withBackgroundColor:(UIColor*) backgroundColor backgroundImage:(UIImage*) backgroundImage titleColor:(UIColor*) titleColor titleFont:(UIFont*) font tintColor:(UIColor*) tintColor;
 
 @end

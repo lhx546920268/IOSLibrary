@@ -91,6 +91,7 @@
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.alwaysBounceVertical = NO;
+    self.collectionView.scrollsToTop = NO;
     
     [super initialization];
 }
@@ -161,6 +162,16 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self scrollToVisibleIndex];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self scrollToVisibleIndex];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     [self scrollToVisibleIndex];
 }

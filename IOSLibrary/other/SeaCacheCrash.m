@@ -9,7 +9,8 @@
 #import "SeaCacheCrash.h"
 
 
-/**异常捕获回调方法
+/**
+ 异常捕获回调方法
  */
 void uncacheExceptionHandler(NSException *exception)
 {
@@ -32,12 +33,5 @@ void uncacheExceptionHandler(NSException *exception)
     NSLog(@"%@", exceptionInfo);
     
 #endif
-//    NSMutableArray *tmpArr = [NSMutableArray arrayWithArray:stackArray];
-//    
-//    [tmpArr insertObject:reason atIndex:0];
-    
-    //保存到本地  --  当然你可以在下次启动的时候，上传这个log
-    
-   // [exceptionInfo writeToFile:[NSString stringWithFormat:@"%@/Documents/error.log",NSHomeDirectory()]  atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 

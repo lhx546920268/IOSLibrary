@@ -9,42 +9,39 @@
 #import "UINavigationItem+Utils.h"
 #import <objc/runtime.h>
 
-//系统是否小于11
-static BOOL isSystemLessThan11;
-
 @implementation UINavigationItem (Utils)
 
 + (void)load
 {
-    SEL selectors[] = {
+    if([UIDevice currentDevice].systemVersion.floatValue < 11){
+        SEL selectors[] = {
+            
+            @selector(setLeftBarButtonItem:animated:),
+            @selector(setLeftBarButtonItems:animated:),
+            @selector(leftBarButtonItem),
+            @selector(leftBarButtonItems),
+            
+            @selector(setRightBarButtonItem:animated:),
+            @selector(setRightBarButtonItems:animated:),
+            @selector(rightBarButtonItem),
+            @selector(rightBarButtonItems)
+        };
         
-        @selector(setLeftBarButtonItem:animated:),
-        @selector(setLeftBarButtonItems:animated:),
-        @selector(leftBarButtonItem),
-        @selector(leftBarButtonItems),
-
-        @selector(setRightBarButtonItem:animated:),
-        @selector(setRightBarButtonItems:animated:),
-        @selector(rightBarButtonItem),
-        @selector(rightBarButtonItems)
-    };
-    
-    isSystemLessThan11 = [UIDevice currentDevice].systemVersion.floatValue < 11;
-    
-    int count = sizeof(selectors) / sizeof(SEL);
-    for(int i = 0;i < count;i ++){
-        
-        SEL selector1 = selectors[i];
-        SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"sea_%@", NSStringFromSelector(selector1)]);
-        Method method1 = class_getInstanceMethod(self, selector1);
-        Method method2 = class_getInstanceMethod(self, selector2);
-        method_exchangeImplementations(method1, method2);
+        int count = sizeof(selectors) / sizeof(SEL);
+        for(int i = 0;i < count;i ++){
+            
+            SEL selector1 = selectors[i];
+            SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"sea_%@", NSStringFromSelector(selector1)]);
+            Method method1 = class_getInstanceMethod(self, selector1);
+            Method method2 = class_getInstanceMethod(self, selector2);
+            method_exchangeImplementations(method1, method2);
+        }
     }
 }
 
 - (void)sea_setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem animated:(BOOL)animated
 {
-    if(leftBarButtonItem && isSystemLessThan11){
+    if(leftBarButtonItem){
         //只有当 item是自定义item 和 图标，系统item 才需要修正
         if(leftBarButtonItem.customView || leftBarButtonItem.image || [self isSystemItem:leftBarButtonItem]){
             UIBarButtonItem *item = [self fixedBarButtonItem];
@@ -61,7 +58,7 @@ static BOOL isSystemLessThan11;
 
 - (void)sea_setLeftBarButtonItems:(NSArray<UIBarButtonItem *> *)leftBarButtonItems animated:(BOOL)animated
 {
-    if(leftBarButtonItems.count > 0 && isSystemLessThan11){
+    if(leftBarButtonItems.count > 0){
         
         UIBarButtonItem *item = [leftBarButtonItems firstObject];
         
@@ -83,7 +80,7 @@ static BOOL isSystemLessThan11;
 
 - (void)sea_setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem animated:(BOOL)animated
 {
-    if(rightBarButtonItem && isSystemLessThan11){
+    if(rightBarButtonItem){
         //只有当 item是自定义item 和 图标，系统item 才需要修正
         if(rightBarButtonItem.customView || rightBarButtonItem.image || [self isSystemItem:rightBarButtonItem]){
             UIBarButtonItem *item = [self fixedBarButtonItem];
@@ -101,7 +98,7 @@ static BOOL isSystemLessThan11;
 
 - (void)sea_setRightBarButtonItems:(NSArray<UIBarButtonItem *> *) rightBarButtonitems animated:(BOOL)animated
 {
-    if(rightBarButtonitems.count > 0 && isSystemLessThan11){
+    if(rightBarButtonitems.count > 0){
         
         UIBarButtonItem *item = [rightBarButtonitems firstObject];
         
@@ -125,7 +122,7 @@ static BOOL isSystemLessThan11;
 - (UIBarButtonItem*)fixedBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    item.width = -8;
+    item.width = -6;
     return item;
 }
 
@@ -139,15 +136,10 @@ static BOOL isSystemLessThan11;
 
 - (UIBarButtonItem*)sea_leftBarButtonItem
 {
-    if(isSystemLessThan11){
-        NSArray *items = self.leftBarButtonItems;
-        if(items.count > 1){
-           return [items lastObject];
-        }else{
-           return [self sea_leftBarButtonItem];
-        }
+    NSArray *items = self.leftBarButtonItems;
+    if(items.count > 1){
+        return [items lastObject];
     }else{
-        
         return [self sea_leftBarButtonItem];
     }
 }
@@ -155,7 +147,7 @@ static BOOL isSystemLessThan11;
 - (NSArray<UIBarButtonItem*>*)sea_leftBarButtonItems
 {
     NSArray *items = [self sea_leftBarButtonItems];
-    if(items.count > 1 && isSystemLessThan11){
+    if(items.count > 1){
         UIBarButtonItem *item = [items firstObject];
         if(item.width > 0){
             return [items subarrayWithRange:NSMakeRange(1, items.count - 1)];
@@ -167,22 +159,18 @@ static BOOL isSystemLessThan11;
 
 - (UIBarButtonItem*)sea_rightBarButtonItem
 {
-    if(isSystemLessThan11){
-        NSArray *items = self.rightBarButtonItems;
-        if(items.count > 1){
-            return [items lastObject];
-        }else{
-            return [self sea_rightBarButtonItem];
-        }
+    NSArray *items = self.rightBarButtonItems;
+    if(items.count > 1){
+        return [items lastObject];
     }else{
-        
         return [self sea_rightBarButtonItem];
-    }}
+    }
+}
 
 - (NSArray<UIBarButtonItem*>*)sea_rightBarButtonItems
 {
     NSArray *items = [self sea_rightBarButtonItems];
-    if(items.count > 1 && isSystemLessThan11){
+    if(items.count > 1){
         UIBarButtonItem *item = [items firstObject];
         if(item.width > 0){
             return [items subarrayWithRange:NSMakeRange(1, items.count - 1)];

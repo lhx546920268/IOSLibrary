@@ -47,7 +47,7 @@
         //黑色半透明高度
         CGFloat rowHeight = SeaAlbumGroupListCellImageSize + SeaAlbumGroupListCellMargin;
         CGFloat buttonHeight = 0;
-        CGFloat blackHeight = self.height - (MIN(_infos.count, 5) * rowHeight + SeaAlbumGroupListCellMargin + buttonHeight + SeaSeparatorHeight);
+        CGFloat blackHeight = self.height - (MIN(_infos.count, 5) * rowHeight + SeaAlbumGroupListCellMargin + buttonHeight + SeaSeparatorWidth);
         
         CGFloat containerHeight = self.height - blackHeight;
         UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0)];
@@ -64,7 +64,7 @@
 //        [container addSubview:button];
         
         //分割线
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, containerHeight - SeaSeparatorHeight, SeaScreenWidth, SeaSeparatorHeight)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, containerHeight - SeaSeparatorWidth, SeaScreenWidth, SeaSeparatorWidth)];
         line.backgroundColor = SeaSeparatorColor;
         [container addSubview:line];
         
