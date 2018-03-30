@@ -68,6 +68,7 @@
 
 #import <UICollectionView+SeaCellSize.h>
 #import <SeaCollectionViewController.h>
+#import <UICollectionView+Utils.h>
 
 #import <SeaBasic.h>
 #import <SeaObject.h>

@@ -155,7 +155,7 @@ NSString *const SeaColorAlpha = @"alpha";
     CGFloat red = [[dic objectForKey:SeaColorRed] floatValue];
     CGFloat green = [[dic objectForKey:SeaColorGreen] floatValue];
     CGFloat blue = [[dic objectForKey:SeaColorBlue] floatValue];
-    CGFloat alpha = [[dic objectForKey:SeaColorBlue] floatValue];
+    CGFloat alpha = [[dic objectForKey:SeaColorAlpha] floatValue];
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }

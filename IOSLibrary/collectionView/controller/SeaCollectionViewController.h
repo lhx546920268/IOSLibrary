@@ -34,14 +34,13 @@
 
 ///注册cell
 - (void)registerNib:(Class) clazz;
-- (void)registerNib:(UINib*) nib forCellReuseIdentifier:(NSString*) identifier;
-- (void)registerClass:(Class) cellClas;
-- (void)registerClass:(Class) cellClass forCellReuseIdentifier:(NSString*) identifier;
+- (void)registerClass:(Class) clazz;
 
-- (void)registerNib:(Class) clazz forSupplementaryViewOfKind:(NSString*) kind;
-- (void)registerNib:(UINib*) nib forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier;
-- (void)registerClass:(Class) cellClas forSupplementaryViewOfKind:(NSString*) kind;
-- (void)registerClass:(Class) cellClass forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier;
+- (void)registerHeaderClass:(Class) clazz;
+- (void)registerHeaderNib:(Class) clazz;
+
+- (void)registerFooterClass:(Class) clazz;
+- (void)registerFooterNib:(Class) clazz;
 
 /// 系统的需要添加 __kindof 否则代码不会提示
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;

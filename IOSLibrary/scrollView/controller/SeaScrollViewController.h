@@ -65,6 +65,10 @@
  */
 @property(nonatomic,strong) UIButton *scrollToTopButton;
 
+/**是否已初始化
+ */
+@property(nonatomic,assign) BOOL isInit;
+
 /**初始化视图 默认不做任何事 ，子类按需实现该方法
  */
 - (void)initialization NS_REQUIRES_SUPER;

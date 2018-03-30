@@ -12,4 +12,12 @@
  */
 - (void)setExtraCellLineHidden;
 
+///注册cell
+- (void)registerNib:(Class) clazz;
+- (void)registerClass:(Class) clazz;
+
+///注册header footer
+- (void)registerNibForHeaderFooterView:(Class) clazz;
+- (void)registerClassForHeaderFooterView:(Class) clazz;
+
 @end
