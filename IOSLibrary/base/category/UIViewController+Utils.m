@@ -220,7 +220,7 @@ static char SeaTransitioningDelegateKey;
 {
     UIColor *color = objc_getAssociatedObject(self, &SeaIconTintColorKey);
     if(color == nil)
-        color = [UIColor blackColor];
+        color = [UINavigationBar appearance].tintColor;
     
     return color;
 }

@@ -23,6 +23,8 @@
 #import <NSDictionary+Utils.h>
 #import <NSMutableArray+Utils.h>
 #import <UIColor+Utils.h>
+#import <UITextView+Utils.h>
+#import <UITextField+Utils.h>
 
 #pragma mark- loading
 

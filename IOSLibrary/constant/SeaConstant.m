@@ -186,7 +186,7 @@ static UIStatusBarStyle sharedStatusBarStyle;
     
     ///按钮颜色
     sharedButtonBackgroundColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
-    sharedButtonDisableBackgroundColor = [UIColor sea_colorFromHex:@"b3b3b3"];
+    sharedButtonDisableBackgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     
     sharedButtonTitleColor = [UIColor whiteColor];
     sharedButtonDisableTitleColor = [UIColor grayColor];
