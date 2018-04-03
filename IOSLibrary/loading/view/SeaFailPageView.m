@@ -51,6 +51,7 @@
     [self addSubview:_contentView];
     
     _imageView = [[UIImageView alloc] init];
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
     [_contentView addSubview:_imageView];
     
     _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -64,15 +65,16 @@
     
     [_contentView sea_leftToSuperview:10.0];
     [_contentView sea_rightToSuperview:10.0];
-    [_contentView sea_centerXInSuperview];
+    [_contentView sea_centerYInSuperview];
     
     [_imageView sea_centerXInSuperview];
     [_imageView sea_topToSuperview:10.0];
     [_imageView sea_leftToItem:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_imageView sea_rightToItemLeft:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
+    [_imageView sea_rightToItem:_imageView.superview margin:10 relation:NSLayoutRelationGreaterThanOrEqual];
     
+    [_textLabel sea_centerXInSuperview];
     [_textLabel sea_leftToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
-    [_textLabel sea_rightToSuperview:10.0];
+    [_textLabel sea_rightToItem:_textLabel.superview margin:10.0 relation:NSLayoutRelationGreaterThanOrEqual];
     [_textLabel sea_topToItemBottom:_imageView margin:10.0];
     [_textLabel sea_bottomToSuperview:10.0];
 }
