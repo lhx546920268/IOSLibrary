@@ -82,6 +82,25 @@
     return result;
 }
 
+- (NSString*)sea_decodeWithUTF8
+{
+    CFStringRef string = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (CFStringRef)self, CFSTR(""), CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+    
+    NSString *result = nil;
+    if(string != NULL){
+        result = [NSString stringWithFormat:@"%@", (__bridge NSString*)string];
+        CFRelease(string);
+    }else{
+        result = @"";
+    }
+    return result;
+}
+
++ (NSString *)sea_decodedStringWithUTF8:(NSString *)str
+{
+    return [str sea_decodeWithUTF8];
+}
+
 #pragma mark- 获取
 
 - (char)sea_firstCharacter

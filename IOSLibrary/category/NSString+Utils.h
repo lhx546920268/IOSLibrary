@@ -73,6 +73,21 @@ typedef NS_OPTIONS(NSUInteger, SeaTextType){
  */
 - (NSString*)sea_encodeWithStringEncoding:(NSStringEncoding) stringEncoding;
 
+/**
+ utf8 解码
+
+ @param str 要解码的字符串
+ @return 解码后的字符串
+ */
++ (NSString *)sea_decodedStringWithUTF8:(NSString *)str;
+
+/**
+ utf8 解码
+
+ @return 解码后的字符串
+ */
+- (NSString*)sea_decodeWithUTF8;
+
 #pragma mark- 获取
 
 /**
