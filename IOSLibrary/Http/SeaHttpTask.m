@@ -202,6 +202,8 @@
     !self.downloadProgressHandler ?: self.downloadProgressHandler(progress);
 }
 
+#pragma mark- public method
+
 ///开始请求
 - (void)start
 {
@@ -222,6 +224,8 @@
         _URLSessionTask = nil;
     }
 }
+
+#pragma mark- private method
 
 ///处理请求结果
 - (void)processResult:(NSData*) data error:(NSInteger) error

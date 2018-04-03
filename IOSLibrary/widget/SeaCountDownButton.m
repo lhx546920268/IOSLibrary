@@ -107,8 +107,7 @@
         };
     }
     [self.timer start];
-    self.enabled = NO;
-    self.backgroundColor = self.disableBackgroundColor;
+    [self onStart];
 }
 
 /**停止计时
@@ -117,7 +116,7 @@
 {
     if(self.timing){
         [self.timer stop];
-        [self countDownFinish];
+        [self onFinish];
     }
 }
 
@@ -127,8 +126,15 @@
     !self.countDownHandler ?: self.countDownHandler(timeLeft);
 }
 
+///倒计时开始
+- (void)onStart
+{
+    self.enabled = NO;
+    self.backgroundColor = self.disableBackgroundColor;
+}
+
 ///倒计时完成
-- (void)countDownFinish
+- (void)onFinish
 {
     self.enabled = YES;
     self.backgroundColor = self.normalBackgroundColor;
