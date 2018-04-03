@@ -5,6 +5,7 @@
 
 #import "SeaCollectionViewController.h"
 #import "UIView+SeaEmptyView.h"
+#import "UICollectionView+Utils.h"
 
 @interface SeaCollectionViewController ()
 
@@ -86,42 +87,33 @@
 
 - (void)registerNib:(Class)clazz
 {
-    [self registerNib:[UINib nibWithNibName:NSStringFromClass(clazz) bundle:nil] forCellReuseIdentifier:NSStringFromClass(clazz)];
+    [self.collectionView registerNib:clazz];
 }
 
-- (void)registerNib:(UINib *)nib forCellReuseIdentifier:(NSString *)identifier
+
+- (void)registerClass:(Class) clazz
 {
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+    [self.collectionView registerClass:clazz];
 }
 
-- (void)registerClass:(Class)cellClas
+- (void)registerHeaderClass:(Class) clazz
 {
-    [self registerClass:cellClas forCellReuseIdentifier:NSStringFromClass(cellClas)];
+    [self.collectionView registerHeaderClass:clazz];
 }
 
-- (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
+- (void)registerHeaderNib:(Class) clazz
 {
-    [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+    [self.collectionView registerHeaderNib:clazz];
 }
 
-- (void)registerNib:(Class) clazz forSupplementaryViewOfKind:(NSString*) kind
+- (void)registerFooterClass:(Class) clazz
 {
-    [self registerNib:[UINib nibWithNibName:NSStringFromClass(clazz) bundle:nil] forSupplementaryViewOfKind:kind withReuseIdentifier:NSStringFromClass(clazz)];
+    [self.collectionView registerFooterClass:clazz];
 }
 
-- (void)registerNib:(UINib*) nib forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier
+- (void)registerFooterNib:(Class) clazz
 {
-    [self.collectionView registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
-}
-
-- (void)registerClass:(Class) cellClas forSupplementaryViewOfKind:(NSString*) kind
-{
-    [self registerClass:cellClas forSupplementaryViewOfKind:kind withReuseIdentifier:NSStringFromClass(cellClas)];
-}
-
-- (void)registerClass:(Class) cellClass forSupplementaryViewOfKind:(NSString*) kind withReuseIdentifier:(NSString*) identifier
-{
-    [self.collectionView registerClass:cellClass forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
+    [self.collectionView registerFooterNib:clazz];
 }
 
 #pragma mark- UICollectionView delegate

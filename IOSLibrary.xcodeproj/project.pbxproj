@@ -236,6 +236,8 @@
 		10CF26F7200DDA80009A9295 /* SeaNavigationBarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 10CF26F5200DDA80009A9295 /* SeaNavigationBarTitleView.m */; };
 		10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E3A51B200617FC0062A23D /* SeaPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10E3A51E200617FC0062A23D /* SeaPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E3A51C200617FC0062A23D /* SeaPageViewController.m */; };
+		10E66483206E262F0095071E /* UICollectionView+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10E66481206E262F0095071E /* UICollectionView+Utils.h */; };
+		10E66484206E262F0095071E /* UICollectionView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E66482206E262F0095071E /* UICollectionView+Utils.m */; };
 		10E7B17D1F9F2D38006A83D8 /* SeaMovieCacheTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1031F9F2D13006A83D8 /* SeaMovieCacheTool.m */; };
 		10E7B17F1F9F2D38006A83D8 /* SeaUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B1081F9F2D13006A83D8 /* SeaUserDefaults.m */; };
 		10E7B1821F9F2D38006A83D8 /* SeaFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E7B10C1F9F2D13006A83D8 /* SeaFileManager.m */; };
@@ -515,6 +517,8 @@
 		10CF26F5200DDA80009A9295 /* SeaNavigationBarTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNavigationBarTitleView.m; sourceTree = "<group>"; };
 		10E3A51B200617FC0062A23D /* SeaPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPageViewController.h; sourceTree = "<group>"; };
 		10E3A51C200617FC0062A23D /* SeaPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPageViewController.m; sourceTree = "<group>"; };
+		10E66481206E262F0095071E /* UICollectionView+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Utils.h"; sourceTree = "<group>"; };
+		10E66482206E262F0095071E /* UICollectionView+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+Utils.m"; sourceTree = "<group>"; };
 		10E7B0461F9F2CAD006A83D8 /* IOSLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IOSLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		10E7B04A1F9F2CAD006A83D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10E7B0E61F9F2D12006A83D8 /* SeaObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaObject.m; sourceTree = "<group>"; };
@@ -615,6 +619,8 @@
 			children = (
 				100B1C7F1FDA97BD00FBCD62 /* UICollectionView+SeaCellSize.h */,
 				100B1C7E1FDA97BD00FBCD62 /* UICollectionView+SeaCellSize.m */,
+				10E66481206E262F0095071E /* UICollectionView+Utils.h */,
+				10E66482206E262F0095071E /* UICollectionView+Utils.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -1436,6 +1442,7 @@
 				101AB8C51FA2E45100711095 /* SeaAlbumDelegate.h in Headers */,
 				101AB8C61FA2E45100711095 /* SeaAlbumGroupListCell.h in Headers */,
 				101AB8C71FA2E45100711095 /* SeaAlbumGroupListView.h in Headers */,
+				10E66483206E262F0095071E /* UICollectionView+Utils.h in Headers */,
 				101AB8C81FA2E45100711095 /* SeaSystemSound.h in Headers */,
 				101AB8CA1FA2E45100711095 /* IOSLibrary.h in Headers */,
 				10E7B2001F9F2D48006A83D8 /* SeaFileManager.h in Headers */,
@@ -1655,6 +1662,7 @@
 				1045CE601FDA1D38003506BA /* UIView+SeaLoading.m in Sources */,
 				100EC6E01FDA292A001CCE74 /* UIViewController+Utils.m in Sources */,
 				100B1C741FDA913A00FBCD62 /* SeaScrollViewController.m in Sources */,
+				10E66484206E262F0095071E /* UICollectionView+Utils.m in Sources */,
 				100B1C8E1FDA97BE00FBCD62 /* SeaCollectionViewFlowLayout.m in Sources */,
 				10704CE8200EF78D00279C88 /* SeaImageBrowseViewController.m in Sources */,
 				10E7B1FC1F9F2D38006A83D8 /* SeaWebDetailController.m in Sources */,

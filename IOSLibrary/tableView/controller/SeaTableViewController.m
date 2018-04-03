@@ -8,6 +8,7 @@
 #import "UIView+SeaAutoLayout.h"
 #import "NSString+Utils.h"
 #import "UIView+SeaEmptyView.h"
+#import "UITableView+Utils.h"
 
 @interface SeaTableViewController ()
 
@@ -82,42 +83,22 @@
 ///注册cell
 - (void)registerNib:(Class)clazz
 {
-    [self registerNib:[UINib nibWithNibName:NSStringFromClass(clazz) bundle:nil] forCellReuseIdentifier:NSStringFromClass(clazz)];
+    [self.tableView registerNib:clazz];
 }
 
-- (void)registerNib:(UINib*) nib forCellReuseIdentifier:(NSString*) identifier
+- (void)registerClass:(Class) clazz
 {
-    [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
-}
-
-- (void)registerClass:(Class)cellClas
-{
-    [self registerClass:cellClas forCellReuseIdentifier:NSStringFromClass(cellClas)];
-}
-
-- (void)registerClass:(Class) cellClass forCellReuseIdentifier:(NSString*) identifier
-{
-    [self.tableView registerClass:cellClass forCellReuseIdentifier:identifier];
+    [self.tableView registerClass:clazz];
 }
 
 - (void)registerNibForHeaderFooterView:(Class) clazz
 {
-    [self registerNib:[UINib nibWithNibName:NSStringFromClass(clazz) bundle:nil] forHeaderFooterViewReuseIdentifier:NSStringFromClass(clazz)];
-}
-
-- (void)registerNib:(UINib*) nib forHeaderFooterViewReuseIdentifier:(NSString*) identifier
-{
-    [self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:identifier];
+    [self.tableView registerNibForHeaderFooterView:clazz];
 }
 
 - (void)registerClassForHeaderFooterView:(Class) clazz
 {
-    [self registerClass:clazz forHeaderFooterViewReuseIdentifier:NSStringFromClass(clazz)];
-}
-
-- (void)registerClass:(Class) clazz forHeaderFooterViewReuseIdentifier:(NSString*) identifier
-{
-    [self.tableView registerClass:clazz forHeaderFooterViewReuseIdentifier:identifier];
+    [self.tableView registerClassForHeaderFooterView:clazz];
 }
 
 #pragma mark- tableView 代理

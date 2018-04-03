@@ -123,6 +123,11 @@
     _keyboardHidden = YES;
 }
 
+- (BOOL)isInit
+{
+    return self.scrollView.superview != nil;
+}
+
 #pragma mark- public method
 
 /**初始化视图 默认不做任何事 ，子类按需实现该方法

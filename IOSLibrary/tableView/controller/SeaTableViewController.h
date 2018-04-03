@@ -31,15 +31,11 @@
 
 ///注册cell
 - (void)registerNib:(Class) clazz;
-- (void)registerNib:(UINib*) nib forCellReuseIdentifier:(NSString*) identifier;
-- (void)registerClass:(Class) cellClas;
-- (void)registerClass:(Class) cellClass forCellReuseIdentifier:(NSString*) identifier;
+- (void)registerClass:(Class) clazz;
 
 ///注册header footer
 - (void)registerNibForHeaderFooterView:(Class) clazz;
-- (void)registerNib:(UINib*) nib forHeaderFooterViewReuseIdentifier:(NSString*) identifier;
 - (void)registerClassForHeaderFooterView:(Class) clazz;
-- (void)registerClass:(Class) clazz forHeaderFooterViewReuseIdentifier:(NSString*) identifier;
 
 
 @end
