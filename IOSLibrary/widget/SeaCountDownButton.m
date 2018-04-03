@@ -100,7 +100,7 @@
         WeakSelf(self);
         self.timer = [SeaCountDownTimer timerWithTime:self.countdownTimeInterval interval:1];
         self.timer.completionHandler = ^(void){
-            [weakSelf countDownFinish];
+            [weakSelf onFinish];
         };
         self.timer.tickHandler = ^(NSTimeInterval timeLeft){
             [weakSelf countDown:timeLeft];
