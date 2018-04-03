@@ -6,7 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class SeaContainer;
+@class SeaContainer, SeaHttpTask;
 
 /**
  控制视图的基类
@@ -40,6 +40,13 @@
  @param height 视图高度，SeaWrapContent 为自适应
  */
 - (void)setBottomView:(UIView *)bottomView height:(CGFloat) height;
+
+/**
+ 添加需要取消的请求 在dealloc
+
+ @param task 请求
+ */
+- (void)addCanceledTask:(SeaHttpTask*) task;
 
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
