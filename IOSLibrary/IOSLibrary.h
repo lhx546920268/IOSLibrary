@@ -21,10 +21,12 @@
 #import <NSObject+Utils.h>
 #import <NSString+Utils.h>
 #import <NSDictionary+Utils.h>
+#import <UISearchBar+Utils.h>
 #import <NSMutableArray+Utils.h>
 #import <UIColor+Utils.h>
 #import <UITextView+Utils.h>
 #import <UITextField+Utils.h>
+#import <UIButton+Utils.h>
 
 #pragma mark- loading
 
@@ -68,6 +70,7 @@
 
 #import <UICollectionView+SeaCellSize.h>
 #import <SeaCollectionViewController.h>
+#import <SeaCollectionViewFlowLayout.h>
 #import <UICollectionView+Utils.h>
 
 #import <SeaBasic.h>
@@ -86,5 +89,9 @@
 
 #import <UIImage+Utils.h>
 #import <SeaTiledImageView.h>
+
+#pragma mark- http
+
+#import <SeaMultiTasks.h>
 
 #endif /* IOSLibrary_h */
