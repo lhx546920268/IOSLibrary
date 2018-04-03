@@ -11,9 +11,13 @@
 #import "SeaTabBarController.h"
 #import "UIView+SeaAutoLayout.h"
 #import "NSObject+Utils.h"
+#import "SeaWeakObjectContainer.h"
+#import "SeaHttpTask.h"
 
 @interface SeaViewController ()
 
+///用来在delloc之前 要取消的请求
+@property(nonatomic, strong) NSMutableSet<SeaWeakObjectContainer*> *currentTasks;
 
 @end
 
@@ -108,6 +112,24 @@
 - (void)viewDidLayoutSubviews
 {
     
+}
+
+- (void)addCanceledTask:(SeaHttpTask*) task
+{
+    if(task){
+        if(!self.currentTasks){
+            self.currentTasks = [NSMutableSet set];
+        }
+        [self.currentTasks addObject:[SeaWeakObjectContainer containerWithObject:task]];
+    }
+}
+
+- (void)dealloc
+{
+    for(SeaWeakObjectContainer *obj in self.currentTasks){
+        SeaHttpTask *task = (SeaHttpTask*)obj.weakObject;
+        [task cancel];
+    }
 }
 
 @end
