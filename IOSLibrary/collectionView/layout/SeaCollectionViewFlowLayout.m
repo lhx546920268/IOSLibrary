@@ -34,7 +34,7 @@
 {
     NSMutableArray *attributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    if(self.itemAlignment == SeaCollectionViewItemAlignmentDefault || !self.shouldStickHeaderDelegate)
+    if(self.itemAlignment == SeaCollectionViewItemAlignmentDefault && !self.shouldStickHeaderDelegate)
         return attributes;
 
     UICollectionViewLayoutAttributes *prevousAttr = nil;
