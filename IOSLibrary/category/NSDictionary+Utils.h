@@ -16,6 +16,11 @@
 - (NSString*)sea_stringForKey:(id<NSCopying>) key;
 
 /**
+ 解码 去空获取对象 并且如果对象是NSNumber将会转化成字符串
+ */
+- (NSString*)sea_decodedStringForKey:(id<NSCopying>) key;
+
+/**
  获取可转成数字的对象 NSNumber 、NSString
  */
 - (id)sea_numberForKey:(id<NSCopying>) key;

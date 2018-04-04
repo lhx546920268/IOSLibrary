@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+Utils.h"
+#import "NSString+Utils.h"
 
 @implementation NSDictionary (Utils)
 
@@ -24,6 +25,11 @@
     }else{
         return nil;
     }
+}
+
+- (NSString*)sea_decodedStringForKey:(id<NSCopying>) key
+{
+    return [[self sea_stringForKey:key] sea_decodeWithUTF8];
 }
 
 - (id)sea_numberForKey:(id<NSCopying>) key

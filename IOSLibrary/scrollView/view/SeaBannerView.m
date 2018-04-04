@@ -8,6 +8,7 @@
 #import "UIView+Utils.h"
 #import "UIView+SeaAutoLayout.h"
 #import "SeaCountDownTimer.h"
+#import "UICollectionView+Utils.h"
 
 @implementation SeaPageControl
 
@@ -55,6 +56,11 @@
  */
 @property(nonatomic,assign) BOOL shouldReloadData;
 
+/**
+ layout
+ */
+@property(nonatomic,strong) UICollectionViewFlowLayout *layout;
+
 @end
 
 @implementation SeaBannerView
@@ -85,7 +91,6 @@
     self = [super initWithCoder:aDecoder];
     if(self){
         _scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        [self initialization];
     }
     
     return self;
@@ -104,6 +109,7 @@
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
         layout.scrollDirection = _scrollDirection;
+        self.layout = layout;
         
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         _collectionView.pagingEnabled = YES;
@@ -116,6 +122,14 @@
         [self addSubview:_collectionView];
         
         [_collectionView sea_insetsInSuperview:UIEdgeInsetsZero];
+    }
+}
+
+- (void)setScrollDirection:(UICollectionViewScrollDirection)scrollDirection
+{
+    if(_scrollDirection != scrollDirection){
+        _scrollDirection = scrollDirection;
+        self.layout.scrollDirection = _scrollDirection;
     }
 }
 
@@ -143,22 +157,12 @@
 
 - (void)registerNib:(Class)clazz
 {
-    [self registerNib:[UINib nibWithNibName:NSStringFromClass(clazz) bundle:nil] forCellReuseIdentifier:NSStringFromClass(clazz)];
-}
-
-- (void)registerNib:(UINib *)nib forCellReuseIdentifier:(NSString *)identifier
-{
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+    [self.collectionView registerNib:clazz];
 }
 
 - (void)registerClass:(Class)cellClas
 {
-    [self registerClass:cellClas forCellReuseIdentifier:NSStringFromClass(cellClas)];
-}
-
-- (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
-{
-    [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+    [self.collectionView registerClass:cellClas];
 }
 
 - (__kindof UICollectionViewCell*)dequeueReusableCellWithClass:(Class) cellClass forIndexPath:(NSIndexPath *)indexPath

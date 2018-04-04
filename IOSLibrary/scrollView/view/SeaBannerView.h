@@ -58,7 +58,7 @@
 /**
  滚动方向 default is 'UICollectionViewScrollDirectionHorizontal'
  */
-@property(nonatomic,readonly) UICollectionViewScrollDirection scrollDirection;
+@property(nonatomic,assign) UICollectionViewScrollDirection scrollDirection;
 
 /**
  动画间隔 default is '5.0'
@@ -111,6 +111,11 @@
 @property(nonatomic,readonly) NSInteger numberOfCells;
 
 /**
+ 初始化 xib要自己调用
+ */
+- (void)initialization;
+
+/**
  重新加载数据
  */
 - (void)reloadData;
@@ -135,9 +140,7 @@
 
 ///注册cell
 - (void)registerNib:(Class) clazz;
-- (void)registerNib:(UINib*) nib forCellReuseIdentifier:(NSString*) identifier;
 - (void)registerClass:(Class) cellClas;
-- (void)registerClass:(Class) cellClass forCellReuseIdentifier:(NSString*) identifier;
 
 ///复用cell
 - (__kindof UICollectionViewCell*)dequeueReusableCellWithClass:(Class) cellClass forIndexPath:(NSIndexPath*) indexPath;
