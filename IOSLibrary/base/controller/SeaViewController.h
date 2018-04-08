@@ -6,7 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class SeaContainer, SeaHttpTask;
+@class SeaContainer, SeaHttpTask, SeaMultiTasks;
 
 /**
  控制视图的基类
@@ -47,6 +47,13 @@
  @param task 请求
  */
 - (void)addCanceledTask:(SeaHttpTask*) task;
+
+/**
+ 添加需要取消的请求队列 在 dealloc
+ 
+ @param tasks 请求
+ */
+- (void)addCanceledTasks:(SeaMultiTasks*) tasks;
 
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 

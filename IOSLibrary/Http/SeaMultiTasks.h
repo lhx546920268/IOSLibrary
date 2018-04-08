@@ -55,4 +55,9 @@
  */
 - (void)start;
 
+/**
+ 取消所有请求
+ */
+- (void)cancelAllTasks;
+
 @end
