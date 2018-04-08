@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 ///xib
-IB_DESIGNABLE
 
 /**
  UITextView的子类，支持像UITextField那样的placeholder.
@@ -19,7 +18,7 @@ IB_DESIGNABLE
 /**
  当文本框中没有内容时，显示placeholder, default is 'nil'.
  */
-@property(nonatomic, copy) IBInspectable NSString *placeholder;
+@property(nonatomic, copy) NSString *placeholder;
 
 /**
  placeholder 的字体颜色. default is 'SeaPlaceholderTextColor'
