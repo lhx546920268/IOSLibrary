@@ -90,7 +90,6 @@
     [self.collectionView registerNib:clazz];
 }
 
-
 - (void)registerClass:(Class) clazz
 {
     [self.collectionView registerClass:clazz];

@@ -13,6 +13,7 @@
 #import "NSObject+Utils.h"
 #import "SeaWeakObjectContainer.h"
 #import "SeaHttpTask.h"
+#import "SeaMultiTasks.h"
 
 @interface SeaViewController ()
 
@@ -124,11 +125,27 @@
     }
 }
 
+- (void)addCanceledTasks:(SeaMultiTasks*) tasks
+{
+    if(tasks){
+        if(!self.currentTasks){
+            self.currentTasks = [NSMutableSet set];
+        }
+        [self.currentTasks addObject:[SeaWeakObjectContainer containerWithObject:tasks]];
+    }
+}
+
 - (void)dealloc
 {
+    //取消正在执行的请求
     for(SeaWeakObjectContainer *obj in self.currentTasks){
-        SeaHttpTask *task = (SeaHttpTask*)obj.weakObject;
-        [task cancel];
+        if([obj isKindOfClass:[SeaHttpTask class]]){
+            SeaHttpTask *task = (SeaHttpTask*)obj.weakObject;
+            [task cancel];
+        }else if ([obj isKindOfClass:[SeaMultiTasks class]]){
+            SeaMultiTasks *tasks = (SeaMultiTasks*)obj.weakObject;
+            [tasks cancelAllTasks];
+        }
     }
 }
 

@@ -54,7 +54,6 @@
 - (void)initialization
 {
     [super initialization];
-    
     [self initTableView];
     self.scrollView = _tableView;
 }

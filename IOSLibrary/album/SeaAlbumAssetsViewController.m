@@ -339,7 +339,7 @@
         if([self.selectedAssetInfos containsObject:asset]){
             [self.selectedAssetInfos removeObject:asset];
             SeaAlbumAssetsThumbnail *cell = (SeaAlbumAssetsThumbnail*)[self.collectionView cellForItemAtIndexPath:indexPath];
-            cell.selected = NO;
+            cell.tick = NO;
         }else{
             if(self.maxSelectedCount == 1){
                 [self.selectedAssetInfos removeAllObjects];
@@ -354,7 +354,7 @@
                 
                 [self.selectedAssetInfos addObject:asset];
                 SeaAlbumAssetsThumbnail *cell = (SeaAlbumAssetsThumbnail*)[self.collectionView cellForItemAtIndexPath:indexPath];
-                cell.selected = YES;
+                cell.tick = YES;
             }
         }
     }

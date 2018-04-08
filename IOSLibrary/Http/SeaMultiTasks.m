@@ -23,6 +23,18 @@
 
 @implementation SeaMultiTasks
 
+///保存请求队列的单例
++ (NSMutableSet*)sharedContainers
+{
+    static NSMutableSet *sharedContainers = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedContainers = [NSMutableSet set];
+    });
+    
+    return sharedContainers;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -59,10 +71,20 @@
 
 - (void)start
 {
+    [[SeaMultiTasks sharedContainers] addObject:self];
     self.hasFail = NO;
     for(NSURLSessionTask *task in self.tasks){
         [task resume];
     }
+}
+
+- (void)cancelAllTasks
+{
+    for(NSURLSessionTask *task in self.tasks){
+        [task cancel];
+    }
+    [self.tasks removeAllObjects];
+    [[SeaMultiTasks sharedContainers] removeObject:self];
 }
 
 ///删除任务
@@ -82,6 +104,7 @@
     
     if(self.tasks.count == 0){
         !self.completionHandler ?: self.completionHandler(self.hasFail);
+        [[SeaMultiTasks sharedContainers] removeObject:self];
     }
 }
 
