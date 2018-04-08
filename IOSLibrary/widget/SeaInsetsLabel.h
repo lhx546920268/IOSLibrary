@@ -20,4 +20,6 @@ IB_DESIGNABLE
 @property(nonatomic,assign) IBInspectable CGFloat paddingRight;
 @property(nonatomic,assign) IBInspectable CGFloat paddingBottom;
 
+@property(nonatomic,assign) UIEdgeInsets contentInsets;
+
 @end

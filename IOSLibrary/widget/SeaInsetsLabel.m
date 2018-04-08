@@ -39,6 +39,15 @@
     }
 }
 
+- (void)setContentInsets:(UIEdgeInsets)contentInsets
+{
+    _paddingLeft = contentInsets.left;
+    _paddingTop = contentInsets.top;
+    _paddingRight = contentInsets.right;
+    _paddingBottom = contentInsets.bottom;
+    [self setNeedsDisplay];
+}
+
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];

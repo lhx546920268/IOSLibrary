@@ -12,6 +12,9 @@
 
 @interface SeaHttpTask()
 
+///参数构造
+@property(nonatomic, strong) SeaHttpBuilder *builder;
+
 @end
 
 @implementation SeaHttpTask
@@ -88,6 +91,7 @@
     [builder addValuesFromDictionary:params];
     [builder addFilesFromDictionary:files];
     builder.httpMethod = self.httpMethod;
+    self.builder = builder;
     
     return builder.request;
 }
