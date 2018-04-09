@@ -38,8 +38,12 @@ static char SeaShowEmptyViewKey;
 {
     if(sea_showEmptyView != self.sea_showEmptyView){
         objc_setAssociatedObject(self, &SeaShowEmptyViewKey, @(sea_showEmptyView), OBJC_ASSOCIATION_RETAIN);
-        UIView *emptyView = self.sea_emptyView;
+        SeaEmptyView *emptyView = self.sea_emptyView;
         if(sea_showEmptyView){
+            id<SeaEmptyViewDelegate> delegate = self.sea_emptyViewDelegate;
+            if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
+                [delegate emptyViewWillAppear:emptyView];
+            }
             [self addSubview:emptyView];
             [self layoutEmtpyView];
         }else{
