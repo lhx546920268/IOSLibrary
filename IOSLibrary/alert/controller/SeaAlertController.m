@@ -341,14 +341,14 @@
 
 @implementation SeaAlertController
 
-+ (instancetype)alertWithTitle:(id)title message:(id)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
++ (instancetype)alertWithTitle:(id)title message:(id)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray<NSString *> *)otherButtonTitles
 {
-    return [[SeaAlertController alloc] initWithTitle:title message:message icon:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil];
+    return [[SeaAlertController alloc] initWithTitle:title message:message icon:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
 }
 
-+ (instancetype)actionSheetWithTitle:(id)title message:(id)message otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
++ (instancetype)actionSheetWithTitle:(id)title message:(id)message otherButtonTitles:(NSArray<NSString *> *)otherButtonTitles
 {
-    return [[SeaAlertController alloc] initWithTitle:title message:message icon:nil style:SeaAlertControllerStyleActionSheet cancelButtonTitle:nil otherButtonTitles:otherButtonTitles, nil];
+    return [[SeaAlertController alloc] initWithTitle:title message:message icon:nil style:SeaAlertControllerStyleActionSheet cancelButtonTitle:nil otherButtonTitles:otherButtonTitles];
 }
 
 - (instancetype)initWithTitle:(id) title
@@ -356,7 +356,7 @@
                          icon:(UIImage*) icon
                         style:(SeaAlertControllerStyle) style
             cancelButtonTitle:(NSString *) cancelButtonTitle
-            otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
+            otherButtonTitles:(NSArray<NSString *> *)otherButtonTitles
 {
 #if SeaDebug
     NSAssert(!title || [title isKindOfClass:[NSString class]] || [title isKindOfClass:[NSAttributedString class]], @"SeaAlertController title 必须为 nil 或者 NSString 或者 NSAttributedString");
@@ -374,21 +374,8 @@
         
         _style = style;
         
-        if(otherButtonTitles){
-            [self.actions addObject:[SeaAlertAction alertActionWithTitle:otherButtonTitles]];
-            
-            va_list list;
-            va_start(list, otherButtonTitles);
-            NSString *args;
-            do{
-                args = va_arg(list, NSString*);
-                if(args){
-                    [self.actions addObject:[SeaAlertAction alertActionWithTitle:args]];
-                }
-                
-            }while(args != nil);
-                
-            va_end(list);
+        for(NSString *title in otherButtonTitles){
+            [self.actions addObject:[SeaAlertAction alertActionWithTitle:title]];
         }
         
         switch (_style){
