@@ -47,6 +47,7 @@
 #import <UIViewController+Utils.h>
 #import <SeaWebViewController.h>
 #import <SeaTabBarController.h>
+#import <SeaContainer.h>
 
 #pragma mark- empty
 
@@ -94,5 +95,9 @@
 #pragma mark- http
 
 #import <SeaMultiTasks.h>
+
+#pragma mark- image
+
+#import "UIImagePickerController+Utils.h"
 
 #endif /* IOSLibrary_h */

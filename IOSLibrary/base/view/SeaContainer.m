@@ -9,8 +9,15 @@
 #import "SeaContainer.h"
 #import "UIView+SeaAutoLayout.h"
 #import "SeaBasic.h"
+#import "UIView+SeaLoading.h"
 
 @interface SeaContainer()
+
+///页面加载中
+@property(nonatomic, strong) UIView *pageLoadingView;
+
+///加载失败
+@property(nonatomic, strong) UIView *failPageView;
 
 @end
 
@@ -274,6 +281,102 @@
             
             weakSelf.bottomView.hidden = hidden;
         }];
+    }
+}
+
+#pragma mark fail page
+
+- (void)setSea_failPageView:(UIView *)sea_failPageView
+{
+    if(sea_failPageView == nil){
+        [self.failPageView removeFromSuperview];
+        self.failPageView = nil;
+    }else{
+        self.failPageView = sea_failPageView;
+        if(!sea_failPageView.superview){
+            [self addSubview:sea_failPageView];
+            
+            [sea_failPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlerTapFailPage:)]];
+            sea_failPageView.hidden = !self.sea_showFailPage;
+            if(self.safeLayoutGuide & SeaSafeLayoutGuideLeft){
+                [sea_failPageView sea_leftToItem:self.item];
+            }else{
+                [sea_failPageView sea_leftToSuperview];
+            }
+            
+            if(self.safeLayoutGuide & SeaSafeLayoutGuideRight){
+                [sea_failPageView sea_rightToItem:self.item];
+            }else{
+                [sea_failPageView sea_rightToSuperview];
+            }
+            
+            if(_topView && !(self.overlayArea & SeaLoadingOverlayAreaFailTop)){
+                [sea_failPageView sea_topToItemBottom:_topView];
+            }else{
+                if(self.safeLayoutGuide & SeaSafeLayoutGuideTop){
+                    [sea_failPageView sea_topToItem:self.item];
+                }else{
+                    [sea_failPageView sea_topToSuperview];
+                }
+            }
+            
+            if(_bottomView && !(self.overlayArea & SeaLoadingOverlayAreaFailBottom)){
+                [sea_failPageView sea_bottomToItemTop:_bottomView];
+            }else{
+                if(self.safeLayoutGuide & SeaSafeLayoutGuideBottom){
+                    [sea_failPageView sea_bottomToItem:self.item];
+                }else{
+                    [sea_failPageView sea_bottomToSuperview];
+                }
+            }
+        }
+    }
+}
+
+#pragma mark page loading
+
+- (void)setSea_pageLoadingView:(UIView *)sea_pageLoadingView
+{
+    if(sea_pageLoadingView == nil){
+        [self.pageLoadingView removeFromSuperview];
+        self.pageLoadingView = nil;
+    }else{
+        self.pageLoadingView = sea_pageLoadingView;
+        if(!sea_pageLoadingView.superview){
+            [self addSubview:sea_pageLoadingView];
+            
+            if(self.safeLayoutGuide & SeaSafeLayoutGuideLeft){
+                [sea_pageLoadingView sea_leftToItem:self.item];
+            }else{
+                [sea_pageLoadingView sea_leftToSuperview];
+            }
+            
+            if(self.safeLayoutGuide & SeaSafeLayoutGuideRight){
+                [sea_pageLoadingView sea_rightToItem:self.item];
+            }else{
+                [sea_pageLoadingView sea_rightToSuperview];
+            }
+            
+            if(_topView && !(self.overlayArea & SeaLoadingOverlayAreaPageLoadingTop)){
+                [sea_pageLoadingView sea_topToItemBottom:_topView];
+            }else{
+                if(self.safeLayoutGuide & SeaSafeLayoutGuideTop){
+                    [sea_pageLoadingView sea_topToItem:self.item];
+                }else{
+                    [sea_pageLoadingView sea_topToSuperview];
+                }
+            }
+            
+            if(_bottomView && !(self.overlayArea & SeaLoadingOverlayAreaPageLoadingBottom)){
+                [sea_pageLoadingView sea_bottomToItemTop:_bottomView];
+            }else{
+                if(self.safeLayoutGuide & SeaSafeLayoutGuideBottom){
+                    [sea_pageLoadingView sea_bottomToItem:self.item];
+                }else{
+                    [sea_pageLoadingView sea_bottomToSuperview];
+                }
+            }
+        }
     }
 }
 

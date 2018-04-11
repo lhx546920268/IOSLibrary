@@ -50,7 +50,7 @@
             WeakSelf(self);
             [self.scrollView sea_addRefreshWithHandler:^(void){
                
-                [weakSelf reloadDataSource];
+                [weakSelf willRefresh];
             }];
         }else{
             [self.scrollView sea_removeRefreshControl];
@@ -70,8 +70,7 @@
             WeakSelf(self);
             [self.scrollView sea_addLoadMoreWithHandler:^(void){
                
-                [weakSelf setLoadingMore:YES];
-                [weakSelf onLoadMore];
+                [weakSelf willLoadMore];
             }];
         }else{
             [self.scrollView sea_removeLoadMoreControl];
@@ -137,39 +136,52 @@
     
 }
 
-///以下的两个方法默认不做任何事，子类按需实现
+#pragma mark- refresh
 
-/**触发下拉刷新
- */
-- (void)onRefesh{}
-
-/**触发上拉加载
- */
-- (void)onLoadMore{}
-
-///以下的两个方法，刷新结束或加载结束时调用，如果子类重写，必须调用 super方法
+///将要触发下拉刷新
+- (void)willRefresh
+{
+    if(self.loadingMore && !self.coexistRefreshAndLoadMore){
+        self.curPage --;
+        [self stopLoadMoreWithMore:true];
+    }
+    _refreshing = YES;
+    [self onRefesh];
+}
 
 - (void)stopRefresh
 {
     [self stopRefreshWithMsg:nil];
 }
 
-/**结束下拉刷新
- *@param msg 提示的信息，nil则提示 “刷新成功”
- */
 - (void)stopRefreshWithMsg:(NSString*) msg
 {
     if(msg == nil)
-    msg = @"刷新成功";
+        msg = @"刷新成功";
     self.refreshControl.finishText = msg;
     _refreshing = NO;
-    self.loadMoreControl.hidden = NO;
     [self.refreshControl didFinishedLoading];
 }
 
-/**结束上拉加载
- *@param flag 是否还有更多信息
- */
+- (void)refreshManually
+{
+    [self.refreshControl beginRefresh];
+}
+
+- (void)onRefesh{}
+
+#pragma mark- load more
+
+///将要触发加载更多
+- (void)willLoadMore
+{
+    if(self.refreshing && !self.coexistRefreshAndLoadMore){
+        [self stopRefresh];
+    }
+    _loadingMore = YES;
+    [self onLoadMore];
+}
+
 - (void)stopLoadMoreWithMore:(BOOL) flag
 {
     _loadingMore = NO;
@@ -181,31 +193,12 @@
     }
 }
 
-#pragma mark- 刷新数据
-
-// 加载数据
-- (void)reloadDataSource
-{
-    _refreshing = YES;
-    [self onRefesh];
-}
-
-#pragma mark- manually
-
-/**手动调用下拉刷新，会有下拉动画
- */
-- (void)refreshManually
-{
-    self.loadMoreControl.hidden = YES;
-    [self.refreshControl beginRefresh];
-}
-
-/**手动上拉加载，会有上拉动画
- */
 - (void)loadMoreManually
 {
     [self.loadMoreControl beginRefresh];
 }
+
+- (void)onLoadMore{}
 
 #pragma mark- 键盘
 

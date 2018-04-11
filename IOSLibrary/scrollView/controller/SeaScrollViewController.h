@@ -9,7 +9,7 @@
 
 @protocol SeaEmptyViewDelegate;
 
-/**滚动视图控制器，具有上拉加载和下拉刷新，键盘弹出时设置contentInset功能，防止键盘挡住输入框
+/**滚动视图控制器，具有加载更多和下拉刷新，键盘弹出时设置contentInset功能，防止键盘挡住输入框
  */
 @interface SeaScrollViewController : SeaViewController<SeaEmptyViewDelegate>
 
@@ -29,11 +29,16 @@
  */
 @property(nonatomic,readonly) SeaRefreshControl *refreshControl;
 
-/**是否可以上拉加载数据 default is 'NO'
+/**
+ 加载更多和下拉刷是否可以共存 default is 'NO'
+ */
+@property(nonatomic,assign) BOOL coexistRefreshAndLoadMore;
+
+/**是否可以加载更多数据 default is 'NO'
  */
 @property(nonatomic,assign) BOOL loadMoreEnable;
 
-/**上拉加载时的指示视图 如果 enablePullUp = NO，nil
+/**加载更多时的指示视图 如果 enablePullUp = NO，nil
  */
 @property(nonatomic,readonly) SeaLoadMoreControl *loadMoreControl;
 
@@ -79,7 +84,7 @@
  */
 - (void)onRefesh;
 
-/**触发上拉加载
+/**触发加载更多
  */
 - (void)onLoadMore;
 
@@ -92,7 +97,7 @@
  */
 - (void)stopRefreshWithMsg:(NSString*) msg NS_REQUIRES_SUPER;
 
-/**结束上拉加载
+/**结束加载更多
  *@param flag 是否还有更多信息
  */
 - (void)stopLoadMoreWithMore:(BOOL) flag NS_REQUIRES_SUPER;
@@ -101,7 +106,7 @@
  */
 - (void)refreshManually NS_REQUIRES_SUPER;
 
-/**手动上拉加载，会有上拉动画
+/**手动加载更多，会有上拉动画
  */
 - (void)loadMoreManually NS_REQUIRES_SUPER;
 

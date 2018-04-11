@@ -44,9 +44,8 @@
     if(leftBarButtonItem){
         //只有当 item是自定义item 和 图标，系统item 才需要修正
         if(leftBarButtonItem.customView || leftBarButtonItem.image || [self isSystemItem:leftBarButtonItem]){
-            UIBarButtonItem *item = [self fixedBarButtonItem];
             
-            [self sea_setLeftBarButtonItems:@[item, leftBarButtonItem] animated:animated];
+            [self sea_setLeftBarButtonItems:@[[self fixedBarButtonItem], leftBarButtonItem] animated:animated];
         }else{
             [self sea_setLeftBarButtonItem:leftBarButtonItem animated:animated];
         }
@@ -83,9 +82,8 @@
     if(rightBarButtonItem){
         //只有当 item是自定义item 和 图标，系统item 才需要修正
         if(rightBarButtonItem.customView || rightBarButtonItem.image || [self isSystemItem:rightBarButtonItem]){
-            UIBarButtonItem *item = [self fixedBarButtonItem];
-            
-            [self sea_setRightBarButtonItems:@[item, rightBarButtonItem] animated:animated];
+      
+            [self sea_setRightBarButtonItems:@[[self fixedBarButtonItem], rightBarButtonItem] animated:animated];
         }else{
             [self sea_setRightBarButtonItem:rightBarButtonItem animated:animated];
         }

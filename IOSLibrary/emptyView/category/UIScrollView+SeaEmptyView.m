@@ -67,36 +67,28 @@ static char SeaEmptyViewInsetsKey;
     if(!self.sea_shouldShowEmptyView)
         return;
     
-    if([self isEmptyData])
-    {
+    if([self isEmptyData]){
         SeaEmptyView *emptyView = self.sea_emptyView;
         
         [self layoutIfNeeded];
         UIEdgeInsets insets = self.sea_emptyViewInsets;
-        
+ 
         emptyView.frame = CGRectMake(insets.left, insets.top, self.width - insets.left - insets.right, self.height - insets.top - insets.bottom);
         emptyView.hidden = NO;
         
         id<SeaEmptyViewDelegate> delegate = self.sea_emptyViewDelegate;
-        if([delegate respondsToSelector:@selector(emptyViewWillAppear:)])
-        {
+        if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
             [delegate emptyViewWillAppear:emptyView];
         }
         
-        if(!emptyView.superview)
-        {
-            if(self.sea_loadMoreControl)
-            {
+        if(!emptyView.superview){
+            if(self.sea_loadMoreControl){
                 [self insertSubview:emptyView aboveSubview:self.sea_loadMoreControl];
-            }
-            else
-            {
+            }else{
                 [self insertSubview:emptyView atIndex:0];
             }
         }
-    }
-    else
-    {
+    }else{
         [self.sea_emptyView removeFromSuperview];
     }
 }

@@ -330,7 +330,7 @@
 /**
  内容视图
  */
-@property(nonatomic, strong) UIView *contentView;
+@property(nonatomic, strong) UIView *dialogContentView;
 
 /**
  按钮
@@ -490,15 +490,15 @@
 
 - (void)viewDidLayoutSubviews
 {
-    if(!self.contentView){
+    if(!self.dialogContentView){
         
         CGFloat width = [self alertViewWidth];
         CGFloat margin = (self.view.width - width) / 2.0;
         
-        self.contentView = [UIView new];
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.contentView.layer.cornerRadius = self.cornerRadius;
-        self.contentView.layer.masksToBounds = YES;
+        self.dialogContentView = [UIView new];
+        self.dialogContentView.backgroundColor = [UIColor clearColor];
+        self.dialogContentView.layer.cornerRadius = self.cornerRadius;
+        self.dialogContentView.layer.masksToBounds = YES;
         
         
         if(self.titleString || self.message || self.icon){
@@ -562,17 +562,17 @@
             self.header.contentSize = CGSizeMake(self.header.width, self.header.height);
             
             self.header.backgroundColor = self.mainColor;
-            [self.contentView addSubview:self.header];
+            [self.dialogContentView addSubview:self.header];
         }
         
         switch (_style){
             case SeaAlertControllerStyleAlert : {
-                self.contentView.frame = CGRectMake(margin, margin, width, 0);
+                self.dialogContentView.frame = CGRectMake(margin, margin, width, 0);
             }
                 break;
             case SeaAlertControllerStyleActionSheet : {
                 
-                self.contentView.frame = CGRectMake(_contentInsets.left, margin, width, 0);
+                self.dialogContentView.frame = CGRectMake(_contentInsets.left, margin, width, 0);
                 self.cancelButton = [[SeaAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, self.buttonHeight)];
                 self.cancelButton.layer.cornerRadius = self.cornerRadius;
                 self.cancelButton.backgroundColor = self.mainColor;
@@ -593,13 +593,13 @@
             self.collectionView.dataSource = self;
             self.collectionView.delegate = self;
             self.collectionView.bounces = YES;
-            [self.contentView addSubview:self.collectionView];
+            [self.dialogContentView addSubview:self.collectionView];
         }
         
         [self layoutSubViews];
-        [self.view addSubview:self.contentView];
+        [self.view addSubview:self.dialogContentView];
         
-        self.dialog = self.contentView;
+        self.dialog = self.dialogContentView;
     }
     [super viewDidLayoutSubviews];
 }
@@ -691,32 +691,32 @@
         
         frame.origin.y = self.header.bottom;
         self.collectionView.frame = frame;
-        self.contentView.height = maxContentHeight;
+        self.dialogContentView.height = maxContentHeight;
     }else{
         
         frame.origin.y = self.header.bottom;
         frame.size.height = buttonHeight;
         self.collectionView.frame = frame;
-        self.contentView.height = headerHeight + buttonHeight;
+        self.dialogContentView.height = headerHeight + buttonHeight;
     }
     
     if(self.header.height > 0){
         self.collectionView.height += SeaSeparatorWidth;
-        self.contentView.height += SeaSeparatorWidth;
+        self.dialogContentView.height += SeaSeparatorWidth;
     }
     
     switch (_style){
         case SeaAlertControllerStyleActionSheet : {
-            self.contentView.top = self.view.height;
+            self.dialogContentView.top = self.view.height;
         }
             break;
         case SeaAlertControllerStyleAlert : {
-            self.contentView.top = (self.view.height - self.contentView.height) / 2.0;
+            self.dialogContentView.top = (self.view.height - self.dialogContentView.height) / 2.0;
         }
             break;
     }
     
-    self.cancelButton.top = self.contentView.bottom + _contentInsets.bottom;
+    self.cancelButton.top = self.dialogContentView.bottom + _contentInsets.bottom;
 }
 
 #pragma mark- private method
@@ -750,8 +750,8 @@
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.backgroundView.alpha = 0;
-                self.contentView.top = self.view.height;
-                self.cancelButton.top = self.contentView.bottom + _contentInsets.bottom;
+                self.dialogContentView.top = self.view.height;
+                self.cancelButton.top = self.dialogContentView.bottom + _contentInsets.bottom;
                 
             }completion:completion];
         }
@@ -767,16 +767,16 @@
 {
     switch (_style){
         case SeaAlertControllerStyleAlert : {
-            self.contentView.alpha = 0;
+            self.dialogContentView.alpha = 0;
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.backgroundView.alpha = 1.0;
-                self.contentView.alpha = 1.0;
+                self.dialogContentView.alpha = 1.0;
                 CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
                 animation.fromValue = [NSNumber numberWithFloat:1.3];
                 animation.toValue = [NSNumber numberWithFloat:1.0];
                 animation.duration = 0.25;
-                [self.contentView.layer addAnimation:animation forKey:@"scale"];
+                [self.dialogContentView.layer addAnimation:animation forKey:@"scale"];
             }completion:completion];
         }
             break;
@@ -784,8 +784,8 @@
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 self.backgroundView.alpha = 1.0;
-                self.contentView.top = self.view.height - _contentView.height - _contentInsets.bottom - self.cancelButton.height - _contentInsets.bottom;
-                self.cancelButton.top = self.contentView.bottom + _contentInsets.bottom;
+                self.dialogContentView.top = self.view.height - _dialogContentView.height - _contentInsets.bottom - self.cancelButton.height - _contentInsets.bottom;
+                self.cancelButton.top = self.dialogContentView.bottom + _contentInsets.bottom;
             }completion:completion];
         }
             break;
@@ -817,7 +817,7 @@
 {
     CGPoint point = [gestureRecognizer locationInView:self.backgroundView];
     point.y += self.backgroundView.top;
-    if(CGRectContainsPoint(self.contentView.frame, point)){
+    if(CGRectContainsPoint(self.dialogContentView.frame, point)){
         return NO;
     }
     

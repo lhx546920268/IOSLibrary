@@ -50,6 +50,7 @@
     _info = info;
     [_button setTitle:info.title forState:UIControlStateNormal];
     [_button setImage:info.icon forState:UIControlStateNormal];
+    [_button setImage:info.selectedIcon forState:UIControlStateSelected];
     [_button setBackgroundImage:info.backgroundImage forState:UIControlStateNormal];
     
     [_button sea_setImagePosition:info.iconPosition margin:info.iconPadding];

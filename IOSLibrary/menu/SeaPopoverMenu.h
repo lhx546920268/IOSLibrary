@@ -40,6 +40,11 @@
  */
 @property(nonatomic, readonly) UIButton *button;
 
+/**
+ 分割线
+ */
+@property(nonatomic, readonly) UIView *divider;
+
 @end
 
 @class SeaPopoverMenu;
@@ -97,7 +102,7 @@
 @property(nonatomic, assign) UIEdgeInsets cellContentInsets;
 
 /**
- 分割线颜色 default is '[UIColor colorWithWhite:0.85 alpha:1.0]'
+ 分割线颜色 default is 'SeaSeparatorColor'
  */
 @property(nonatomic, strong) UIColor *separatorColor;
 
@@ -105,6 +110,16 @@
  按钮信息
  */
 @property(nonatomic, strong) NSArray<SeaPopoverMenuItemInfo*> *menuItemInfos;
+
+/**
+ 标题
+ */
+@property(nonatomic, copy) NSArray<NSString*> *titles;
+
+/**
+ 点击某个按钮回调
+ */
+@property(nonatomic, copy) void(^selectHandler)(NSInteger index);
 
 /**
  代理

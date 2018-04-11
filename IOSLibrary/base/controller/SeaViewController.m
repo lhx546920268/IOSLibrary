@@ -96,7 +96,7 @@
     self.navigationController.navigationBar.translucent = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    if(self.navigationController.viewControllers.count > 1){
+    if(self.navigationController.viewControllers.count > 1 && !self.sea_showBackItem){
         self.sea_showBackItem = YES;
     }
 }
@@ -117,6 +117,7 @@
 
 - (void)addCanceledTask:(SeaHttpTask*) task
 {
+    [self removeInvalidTasks];
     if(task){
         if(!self.currentTasks){
             self.currentTasks = [NSMutableSet set];
@@ -127,6 +128,7 @@
 
 - (void)addCanceledTasks:(SeaMultiTasks*) tasks
 {
+    [self removeInvalidTasks];
     if(tasks){
         if(!self.currentTasks){
             self.currentTasks = [NSMutableSet set];
@@ -135,14 +137,20 @@
     }
 }
 
+///移除无效的请求
+- (void)removeInvalidTasks
+{
+    
+}
+
 - (void)dealloc
 {
     //取消正在执行的请求
     for(SeaWeakObjectContainer *obj in self.currentTasks){
-        if([obj isKindOfClass:[SeaHttpTask class]]){
+        if([obj.weakObject isKindOfClass:[SeaHttpTask class]]){
             SeaHttpTask *task = (SeaHttpTask*)obj.weakObject;
             [task cancel];
-        }else if ([obj isKindOfClass:[SeaMultiTasks class]]){
+        }else if ([obj.weakObject isKindOfClass:[SeaMultiTasks class]]){
             SeaMultiTasks *tasks = (SeaMultiTasks*)obj.weakObject;
             [tasks cancelAllTasks];
         }
