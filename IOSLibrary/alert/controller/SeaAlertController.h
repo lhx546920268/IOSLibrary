@@ -155,9 +155,9 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
 ///点击回调 index 按钮下标 包含取消按钮 actionSheet 从上到下， alert 从左到右
 @property(nonatomic,copy) void(^selectionHandler)(NSUInteger index);
 
-+ (instancetype)alertWithTitle:(id) title message:(id) message cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
++ (instancetype)alertWithTitle:(id) title message:(id) message cancelButtonTitle:(NSString*) cancelButtonTitle otherButtonTitles:(NSArray<NSString*>*) otherButtonTitles;
 
-+ (instancetype)actionSheetWithTitle:(id) title message:(id) message otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
++ (instancetype)actionSheetWithTitle:(id) title message:(id) message otherButtonTitles:(NSArray<NSString*>*) otherButtonTitles;
 
 /**
  实例化一个弹窗
@@ -166,7 +166,7 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
  @param icon 图标
  @param style 样式
  @param cancelButtonTitle 取消按钮 default is ‘取消’
- @param otherButtonTitles 按钮，必须是字符串NSString，必须以nil结束，否则会崩溃
+ @param otherButtonTitles 按钮
  @return 一个实例
  */
 - (instancetype)initWithTitle:(id) title
@@ -174,7 +174,7 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
                          icon:(UIImage*) icon
                         style:(SeaAlertControllerStyle) style
             cancelButtonTitle:(NSString *) cancelButtonTitle
-            otherButtonTitles:(NSString*) otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
+            otherButtonTitles:(NSArray<NSString*>*) otherButtonTitles;
 
 /**
  更新某个按钮 不包含actionSheet 的取消按钮

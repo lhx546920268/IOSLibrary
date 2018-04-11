@@ -16,7 +16,7 @@
 + (BOOL)sea_canUseCamera
 {
     if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        [UIAlertController sea_alertWithTitle:@"" message:@"您的手机无法拍照" buttonTitles:@"确定", nil];
+        [UIAlertController sea_alertWithTitle:@"" message:@"您的手机无法拍照" buttonTitles:@[@"确定"]];
         return NO;
     }else if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusDenied){
         NSString *msg = [NSString stringWithFormat:@"无法使用您的相机，请在本机的“设置-隐私-相机”中设置,允许%@使用您的相机", appName()];
@@ -31,7 +31,7 @@
                 default:
                     break;
             }
-        } buttonTitles:@"取消",  @"去设置", nil];
+        } buttonTitles:@[@"取消", @"去设置"]];
         
         return NO;
     }

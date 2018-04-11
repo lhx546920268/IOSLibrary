@@ -11,42 +11,33 @@
 
 @implementation UIAlertController (Utils)
 
-+ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION
++ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message buttonTitles:(NSArray<NSString *> *)titles
 {
-    [self sea_controllerWithTitle:title message:message style:UIAlertControllerStyleAlert handler:nil buttonTitles:titles, nil];
+    [self sea_controllerWithTitle:title message:message style:UIAlertControllerStyleAlert handler:nil buttonTitles:titles];
 }
 
-+ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) titles, ... NS_REQUIRES_NIL_TERMINATION
++ (void)sea_alertWithTitle:(NSString*) title message:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSArray<NSString *> *)titles
 {
-    [self sea_controllerWithTitle:title message:message style:UIAlertControllerStyleAlert handler:handler buttonTitles:titles, nil];
+    [self sea_controllerWithTitle:title message:message style:UIAlertControllerStyleAlert handler:handler buttonTitles:titles];
 }
 
-+ (void)sea_actionSheetWithMessage:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) buttonTitles, ... NS_REQUIRES_NIL_TERMINATION
++ (void)sea_actionSheetWithMessage:(NSString*) message handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSArray<NSString *> *)titles
 {
-    [self sea_controllerWithTitle:nil message:message style:UIAlertControllerStyleActionSheet handler:handler    buttonTitles: buttonTitles, nil];
+    [self sea_controllerWithTitle:nil message:message style:UIAlertControllerStyleActionSheet handler:handler buttonTitles: titles];
 }
 
 ///显示一个弹窗
-+ (void)sea_controllerWithTitle:(NSString*) title message:(NSString*) message style:(UIAlertControllerStyle) style handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSString*) buttonTitles, ... NS_REQUIRES_NIL_TERMINATION
++ (void)sea_controllerWithTitle:(NSString*) title message:(NSString*) message style:(UIAlertControllerStyle) style handler:(UIAlertControllerActionHandler) handler buttonTitles:(NSArray<NSString *> *)titles
 {
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:style];
-    
-    va_list list;
-    va_start(list, buttonTitles);
-    NSString *args;
+
     int index = 0;
-    do
-    {
-        args = va_arg(list, NSString*);
-        if(args)
-        {
-            [controller addAction:[UIAlertAction actionWithTitle:args style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-                !handler ?: handler(index);
-            }]];
-        }
+    for(NSString *title in titles){
+        [controller addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            !handler ?: handler(index);
+        }]];
         index ++;
-        
-    }while(args != nil);
+    }
     
     if(style == UIAlertControllerStyleActionSheet){
         //添加取消按钮
@@ -54,8 +45,6 @@
             !handler ?: handler(index);
         }]];
     }
-    
-    va_end(list);
     
     [[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController] presentViewController:controller animated:YES completion:nil];
 }
