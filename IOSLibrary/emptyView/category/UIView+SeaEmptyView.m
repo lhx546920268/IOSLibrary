@@ -80,7 +80,12 @@ static char SeaShowEmptyViewKey;
 - (void)layoutEmtpyView
 {
     if(self.sea_showEmptyView){
-        [self.sea_emptyView sea_insetsInSuperview:UIEdgeInsetsZero];
+        UIView *emptyView = self.sea_emptyView;
+        [emptyView sea_insetsInSuperview:UIEdgeInsetsZero];
+        if([self isKindOfClass:[UIScrollView class]]){
+            [emptyView sea_widthToItem:self];
+            [emptyView sea_heightToItem:self];
+        }
     }
 }
 

@@ -510,7 +510,19 @@ static char SeaTransitioningDelegateKey;
 
 + (UIBarButtonItem*)sea_barItemWithImage:(UIImage*) image target:(id) target action:(SEL) action
 {
-    return [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:target action:action];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setImage:image forState:UIControlStateNormal];
+    [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    btn.frame = CGRectMake(0, 0, image.size.width + 3.0, image.size.height);
+    [btn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    btn.tintColor = [UINavigationBar appearance].tintColor;
+//    UIFont *font = [[[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal] objectForKey:NSFontAttributeName];
+//    if(font == nil){
+//        font = [UIFont systemFontOfSize:14];
+//    }
+//    btn.titleLabel.font = font;
+    
+    return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
 + (UIBarButtonItem*)sea_barItemWithTitle:(NSString*) title target:(id) target action:(SEL) action

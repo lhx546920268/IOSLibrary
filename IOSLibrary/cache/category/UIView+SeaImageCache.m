@@ -15,6 +15,9 @@
 ///图片路径
 static char SeaImageURLKey;
 
+///原始 contentMode
+static char SeaOriginContentModeKey;
+
 @implementation UIView (SeaImageCache)
 
 - (void)setSea_imageURL:(NSString *)sea_imageURL
@@ -30,6 +33,21 @@ static char SeaImageURLKey;
 - (void)sea_cancelDownloadImage
 {
     [[SeaImageCacheTool sharedInstance] cancelDownloadForURL:self.sea_imageURL target:self];
+}
+
+- (void)setSea_originalContentMode:(UIViewContentMode)sea_originalContentMode
+{
+    objc_setAssociatedObject(self, &SeaOriginContentModeKey, [NSNumber numberWithInteger:sea_originalContentMode], OBJC_ASSOCIATION_RETAIN);
+}
+
+- (UIViewContentMode)sea_originalContentMode
+{
+    NSNumber *value = objc_getAssociatedObject(self, &SeaOriginContentModeKey);
+    if(value){
+        return [value integerValue];
+    }else{
+        return UIViewContentModeScaleToFill;
+    }
 }
 
 #pragma mark- get Image
@@ -61,8 +79,10 @@ static char SeaImageURLKey;
 
 - (void)sea_setImageWithURL:(NSString *)URL options:(SeaImageCacheOptions *)options completion:(SeaImageCacheCompletionHandler)completion progress:(SeaImageCacheProgressHandler)progress
 {
-    if(!options)
+    if(!options){
         options = [SeaImageCacheOptions defaultOptions];
+        options.originalContentMode = self.sea_originalContentMode;
+    }
     
     SeaImageCacheTool *cache = [SeaImageCacheTool sharedInstance];
     

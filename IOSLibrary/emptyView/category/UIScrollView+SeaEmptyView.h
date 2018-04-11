@@ -11,7 +11,10 @@
 ///用于scrollView 的空视图
 @interface UIScrollView (SeaEmptyView)
 
-///是否显示空视图 default is 'NO'， 当为YES时，如果是UITableView 或者 UIScrollView，还需要没有数据时才显示
+/**
+ 是否显示空视图 default is 'NO'， 当为YES时，如果是UITableView 或者 UICollectionView，还需要没有数据时才显示
+ @warning 如果使用约束，必须在设置父视图后 才设置此值
+ */
 @property(nonatomic,assign) BOOL sea_shouldShowEmptyView;
 
 ///空视图偏移量 default is UIEdgeInsetZero

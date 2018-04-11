@@ -18,16 +18,35 @@ typedef NS_OPTIONS(NSUInteger, SeaSafeLayoutGuide){
     SeaSafeLayoutGuideTop = 1 << 0,
     
     ///左
-    SeaSafeLayoutGuideLeft = 1 << 2,
+    SeaSafeLayoutGuideLeft = 1 << 1,
     
     ///下
-    SeaSafeLayoutGuideBottom = 1 << 3,
+    SeaSafeLayoutGuideBottom = 1 << 2,
     
     ///右
-    SeaSafeLayoutGuideRight = 1 << 4,
+    SeaSafeLayoutGuideRight = 1 << 3,
     
     ///全部
     SeaSafeLayoutGuideAll = SeaSafeLayoutGuideTop | SeaSafeLayoutGuideLeft | SeaSafeLayoutGuideBottom | SeaSafeLayoutGuideRight,
+};
+
+///自动布局 loading 范围
+typedef NS_OPTIONS(NSUInteger, SeaLoadingOverlayArea){
+    
+    ///都不遮住 header 和 footer会看到得到
+    SeaLoadingOverlayAreaNone = 0,
+    
+    ///失败视图将遮住header
+    SeaLoadingOverlayAreaFailTop = 1 << 0,
+    
+    ///失败视图将遮住footer
+    SeaLoadingOverlayAreaFailBottom = 1 << 1,
+    
+    ///pageloading视图将遮住header
+    SeaLoadingOverlayAreaPageLoadingTop = 1 << 2,
+    
+    ///pageloading视图将遮住footer
+    SeaLoadingOverlayAreaPageLoadingBottom = 1 << 3,
 };
 
 /**
@@ -55,6 +74,9 @@ typedef NS_OPTIONS(NSUInteger, SeaSafeLayoutGuide){
 
 ///自动布局 安全区域 default is 'SeaSafeLayoutGuideAll'
 @property(nonatomic, assign) SeaSafeLayoutGuide safeLayoutGuide;
+
+///自动布局 loading 范围
+@property(nonatomic, assign) SeaLoadingOverlayArea overlayArea;
 
 ///初始化
 - (void)initialization;

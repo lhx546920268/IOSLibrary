@@ -20,6 +20,12 @@
 @property(nonatomic,readonly) NSString *sea_imageURL;
 
 /**
+ view 原始的 contentMode，在加载图片过程中，设置placeholderImage时，会改变contentMode，加载成功后会设置成 originalContentMode
+ default is 'UIViewContentModeScaleToFill' 不传 options时试用
+ */
+@property(nonatomic, assign) UIViewContentMode sea_originalContentMode;
+
+/**
  取消当前下载
  */
 - (void)sea_cancelDownloadImage;

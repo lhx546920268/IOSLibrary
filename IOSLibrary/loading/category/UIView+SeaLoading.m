@@ -59,6 +59,11 @@ static char SeaReloadDataHandlerKey;
     if(sea_pageLoadingView){
         [self addSubview:sea_pageLoadingView];
         [sea_pageLoadingView sea_insetsInSuperview:UIEdgeInsetsZero];
+        //scrollView 需要确定滑动范围
+        if([self isKindOfClass:[UIScrollView class]]){
+            [sea_pageLoadingView sea_widthToItem:self];
+            [sea_pageLoadingView sea_heightToItem:self];
+        }
     }
 }
 
@@ -103,6 +108,11 @@ static char SeaReloadDataHandlerKey;
     if(sea_networkActivity){
         [self addSubview:sea_networkActivity];
         [sea_networkActivity sea_insetsInSuperview:UIEdgeInsetsZero];
+        //scrollView 需要确定滑动范围
+        if([self isKindOfClass:[UIScrollView class]]){
+            [sea_networkActivity sea_widthToItem:self];
+            [sea_networkActivity sea_heightToItem:self];
+        }
     }
 }
 
@@ -152,6 +162,10 @@ static char SeaReloadDataHandlerKey;
         [sea_failPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlerTapFailPage:)]];
         [sea_failPageView sea_insetsInSuperview:UIEdgeInsetsZero];
         sea_failPageView.hidden = !self.sea_showFailPage;
+        if([self isKindOfClass:[UIScrollView class]]){
+            [sea_failPageView sea_widthToItem:self];
+            [sea_failPageView sea_heightToItem:self];
+        }
     }
 }
 

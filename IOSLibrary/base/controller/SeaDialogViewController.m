@@ -21,6 +21,9 @@
 ///状态栏样式
 @property(nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
+///点击半透明背景手势
+@property(nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+
 @end
 
 @implementation SeaDialogViewController
@@ -63,17 +66,21 @@
     _backgroundView = [UIView new];
     _backgroundView.alpha = 0;
     _backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-    [self.view addSubview:_backgroundView];
+    [self.view insertSubview:_backgroundView atIndex:0];
     
     [_backgroundView sea_insetsInSuperview:UIEdgeInsetsZero];
     
     self.shouldAnimate = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor clearColor];
+    
+    self.shouldDismissOnTapTranslucent = YES;
 }
+
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     //出场动画
     if(self.dialog && self.shouldAnimate){
         self.shouldAnimate = NO;
@@ -118,6 +125,19 @@
             }
                 break;
         }
+    }
+}
+
+- (void)setShouldDismissOnTapTranslucent:(BOOL) flag
+{
+    if(_shouldDismissOnTapTranslucent != flag){
+        _shouldDismissOnTapTranslucent = flag;
+        if(!self.tapGestureRecognizer){
+            self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+            [self.backgroundView addGestureRecognizer:self.tapGestureRecognizer];
+        }
+        
+        self.tapGestureRecognizer.enabled = flag;
     }
 }
 

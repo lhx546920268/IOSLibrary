@@ -27,12 +27,17 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
 /**
  弹窗视图控制器
  */
-@interface SeaDialogViewController : UIViewController
+@interface SeaDialogViewController : SeaViewController
 
 /**
  弹窗 子类可在 viewDidLoad中设置，设置后会不会自动添加到view中，要自己设置对应的约束
  */
 @property(nonatomic,strong) UIView *dialog;
+
+/**
+ 是否要点击透明背景dismiss default is 'YES'
+ */
+@property(nonatomic,assign) BOOL shouldDismissOnTapTranslucent;
 
 /**
  背景视图
@@ -98,5 +103,7 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
  执行自定义消失动画 子类重写
  */
 - (void)didExecuteDismissCustomAnimate:(void(^)(BOOL finish)) completion;
+
+- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
 @end

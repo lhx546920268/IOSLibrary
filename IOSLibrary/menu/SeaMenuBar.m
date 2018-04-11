@@ -551,11 +551,23 @@
 - (void)setIcon:(UIImage*) icon forIndex:(NSUInteger) index
 {
 #if SeaDebug
-    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setBadgeValue: forIndex:，index %ld 已越界", (long)index);
+    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
 #endif
     
     SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:index];
     info.icon = icon;
+    
+    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
+}
+
+- (void)setSelectedIcon:(UIImage*) icon forIndex:(NSUInteger) index
+{
+#if SeaDebug
+    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setSelectedIcon: forIndex:，index %ld 已越界", (long)index);
+#endif
+    
+    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:index];
+    info.selectedIcon = icon;
     
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
 }

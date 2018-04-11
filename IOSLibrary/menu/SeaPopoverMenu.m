@@ -35,7 +35,7 @@
     if(self){
         self.backgroundColor = [UIColor clearColor];
         self.contentView.backgroundColor = [UIColor clearColor];
-        self.selectionStyle = UITableViewCellSelectionStyleBlue;
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.selectedBackgroundView = [[UIView alloc] init];
         
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -46,7 +46,16 @@
         _button.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_button];
         
+        _divider = [UIView new];
+        _divider.backgroundColor = SeaSeparatorColor;
+        [self.contentView addSubview:_divider];
+        
         [_button sea_insetsInSuperview:UIEdgeInsetsZero];
+        
+        [_divider sea_leftToSuperview];
+        [_divider sea_rightToSuperview];
+        [_divider sea_bottomToSuperview];
+        [_divider sea_heightToSelf:SeaSeparatorWidth];
     }
     
     return self;
@@ -78,7 +87,7 @@
         _font = [UIFont systemFontOfSize:13];
         _selectedBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
         _rowHeight = 30;
-        _separatorColor = [UIColor colorWithWhite:0.85 alpha:1.0];
+        _separatorColor = SeaSeparatorColor;
         _iconTitleInterval = 0.0;
     }
     
@@ -94,6 +103,7 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = NO;
         self.contentView = _tableView;
     }
@@ -162,9 +172,9 @@
 {
     if(![_separatorColor isEqualToColor:separatorColor]){
         if(!separatorColor)
-            separatorColor = [UIColor colorWithWhite:0.85 alpha:1.0];
+            separatorColor = SeaSeparatorColor;
         _separatorColor = separatorColor;
-        self.tableView.separatorColor = _separatorColor;
+        [self.tableView reloadData];
     }
 }
 
@@ -208,6 +218,34 @@
     }
 }
 
+- (void)setTitles:(NSArray<NSString *> *)titles
+{
+    if(titles.count == 0){
+        return;
+    }
+    NSMutableArray *items = [NSMutableArray arrayWithCapacity:titles.count];
+    for(NSString *title in titles){
+        [items addObject:[SeaPopoverMenuItemInfo infoWithTitle:title icon:nil]];
+    }
+    self.menuItemInfos = items;
+}
+
+- (NSArray<NSString*>*)titles
+{
+    if(_menuItemInfos.count == 0){
+        return nil;
+    }
+    NSMutableArray *titles = [NSMutableArray arrayWithCapacity:_menuItemInfos.count];
+    for(SeaPopoverMenuItemInfo *info in _menuItemInfos){
+        if(info.title == nil){
+            [titles addObject:@""];
+        }else{
+            [titles addObject:info.title];
+        }
+    }
+    return titles;
+}
+
 #pragma mark- UITableView delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -235,6 +273,9 @@
     SeaPopoverMenuItemInfo *info = [_menuItemInfos objectAtIndex:indexPath.row];
     [cell.button setTitle:info.title forState:UIControlStateNormal];
     [cell.button setImage:info.icon forState:UIControlStateNormal];
+    
+    cell.divider.hidden = indexPath.row == _menuItemInfos.count - 1;
+    cell.divider.backgroundColor = self.separatorColor;
     
     return cell;
 }
@@ -265,6 +306,7 @@
     if([self.delegate respondsToSelector:@selector(popoverMenu:didSelectAtIndex:)]){
         [self.delegate popoverMenu:self didSelectAtIndex:indexPath.row];
     }
+    !self.selectHandler ?: self.selectHandler(indexPath.row);
     [self dismissAnimated:YES];
 }
 

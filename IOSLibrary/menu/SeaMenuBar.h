@@ -22,6 +22,11 @@
 @property(nonatomic,strong) UIImage *icon;
 
 /**
+ 选中按钮图标
+ */
+@property(nonatomic,strong) UIImage *selectedIcon;
+
+/**
  图标和标题的间隔
  */
 @property(nonatomic,assign) CGFloat iconPadding;
@@ -234,6 +239,12 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
  *@param index 按钮下标
  */
 - (void)setIcon:(UIImage*) icon forIndex:(NSUInteger) index;
+
+/**改变选中按钮图标
+ *@param icon 按钮图标
+ *@param index 按钮下标
+ */
+- (void)setSelectedIcon:(UIImage*) icon forIndex:(NSUInteger) index;
 
 /**
  设置将要到某个item的偏移量比例
