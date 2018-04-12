@@ -358,9 +358,32 @@
     return self.sea_alb.aspectRatio(ratio).build();
 }
 
+#pragma mark- AutoLayout Builder
+
 - (SeaAutoLayoutBuilder*)sea_alb
 {
     return [SeaAutoLayoutBuilder builderWithView:self];
+}
+
+#pragma mark- 约束判断
+
+- (BOOL)sea_existConstraints
+{
+    if(self.constraints.count > 0){
+        return YES;
+    }
+    
+    NSArray *contraints = self.superview.constraints;
+    
+    if(contraints.count > 0){
+        for(NSLayoutConstraint *constraint in contraints){
+            if(constraint.firstItem == self || constraint.secondItem == self){
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
 }
 
 #pragma mark- 获取约束 constraint

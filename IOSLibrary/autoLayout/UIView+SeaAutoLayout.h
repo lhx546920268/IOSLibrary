@@ -544,6 +544,13 @@ typedef NS_ENUM(NSInteger, SeaAutoLayoutCalculateType)
  */
 @property(nonatomic, readonly) SeaAutoLayoutBuilder *sea_alb;
 
+#pragma mark- 约束判断
+
+/**
+ 判断是否存在约束
+ */
+@property(nonatomic, readonly) BOOL sea_existConstraints;
+
 #pragma mark- 获取约束 constraint
 
 /**

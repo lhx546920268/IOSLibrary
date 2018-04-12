@@ -21,6 +21,23 @@ static char SeaEmptyViewInsetsKey;
 
 @implementation UIScrollView (SeaEmptyView)
 
+#pragma mark- swizzle
+
++ (void)load
+{
+    ///约束的 frame会在layoutSubviews得到
+    Method method1 = class_getInstanceMethod(self, @selector(layoutSubviews));
+    Method method2 = class_getInstanceMethod(self, @selector(seaEmpty_layoutSubviews));
+    
+    method_exchangeImplementations(method1, method2);
+}
+
+///用于使用约束时没那么快得到 frame
+- (void)seaEmpty_layoutSubviews
+{
+    [self seaEmpty_layoutSubviews];
+    [self layoutEmtpyView];
+}
 
 - (void)setSea_shouldShowEmptyView:(BOOL)sea_shouldShowEmptyView
 {
@@ -60,7 +77,6 @@ static char SeaEmptyViewInsetsKey;
 }
 
 
-
 ///调整emptyView
 - (void)layoutEmtpyView
 {
@@ -72,7 +88,7 @@ static char SeaEmptyViewInsetsKey;
         
         [self layoutIfNeeded];
         UIEdgeInsets insets = self.sea_emptyViewInsets;
- 
+
         emptyView.frame = CGRectMake(insets.left, insets.top, self.width - insets.left - insets.right, self.height - insets.top - insets.bottom);
         emptyView.hidden = NO;
         

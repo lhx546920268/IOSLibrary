@@ -75,16 +75,17 @@ static char SeaShowEmptyViewKey;
     return container.weakObject;
 }
 
-
 ///调整emptyView
 - (void)layoutEmtpyView
 {
     if(self.sea_showEmptyView){
         UIView *emptyView = self.sea_emptyView;
-        [emptyView sea_insetsInSuperview:UIEdgeInsetsZero];
-        if([self isKindOfClass:[UIScrollView class]]){
-            [emptyView sea_widthToItem:self];
-            [emptyView sea_heightToItem:self];
+        if(!emptyView.sea_existConstraints){
+            [emptyView sea_insetsInSuperview:UIEdgeInsetsZero];
+            if([self isKindOfClass:[UIScrollView class]]){
+                [emptyView sea_widthToItem:self];
+                [emptyView sea_heightToItem:self];
+            }
         }
     }
 }
