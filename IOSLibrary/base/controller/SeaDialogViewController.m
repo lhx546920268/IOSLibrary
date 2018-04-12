@@ -56,6 +56,12 @@
     _isShowing = NO;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self executeShowAnimate];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;
@@ -116,7 +122,7 @@
     self.shouldAnimate = YES;
     self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     [viewController presentViewController:self animated:NO completion:self.showCompletionHandler];
-    [self executeShowAnimate];
+    
 }
 
 ///执行出厂动画
@@ -244,13 +250,6 @@
 - (void)didExecuteDismissCustomAnimate:(void(^)(BOOL finish)) completion
 {
     !completion ?: completion(YES);
-}
-
-#pragma mark- CAAnimationDelegate
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
-    [self dismissDidFinish];
 }
 
 #pragma mark- 键盘
