@@ -25,6 +25,9 @@
 ///视图容器 self.view xib 不要用
 @property(nonatomic, readonly) SeaContainer *container;
 
+///是否已计算出frame，使用约束时用到
+@property(nonatomic, readonly) BOOL isViewDidLayoutSubviews;
+
 /**
  设置顶部视图
  

@@ -55,6 +55,11 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
 @property(nonatomic,assign) SeaDialogAnimate dismissAnimate;
 
 /**
+ 是否已显示
+ */
+@property(nonatomic,readonly) BOOL isShowing;
+
+/**
  键盘是否隐藏
  */
 @property(nonatomic,readonly) BOOL keyboardHidden;

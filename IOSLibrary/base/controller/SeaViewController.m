@@ -112,7 +112,8 @@
 
 - (void)viewDidLayoutSubviews
 {
-    
+    [super viewDidLayoutSubviews];
+    _isViewDidLayoutSubviews = YES;
 }
 
 - (void)addCanceledTask:(SeaHttpTask*) task

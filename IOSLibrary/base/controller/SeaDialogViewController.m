@@ -24,6 +24,7 @@
 ///点击半透明背景手势
 @property(nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
+
 @end
 
 @implementation SeaDialogViewController
@@ -45,12 +46,14 @@
 {
     [super viewWillAppear:animated];
     [self addKeyboardNotification];
+    _isShowing = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self removeKeyboardNotification];
+    _isShowing = NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -81,8 +84,46 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    [self executeShowAnimate];
+}
+
+- (void)setShouldDismissOnTapTranslucent:(BOOL) flag
+{
+    if(_shouldDismissOnTapTranslucent != flag){
+        _shouldDismissOnTapTranslucent = flag;
+        if(!self.tapGestureRecognizer){
+            self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+            [self.backgroundView addGestureRecognizer:self.tapGestureRecognizer];
+        }
+        
+        self.tapGestureRecognizer.enabled = flag;
+    }
+}
+
+#pragma mark- public method
+
+- (void)show
+{
+    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
+}
+
+- (void)showInViewController:(UIViewController *)viewController
+{
+    if(_isShowing){
+        return;
+    }
+    ///设置使背景透明
+    self.shouldAnimate = YES;
+    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [viewController presentViewController:self animated:NO completion:self.showCompletionHandler];
+    [self executeShowAnimate];
+}
+
+///执行出厂动画
+- (void)executeShowAnimate
+{
     //出场动画
-    if(self.dialog && self.shouldAnimate){
+    if(self.dialog && self.shouldAnimate && self.isViewDidLayoutSubviews){
         self.shouldAnimate = NO;
         
         switch (self.showAnimate) {
@@ -118,7 +159,7 @@
             }
                 break;
             case SeaDialogAnimateCustom : {
-
+                
                 [self didExecuteShowCustomAnimate:^(BOOL finish){
                     
                 }];
@@ -126,33 +167,7 @@
                 break;
         }
     }
-}
 
-- (void)setShouldDismissOnTapTranslucent:(BOOL) flag
-{
-    if(_shouldDismissOnTapTranslucent != flag){
-        _shouldDismissOnTapTranslucent = flag;
-        if(!self.tapGestureRecognizer){
-            self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
-            [self.backgroundView addGestureRecognizer:self.tapGestureRecognizer];
-        }
-        
-        self.tapGestureRecognizer.enabled = flag;
-    }
-}
-
-#pragma mark- public method
-
-- (void)show
-{
-    [self showInViewController:[[UIApplication sharedApplication].keyWindow.rootViewController sea_topestPresentedViewController]];
-}
-
-- (void)showInViewController:(UIViewController *)viewController
-{
-    ///设置使背景透明
-    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [viewController presentViewController:self animated:NO completion:self.showCompletionHandler];
 }
 
 - (void)dismiss
