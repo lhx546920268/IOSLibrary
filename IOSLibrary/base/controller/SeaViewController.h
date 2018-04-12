@@ -58,6 +58,9 @@
  */
 - (void)addCanceledTasks:(SeaMultiTasks*) tasks;
 
+/**
+ 主要是用于要子类调用 super
+ */
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
 @end
