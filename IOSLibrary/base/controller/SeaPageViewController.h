@@ -33,7 +33,12 @@
  */
 - (void)setPage:(NSUInteger) page animate:(BOOL) animate;
 
-///获取对应下标的controller ，子类要重新
+/**
+ 获取对应下标的controller ，子类要重写
+ 
+ @param index 对应下标
+ @return 对应下标的controller
+ */
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index;
 
 @end

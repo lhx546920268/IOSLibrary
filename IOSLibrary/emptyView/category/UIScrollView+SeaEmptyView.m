@@ -67,13 +67,14 @@ static char SeaEmptyViewInsetsKey;
     if(!self.sea_shouldShowEmptyView)
         return;
     
+    [self layoutIfNeeded];
+    //大小为0时不创建
+    if(CGSizeEqualToSize(CGSizeZero, self.frame.size)){
+        return;
+    }
+    
     if([self isEmptyData]){
-        [self layoutIfNeeded];
-        //大小为0时不创建
-        if(CGSizeEqualToSize(CGSizeZero, self.frame.size)){
-            return;
-        }
-        
+
         SeaEmptyView *emptyView = self.sea_emptyView;
         if(!emptyView){
             emptyView = [SeaEmptyView new];

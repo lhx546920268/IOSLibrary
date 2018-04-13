@@ -61,7 +61,7 @@
 - (void)initialization
 {
     self.backgroundColor = [UIColor whiteColor];
-    self.safeLayoutGuide = SeaSafeLayoutGuideAll;
+    self.safeLayoutGuide = SeaSafeLayoutGuideTop;
 }
 
 ///布局的item

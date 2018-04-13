@@ -51,8 +51,8 @@
 - (void)initialization
 {
     self.countdownTimeInterval = 60;
-    self.normalBackgroundColor = [UIColor clearColor];
-    self.disableBackgroundColor = [UIColor clearColor];
+    self.normalBackgroundColor = SeaButtonBackgroundColor;
+    self.disableBackgroundColor = SeaButtonDisableBackgroundColor;
     [self setTitleColor:SeaButtonTitleColor forState:UIControlStateNormal];
     self.titleLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
     self.titleLabel.numberOfLines = 0;

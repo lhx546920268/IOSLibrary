@@ -77,6 +77,7 @@
 		104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 104662011FE1230400A88D3C /* UIView+SeaToast.m */; };
 		1048BDFC206C81C7004D9410 /* SeaConstant.h in Headers */ = {isa = PBXBuildFile; fileRef = 1048BDFA206C81C7004D9410 /* SeaConstant.h */; };
 		1048BDFD206C81C7004D9410 /* SeaConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1048BDFB206C81C7004D9410 /* SeaConstant.m */; };
+		104BB31D2080B3F100312E7E /* keyboard_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 10CB0A442005BCA90067ADDB /* keyboard_delete@2x.png */; };
 		104D198C201582C300BAB3EF /* SeaSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 104D198A201582C300BAB3EF /* SeaSearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		104D198D201582C300BAB3EF /* SeaSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 104D198B201582C300BAB3EF /* SeaSearchBar.m */; };
 		104D19902015C0B800BAB3EF /* UIDevice+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 104D198E2015C0B800BAB3EF /* UIDevice+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1522,6 +1523,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				104BB31D2080B3F100312E7E /* keyboard_delete@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -72,7 +72,7 @@ typedef NS_OPTIONS(NSUInteger, SeaLoadingOverlayArea){
 ///关联的viewController
 @property(nonatomic, weak, readonly) UIViewController *viewController;
 
-///自动布局 安全区域 default is 'SeaSafeLayoutGuideAll'
+///自动布局 安全区域 default is 'SeaSafeLayoutGuideTop'
 @property(nonatomic, assign) SeaSafeLayoutGuide safeLayoutGuide;
 
 ///自动布局 loading 范围

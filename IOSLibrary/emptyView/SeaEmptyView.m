@@ -56,7 +56,7 @@
 {
     if(!self.contentView)
     {
-        self.backgroundColor = SeaGrayBackgroundColor;
+//        self.backgroundColor = SeaGrayBackgroundColor;
         self.clipsToBounds = YES;
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor clearColor];
