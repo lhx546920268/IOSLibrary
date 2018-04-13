@@ -23,22 +23,6 @@ static char SeaEmptyViewInsetsKey;
 
 #pragma mark- swizzle
 
-+ (void)load
-{
-    ///约束的 frame会在layoutSubviews得到
-    Method method1 = class_getInstanceMethod(self, @selector(layoutSubviews));
-    Method method2 = class_getInstanceMethod(self, @selector(seaEmpty_layoutSubviews));
-    
-    method_exchangeImplementations(method1, method2);
-}
-
-///用于使用约束时没那么快得到 frame
-- (void)seaEmpty_layoutSubviews
-{
-    [self seaEmpty_layoutSubviews];
-    [self layoutEmtpyView];
-}
-
 - (void)setSea_shouldShowEmptyView:(BOOL)sea_shouldShowEmptyView
 {
     if(self.sea_shouldShowEmptyView != sea_shouldShowEmptyView)
@@ -84,20 +68,29 @@ static char SeaEmptyViewInsetsKey;
         return;
     
     if([self isEmptyData]){
-        SeaEmptyView *emptyView = self.sea_emptyView;
-        
         [self layoutIfNeeded];
+        //大小为0时不创建
+        if(CGSizeEqualToSize(CGSizeZero, self.frame.size)){
+            return;
+        }
+        
+        SeaEmptyView *emptyView = self.sea_emptyView;
+        if(!emptyView){
+            emptyView = [SeaEmptyView new];
+            self.sea_emptyView = emptyView;
+        }
+        
         UIEdgeInsets insets = self.sea_emptyViewInsets;
 
         emptyView.frame = CGRectMake(insets.left, insets.top, self.width - insets.left - insets.right, self.height - insets.top - insets.bottom);
         emptyView.hidden = NO;
         
-        id<SeaEmptyViewDelegate> delegate = self.sea_emptyViewDelegate;
-        if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
-            [delegate emptyViewWillAppear:emptyView];
-        }
-        
         if(!emptyView.superview){
+            id<SeaEmptyViewDelegate> delegate = self.sea_emptyViewDelegate;
+            if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
+                [delegate emptyViewWillAppear:emptyView];
+            }
+            
             if(self.sea_loadMoreControl){
                 [self insertSubview:emptyView aboveSubview:self.sea_loadMoreControl];
             }else{
@@ -105,7 +98,7 @@ static char SeaEmptyViewInsetsKey;
             }
         }
     }else{
-        [self.sea_emptyView removeFromSuperview];
+        self.sea_emptyView = nil;
     }
 }
 

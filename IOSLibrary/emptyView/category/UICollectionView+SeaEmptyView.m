@@ -20,25 +20,66 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 
 #pragma mark- super method
 
+- (void)layoutEmtpyView
+{
+    [super layoutEmtpyView];
+    
+    SeaEmptyView *emptyView = self.sea_emptyView;
+    if(emptyView && emptyView.superview && !emptyView.hidden){
+        CGRect frame = emptyView.frame;
+        CGFloat y = frame.origin.y;
+        
+        ///获取sectionHeader 高度
+        if(self.sea_shouldShowEmptyViewWhenExistSectionHeaderView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+            UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
+            id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
+            
+            NSInteger section = self.numberOfSections;
+            if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]){
+                for(NSInteger i = 0;i < section;i ++){
+                    y += [delegate collectionView:self layout:layout referenceSizeForHeaderInSection:i].height;
+                }
+            }else{
+                y += section * layout.headerReferenceSize.height;
+            }
+        }
+        
+        ///获取section footer 高度
+        if(self.sea_shouldShowEmptyViewWhenExistSectionFooterView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
+                UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
+                id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.delegate;
+                
+                NSInteger section = self.numberOfSections;
+                if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]){
+                    for(NSInteger i = 0;i < section;i ++){
+                        y += [delegate collectionView:self layout:layout referenceSizeForFooterInSection:i].height;
+                    }
+                }else{
+                    y += section * layout.footerReferenceSize.height;
+                }
+        }
+        
+        frame.origin.y = y;
+        frame.size.height = self.height - y;
+        if(frame.size.height <= 0){
+            [emptyView removeFromSuperview];
+        }else{
+            emptyView.frame = frame;
+        }
+    }
+}
+
 - (BOOL)isEmptyData
 {
     BOOL empty = YES;
     
-    if(empty && self.dataSource)
-    {
-        NSInteger section = 1;
-        if([self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)])
-        {
-            section = [self.dataSource numberOfSectionsInCollectionView:self];
-        }
+    if(empty && self.dataSource){
+        NSInteger section = self.numberOfSections;
         
-        if([self.dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)])
-        {
-            for(NSInteger i = 0;i < section;i ++)
-            {
+        if([self.dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)]){
+            for(NSInteger i = 0;i < section;i ++){
                 NSInteger items = [self.dataSource collectionView:self numberOfItemsInSection:i];
-                if(items > 0)
-                {
+                if(items > 0){
                     empty = NO;
                     break;
                 }
@@ -46,28 +87,21 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///item为0，section 大于0时，可能存在sectionHeader
-        if(empty && section > 0)
-        {
-            if(!self.sea_shouldShowEmptyViewWhenExistSectionHeaderView && [self.dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)])
-            {
-                for(NSInteger i = 0; i < section;i ++)
-                {
+        if(empty && section > 0){
+            if(!self.sea_shouldShowEmptyViewWhenExistSectionHeaderView && [self.dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]){
+                for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.dataSource collectionView:self viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]];
-                    if(view)
-                    {
+                    if(view){
                         empty = NO;
                         break;
                     }
                 }
             }
             
-            if(empty && !self.sea_shouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)])
-            {
-                for(NSInteger i = 0; i < section;i ++)
-                {
+            if(empty && !self.sea_shouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]){
+                for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.dataSource collectionView:self viewForSupplementaryElementOfKind:UICollectionElementKindSectionFooter atIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]];
-                    if(view)
-                    {
+                    if(view){
                         empty = NO;
                         break;
                     }
@@ -89,8 +123,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 - (BOOL)sea_shouldShowEmptyViewWhenExistSectionHeaderView
 {
     NSNumber *number = objc_getAssociatedObject(self, &SeaShouldShowEmptyViewWhenExistSectionHeaderViewKey);
-    if(number)
-    {
+    if(number){
         return [number boolValue];
     }
     
@@ -106,8 +139,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 - (BOOL)sea_shouldShowEmptyViewWhenExistSectionFooterView
 {
     NSNumber *number = objc_getAssociatedObject(self, &SeaShouldShowEmptyViewWhenExistSectionFooterViewKey);
-    if(number)
-    {
+    if(number){
         return [number boolValue];
     }
     
@@ -126,11 +158,11 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         @selector(insertSections:),
         @selector(deleteItemsAtIndexPaths:),
         @selector(deleteSections:),
+        @selector(layoutSubviews) //使用约束时 frame会在layoutSubviews得到
     };
     
     int count = sizeof(selectors) / sizeof(SEL);
-    for(NSInteger i = 0;i < count;i ++)
-    {
+    for(NSInteger i = 0;i < count;i ++){
         SEL selector1 = selectors[i];
         SEL selector2 = NSSelectorFromString([NSString stringWithFormat:@"sea_empty_%@", NSStringFromSelector(selector1)]);
         
@@ -175,6 +207,16 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 {
     [self layoutEmtpyView];
     [self sea_empty_deleteSections:sections];
+}
+
+///用于使用约束时没那么快得到 frame
+- (void)sea_empty_layoutSubviews
+{
+    [self sea_empty_layoutSubviews];
+    if(!CGSizeEqualToSize(self.sea_oldSize, self.frame.size)){
+        self.sea_oldSize = self.frame.size;
+        [self layoutEmtpyView];
+    }
 }
 
 @end

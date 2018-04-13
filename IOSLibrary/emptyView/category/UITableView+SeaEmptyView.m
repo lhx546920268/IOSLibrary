@@ -27,8 +27,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
     [super layoutEmtpyView];
     
     SeaEmptyView *emptyView = self.sea_emptyView;
-    if(emptyView && emptyView.superview && !emptyView.hidden)
-    {
+    if(emptyView && emptyView.superview && !emptyView.hidden){
         CGRect frame = emptyView.frame;
         CGFloat y = frame.origin.y;
         
@@ -38,14 +37,35 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         y += self.tableHeaderView.height;
         y += self.tableFooterView.height;
         
+        ///获取sectionHeader 高度
+        if(self.sea_shouldShowEmptyViewWhenExistSectionHeaderView){
+            NSInteger section = self.numberOfSections;
+            if([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]){
+                for(NSInteger i = 0;i < section;i ++){
+                    y += [self.delegate tableView:self heightForHeaderInSection:section];
+                }
+            }else{
+                y += section * self.sectionHeaderHeight;
+            }
+        }
+        
+        ///获取section footer 高度
+        if(self.sea_shouldShowEmptyViewWhenExistTableFooterView){
+            NSInteger section = self.numberOfSections;
+            if([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]){
+                for(NSInteger i = 0;i < section;i ++){
+                    y += [self.delegate tableView:self heightForFooterInSection:section];
+                }
+            }else{
+                y += section * self.sectionFooterHeight;
+            }
+        }
+        
         frame.origin.y = y;
         frame.size.height = self.height - y;
-        if(frame.size.height <= 0)
-        {
+        if(frame.size.height <= 0){
             [emptyView removeFromSuperview];
-        }
-        else
-        {
+        }else{
             emptyView.frame = frame;
         }
     }
@@ -55,31 +75,21 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 {
     BOOL empty = YES;
     
-    if(!self.sea_shouldShowEmptyViewWhenExistTableHeaderView && self.tableHeaderView)
-    {
+    if(!self.sea_shouldShowEmptyViewWhenExistTableHeaderView && self.tableHeaderView){
         empty = NO;
     }
     
-    if(!self.sea_shouldShowEmptyViewWhenExistTableFooterView && self.tableFooterView)
-    {
+    if(!self.sea_shouldShowEmptyViewWhenExistTableFooterView && self.tableFooterView){
         empty = NO;
     }
     
-    if(empty && self.dataSource)
-    {
-        NSInteger section = 1;
-        if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)])
-        {
-            section = [self.dataSource numberOfSectionsInTableView:self];
-        }
+    if(empty && self.dataSource){
+        NSInteger section = self.numberOfSections;
         
-        if([self.dataSource respondsToSelector:@selector(tableView:numberOfRowsInSection:)])
-        {
-            for(NSInteger i = 0;i < section;i ++)
-            {
+        if([self.dataSource respondsToSelector:@selector(tableView:numberOfRowsInSection:)]){
+            for(NSInteger i = 0;i < section;i ++){
                 NSInteger row = [self.dataSource tableView:self numberOfRowsInSection:i];
-                if(row > 0)
-                {
+                if(row > 0){
                     empty = NO;
                     break;
                 }
@@ -87,28 +97,21 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         }
         
         ///行数为0，section 大于0时，可能存在sectionHeader
-        if(empty && section > 0 && self.delegate)
-        {
-            if(!self.sea_shouldShowEmptyViewWhenExistSectionHeaderView && [self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)])
-            {
-                for(NSInteger i = 0; i < section;i ++)
-                {
+        if(empty && section > 0 && self.delegate){
+            if(!self.sea_shouldShowEmptyViewWhenExistSectionHeaderView && [self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]){
+                for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.delegate tableView:self viewForHeaderInSection:i];
-                    if(view)
-                    {
+                    if(view){
                         empty = NO;
                         break;
                     }
                 }
             }
             
-            if(empty && !self.sea_shouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)])
-            {
-                for(NSInteger i = 0; i < section;i ++)
-                {
+            if(empty && !self.sea_shouldShowEmptyViewWhenExistSectionFooterView && [self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]){
+                for(NSInteger i = 0; i < section;i ++){
                     UIView *view = [self.delegate tableView:self viewForFooterInSection:i];
-                    if(view)
-                    {
+                    if(view){
                         empty = NO;
                         break;
                     }
@@ -199,7 +202,8 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         @selector(insertRowsAtIndexPaths:withRowAnimation:),
         @selector(insertSections:withRowAnimation:),
         @selector(deleteRowsAtIndexPaths:withRowAnimation:),
-        @selector(deleteSections:withRowAnimation:)
+        @selector(deleteSections:withRowAnimation:),
+        @selector(layoutSubviews) //使用约束时 frame会在layoutSubviews得到
     };
     
     int count = sizeof(selectors) / sizeof(SEL);
@@ -250,6 +254,17 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
     [self layoutEmtpyView];
     [self sea_empty_deleteSections:sections withRowAnimation:animation];
 }
+
+///用于使用约束时没那么快得到 frame
+- (void)sea_empty_layoutSubviews
+{
+    [self sea_empty_layoutSubviews];
+    if(!CGSizeEqualToSize(self.sea_oldSize, self.frame.size)){
+        self.sea_oldSize = self.frame.size;
+        [self layoutEmtpyView];
+    }
+}
+
 
 
 @end
