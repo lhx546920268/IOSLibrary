@@ -16,9 +16,8 @@
 @end
 
 @implementation SeaTableViewController
-{
-    UITableView *_tableView;
-}
+
+@synthesize tableView = _tableView;
 
 - (id)initWithStyle:(UITableViewStyle) style
 {

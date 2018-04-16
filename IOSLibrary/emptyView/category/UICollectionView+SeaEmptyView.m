@@ -23,18 +23,22 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 - (void)layoutEmtpyView
 {
     [super layoutEmtpyView];
-    
+
     SeaEmptyView *emptyView = self.sea_emptyView;
     if(emptyView && emptyView.superview && !emptyView.hidden){
         CGRect frame = emptyView.frame;
         CGFloat y = frame.origin.y;
+
+        NSInteger section = 1;
+        if([self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]){
+            section = [self.dataSource numberOfSectionsInCollectionView:self];
+        }
         
         ///获取sectionHeader 高度
         if(self.sea_shouldShowEmptyViewWhenExistSectionHeaderView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
             UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
             id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>) self.delegate;
-            
-            NSInteger section = self.numberOfSections;
+
             if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]){
                 for(NSInteger i = 0;i < section;i ++){
                     y += [delegate collectionView:self layout:layout referenceSizeForHeaderInSection:i].height;
@@ -43,13 +47,12 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
                 y += section * layout.headerReferenceSize.height;
             }
         }
-        
+
         ///获取section footer 高度
         if(self.sea_shouldShowEmptyViewWhenExistSectionFooterView && [self.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]){
                 UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.collectionViewLayout;
                 id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.delegate;
-                
-                NSInteger section = self.numberOfSections;
+
                 if([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]){
                     for(NSInteger i = 0;i < section;i ++){
                         y += [delegate collectionView:self layout:layout referenceSizeForFooterInSection:i].height;
@@ -58,7 +61,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
                     y += section * layout.footerReferenceSize.height;
                 }
         }
-        
+
         frame.origin.y = y;
         frame.size.height = self.height - y;
         if(frame.size.height <= 0){
@@ -74,7 +77,13 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
     BOOL empty = YES;
     
     if(empty && self.dataSource){
-        NSInteger section = self.numberOfSections;
+        //会触发 reloadData
+        //NSInteger section = self.numberOfSections;
+        
+        NSInteger section = 1;
+        if([self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]){
+            section = [self.dataSource numberOfSectionsInCollectionView:self];
+        }
         
         if([self.dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)]){
             for(NSInteger i = 0;i < section;i ++){

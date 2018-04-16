@@ -78,6 +78,7 @@
         _textLabel.textColor = [UIColor grayColor];
         _textLabel.font = [UIFont fontWithName:SeaMainFontName size:17.0];
         _textLabel.textAlignment = NSTextAlignmentCenter;
+        _textLabel.numberOfLines = 0;
         [self.contentView addSubview:_textLabel];
 
         if(_iconImageView)

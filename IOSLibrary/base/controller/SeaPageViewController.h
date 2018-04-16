@@ -26,7 +26,7 @@
 - (void)reloadData;
 
 /**
- 跳转到某一页
+ 跳转到某一页 
 
  @param page 页码
  @param animate 是否动画

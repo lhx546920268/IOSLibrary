@@ -37,9 +37,13 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         y += self.tableHeaderView.height;
         y += self.tableFooterView.height;
         
+        NSInteger section = 1;
+        if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]){
+            section = [self.dataSource numberOfSectionsInTableView:self];
+        }
+        
         ///获取sectionHeader 高度
         if(self.sea_shouldShowEmptyViewWhenExistSectionHeaderView){
-            NSInteger section = self.numberOfSections;
             if([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]){
                 for(NSInteger i = 0;i < section;i ++){
                     y += [self.delegate tableView:self heightForHeaderInSection:section];
@@ -51,7 +55,6 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
         
         ///获取section footer 高度
         if(self.sea_shouldShowEmptyViewWhenExistTableFooterView){
-            NSInteger section = self.numberOfSections;
             if([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]){
                 for(NSInteger i = 0;i < section;i ++){
                     y += [self.delegate tableView:self heightForFooterInSection:section];
@@ -84,7 +87,10 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
     }
     
     if(empty && self.dataSource){
-        NSInteger section = self.numberOfSections;
+        NSInteger section = 1;
+        if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]){
+            section = [self.dataSource numberOfSectionsInTableView:self];
+        }
         
         if([self.dataSource respondsToSelector:@selector(tableView:numberOfRowsInSection:)]){
             for(NSInteger i = 0;i < section;i ++){

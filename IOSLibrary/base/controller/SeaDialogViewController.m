@@ -18,9 +18,6 @@
 ///是否要动画
 @property(nonatomic, assign) BOOL shouldAnimate;
 
-///状态栏样式
-@property(nonatomic, assign) UIStatusBarStyle statusBarStyle;
-
 ///点击半透明背景手势
 @property(nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
@@ -64,14 +61,13 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.statusBarStyle;
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     _keyboardHidden = YES;
-    self.statusBarStyle = UIStatusBarStyleLightContent;
     _backgroundView = [UIView new];
     _backgroundView.alpha = 0;
     _backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
@@ -153,15 +149,33 @@
                 }];
             }
                 break;
-            case SeaDialogAnimateUpDown : {
-                self.backgroundView.alpha = 1.0;
+            case SeaDialogAnimateFromTop : {
+                [UIView animateWithDuration:0.25 animations:^(void){
+                   
+                    self.backgroundView.alpha = 1.0;
+                    
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                    animation.fromValue = @(-self.dialog.height / 2.0);
+                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                    animation.toValue = @(self.dialog.layer.position.y);
+                    animation.duration = 0.25;
+                    [self.dialog.layer addAnimation:animation forKey:@"position"];
+                }];
+            }
+                break;
+            case SeaDialogAnimateFromBottom : {
                 
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
-                animation.fromValue = @(-self.dialog.height / 2.0);
-                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-                animation.toValue = @(self.dialog.layer.position.y);
-                animation.duration = 0.25;
-                [self.dialog.layer addAnimation:animation forKey:@"position"];
+                [UIView animateWithDuration:0.25 animations:^(void){
+                   
+                    self.backgroundView.alpha = 1.0;
+                    
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                    animation.fromValue = @(self.view.height + self.dialog.height / 2);
+                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                    animation.toValue = @(self.dialog.layer.position.y);
+                    animation.duration = 0.25;
+                    [self.dialog.layer addAnimation:animation forKey:@"position"];
+                }];
             }
                 break;
             case SeaDialogAnimateCustom : {
@@ -178,7 +192,6 @@
 
 - (void)dismiss
 {
-    self.statusBarStyle = UIStatusBarStyleDefault;
     switch (self.dismissAnimate) {
         case SeaDialogAnimateNone : {
             [self dismissDidFinish];
@@ -195,6 +208,8 @@
                 animation.fromValue = @(1.0);
                 animation.toValue = @(1.3);
                 animation.duration = 0.25;
+                animation.fillMode = kCAFillModeForwards;
+                animation.removedOnCompletion = NO;
                 [self.dialog.layer addAnimation:animation forKey:@"scale"];
                 
             }completion:^(BOOL finish){
@@ -202,13 +217,13 @@
             }];
         }
             break;
-        case SeaDialogAnimateUpDown : {
-            self.backgroundView.alpha = 1.0;
+        case SeaDialogAnimateFromTop : {
             
             [UIView animateWithDuration:0.25 animations:^(void){
                 
                 [self setNeedsStatusBarAppearanceUpdate];
                 self.backgroundView.alpha = 0;
+                
                 CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
                 animation.fromValue = @(self.dialog.layer.position.y);
                 animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
@@ -219,6 +234,25 @@
                 [self.dialog.layer addAnimation:animation forKey:@"position"];
                 
             }completion:^(BOOL finish){
+                [self dismissDidFinish];
+            }];
+        }
+            break;
+        case SeaDialogAnimateFromBottom : {
+            
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.backgroundView.alpha = 0;
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                animation.fromValue = @(self.dialog.layer.position.y);
+                animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                animation.toValue = @(self.view.height + self.dialog.height / 2);
+                animation.duration = 0.25;
+                animation.fillMode = kCAFillModeForwards;
+                animation.removedOnCompletion = NO;
+                [self.dialog.layer addAnimation:animation forKey:@"position"];
+            }completion:^(BOOL finish){
+                
                 [self dismissDidFinish];
             }];
         }

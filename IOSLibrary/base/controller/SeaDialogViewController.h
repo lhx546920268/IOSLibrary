@@ -17,8 +17,11 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
     ///缩放
     SeaDialogAnimateScale,
     
-    ///上下
-    SeaDialogAnimateUpDown,
+    ///从上进入
+    SeaDialogAnimateFromTop,
+    
+    ///从下进入
+    SeaDialogAnimateFromBottom,
     
     ///自定义
     SeaDialogAnimateCustom,

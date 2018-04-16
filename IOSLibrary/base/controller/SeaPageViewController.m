@@ -58,6 +58,9 @@
 ///起始滑动位置
 @property(nonatomic, assign) CGPoint beginOffset;
 
+///是否需要滚动到对应位置
+@property(nonatomic, assign) BOOL shouldScrollToPage;
+
 @end
 
 @implementation SeaPageViewController
@@ -100,6 +103,10 @@
 {
     [super viewDidLayoutSubviews];
     self.flowLayout.itemSize = self.collectionView.frame.size;
+    if(self.shouldScrollToPage){
+        self.shouldScrollToPage = NO;
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.menuBar.selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    }
 }
 
 #pragma mark- public method
@@ -111,8 +118,15 @@
 
 - (void)setPage:(NSUInteger) page animate:(BOOL) animate
 {
+    if(page >= self.menuBar.titles.count){
+        return;
+    }
     [self.menuBar setSelectedIndex:page animated:animate];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    if(self.isViewDidLayoutSubviews){
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    }else{
+        self.shouldScrollToPage = YES;
+    }
 }
 
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index

@@ -531,7 +531,7 @@
 ///滚动到可见位置
 - (void)scrollToVisibleRectWithAnimate:(BOOL) flag
 {
-    if(_selectedIndex >= self.itemInfos.count || _style != SeaMenuBarStyleFit)
+    if(_selectedIndex >= self.itemInfos.count || _style != SeaMenuBarStyleFit || !self.mesureEnable)
         return;
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:flag];
 }
@@ -575,14 +575,13 @@
 ///通过下标获取按钮
 - (id)itemForIndex:(NSUInteger) index
 {
-    if(index >= _itemInfos.count)
+    if(index >= _itemInfos.count || !self.mesureEnable)
         return nil;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UICollectionViewCell *item = (SeaMenuBarItem*)[self.collectionView cellForItemAtIndexPath:indexPath];
     
-    if(item == nil)
-    {
+    if(item == nil){
         item = [self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
     }
     
