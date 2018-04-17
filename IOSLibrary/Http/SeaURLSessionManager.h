@@ -67,7 +67,7 @@ typedef void(^SeaURLSessionDownloadProgressHandler)(NSProgress *progress);
  @param URL 下载路径
  @param destinationPath 下载完成后文件会移动到这个地方
  @param completion 下载完成回调
- @return 一个 NSURLSessionDownloadTask 实例
+ @return 如果URL有效， 一个 NSURLSessionDownloadTask 实例，否则nil
  */
 - (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSString*) URL destinationPath:(NSString*) destinationPath completion:(SeaURLSessionDownloadHandler) completion;
 

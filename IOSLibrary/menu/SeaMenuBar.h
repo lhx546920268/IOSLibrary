@@ -173,9 +173,14 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
 @property(nonatomic,assign) BOOL showSeparator;
 
 /**
- 样式 默认自动检测
+ 样式 默认自动检测 要计算完成才能确定 layoutSubviews
  */
 @property(nonatomic,readonly) SeaMenuBarStyle style;
+
+/**
+ 计算完成回调 layoutSubviews 后
+ */
+@property(nonatomic,copy) void(^measureCompletionHandler)(void);
 
 /**
  菜单按钮标题 设置此值会导致菜单重新加载数据

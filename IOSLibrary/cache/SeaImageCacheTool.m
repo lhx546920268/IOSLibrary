@@ -268,7 +268,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
             UIImage *image = [UIImage imageWithData:data];
             
             ///链接不是图片
-            if(!image){
+            if(!image && url != nil){
                 @synchronized (self.badURLs){
                     [self.badURLs addObject:url];
                 }
@@ -278,7 +278,8 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
         });
     }else{
         ///添加无效的URL，防止继续加载
-        if(error != NSURLErrorCancelled
+        if(url != nil
+           && error != NSURLErrorCancelled
            && error != NSURLErrorTimedOut
            && error != NSURLErrorCannotFindHost
            && error != NSURLErrorCannotConnectToHost
@@ -363,10 +364,14 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
     SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];
     
     NSURLSessionDownloadTask *downloadTask = [self.sessionManager downloadTaskWithURL:URL destinationPath:[self pathForURL:URL] completion:nil];
-    task.downloadTask = downloadTask;
-    [self.sessionManager addDelegate:self forTask:downloadTask];
-    
-    [downloadTask resume];
+    if(downloadTask != nil){
+        task.downloadTask = downloadTask;
+        [self.sessionManager addDelegate:self forTask:downloadTask];
+        
+        [downloadTask resume];
+    }else{
+        [self executeWithImage:nil URL:URL];
+    }
 }
 
 - (UIImage*)imageFromDiskForURL:(NSString*) URL thumbnailSize:(CGSize) size

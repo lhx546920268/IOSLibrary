@@ -48,7 +48,7 @@
 
 /**总数
  */
-@property(nonatomic,assign) long long totalCount;
+@property(nonatomic,assign) int totalCount;
 
 /**是否正在刷新数据
  */

@@ -84,7 +84,11 @@
 
 - (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSString*) URL destinationPath:(NSString*) destinationPath completion:(SeaURLSessionDownloadHandler) completion
 {
-    NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:[NSURL URLWithString:URL]];
+    NSURL *url = [NSURL URLWithString:URL];
+    if(!url){
+        return nil;
+    }
+    NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url];
     [self addDownloadTask:downloadTask destinationPath:destinationPath completion:completion];
     
     return downloadTask;

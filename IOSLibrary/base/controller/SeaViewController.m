@@ -140,7 +140,18 @@
 ///移除无效的请求
 - (void)removeInvalidTasks
 {
-    
+    if(self.currentTasks.count > 0){
+        NSMutableSet *toRemoveTasks = [NSMutableSet set];
+        for(SeaWeakObjectContainer *obj in self.currentTasks){
+            if(obj.weakObject == nil){
+                [toRemoveTasks addObject:obj];
+            }
+        }
+        
+        for(SeaWeakObjectContainer *obj in toRemoveTasks){
+            [self.currentTasks removeObject:obj];
+        }
+    }
 }
 
 - (void)dealloc

@@ -197,6 +197,8 @@
     
     _style = totalWidth > self.contentWidth ? SeaMenuBarStyleFit : SeaMenuBarStyleFill;
     _fillItemWidth = self.contentWidth / self.itemInfos.count;
+    
+    !self.measureCompletionHandler ?: self.measureCompletionHandler();
 }
 
 ///内容宽度

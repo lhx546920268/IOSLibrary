@@ -37,7 +37,7 @@
 
 - (void)setViewController:(UIViewController *)viewController
 {
-    if(_viewController != viewController){
+    if(_viewController != viewController || _viewController.view.superview == nil){
         if(_viewController){
             [_viewController removeFromParentViewController];
             [_viewController.view removeFromSuperview];
@@ -64,17 +64,19 @@
 @end
 
 @implementation SeaPageViewController
-{
-    SeaMenuBar *_menuBar;
-}
+
+@synthesize menuBar = _menuBar;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _shouldUseMenuBar = YES;
 }
 
 - (SeaMenuBar*)menuBar
 {
+    if(!self.shouldUseMenuBar)
+        return nil;
+    
     if(!_menuBar){
         _menuBar = [SeaMenuBar new];
         _menuBar.contentInset = UIEdgeInsetsMake(0, _menuBar.itemPadding, 0, _menuBar.itemPadding);
@@ -86,7 +88,9 @@
 
 - (void)initialization
 {
-    [self.container setTopView:self.menuBar height:SeaMenuBarHeight];
+    if(self.shouldUseMenuBar){
+        [self.container setTopView:self.menuBar height:SeaMenuBarHeight];
+    }
     
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     [self registerClass:[SeaPageCollectionViewCell class]];
@@ -118,9 +122,11 @@
 
 - (void)setPage:(NSUInteger) page animate:(BOOL) animate
 {
-    if(page >= self.menuBar.titles.count){
+    if(page >= [self numberOfPage]){
         return;
     }
+    
+    _currentPage = page;
     [self.menuBar setSelectedIndex:page animated:animate];
     if(self.isViewDidLayoutSubviews){
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
@@ -132,6 +138,20 @@
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index
 {
     return nil;
+}
+
+- (NSInteger)numberOfPage
+{
+    if(self.shouldUseMenuBar){
+        return self.menuBar.titles.count;
+    }else{
+        return 0;
+    }
+}
+
+- (void)onScrollTopPage:(NSInteger)page
+{
+    
 }
 
 #pragma mark- SeaMenuBarDelegate
@@ -177,7 +197,9 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [self scrollToVisibleIndex];
+    if(!decelerate){
+        [self scrollToVisibleIndex];
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -185,17 +207,19 @@
     [self scrollToVisibleIndex];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    [self scrollToVisibleIndex];
-}
-
 ///滑动到可见位置
 - (void)scrollToVisibleIndex
 {
+    //是否是向右滑动
     NSIndexPath *indexPath = [[self.collectionView indexPathsForVisibleItems] firstObject];
-    if(indexPath.item != self.menuBar.selectedIndex){
-        [self.menuBar setSelectedIndex:indexPath.item animated:YES];
+    if(indexPath.item != _currentPage){
+        _currentPage = indexPath.item;
+        if(self.shouldUseMenuBar){
+            if(indexPath.item != self.menuBar.selectedIndex){
+                [self.menuBar setSelectedIndex:indexPath.item animated:YES];
+            }
+        }
+        [self onScrollTopPage:_currentPage];
     }
 }
 
@@ -203,12 +227,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.menuBar.titles.count;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath
-{
-    
+    return [self numberOfPage];
 }
 
 - (__kindof UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -216,7 +235,8 @@
     SeaPageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SeaPageCollectionViewCell class]) forIndexPath:indexPath];
     
     cell.parentViewController = self;
-    cell.viewController = [self viewControllerForIndex:indexPath.item];
+    _currentViewController = [self viewControllerForIndex:indexPath.item];
+    cell.viewController = _currentViewController;
     
     return cell;
 }

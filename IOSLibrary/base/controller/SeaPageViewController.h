@@ -16,9 +16,24 @@
 @interface SeaPageViewController : SeaCollectionViewController
 
 /**
- 顶部菜单
+ 顶部菜单 当 shouldUseMenuBar = NO，return nil
  */
 @property(nonatomic, readonly) SeaMenuBar *menuBar;
+
+/**
+ 是否需要用菜单 menuBar default is 'YES'
+ */
+@property(nonatomic, assign) BOOL shouldUseMenuBar;
+
+/**
+ 当前页码
+ */
+@property(nonatomic, readonly) NSInteger currentPage;
+
+/**
+ 当前显示的 viewController
+ */
+@property(nonatomic, readonly, weak) UIViewController *currentViewController;
 
 /**
  刷新数据
@@ -40,5 +55,19 @@
  @return 对应下标的controller
  */
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index;
+
+/**
+ 页数量 默认是返回 menuBar.titles.count，如果 shouldUseMenuBar = NO,需要重写该方法
+
+ @return 页数量
+ */
+- (NSInteger)numberOfPage;
+
+/**
+ 滑动到某一页，setPage 时不调用
+
+ @param page 某一页
+ */
+- (void)onScrollTopPage:(NSInteger) page;
 
 @end
