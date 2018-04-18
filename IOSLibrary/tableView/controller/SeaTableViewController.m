@@ -54,7 +54,7 @@
 {
     [super initialization];
     [self initTableView];
-    self.scrollView = _tableView;
+    self.contentView = _tableView;
 }
 
 - (void)initTableView
@@ -66,6 +66,7 @@
         _tableView.delegate = self;
         _tableView.backgroundView = nil;
         _tableView.sea_emptyViewDelegate = self;
+        self.scrollView = _tableView;
     }
 }
 

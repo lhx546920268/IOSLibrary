@@ -61,7 +61,7 @@
 
 #pragma mark- 文本限制
 
-/**
+/** 用于 sea_extraString
  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
  */
 - (BOOL)sea_shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;

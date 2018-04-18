@@ -28,8 +28,17 @@
     return self;
 }
 
+- (void)setIsVertical:(BOOL)isVertical
+{
+    if(_isVertical != isVertical){
+        _isVertical = isVertical;
+        [self setNeedsDisplay];
+    }
+}
+
 - (void)initlization
 {
+    _lineWidth = 1;
     if(!self.dashesColor){
         self.dashesColor = [UIColor grayColor];
     }
@@ -71,17 +80,30 @@
     }
 }
 
+- (void)setLineWidth:(CGFloat)lineWidth
+{
+    if(_lineWidth != lineWidth){
+        _lineWidth = lineWidth;
+        [self setNeedsDisplay];
+    }
+}
 
 - (void)drawRect:(CGRect)rect
 {
     CGFloat lengths[] = {self.dashesLength,self.dashesInterval};
-    CGContextRef line = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(line, self.dashesColor.CGColor);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(context, self.dashesColor.CGColor);
+    CGContextSetLineWidth(context, self.lineWidth);
     
-    CGContextSetLineDash(line, 0, lengths, 2);  //画虚线
-    CGContextMoveToPoint(line, 0.0, self.frame.size.height / 2);    //开始画线
-    CGContextAddLineToPoint(line, self.frame.size.width, self.frame.size.height / 2);
-    CGContextStrokePath(line);
+    CGContextSetLineDash(context, 0, lengths, 2);  //画虚线
+    if(_isVertical){
+        CGContextMoveToPoint(context, rect.size.width / 2, 0);    //开始画线
+        CGContextAddLineToPoint(context, rect.size.width / 2.0, rect.size.height);
+    }else{
+        CGContextMoveToPoint(context, 0.0, rect.size.height / 2);    //开始画线
+        CGContextAddLineToPoint(context, rect.size.width, rect.size.height / 2);
+    }
+    CGContextStrokePath(context);
 }
 
 @end
