@@ -468,6 +468,10 @@
         switch (_style) {
             case SeaMenuBarStyleFit :
                 x = _contentInset.left;
+                for(NSInteger i = 0;i < index;i ++){
+                    info = [self.itemInfos objectAtIndex:i];
+                    x += info.itemWidth + self.itemInterval;
+                }
                 break;
             case SeaMenuBarStyleFill :
                 x = _contentInset.left + (_fillItemWidth - info.itemWidth) / 2;
