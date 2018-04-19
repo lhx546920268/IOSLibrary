@@ -474,7 +474,10 @@
                 }
                 break;
             case SeaMenuBarStyleFill :
-                x = _contentInset.left + (_fillItemWidth - info.itemWidth) / 2;
+                x = _contentInset.left + (_fillItemWidth - info.itemWidth) / 2;;
+                for(NSInteger i = 0;i < index;i ++){
+                    x += _fillItemWidth;
+                }
                 break;
         }
     }
