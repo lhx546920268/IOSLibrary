@@ -350,9 +350,14 @@
     }
 }
 
-- (BOOL)prefersStatusBarHidden
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return self.sea_statusBarHidden;
+//}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.sea_statusBarHidden;
+    return UIStatusBarStyleLightContent;
 }
 
 ///显示完成
@@ -365,12 +370,12 @@
     self.view.userInteractionEnabled = YES;
     self.isAnimating = NO;
     self.pageLabel.hidden = NO;
-    self.sea_statusBarHidden = YES;
+//    self.sea_statusBarHidden = YES;
 }
 
 - (void)dismissAimate:(BOOL)animate
 {
-    self.sea_statusBarHidden = NO;
+//    self.sea_statusBarHidden = NO;
     SeaImageBrowseCell *cell = (SeaImageBrowseCell*)[self.collectionView.visibleCells firstObject];
     self.backgroundView.hidden = YES;
     self.pageLabel.hidden = YES;

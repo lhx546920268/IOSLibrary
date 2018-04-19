@@ -66,6 +66,13 @@
         _tableView.delegate = self;
         _tableView.backgroundView = nil;
         _tableView.sea_emptyViewDelegate = self;
+        
+        [_tableView setSeparatorInset:self.separatorEdgeInsets];
+        
+        if([_tableView respondsToSelector:@selector(setLayoutMargins:)]){
+            [_tableView setLayoutMargins:self.separatorEdgeInsets];
+        }
+        
         self.scrollView = _tableView;
     }
 }
@@ -153,10 +160,12 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self.tableView setSeparatorInset:self.separatorEdgeInsets];
-    
-    if([self.tableView respondsToSelector:@selector(setLayoutMargins:)]){
-        [self.tableView setLayoutMargins:self.separatorEdgeInsets];
+    if(_tableView){
+        [_tableView setSeparatorInset:self.separatorEdgeInsets];
+        
+        if([_tableView respondsToSelector:@selector(setLayoutMargins:)]){
+            [_tableView setLayoutMargins:self.separatorEdgeInsets];
+        }
     }
 }
 
@@ -164,7 +173,7 @@
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [self.tableView reloadData];
+    [_tableView reloadData];
 }
 
 @end

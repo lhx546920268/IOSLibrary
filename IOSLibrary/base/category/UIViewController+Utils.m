@@ -231,7 +231,9 @@ static char SeaTransitioningDelegateKey;
 {
     if(self.sea_statusBarHeight != sea_statusBarHidden){
         objc_setAssociatedObject(self, &SeaStatusBarHiddenKey,@(sea_statusBarHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        [self setNeedsStatusBarAppearanceUpdate];
+        [UIView animateWithDuration:0.3 animations:^(void){
+           [self setNeedsStatusBarAppearanceUpdate];
+        }];
     }
 }
 

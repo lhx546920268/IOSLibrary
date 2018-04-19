@@ -94,4 +94,15 @@
     _textLabel.text = title;
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    if(newWindow){
+        if(!self.hidden){
+            [self.activityIndicatorView startAnimating];
+        }
+    }else{
+        [self.activityIndicatorView stopAnimating];
+    }
+}
+
 @end
