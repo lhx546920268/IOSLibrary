@@ -328,7 +328,7 @@ static char SeaTransitioningDelegateKey;
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
 
-    if(self.navigationController.viewControllers.count == 1){
+    if(self.navigationController.viewControllers.count <= 1){
         [self dismissViewControllerAnimated:flag completion:nil];
     }else{
         [self.navigationController popViewControllerAnimated:flag];

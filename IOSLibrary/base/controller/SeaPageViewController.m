@@ -210,13 +210,13 @@
 ///滑动到可见位置
 - (void)scrollToVisibleIndex
 {
-    //是否是向右滑动
-    NSIndexPath *indexPath = [[self.collectionView indexPathsForVisibleItems] firstObject];
-    if(indexPath.item != _currentPage){
-        _currentPage = indexPath.item;
+    NSInteger index = floor(self.scrollView.bounds.origin.x / self.scrollView.width);
+    
+    if(index != _currentPage){
+        _currentPage = index;
         if(self.shouldUseMenuBar){
-            if(indexPath.item != self.menuBar.selectedIndex){
-                [self.menuBar setSelectedIndex:indexPath.item animated:YES];
+            if(index != self.menuBar.selectedIndex){
+                [self.menuBar setSelectedIndex:index animated:YES];
             }
         }
         [self onScrollTopPage:_currentPage];
