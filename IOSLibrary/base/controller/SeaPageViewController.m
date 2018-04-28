@@ -47,7 +47,9 @@
         [_viewController willMoveToParentViewController:self.parentViewController];
         [self.contentView addSubview:_viewController.view];
         [_viewController.view sea_insetsInSuperview:UIEdgeInsetsZero];
+        [self.parentViewController addChildViewController:_viewController];
         [_viewController didMoveToParentViewController:self.parentViewController];
+        
     }
 }
 
