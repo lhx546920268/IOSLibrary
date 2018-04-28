@@ -14,6 +14,7 @@
 #import "SeaWeakObjectContainer.h"
 #import "SeaHttpTask.h"
 #import "SeaMultiTasks.h"
+#import "UIViewController+Dialog.h"
 
 @interface SeaViewController ()
 
@@ -43,7 +44,11 @@
         self.view = [[[NSBundle mainBundle] loadNibNamed:self.sea_nameOfClass owner:self options:nil] lastObject];
     }else{
         _container = [[SeaContainer alloc] initWithViewController:self];
-        self.view = self.container;
+        if(!self.isShowAsDialog){
+            self.view = self.container;
+        }else{
+            self.view = [UIView new];
+        }
     }
 }
 
@@ -91,12 +96,18 @@
 {
     [super viewDidLoad];
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = NO;
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    if(self.navigationController.viewControllers.count > 1 && !self.sea_showBackItem){
-        self.sea_showBackItem = YES;
+    if(self.isShowAsDialog){
+        if(self.container){
+            [self.view addSubview:self.container];
+        }
+    }else{
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        self.navigationController.navigationBar.translucent = NO;
+        self.view.backgroundColor = [UIColor whiteColor];
+        
+        if(self.navigationController.viewControllers.count > 1 && !self.sea_showBackItem){
+            self.sea_showBackItem = YES;
+        }
     }
 }
 
@@ -107,6 +118,15 @@
 - (BOOL)prefersStatusBarHidden
 {
     return self.sea_statusBarHidden;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if(self.isShowAsDialog){
+        return UIStatusBarStyleLightContent;
+    }else{
+        return [super preferredStatusBarStyle];
+    }
 }
 
 - (void)viewDidLayoutSubviews

@@ -37,4 +37,21 @@
     return NSStringFromClass(self.class);
 }
 
+
++ (void)sea_exchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix
+{
+    Method method1 = class_getInstanceMethod(self.class, selector1);
+    Method method2 = class_getInstanceMethod(self.class, NSSelectorFromString([NSString stringWithFormat:@"%@%@", prefix, NSStringFromSelector(selector1)]));
+    
+    method_exchangeImplementations(method1, method2);
+}
+
++ (void)sea_exchangeImplementations:(SEL)selector1 selector2:(SEL)selector2
+{
+    Method method1 = class_getInstanceMethod(self.class, selector1);
+    Method method2 = class_getInstanceMethod(self.class, selector2);
+    
+    method_exchangeImplementations(method1, method2);
+}
+
 @end

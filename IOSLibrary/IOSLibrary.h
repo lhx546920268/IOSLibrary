@@ -49,6 +49,8 @@
 #import <SeaWebViewController.h>
 #import <SeaTabBarController.h>
 #import <SeaContainer.h>
+#import <UIViewController+Dialog.h>
+#import <UIViewController+Keyboard.h>
 
 #pragma mark- empty
 

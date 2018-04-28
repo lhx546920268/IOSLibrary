@@ -7,26 +7,9 @@
 //
 
 #import "SeaViewController.h"
+#import "UIViewController+Dialog.h"
 
-///弹窗动画类型
-typedef NS_ENUM(NSInteger, SeaDialogAnimate)
-{
-    ///无动画
-    SeaDialogAnimateNone = 0,
-    
-    ///缩放
-    SeaDialogAnimateScale,
-    
-    ///从上进入
-    SeaDialogAnimateFromTop,
-    
-    ///从下进入
-    SeaDialogAnimateFromBottom,
-    
-    ///自定义
-    SeaDialogAnimateCustom,
-};
-
+NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "SeaDialogViewController 已弃用，直接继承 SeaViewController 使用showAsDialog")
 /**
  弹窗视图控制器
  */
@@ -111,7 +94,5 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
  执行自定义消失动画 子类重写
  */
 - (void)didExecuteDismissCustomAnimate:(void(^)(BOOL finish)) completion;
-
-- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
 @end

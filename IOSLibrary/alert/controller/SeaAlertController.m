@@ -16,6 +16,7 @@
 #import "UIFont+Utils.h"
 #import "UIView+SeaAutoLayout.h"
 #import "UIImage+Utils.h"
+#import "SeaContainer.h"
 
 #pragma mark- button
 
@@ -328,11 +329,6 @@
 @property(nonatomic, strong) UIImage *icon;
 
 /**
- 内容视图
- */
-@property(nonatomic, strong) UIView *dialogContentView;
-
-/**
  按钮
  */
 @property(nonatomic, strong) NSMutableArray<SeaAlertAction*> *actions;
@@ -411,24 +407,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.showAnimate = SeaDialogAnimateCustom;
-    self.dismissAnimate = SeaDialogAnimateCustom;
-    switch (_style){
-        case SeaAlertControllerStyleActionSheet : {
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-            tap.delegate = self;
-            [self.backgroundView addGestureRecognizer:tap];
-        }
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)setDialog:(UIView *)dialog
-{
-    [super setDialog:dialog];
-    [self.dialog sea_removeAllContraints];
+    self.dialogShowAnimate = SeaDialogAnimateCustom;
+    self.dialogDismissAnimate = SeaDialogAnimateCustom;
+    self.shouldDismissDialogOnTapTranslucent = self.style == SeaAlertControllerStyleActionSheet;
+    self.tapDialogBackgroundGestureRecognizer.delegate = self;
 }
 
 ///属性初始化
@@ -468,24 +450,18 @@
     }
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 #pragma mark- layout
 
 - (void)viewDidLayoutSubviews
 {
-    if(!self.dialogContentView){
+    if(!self.header){
         
         CGFloat width = [self alertViewWidth];
         CGFloat margin = (self.view.width - width) / 2.0;
         
-        self.dialogContentView = [UIView new];
-        self.dialogContentView.backgroundColor = [UIColor clearColor];
-        self.dialogContentView.layer.cornerRadius = self.cornerRadius;
-        self.dialogContentView.layer.masksToBounds = YES;
+        self.container.backgroundColor = [UIColor clearColor];
+        self.container.layer.cornerRadius = self.cornerRadius;
+        self.container.layer.masksToBounds = YES;
         
         
         if(self.titleString || self.message || self.icon){
@@ -549,17 +525,17 @@
             self.header.contentSize = CGSizeMake(self.header.width, self.header.height);
             
             self.header.backgroundColor = self.mainColor;
-            [self.dialogContentView addSubview:self.header];
+            [self.container addSubview:self.header];
         }
         
         switch (_style){
             case SeaAlertControllerStyleAlert : {
-                self.dialogContentView.frame = CGRectMake(margin, margin, width, 0);
+                self.container.frame = CGRectMake(margin, margin, width, 0);
             }
                 break;
             case SeaAlertControllerStyleActionSheet : {
                 
-                self.dialogContentView.frame = CGRectMake(_contentInsets.left, margin, width, 0);
+                self.container.frame = CGRectMake(_contentInsets.left, margin, width, 0);
                 self.cancelButton = [[SeaAlertButton alloc] initWithFrame:CGRectMake(margin, margin, width, self.buttonHeight)];
                 self.cancelButton.layer.cornerRadius = self.cornerRadius;
                 self.cancelButton.backgroundColor = self.mainColor;
@@ -580,13 +556,10 @@
             self.collectionView.dataSource = self;
             self.collectionView.delegate = self;
             self.collectionView.bounces = YES;
-            [self.dialogContentView addSubview:self.collectionView];
+            [self.container addSubview:self.collectionView];
         }
         
         [self layoutSubViews];
-        [self.view addSubview:self.dialogContentView];
-        
-        self.dialog = self.dialogContentView;
     }
     [super viewDidLayoutSubviews];
 }
@@ -678,32 +651,32 @@
         
         frame.origin.y = self.header.bottom;
         self.collectionView.frame = frame;
-        self.dialogContentView.height = maxContentHeight;
+        self.container.height = maxContentHeight;
     }else{
         
         frame.origin.y = self.header.bottom;
         frame.size.height = buttonHeight;
         self.collectionView.frame = frame;
-        self.dialogContentView.height = headerHeight + buttonHeight;
+        self.container.height = headerHeight + buttonHeight;
     }
     
     if(self.header.height > 0){
         self.collectionView.height += SeaSeparatorWidth;
-        self.dialogContentView.height += SeaSeparatorWidth;
+        self.container.height += SeaSeparatorWidth;
     }
     
     switch (_style){
         case SeaAlertControllerStyleActionSheet : {
-            self.dialogContentView.top = self.view.height;
+            self.container.top = self.view.height;
         }
             break;
         case SeaAlertControllerStyleAlert : {
-            self.dialogContentView.top = (self.view.height - self.dialogContentView.height) / 2.0;
+            self.container.top = (self.view.height - self.container.height) / 2.0;
         }
             break;
     }
     
-    self.cancelButton.top = self.dialogContentView.bottom + _contentInsets.bottom;
+    self.cancelButton.top = self.container.bottom + _contentInsets.bottom;
 }
 
 #pragma mark- private method
@@ -724,56 +697,50 @@
     [self dismiss];
 }
 
-///点击黑色半透明
-- (void)handleTap:(UITapGestureRecognizer*) tap
+- (void)didExecuteDialogShowCustomAnimate:(void (^)(BOOL))completion
 {
-    [self dismiss];
+    switch (_style){
+        case SeaAlertControllerStyleAlert : {
+            self.container.alpha = 0;
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.dialogBackgroundView.alpha = 1.0;
+                self.container.alpha = 1.0;
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                animation.fromValue = [NSNumber numberWithFloat:1.3];
+                animation.toValue = [NSNumber numberWithFloat:1.0];
+                animation.duration = 0.25;
+                [self.container.layer addAnimation:animation forKey:@"scale"];
+            }completion:completion];
+        }
+            break;
+        case SeaAlertControllerStyleActionSheet : {
+            [UIView animateWithDuration:0.25 animations:^(void){
+                
+                self.dialogBackgroundView.alpha = 1.0;
+                self.container.top = self.view.height - self.container.height - _contentInsets.bottom - self.cancelButton.height - _contentInsets.bottom;
+                self.cancelButton.top = self.container.bottom + _contentInsets.bottom;
+            }completion:completion];
+        }
+            break;
+    }
 }
 
-- (void)didExecuteDismissCustomAnimate:(void (^)(BOOL))completion
+- (void)didExecuteDialogDismissCustomAnimate:(void (^)(BOOL))completion
 {
     switch (_style){
         case SeaAlertControllerStyleActionSheet : {
             [UIView animateWithDuration:0.25 animations:^(void){
                 
-                self.backgroundView.alpha = 0;
-                self.dialogContentView.top = self.view.height;
-                self.cancelButton.top = self.dialogContentView.bottom + _contentInsets.bottom;
+                self.dialogBackgroundView.alpha = 0;
+                self.container.top = self.view.height;
+                self.cancelButton.top = self.container.bottom + _contentInsets.bottom;
                 
             }completion:completion];
         }
             break;
         case SeaAlertControllerStyleAlert : {
             !completion ?: completion(YES);
-        }
-            break;
-    }
-}
-
-- (void)didExecuteShowCustomAnimate:(void (^)(BOOL))completion
-{
-    switch (_style){
-        case SeaAlertControllerStyleAlert : {
-            self.dialogContentView.alpha = 0;
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                self.backgroundView.alpha = 1.0;
-                self.dialogContentView.alpha = 1.0;
-                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                animation.fromValue = [NSNumber numberWithFloat:1.3];
-                animation.toValue = [NSNumber numberWithFloat:1.0];
-                animation.duration = 0.25;
-                [self.dialogContentView.layer addAnimation:animation forKey:@"scale"];
-            }completion:completion];
-        }
-            break;
-        case SeaAlertControllerStyleActionSheet : {
-            [UIView animateWithDuration:0.25 animations:^(void){
-                
-                self.backgroundView.alpha = 1.0;
-                self.dialogContentView.top = self.view.height - _dialogContentView.height - _contentInsets.bottom - self.cancelButton.height - _contentInsets.bottom;
-                self.cancelButton.top = self.dialogContentView.bottom + _contentInsets.bottom;
-            }completion:completion];
         }
             break;
     }
@@ -798,13 +765,29 @@
     return nil;
 }
 
+/**
+ 显示弹窗
+ */
+- (void)show
+{
+    [self showAsDialog];
+}
+
+/**
+ 隐藏弹窗
+ */
+- (void)dismiss
+{
+    [self dismissDialog];
+}
+
 #pragma mark- UITapGestureRecognizer delegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    CGPoint point = [gestureRecognizer locationInView:self.backgroundView];
-    point.y += self.backgroundView.top;
-    if(CGRectContainsPoint(self.dialogContentView.frame, point)){
+    CGPoint point = [gestureRecognizer locationInView:self.dialogBackgroundView];
+    point.y += self.dialogBackgroundView.top;
+    if(CGRectContainsPoint(self.container.frame, point)){
         return NO;
     }
     
@@ -862,8 +845,8 @@
     
     SeaAlertAction *action = [self.actions objectAtIndex:indexPath.item];
     if(action.enable){
-        !self.selectionHandler ?: self.selectionHandler(indexPath.item);
         !self.dismissWhenSelectButton ?: [self dismiss];
+        !self.selectionHandler ?: self.selectionHandler(indexPath.item);
     }
 }
 

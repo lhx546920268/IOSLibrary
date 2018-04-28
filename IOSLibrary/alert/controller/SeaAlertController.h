@@ -6,7 +6,8 @@
 //  Copyright (c) 2016年 罗海雄. All rights reserved.
 //
 
-#import "SeaDialogViewController.h"
+#import "UIViewController+Dialog.h"
+#import "SeaViewController.h"
 
 ///弹窗样式
 typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
@@ -46,7 +47,7 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
  弹窗控制器 AlertView 和 ActionSheet的整合
  @warning 在显示show前设置好属性
  */
-@interface SeaAlertController : SeaDialogViewController
+@interface SeaAlertController : SeaViewController
 
 /**
  样式
@@ -185,5 +186,15 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
  通过下标回去按钮标题
  */
 - (NSString*)buttonTitleForIndex:(NSUInteger) index;
+
+/**
+ 显示弹窗
+ */
+- (void)show;
+
+/**
+ 隐藏弹窗
+ */
+- (void)dismiss;
 
 @end

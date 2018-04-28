@@ -20,6 +20,7 @@
 #import "UIColor+Utils.h"
 #import "UIView+SeaEmptyView.h"
 #import "SeaPresentTransitionDelegate.h"
+#import "UIViewController+Dialog.h"
 
 /**导航条按钮位置
  */
@@ -49,68 +50,122 @@ static char SeaTransitioningDelegateKey;
 
 - (void)setSea_showPageLoading:(BOOL)sea_showPageLoading
 {
-    [self.view setSea_showPageLoading:sea_showPageLoading];
+    if(self.isShowAsDialog){
+        [self.dialog setSea_showPageLoading:sea_showPageLoading];
+    }else{
+        [self.view setSea_showPageLoading:sea_showPageLoading];
+    }
 }
 
 - (BOOL)sea_showPageLoading
 {
-    return [self.view sea_showPageLoading];
+    if(self.isShowAsDialog){
+        return [self.dialog sea_showPageLoading];
+    }else{
+        return [self.view sea_showPageLoading];
+    }
 }
 
 - (void)setSea_pageLoadingView:(UIView *)sea_pageLoadingView
 {
-    self.view.sea_pageLoadingView = sea_pageLoadingView;
+    if(self.isShowAsDialog){
+        self.dialog.sea_pageLoadingView = sea_pageLoadingView;
+    }else{
+        self.view.sea_pageLoadingView = sea_pageLoadingView;
+    }
 }
 
 - (UIView*)sea_pageLoadingView
 {
-    return self.view.sea_pageLoadingView;
+    if(self.isShowAsDialog){
+        return self.dialog.sea_pageLoadingView;
+    }else{
+        return self.view.sea_pageLoadingView;
+    }
 }
 
 - (void)setSea_showNetworkActivity:(BOOL)sea_showNetworkActivity
 {
-    [self.view setSea_showNetworkActivity:sea_showNetworkActivity];
+    if(self.isShowAsDialog){
+        [self.dialog setSea_showNetworkActivity:sea_showNetworkActivity];
+    }else{
+        [self.view setSea_showNetworkActivity:sea_showNetworkActivity];
+    }
 }
 
 - (BOOL)sea_showNetworkActivity
 {
-    return [self.view sea_showNetworkActivity];
+    if(self.isShowAsDialog){
+        return [self.dialog sea_showNetworkActivity];
+    }else{
+        return [self.view sea_showNetworkActivity];
+    }
 }
 
 - (void)setSea_networkActivity:(UIView *)sea_networkActivity
 {
-    self.view.sea_networkActivity = sea_networkActivity;
+    if(self.isShowAsDialog){
+        self.dialog.sea_networkActivity = sea_networkActivity;
+    }else{
+        self.view.sea_networkActivity = sea_networkActivity;
+    }
 }
 
 - (UIView*)sea_networkActivity
 {
-    return self.view.sea_networkActivity;
+    if(self.isShowAsDialog){
+        return self.dialog.sea_networkActivity;
+    }else{
+        return self.view.sea_networkActivity;
+    }
 }
 
 - (void)setSea_showFailPage:(BOOL)sea_showFailPage
 {
-    [self.view setSea_showFailPage:sea_showFailPage];
-    if(sea_showFailPage){
-        WeakSelf(self);
-        self.view.sea_reloadDataHandler = ^(void){
-            [weakSelf sea_reloadData];
-        };
+    if(self.isShowAsDialog){
+        [self.dialog setSea_showFailPage:sea_showFailPage];
+        if(sea_showFailPage){
+            WeakSelf(self);
+            self.dialog.sea_reloadDataHandler = ^(void){
+                [weakSelf sea_reloadData];
+            };
+        }
+    }else{
+        [self.view setSea_showFailPage:sea_showFailPage];
+        if(sea_showFailPage){
+            WeakSelf(self);
+            self.view.sea_reloadDataHandler = ^(void){
+                [weakSelf sea_reloadData];
+            };
+        }
     }
 }
 
 - (BOOL)sea_showFailPage
 {
-    return [self.view sea_showFailPage];
+    if(self.isShowAsDialog){
+        return [self.dialog sea_showFailPage];
+    }else{
+        return [self.view sea_showFailPage];
+    }
 }
 
 - (void)setSea_failPageView:(UIView *)sea_failPageView
 {
-    self.view.sea_failPageView = sea_failPageView;
+    if(self.isShowAsDialog){
+        self.dialog.sea_failPageView = sea_failPageView;
+    }else{
+        self.view.sea_failPageView = sea_failPageView;
+    }
 }
 
 - (UIView*)sea_failPageView
 {
-    return self.view.sea_failPageView;
+    if(self.isShowAsDialog){
+        return self.dialog.sea_failPageView;
+    }else{
+        return self.view.sea_failPageView;
+    }
 }
 
 /**重新加载数据 默认不做任何事，子类可以重写该方法
@@ -123,17 +178,29 @@ static char SeaTransitioningDelegateKey;
 
 - (void)setSea_showEmptyView:(BOOL)sea_showEmptyView
 {
-    self.view.sea_showEmptyView = sea_showEmptyView;
+    if(self.isShowAsDialog){
+        self.dialog.sea_showEmptyView = sea_showEmptyView;
+    }else{
+        self.view.sea_showEmptyView = sea_showEmptyView;
+    }
 }
 
 - (BOOL)sea_showEmptyView
 {
-    return self.view.sea_showEmptyView;
+    if(self.isShowAsDialog){
+        return self.dialog.sea_showEmptyView;
+    }else{
+        return self.view.sea_showEmptyView;
+    }
 }
 
 - (SeaEmptyView*)sea_emptyView
 {
-    return self.view.sea_emptyView;
+    if(self.isShowAsDialog){
+        return self.dialog.sea_emptyView;
+    }else{
+        return self.view.sea_emptyView;
+    }
 }
 
 #pragma mark- property readonly

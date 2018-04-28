@@ -21,4 +21,23 @@
 + (NSString*)sea_nameOfClass;
 - (NSString*)sea_nameOfClass;
 
+
+/**
+ 交换实例方法实现
+
+ @param selector1 方法1
+ @param prefix 前缀，方法2 = 前缀 + 方法1名字
+ */
++ (void)sea_exchangeImplementations:(SEL) selector1 prefix:(NSString*) prefix;
+
+
+/**
+ 交换实例方法实现
+
+ @param selector1 方法1
+ @param selector2 方法2
+ */
++ (void)sea_exchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
+
+
 @end

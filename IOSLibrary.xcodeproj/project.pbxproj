@@ -52,6 +52,10 @@
 		100EC6FA1FDA2A39001CCE74 /* UIAlertController+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 100EC6EF1FDA2A1B001CCE74 /* UIAlertController+Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		100EC6FB1FDA2A39001CCE74 /* SeaAlertController.h in Headers */ = {isa = PBXBuildFile; fileRef = 100EC6F21FDA2A1B001CCE74 /* SeaAlertController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		100EC6FC1FDA2A39001CCE74 /* SeaToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 100EC6F61FDA2A1B001CCE74 /* SeaToast.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1011C993209453DA00AD3A82 /* UIViewController+Dialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 1011C991209453DA00AD3A82 /* UIViewController+Dialog.h */; };
+		1011C994209453DA00AD3A82 /* UIViewController+Dialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1011C992209453DA00AD3A82 /* UIViewController+Dialog.m */; };
+		1011C99720947A8400AD3A82 /* UIViewController+Keyboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 1011C99520947A8400AD3A82 /* UIViewController+Keyboard.h */; };
+		1011C99820947A8400AD3A82 /* UIViewController+Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1011C99620947A8400AD3A82 /* UIViewController+Keyboard.m */; };
 		101AB8C31FA2E45100711095 /* SeaAlbumAssetsCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 1032E3E71FA2E3C200709FDC /* SeaAlbumAssetsCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101AB8C41FA2E45100711095 /* SeaAlbumAssetsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1032E3DF1FA2E3C200709FDC /* SeaAlbumAssetsViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101AB8C51FA2E45100711095 /* SeaAlbumDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1032E3E31FA2E3C200709FDC /* SeaAlbumDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -319,6 +323,10 @@
 		100EC6F31FDA2A1B001CCE74 /* SeaAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaAlertController.m; sourceTree = "<group>"; };
 		100EC6F51FDA2A1B001CCE74 /* SeaToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaToast.m; sourceTree = "<group>"; };
 		100EC6F61FDA2A1B001CCE74 /* SeaToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaToast.h; sourceTree = "<group>"; };
+		1011C991209453DA00AD3A82 /* UIViewController+Dialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Dialog.h"; sourceTree = "<group>"; };
+		1011C992209453DA00AD3A82 /* UIViewController+Dialog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Dialog.m"; sourceTree = "<group>"; };
+		1011C99520947A8400AD3A82 /* UIViewController+Keyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Keyboard.h"; sourceTree = "<group>"; };
+		1011C99620947A8400AD3A82 /* UIViewController+Keyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Keyboard.m"; sourceTree = "<group>"; };
 		101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaAutoLayout.h"; sourceTree = "<group>"; };
 		101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaAutoLayout.m"; sourceTree = "<group>"; };
 		1032E3DC1FA2E3B700709FDC /* SeaSystemSound.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSystemSound.m; sourceTree = "<group>"; };
@@ -1263,6 +1271,10 @@
 				100EC6DF1FDA292A001CCE74 /* UIViewController+Utils.m */,
 				10F6A3131FD8DED100F2B30E /* UIView+Utils.h */,
 				10F6A3121FD8DED100F2B30E /* UIView+Utils.m */,
+				1011C991209453DA00AD3A82 /* UIViewController+Dialog.h */,
+				1011C992209453DA00AD3A82 /* UIViewController+Dialog.m */,
+				1011C99520947A8400AD3A82 /* UIViewController+Keyboard.h */,
+				1011C99620947A8400AD3A82 /* UIViewController+Keyboard.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -1322,6 +1334,7 @@
 			files = (
 				104D19902015C0B800BAB3EF /* UIDevice+Utils.h in Headers */,
 				1051353C202019CA0081C70D /* SeaPopover.h in Headers */,
+				1011C99720947A8400AD3A82 /* UIViewController+Keyboard.h in Headers */,
 				109D7F1B204900FD0050D1F7 /* SeaTiledImageView.h in Headers */,
 				10513540202049F20081C70D /* SeaPopoverMenu.h in Headers */,
 				104D198C201582C300BAB3EF /* SeaSearchBar.h in Headers */,
@@ -1365,6 +1378,7 @@
 				10BFED571FFDC7520065F4D1 /* UITextField+Utils.h in Headers */,
 				1053E3E21FFB703B00F2B548 /* UIColor+Utils.h in Headers */,
 				1068F9CD1FF3999700DB0C3F /* NSDate+Utils.h in Headers */,
+				1011C993209453DA00AD3A82 /* UIViewController+Dialog.h in Headers */,
 				107CE06620031C1200D17E82 /* UIWebView+Utils.h in Headers */,
 				1053E3DE1FFB6E8900F2B548 /* UIButton+Utils.h in Headers */,
 				1044C01E1FEC9995006BC8CA /* SeaImageCacheTask.h in Headers */,
@@ -1549,6 +1563,7 @@
 				10CB0A7E2005BCD70067ADDB /* SeaMenuBarItem.m in Sources */,
 				10CB0A7F2005BCD70067ADDB /* SeaMenuBar.m in Sources */,
 				10CB0A812005BCD70067ADDB /* SeaTabBar.m in Sources */,
+				1011C99820947A8400AD3A82 /* UIViewController+Keyboard.m in Sources */,
 				10CB0A822005BCD70067ADDB /* SeaTabBarItem.m in Sources */,
 				10CB0A832005BCD70067ADDB /* SeaTabBarController.m in Sources */,
 				10CB0A8A2005BCD70067ADDB /* SeaCountDownButton.m in Sources */,
@@ -1600,6 +1615,7 @@
 				107CE06720031C1200D17E82 /* UIWebView+Utils.m in Sources */,
 				104DB5B71FF6278C00FDB81A /* NSString+Utils.m in Sources */,
 				107CE0632003197F00D17E82 /* UITextView+Utils.m in Sources */,
+				1011C994209453DA00AD3A82 /* UIViewController+Dialog.m in Sources */,
 				10BFED581FFDC7520065F4D1 /* UITextField+Utils.m in Sources */,
 				109D7F32204942490050D1F7 /* UIView+SeaImageCache.m in Sources */,
 				10C3EFAA1FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m in Sources */,
