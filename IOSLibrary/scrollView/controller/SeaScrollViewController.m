@@ -9,6 +9,7 @@
 #import "SeaRefreshControl.h"
 #import "SeaLoadMoreControl.h"
 #import "UIView+Utils.h"
+#import "UIViewController+Keyboard.h"
 
 @interface SeaScrollViewController ()<UIScrollViewDelegate>
 
@@ -117,7 +118,6 @@
 {
     [super viewDidLoad];
     _shouldShowScrollToTopButton = YES;
-    _keyboardHidden = YES;
 }
 
 - (BOOL)isInit
@@ -200,37 +200,15 @@
 
 #pragma mark- 键盘
 
-/**添加键盘监听
+/**
+ 键盘高度改变
  */
-- (void)addKeyboardNotification
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardDidChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-}
-
-/**移除键盘监听
- */
-- (void)removeKeyboardNotification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-}
-
-/**键盘高度改变
- */
-- (void)keyboardWillChangeFrame:(NSNotification*) notification
-{
+    [super keyboardWillChangeFrame:notification];
     UIEdgeInsets insets = self.contentInsets;
     if(!self.keyboardHidden){
-        _keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        
-        insets.bottom += _keyboardFrame.size.height;
-    }else{
-        _keyboardFrame = CGRectZero;
+        insets.bottom += self.keyboardFrame.size.height;
     }
     
     [UIView animateWithDuration:0.25 animations:^(void){
@@ -239,25 +217,6 @@
     }];
 }
 
-- (void)keyboardDidChangeFrame:(NSNotification*) notification
-{
-    
-}
-
-//键盘隐藏
-- (void)keyboardWillHide:(NSNotification*) notification
-{
-    _keyboardHidden = YES;
-    
-    [self keyboardWillChangeFrame:notification];
-}
-
-//键盘显示
-- (void)keyboardWillShow:(NSNotification*) notification
-{
-    _keyboardHidden = NO;
-    [self keyboardWillChangeFrame:notification];
-}
 
 - (UIButton*)scrollToTopButton
 {

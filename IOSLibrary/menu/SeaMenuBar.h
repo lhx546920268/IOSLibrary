@@ -175,7 +175,12 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
 /**
  样式 默认自动检测 要计算完成才能确定 layoutSubviews
  */
-@property(nonatomic,readonly) SeaMenuBarStyle style;
+@property(nonatomic,assign) SeaMenuBarStyle style;
+
+/**
+ 是否自动检测菜单样式 default is 'YES'，只有 'NO' 时设置样式才生效
+ */
+@property(nonatomic,assign) BOOL shouldDetectStyleAutomatically;
 
 /**
  计算完成回调 layoutSubviews 后

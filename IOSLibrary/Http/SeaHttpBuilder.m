@@ -98,6 +98,7 @@ static NSString *const SeaContentType = @"Content-Type";
     if([NSString isEmpty:httpMethod]){
         httpMethod = self.params.count > 0 ? SeaHttpMethodPOST : SeaHttpMethodGET;
     }
+    _request.HTTPMethod = httpMethod;
     
     //上传文件必须用post
     if([self isExistFile]){

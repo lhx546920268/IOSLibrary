@@ -110,4 +110,9 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
  */
 - (void)didExecuteDialogDismissCustomAnimate:(void(^)(BOOL finish)) completion;
 
+/**
+ 键盘弹出来，调整弹窗位置，子类可重写
+ */
+- (void)adjustDialogPosition;
+
 @end

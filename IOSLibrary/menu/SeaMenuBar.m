@@ -46,11 +46,6 @@
 @property(nonatomic,readonly) CGFloat contentWidth;
 
 /**
- 是否自动检测菜单样式 default is 'YES'
- */
-//@property(nonatomic,assign) BOOL shouldDetectStyleAutomatically;
-
-/**
  是否已经可以计算item
  */
 @property(nonatomic,assign) BOOL mesureEnable;
@@ -195,7 +190,9 @@
         totalWidth += info.itemWidth;
     }
     
-    _style = totalWidth > self.contentWidth ? SeaMenuBarStyleFit : SeaMenuBarStyleFill;
+    if(self.shouldDetectStyleAutomatically){
+        _style = totalWidth > self.contentWidth ? SeaMenuBarStyleFit : SeaMenuBarStyleFill;
+    }
     _fillItemWidth = self.contentWidth / self.itemInfos.count;
     
     !self.measureCompletionHandler ?: self.measureCompletionHandler();
