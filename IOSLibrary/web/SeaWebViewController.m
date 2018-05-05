@@ -256,6 +256,8 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     
     _webView = [WKWebView new];
     _webView.navigationDelegate = self;
+    _webView.scrollView.backgroundColor = [UIColor clearColor];
+    _webView.backgroundColor = [UIColor clearColor];
     [_webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
     [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
     [contentView insertSubview:_webView belowSubview:progressView];
