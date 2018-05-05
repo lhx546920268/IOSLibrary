@@ -8,6 +8,7 @@
 
 #import "SeaConstant.h"
 #import "UIColor+Utils.h"
+#import "SeaColorMacro.h"
 
 static UIColor *sharedAppMainColor = nil;
 static UIColor *sharedAppMainTintColor = nil;
@@ -27,6 +28,7 @@ static CGFloat sharedSeparatorWidth = 0;
 
 static UIStatusBarStyle sharedStatusBarStyle;
 
+static UIColor *sharedWebProgressColor = nil;
 
 @implementation SeaConstant
 
@@ -170,6 +172,16 @@ static UIStatusBarStyle sharedStatusBarStyle;
     return sharedStatusBarStyle;
 }
 
++ (void)setWebProgressColor:(UIColor*) color
+{
+    sharedWebProgressColor = color;
+}
+
++ (UIColor*)webProgressColor
+{
+    return sharedWebProgressColor;
+}
+
 /**初始化
  */
 + (void)initialize
@@ -205,6 +217,8 @@ static UIStatusBarStyle sharedStatusBarStyle;
     sharedSeparatorWidth = 1.0 / [UIScreen mainScreen].scale;
     
     sharedStatusBarStyle = UIStatusBarStyleDefault;
+    
+    sharedWebProgressColor = UIKitTintColor;
     
 }
 

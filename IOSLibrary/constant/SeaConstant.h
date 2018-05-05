@@ -70,4 +70,10 @@
 + (void)setStatusBarStyle:(UIStatusBarStyle) statusBarStyle;
 + (UIStatusBarStyle)statusBarStyle;
 
+#pragma mark- web
+
+///web进度条颜色
++ (void)setWebProgressColor:(UIColor*) color;
++ (UIColor*)webProgressColor;
+
 @end

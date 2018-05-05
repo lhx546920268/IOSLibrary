@@ -204,9 +204,11 @@ NSString *const SeaColorAlpha = @"alpha";
         case 'B' :
         case 'b' :
             value = 11;
+            break;
         case 'C' :
         case 'c' :
             value = 12;
+            break;
         case 'D' :
         case 'd' :
             value = 13;

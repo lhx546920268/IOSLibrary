@@ -105,6 +105,7 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     
+    _shouldDetectStyleAutomatically = YES;
     _normalTextColor = [UIColor darkGrayColor];
     _normalFont = [UIFont fontWithName:SeaMainFontName size:13];
     _selectedTextColor = SeaAppMainColor;
@@ -183,11 +184,18 @@
     if(!self.mesureEnable)
         return;
     CGFloat totalWidth = 0;
+    int i = 0;
     for(SeaMenuItemInfo *info in self.itemInfos){
         info.itemWidth = [info.title sea_stringSizeWithFont:_normalFont].width + self.itemPadding;
-        info.itemWidth += info.icon.size.width + info.iconPadding;
+        if(info.icon != nil){
+            info.itemWidth += info.icon.size.width + info.iconPadding;
+        }
         
         totalWidth += info.itemWidth;
+        if(i != self.itemInfos.count){
+            totalWidth += self.itemInterval;
+        }
+        i ++;
     }
     
     if(self.shouldDetectStyleAutomatically){
