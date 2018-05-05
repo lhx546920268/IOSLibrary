@@ -109,7 +109,6 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 //初始化
 - (void)initilization
 {
-    self.hidesBottomBarWhenPushed = YES;
     self.useWebTitle = YES;
     self.useCumsterLongPressGesture = NO;
 }
@@ -249,7 +248,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     self.contentView = contentView;
     
     SeaProgressView *progressView = [[SeaProgressView alloc] initWithStyle:SeaProgressViewStyleStraightLine];
-    progressView.progressColor = UIKitTintColor;
+    progressView.progressColor = SeaWebProgressColor;
     progressView.trackColor = [UIColor clearColor];
     [contentView addSubview:progressView];
     self.progressView = progressView;
