@@ -29,6 +29,7 @@ static char SeaReloadDataHandlerKey;
 {
     if(sea_showPageLoading != self.sea_showPageLoading){
         objc_setAssociatedObject(self, &SeaShowPageLoadingKey, @(sea_showPageLoading), OBJC_ASSOCIATION_RETAIN);
+        self.sea_showFailPage = NO;
         if(sea_showPageLoading){
             UIView *pageLoadingView = self.sea_pageLoadingView;
             if(!pageLoadingView){
