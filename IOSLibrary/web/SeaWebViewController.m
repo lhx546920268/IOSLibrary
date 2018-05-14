@@ -109,7 +109,6 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 //初始化
 - (void)initilization
 {
-    self.hidesBottomBarWhenPushed = YES;
     self.useWebTitle = YES;
     self.useCumsterLongPressGesture = NO;
 }
@@ -249,13 +248,15 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     self.contentView = contentView;
     
     SeaProgressView *progressView = [[SeaProgressView alloc] initWithStyle:SeaProgressViewStyleStraightLine];
-    progressView.progressColor = UIKitTintColor;
+    progressView.progressColor = SeaWebProgressColor;
     progressView.trackColor = [UIColor clearColor];
     [contentView addSubview:progressView];
     self.progressView = progressView;
     
     _webView = [WKWebView new];
     _webView.navigationDelegate = self;
+    _webView.scrollView.backgroundColor = [UIColor clearColor];
+    _webView.backgroundColor = [UIColor clearColor];
     [_webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
     [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
     [contentView insertSubview:_webView belowSubview:progressView];

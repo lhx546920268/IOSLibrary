@@ -15,6 +15,8 @@
 #import "SeaHttpTask.h"
 #import "SeaMultiTasks.h"
 #import "UIViewController+Dialog.h"
+#import "UIViewController+Keyboard.h"
+#import "UIView+Utils.h"
 
 @interface SeaViewController ()
 
@@ -92,6 +94,22 @@
     return _container.contentView;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if(self.isShowAsDialog){
+        [self addKeyboardNotification];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if(self.isShowAsDialog){
+        [self removeKeyboardNotification];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -113,7 +131,8 @@
 
 #pragma mark- UIStatusBar
 
-/**用于 present ViewController 的 statusBar 隐藏状态控制
+/**
+ 用于 present ViewController 的 statusBar 隐藏状态控制
  */
 - (BOOL)prefersStatusBarHidden
 {
@@ -185,6 +204,21 @@
             SeaMultiTasks *tasks = (SeaMultiTasks*)obj.weakObject;
             [tasks cancelAllTasks];
         }
+    }
+}
+
+#pragma mark dialog 键盘
+
+/**
+ 键盘高度改变
+ */
+- (void)keyboardWillChangeFrame:(NSNotification*) notification
+{
+    [super keyboardWillChangeFrame:notification];
+    
+    ///弹出键盘，改变弹窗位置
+    if(self.isShowAsDialog){
+        [self adjustDialogPosition];
     }
 }
 

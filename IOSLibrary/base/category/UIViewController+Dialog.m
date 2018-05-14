@@ -16,6 +16,7 @@
 #import "NSObject+Utils.h"
 #import "SeaViewController.h"
 #import "SeaContainer.h"
+#import "UIViewController+Keyboard.h"
 
 static char SeaisShowAsDialogKey;
 static char SeaDialogKey;
@@ -432,65 +433,25 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
     !completion ?: completion(YES);
 }
 
-#pragma mark- 键盘
-
-///**添加键盘监听
-// */
-//- (void)addKeyboardNotification
-//{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//}
-//
-///**移除键盘监听
-// */
-//- (void)removeKeyboardNotification
-//{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//}
-//
-///**键盘高度改变
-// */
-//- (void)keyboardWillChangeFrame:(NSNotification*) notification
-//{
-//    CGFloat y = 0;
-//    if(self.keyboardHidden){
-//        y = self.view.height / 2.0;
-//        _keyboardFrame = CGRectZero;
-//    }else{
-//        _keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//
-//        y = MIN(self.view.height / 2.0, self.view.height - _keyboardFrame.size.height - self.dialog.height / 2.0 - 10.0);
-//    }
-//
-//    NSLayoutConstraint *constraint = self.dialog.sea_centerYLayoutConstraint;
-//    [UIView animateWithDuration:0.25 animations:^(void){
-//
-//        if(constraint){
-//            constraint.constant = y - self.view.height / 2.0;
-//            [self.view layoutIfNeeded];
-//        }else{
-//            self.dialog.centerY = y - self.view.height / 2.0;
-//        }
-//    }];
-//}
-//
-////键盘隐藏
-//- (void)keyboardWillHide:(NSNotification*) notification
-//{
-//    _keyboardHidden = YES;
-//
-//    [self keyboardWillChangeFrame:notification];
-//}
-//
-////键盘显示
-//- (void)keyboardWillShow:(NSNotification*) notification
-//{
-//    _keyboardHidden = NO;
-//    [self keyboardWillChangeFrame:notification];
-//}
+- (void)adjustDialogPosition
+{
+    CGFloat y = 0;
+    if(self.keyboardHidden){
+        y = self.view.height / 2.0;
+    }else{
+        y = MIN(self.view.height / 2.0, self.view.height - self.keyboardFrame.size.height - self.dialog.height / 2.0 - 10.0);
+    }
+    
+    NSLayoutConstraint *constraint = self.dialog.sea_centerYLayoutConstraint;
+    [UIView animateWithDuration:0.25 animations:^(void){
+        
+        if(constraint){
+            constraint.constant = y - self.view.height / 2.0;
+            [self.view layoutIfNeeded];
+        }else{
+            self.dialog.centerY = y - self.view.height / 2.0;
+        }
+    }];
+}
 
 @end

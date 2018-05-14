@@ -110,39 +110,9 @@
  */
 - (void)loadMoreManually NS_REQUIRES_SUPER;
 
-
-#pragma mark- 键盘
-
-/**键盘是否隐藏
- */
-@property(nonatomic,readonly) BOOL keyboardHidden;
-
-/**键盘大小
- */
-@property(nonatomic,readonly) CGRect keyboardFrame;
-
-/**添加键盘监听
- */
-- (void)addKeyboardNotification;
-
-/**移除键盘监听
- */
-- (void)removeKeyboardNotification;
-
-/**键盘高度改变
- */
-- (void)keyboardWillChangeFrame:(NSNotification*) notification;
-- (void)keyboardDidChangeFrame:(NSNotification*) notification;
-
-/**键盘隐藏
- */
-- (void)keyboardWillHide:(NSNotification*) notification;
-
-/**键盘显示
- */
-- (void)keyboardWillShow:(NSNotification*) notification;
-
 ///回到顶部
 - (void)scrollToTop:(id) sender;
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 
 @end

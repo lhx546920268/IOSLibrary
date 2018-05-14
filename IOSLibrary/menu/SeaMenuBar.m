@@ -46,11 +46,6 @@
 @property(nonatomic,readonly) CGFloat contentWidth;
 
 /**
- 是否自动检测菜单样式 default is 'YES'
- */
-//@property(nonatomic,assign) BOOL shouldDetectStyleAutomatically;
-
-/**
  是否已经可以计算item
  */
 @property(nonatomic,assign) BOOL mesureEnable;
@@ -110,6 +105,7 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     
+    _shouldDetectStyleAutomatically = YES;
     _normalTextColor = [UIColor darkGrayColor];
     _normalFont = [UIFont fontWithName:SeaMainFontName size:13];
     _selectedTextColor = SeaAppMainColor;
@@ -188,14 +184,23 @@
     if(!self.mesureEnable)
         return;
     CGFloat totalWidth = 0;
+    int i = 0;
     for(SeaMenuItemInfo *info in self.itemInfos){
         info.itemWidth = [info.title sea_stringSizeWithFont:_normalFont].width + self.itemPadding;
-        info.itemWidth += info.icon.size.width + info.iconPadding;
+        if(info.icon != nil){
+            info.itemWidth += info.icon.size.width + info.iconPadding;
+        }
         
         totalWidth += info.itemWidth;
+        if(i != self.itemInfos.count){
+            totalWidth += self.itemInterval;
+        }
+        i ++;
     }
     
-    _style = totalWidth > self.contentWidth ? SeaMenuBarStyleFit : SeaMenuBarStyleFill;
+    if(self.shouldDetectStyleAutomatically){
+        _style = totalWidth > self.contentWidth ? SeaMenuBarStyleFit : SeaMenuBarStyleFill;
+    }
     _fillItemWidth = self.contentWidth / self.itemInfos.count;
     
     !self.measureCompletionHandler ?: self.measureCompletionHandler();

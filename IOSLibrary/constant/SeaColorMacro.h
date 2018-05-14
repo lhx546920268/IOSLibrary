@@ -46,4 +46,7 @@
 ///输入框 placeholder 颜色
 #define SeaPlaceholderTextColor [UIColor colorWithWhite:0.702f alpha:0.7]
 
+///web进度条颜色
+#define SeaWebProgressColor [SeaConstant webProgressColor]
+
 #endif /* SeaColorMacro_h */

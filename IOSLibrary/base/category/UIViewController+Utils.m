@@ -350,7 +350,7 @@ static char SeaTransitioningDelegateKey;
                 image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             }
             
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 15.0, 44)];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 5.0, 44)];
             imageView.image = image;
             imageView.contentMode = UIViewContentModeLeft;
             imageView.userInteractionEnabled = YES;

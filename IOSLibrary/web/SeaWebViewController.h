@@ -101,4 +101,7 @@
  */
 - (BOOL)shouldOpenURL:(NSURL*) URL;
 
+//初始化
+- (void)initilization NS_REQUIRES_SUPER;
+
 @end
