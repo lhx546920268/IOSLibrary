@@ -200,6 +200,11 @@ typedef NS_OPTIONS(NSUInteger, SeaTextType){
 - (BOOL)isChinese;
 
 /**
+ 是否包含中文
+ */
+- (BOOL)containsChinese;
+
+/**
  是否是纯数字
  */
 - (BOOL)isDigitalOnly;
@@ -213,6 +218,11 @@ typedef NS_OPTIONS(NSUInteger, SeaTextType){
  是否是纯字母
  */
 - (BOOL)isAlphabetOnly;
+
+/**
+ 是否只是拼音首字母 小写
+ */
+- (BOOL)isPinyinnitialsOnly;
 
 /**
  是否是字母和数字组合

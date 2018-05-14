@@ -59,6 +59,11 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
  */
 - (void)searchBarSearchButtonClicked:(SeaSearchBar*)searchBar;
 
+/**
+ 搜索取消
+ */
+- (void)searchBarSearchDidCancel:(SeaSearchBar*) searchBar;
+
 @end
 
 /**
@@ -150,6 +155,11 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
 - (BOOL)resignFirstResponder;
 
 /**
+ 取消搜索
+ */
+- (void)cancel;
+
+/**
  动画显示取消按钮
  */
 - (void)setShowsCancelButton:(BOOL) show animated:(BOOL) animated;
@@ -158,5 +168,7 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
  动画设置 UIBarPositionTopAttached
  */
 - (void)setShowsAttachedContent:(BOOL) show animated:(BOOL) animated;
+
+
 
 @end

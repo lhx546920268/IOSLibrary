@@ -326,6 +326,17 @@
     return [self sea_evaluateWithFormat:@"^[\u4e00-\u9fa5]$"];
 }
 
+- (BOOL)containsChinese
+{
+    for(int i = 0;i < self.length;i ++){
+        int c = [self characterAtIndex:i];
+        if(c > 0x4e00 && c < 0x9fa5){
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (BOOL)isInteger
 {
     NSScanner* scan = [NSScanner scannerWithString:self];
@@ -341,6 +352,11 @@
 - (BOOL)isAlphabetOnly
 {
     return [self sea_evaluateWithFormat:@"^[A-Za-z]+$"];
+}
+
+- (BOOL)isPinyinnitialsOnly
+{
+    return [self sea_evaluateWithFormat:@"^[bpmfdtnlgkhjqxrzcsywaoe]+$"];
 }
 
 - (BOOL)isConsistOfAlphabetOrDigital

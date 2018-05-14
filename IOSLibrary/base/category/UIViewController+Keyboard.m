@@ -23,7 +23,7 @@ static char SeaKeyboardFrameKey;
 
 - (BOOL)keyboardHidden
 {
-    return objc_getAssociatedObject(self, &SeaKeyboardHiddenKey);
+    return [objc_getAssociatedObject(self, &SeaKeyboardHiddenKey) boolValue];
 }
 
 - (void)setKeyboardFrame:(CGRect)keyboardFrame

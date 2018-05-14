@@ -5579,7 +5579,7 @@ NSString *FindLetter(int nCode) {
 				break;
 			}
 	}
-	return strValue;
+	return [strValue lowercaseString];
 }
 
 #define HANZI_START 19968
@@ -5808,38 +5808,96 @@ char pinyinFirstLetter(unsigned short hanzi) {
 
 @implementation ChineseToPinyin
 
-+ (NSString *) pinyinFromChiniseString:(NSString *)string {
-	if(!string || ![string length]) return nil;
-	
-	NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding( kCFStringEncodingGB_18030_2000);
-	NSData *gb2312_data = [string dataUsingEncoding:enc];
-	
-    unsigned char ucHigh, ucLow;
-    int nCode;
-    NSString *strValue = @"";
-	NSInteger iLen = [gb2312_data length];
-	char *gb2312_string = (char *)[gb2312_data bytes];
-    for (int i = 0; i < iLen; i++) {
-        if ((unsigned char)gb2312_string[i] < 0x80 ) {
-			strValue = [strValue stringByAppendingFormat:@"%c", gb2312_string[i] > 95 ? gb2312_string[i] - 32 : gb2312_string[i]];
-            continue;
-		}
-		
-        ucHigh = (unsigned char)gb2312_string[i];
-        ucLow  = (unsigned char)gb2312_string[i + 1];
-        if ( ucHigh < 0xa1 || ucLow < 0xa1)
-            continue;
-        else
-            nCode = (ucHigh - 0xa0) * 100 + ucLow - 0xa0;
-		
-		NSString *strRes = FindLetter(nCode);
-		strValue = [strValue stringByAppendingString:strRes];
-        i++;
-    }	
-	return [[NSString alloc] initWithString:strValue];
++ (NSString *)pinyinWholeFromChiniseString:(NSString *)string
+{
+    return [[self pinyinFromChiniseString:string filter:SeaPinyinFilterWhole] objectForKey:@(SeaPinyinFilterWhole)];
 }
 
-+ (char) sortSectionTitle:(NSString *)string {
++ (NSString *)pinyinInitialsFromChiniseString:(NSString *)string
+{
+    return [[self pinyinFromChiniseString:string filter:SeaPinyinFilterInitials] objectForKey:@(SeaPinyinFilterInitials)];
+}
+
++ (NSArray<NSString*> *)pinyinArrayFromChiniseString:(NSString *)string
+{
+    return [[self pinyinFromChiniseString:string filter:SeaPinyinFilterArray] objectForKey:@(SeaPinyinFilterArray)];
+}
+
+
++ (NSDictionary*)pinyinFromChiniseString:(NSString *)string filter:(SeaPinyinFilter) filter
+{
+    if(!string || ![string length]) return nil;
+    
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding( kCFStringEncodingGB_18030_2000);
+    NSData *gb2312_data = [string dataUsingEncoding:enc];
+    
+    unsigned char ucHigh, ucLow;
+    int nCode;
+    
+    //全拼
+    NSMutableString *pinyinWhole = nil;
+    if(filter & SeaPinyinFilterWhole){
+        pinyinWhole = [NSMutableString new];
+    }
+    
+    //拼音声母
+    NSMutableString *pinyinInitials = nil;
+    if(filter & SeaPinyinFilterInitials){
+        pinyinInitials = [NSMutableString new];
+    }
+    
+    //拼音数组
+    NSMutableArray *pinyinArray = nil;
+    if(filter & SeaPinyinFilterArray){
+        pinyinArray = [NSMutableArray array];
+    }
+    
+    NSInteger iLen = [gb2312_data length];
+    char *gb2312_string = (char *)[gb2312_data bytes];
+    for (int i = 0; i < iLen; i++) {
+        NSString *str;
+        if ((unsigned char)gb2312_string[i] < 0x80 ) {
+            str = [NSString stringWithFormat:@"%c", gb2312_string[i] > 95 ? gb2312_string[i] - 32 : gb2312_string[i]];
+        }else{
+            ucHigh = (unsigned char)gb2312_string[i];
+            ucLow  = (unsigned char)gb2312_string[i + 1];
+            if ( ucHigh < 0xa1 || ucLow < 0xa1)
+                continue;
+            else
+                nCode = (ucHigh - 0xa0) * 100 + ucLow - 0xa0;
+            
+            str = FindLetter(nCode);
+        }
+        if(str.length > 0){
+            if(pinyinWhole){
+                [pinyinWhole appendString:str];
+            }
+            if(pinyinInitials){
+                [pinyinInitials appendFormat:@"%c", [str characterAtIndex:0]];
+            }
+            if(pinyinArray){
+                [pinyinArray addObject:str];
+            }
+        }
+        
+        i++;
+    }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if(pinyinWhole){
+        [dic setObject:pinyinWhole forKey:@(SeaPinyinFilterWhole)];
+    }
+    if(pinyinInitials){
+        [dic setObject:pinyinInitials forKey:@(SeaPinyinFilterInitials)];
+    }
+    if(pinyinArray){
+        [dic setObject:pinyinArray forKey:@(SeaPinyinFilterArray)];
+    }
+    return dic;
+}
+
++ (char)sortSectionTitle:(NSString *)string
+{
 	int cLetter = 0;
 	if( !string || 0 == [string length] )
 		cLetter = '#';

@@ -21,6 +21,7 @@
 #import "UIView+SeaEmptyView.h"
 #import "SeaPresentTransitionDelegate.h"
 #import "UIViewController+Dialog.h"
+#import "NSString+Utils.h"
 
 /**导航条按钮位置
  */
@@ -31,6 +32,10 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 };
 
 /**objc rutime 属性，key **/
+
+/**返回按钮标题
+ */
+static char SeaBackItemTitleKey;
 
 /**状态栏隐藏
  */
@@ -309,41 +314,71 @@ static char SeaTransitioningDelegateKey;
     return [objc_getAssociatedObject(self, &SeaStatusBarHiddenKey) boolValue];
 }
 
+- (NSString*)sea_backItemTitle
+{
+    NSString *title = objc_getAssociatedObject(self, &SeaBackItemTitleKey);
+    if([NSString isEmpty:title]){
+        if(self.navigationController.viewControllers.count > 1){
+            UIViewController *vc =self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
+            title = vc.navigationItem.title;
+            if([NSString isEmpty:title]){
+                title = vc.title;
+            }
+        }
+    }
+    
+    if([NSString isEmpty:title]){
+        title = @"返回";
+    }
+    
+    return title;
+}
+
+- (void)setSea_backItemTitle:(NSString *)sea_backItemTitle
+{
+    objc_setAssociatedObject(self, &sea_backItemTitle, sea_backItemTitle, OBJC_ASSOCIATION_COPY);
+}
+
 //设置返回按钮
 - (void)setSea_showBackItem:(BOOL)sea_showBackItem
 {
     if(sea_showBackItem){
         UIImage *image = [UIImage imageNamed:@"back_icon"];
-        ///ios7 的 imageAssets 不支持 Template
-        if(image.renderingMode != UIImageRenderingModeAlwaysTemplate){
-            image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if(image){
+            ///ios7 的 imageAssets 不支持 Template
+            if(image.renderingMode != UIImageRenderingModeAlwaysTemplate){
+                image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            }
+            
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 15.0, 44)];
+            imageView.image = image;
+            imageView.contentMode = UIViewContentModeLeft;
+            imageView.userInteractionEnabled = YES;
+            imageView.tintColor = self.sea_iconTintColor;
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sea_back)];
+            [imageView addGestureRecognizer:tap];
+            
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBack:)];
+            longPress.minimumPressDuration = 1.0;
+            [imageView addGestureRecognizer:longPress];
+            
+            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+            self.navigationItem.leftBarButtonItem = item;
+        }else{
+            self.navigationItem.hidesBackButton = NO;
+            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.sea_backItemTitle style:UIBarButtonItemStyleDone target:nil action:nil];
         }
-        
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 15.0, 44)];
-        imageView.image = image;
-        imageView.contentMode = UIViewContentModeLeft;
-        imageView.userInteractionEnabled = YES;
-        imageView.tintColor = self.sea_iconTintColor;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sea_back)];
-        [imageView addGestureRecognizer:tap];
-        
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBack:)];
-        longPress.minimumPressDuration = 1.0;
-        [imageView addGestureRecognizer:longPress];
-        
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-        self.navigationItem.leftBarButtonItem = item;
     }else{
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.leftBarButtonItems = nil;
+        self.navigationItem.hidesBackButton = YES;
     }
 }
 
 - (BOOL)sea_showBackItem
 {
-    return [self.navigationItem.leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
+    return self.navigationItem.backBarButtonItem || [self.navigationItem.leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
 }
-
 
 #pragma mark- triansition
 

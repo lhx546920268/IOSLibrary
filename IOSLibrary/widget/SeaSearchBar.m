@@ -155,6 +155,7 @@
     _textField.delegate = self;
     _textField.font = self.font;
     _textField.textColor = self.textColor;
+    _textField.tintColor = SeaAppMainColor;
     _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [_textField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [_textField setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisHorizontal];
@@ -359,6 +360,14 @@
     return [_textField resignFirstResponder];
 }
 
+- (void)cancel
+{
+    [self resignFirstResponder];
+    if([self.delegate respondsToSelector:@selector(searchBarSearchDidCancel:)]){
+        [self.delegate searchBarSearchDidCancel:self];
+    }
+}
+
 - (void)setShowsCancelButton:(BOOL) show
 {
     [self setShowsCancelButton:show animated:NO];
@@ -389,15 +398,13 @@
     if(_showsAttachedContent != show){
         _showsAttachedContent = show;
 
-        if(!isIPhoneX){
-            if(animated){
-                [UIView animateWithDuration:0.25 animations:^(void){
-                    [self setAttachedContentHidden:!show];
-                    [self layoutIfNeeded];
-                }];
-            }else{
+        if(animated){
+            [UIView animateWithDuration:0.25 animations:^(void){
                 [self setAttachedContentHidden:!show];
-            }
+                [self layoutIfNeeded];
+            }];
+        }else{
+            [self setAttachedContentHidden:!show];
         }
     }
 }
@@ -407,7 +414,7 @@
 ///取消
 - (void)handleCacnel:(UIButton*) btn
 {
-    [_textField resignFirstResponder];
+    [self cancel];
 }
 
 ///成为第一响应者
@@ -507,6 +514,9 @@
 ///输入框内容改变
 - (void)textFieldTextDidChange:(UITextField*)textField
 {
+    if(textField.markedTextRange != nil){
+        return;
+    }
     if([self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]){
         [self.delegate searchBar:self textDidChange:textField.text];
     }
@@ -575,7 +585,7 @@
         [self.attachedContent sea_bottomToItemTop:self];
     }
     self.attachedContent.backgroundColor = self.backgroundColor;
-    self.attachedContent.sea_heightLayoutConstraint.constant = hidden ? 0 : SeaStatusHeight;
+    self.attachedContent.sea_heightLayoutConstraint.constant = hidden ? 0 : [UIApplication sharedApplication].statusBarFrame.size.height;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
