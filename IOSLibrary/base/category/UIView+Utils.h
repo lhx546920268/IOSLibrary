@@ -31,6 +31,10 @@
  */
 @property (nonatomic) CGFloat height;
 
+/** get and set frame.size
+ */
+@property (nonatomic) CGSize size;
+
 /** get and set center.x
  */
 @property (nonatomic) CGFloat centerX;
@@ -38,8 +42,6 @@
 /** get and set center.y
  */
 @property (nonatomic) CGFloat centerY;
-
-
 
 #pragma mark- 虚线 dash
 

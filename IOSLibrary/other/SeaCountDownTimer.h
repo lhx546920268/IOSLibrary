@@ -31,6 +31,11 @@ static const NSTimeInterval SeaCountDownUnlimited = LONG_MAX;
 @property(nonatomic, assign) NSTimeInterval timeInterval;
 
 /**
+ 当前已进行的倒计时秒数
+ */
+@property(nonatomic, readonly) NSTimeInterval ongoingTimeInterval;
+
+/**
  倒计时是否正在执行
  */
 @property(nonatomic, readonly) BOOL isExcuting;

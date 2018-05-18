@@ -35,4 +35,7 @@
 ///点击失败视图
 - (void)handlerTapFailPage:(UITapGestureRecognizer*) tap;
 
+///延迟显示菊花，只是UI显示延迟，其实还是会遮住底层的UI，用户无法点击
+- (void)sea_showNetworkActivityAfterDelay:(NSTimeInterval) delay;
+
 @end

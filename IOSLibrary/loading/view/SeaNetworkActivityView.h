@@ -13,4 +13,8 @@
  */
 @property(nonatomic,copy) NSString *msg;
 
+/**内容视图是否延迟显示 0 不延迟
+ */
+@property(nonatomic,assign) NSTimeInterval delay;
+
 @end

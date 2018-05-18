@@ -82,6 +82,7 @@
 {
     @synchronized(self){
         _isCancel = NO;
+        _ongoingTimeInterval = 0;
         if(self.timeToCountDown <= 0 || self.timeInterval <= 0){
             [self finish];
             return;
@@ -127,6 +128,7 @@
 - (void)timerFired:(id) sender
 {
     if(!_isCancel){
+        _ongoingTimeInterval += self.timeInterval;
         if(self.timeToCountDown == SeaCountDownUnlimited){
             !self.tickHandler ?: self.tickHandler(SeaCountDownUnlimited);
         }else{
