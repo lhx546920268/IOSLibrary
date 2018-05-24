@@ -11,9 +11,13 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NSString+Utils.h"
 #import "SeaHttpTask.h"
+#import "NSJSONSerialization+Utils.h"
 
 //postBody 默认格式
 static NSString *const SeaURLEncoded = @"application/x-www-form-urlencoded";
+
+///json方式上传
+static NSString *const SeaApplicationJSON = @"application/json";
 
 //postBody 表单格式
 static NSString *const SeaMultipartFormData = @"multipart/form-data";
@@ -119,6 +123,17 @@ static NSString *const SeaContentType = @"Content-Type";
     }else{
         _request.URL = [NSURL URLWithString:_URL];
         [self buildPostBody];
+    }
+    
+    //如果有额外的cookie 则添加
+    if(self.cookies.count > 0){
+        [_request addValue:[[NSHTTPCookie requestHeaderFieldsWithCookies:self.cookies] objectForKey:@"Cookie"] forHTTPHeaderField:@"Cookie"];
+    }
+
+    if(self.headers.count > 0){
+        [self.headers enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop){
+            [_request addValue:value forHTTPHeaderField:key];
+        }];
     }
     
     return _request;
@@ -310,6 +325,10 @@ static NSString *const SeaContentType = @"Content-Type";
             [self bulidMultipartFormDataPostBody];
         }
             break;
+        case SeaPostFormatJSON : {
+            [self buildJSONPostBody];
+        }
+            break;
     }
 }
 
@@ -349,6 +368,40 @@ static NSString *const SeaContentType = @"Content-Type";
     
     
     _request.HTTPBody = postData;
+}
+
+/**构建json
+ */
+- (void)buildJSONPostBody
+{
+    //设置请求头
+    [_request setValue:[NSString stringWithFormat:@"%@; %@",SeaApplicationJSON,  [self charset]] forHTTPHeaderField:SeaContentType];
+    
+    //设置请求body
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:self.params.count];
+    
+    for(SeaHttpParam *param in self.params){
+        if([param paramIsAvaliable]){
+            ///如果是字符串要编码，防止包含特殊字符时，出现不可预料的问题
+            NSString *value = (NSString*)param.value;
+            if([value isKindOfClass:[NSString class]]){
+                value = [NSString sea_encodeStringWithUTF8:value];
+            }
+            
+            [dic setObject:value forKey:param.key];
+        }
+    }
+    
+    NSData *data = [NSJSONSerialization sea_dataFromObject:dic];
+    
+#if SeaHttpLogConfig
+    self.debugPostBodyString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"application/json begin == \n%@\n application/json end ===\n", self.debugPostBodyString);
+#endif
+    [_request setValue:[NSString stringWithFormat:@"%ld", (long)data.length] forHTTPHeaderField:@"Content-Length"];
+    
+    
+    _request.HTTPBody = data;
 }
 
 /**构建 表单格式的 post请求内容

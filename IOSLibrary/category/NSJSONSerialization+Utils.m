@@ -31,6 +31,15 @@
 
 + (NSString*)sea_stringFromObject:(id) object
 {
+    NSData *data = [self sea_dataFromObject:object];
+    if(data){
+        return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return @"";
+}
+
++ (NSData*)sea_dataFromObject:(id) object
+{
     if([NSJSONSerialization isValidJSONObject:object]){
         NSError *error = nil;
         NSData *data = [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:&error];
@@ -38,11 +47,11 @@
         if(error){
             NSLog(@"生成json 出错%@",error);
         }else{
-            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            return data;
         }
     }
     
-    return @"";
+    return nil;
 }
 
 @end

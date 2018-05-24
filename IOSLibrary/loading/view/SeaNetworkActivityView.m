@@ -110,7 +110,7 @@
     self.delaying = NO;
     [self initialization];
     _translucentView.hidden = NO;
-    [self stopAnimating];
+    [self startAnimating];
 }
 
 #pragma mark- property
@@ -148,6 +148,7 @@
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(delayShow) object:nil];
     if(newSuperview){
         if(self.delaying){
             return;

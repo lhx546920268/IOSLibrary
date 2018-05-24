@@ -81,6 +81,7 @@ static char SeaReloadDataHandlerKey;
         if(sea_showNetworkActivity){
             [self sea_showNetworkActivityAfterDelay:0];
         }else{
+            objc_setAssociatedObject(self, &SeaShowNetworkActivityKey, @(NO), OBJC_ASSOCIATION_RETAIN);
             self.sea_networkActivity = nil;
         }
     }
@@ -88,9 +89,15 @@ static char SeaReloadDataHandlerKey;
 
 - (void)sea_showNetworkActivityAfterDelay:(NSTimeInterval) delay
 {
+    if(self.sea_showNetworkActivity)
+        return;
+    objc_setAssociatedObject(self, &SeaShowNetworkActivityKey, @(YES), OBJC_ASSOCIATION_RETAIN);
     UIView *networkActivity = self.sea_networkActivity;
+    
     if(!networkActivity){
-        self.sea_networkActivity = [SeaNetworkActivityView new];
+        SeaNetworkActivityView *view = [SeaNetworkActivityView new];;
+        view.delay = delay;
+        self.sea_networkActivity = view;
     }
     if([networkActivity isKindOfClass:[SeaNetworkActivityView class]]){
         [(SeaNetworkActivityView*)networkActivity setDelay:delay];

@@ -7,8 +7,8 @@
 //
 
 #import "SeaHttpTask.h"
-#import "SeaHttpBuilder.h"
 #import "SeaURLSessionManager.h"
+#import "SeaBasic.h"
 
 @interface SeaHttpTask()
 
@@ -19,6 +19,7 @@
 
 @implementation SeaHttpTask
 {
+    ///当前任务
     NSURLSessionDataTask *_URLSessionTask;
 }
 
@@ -32,31 +33,41 @@
     return self;
 }
 
-/**请求URL
- */
+- (void)dealloc
+{
+    
+}
+
+#pragma mark 子类实现
+
 - (nonnull NSString*)requestURL
 {
     return @"";
 }
 
-/**获取参数
- */
 - (nullable NSMutableDictionary*)params
 {
     return nil;
 }
 
-/**获取文件
- */
 - (nullable NSMutableDictionary*)files
+{
+    return nil;
+}
+
+- (nullable NSArray<NSHTTPCookie*>*)cookies
+{
+    return nil;
+}
+
+- (nullable NSDictionary<NSString*, NSString*>*)headers
 {
     return nil;
 }
 
 - (nonnull NSString*)name
 {
-    if(_name == nil)
-    {
+    if(_name == nil){
         return NSStringFromClass([self class]);
     }
     
@@ -83,6 +94,9 @@
 - (NSURLRequest*)request
 {
     SeaHttpBuilder *builder = [SeaHttpBuilder buildertWithURL:self.requestURL];
+    builder.postFormat = self.postFormat;
+    builder.headers = self.headers;
+    builder.cookies = self.cookies;
     
     NSMutableDictionary *params = self.params;
     NSMutableDictionary *files = self.files;
@@ -95,6 +109,8 @@
     
     return builder.request;
 }
+
+#pragma mark handler
 
 - (void)setUploadProgressHandler:(void (^)(__kindof NSProgress * _Nonnull))uploadProgressHandler
 {
@@ -149,6 +165,7 @@
         __weak SeaHttpTask *weakSelf = self;
         _URLSessionTask = [self.URLSessionManager dataTaskWithTask:self completion:^(NSURLSessionTask *task, NSData *data, NSInteger error){
             
+            [weakSelf cancelTimeoutObserve];
             [weakSelf processResult:data error:error];
         }];
         
@@ -157,6 +174,8 @@
     }
     return _URLSessionTask;
 }
+
+#pragma mark status
 
 - (BOOL)isExecuting
 {
@@ -173,7 +192,7 @@
 ///请求开始
 - (void)onStart
 {
-    
+    [self observeTimeout];
 }
 
 ///请求成功
@@ -194,6 +213,16 @@
     _URLSessionTask = nil;
 }
 
+///超时
+- (void)onTimeout
+{
+    if(self.isExecuting || self.isSuspended){
+        [self cancel];
+        NSLog(@"自己设定的请求超时 %@", _URLSessionTask.originalRequest.URL);
+        [self processResult:nil error:NSURLErrorTimedOut];
+    }
+}
+
 ///上传进度
 - (void)onUploadProgressUpdate:(nonnull NSProgress*) progress
 {
@@ -204,6 +233,24 @@
 - (void)onDownloadProgressUpdate:(nonnull NSProgress*) progress
 {
     !self.downloadProgressHandler ?: self.downloadProgressHandler(progress);
+}
+
+#pragma mark timeout
+
+///取消超时监听
+- (void)cancelTimeoutObserve
+{
+    if(self.timeoutInterval){
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(onTimeout) object:nil];
+    }
+}
+
+///监听超时
+- (void)observeTimeout
+{
+    if(self.timeoutInterval > 0){
+        [self performSelector:@selector(onTimeout) withObject:nil afterDelay:self.timeoutInterval];
+    }
 }
 
 #pragma mark- public method
@@ -226,6 +273,7 @@
     if(self.isSuspended || self.isExecuting){
         [_URLSessionTask cancel];
         _URLSessionTask = nil;
+        [self onComplete];
     }
 }
 

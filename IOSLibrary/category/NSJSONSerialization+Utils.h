@@ -26,4 +26,11 @@
  */
 + (NSString*)sea_stringFromObject:(id) object;
 
+/**
+ 把 json 对象转换成 json二进制
+ *@param object 要转换成json的对象
+ *@return json字符串
+ */
++ (NSData*)sea_dataFromObject:(id) object;
+
 @end

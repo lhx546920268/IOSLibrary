@@ -22,8 +22,11 @@ typedef NS_ENUM(NSInteger, SeaPostFormat)
     ///默认
     SeaPostFormatURLEncoded = 0,
     
-    ///表单
+    ///表单 上传文件时必须这个
     SeaPostFormatMultipartFormData = 1,
+    
+    ///json
+    SeaPostFormatJSON = 2,
 };
 
 /**
@@ -43,6 +46,16 @@ typedef NS_ENUM(NSInteger, SeaPostFormat)
  请求方法
  */
 @property(nonatomic,strong) NSString *httpMethod;
+
+/**
+ cookie 值
+ */
+@property(nonatomic,strong) NSArray<NSHTTPCookie*> *cookies;
+
+/**
+ 额外的请求头
+ */
+@property(nonatomic,strong) NSDictionary<NSString*, NSString*> *headers;
 
 /**要上传的数据大小 必须要 buildPostBody 后才有，get请求为0
  */

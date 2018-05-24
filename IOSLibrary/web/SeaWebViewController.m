@@ -254,6 +254,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     self.progressView = progressView;
     
     _webView = [WKWebView new];
+    _webView.allowsBackForwardNavigationGestures = YES;
     _webView.navigationDelegate = self;
     _webView.scrollView.backgroundColor = [UIColor clearColor];
     _webView.backgroundColor = [UIColor clearColor];
@@ -308,11 +309,6 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     }else{
         decisionHandler(WKNavigationActionPolicyCancel);
     }
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
-{
-    
 }
 
 #pragma mark- progress handle

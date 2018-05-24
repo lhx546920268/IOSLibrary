@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SeaHttpBuilder.h"
 
 ///POST 请求
 static NSString * _Nullable const SeaHttpMethodPOST = @"POST";
@@ -32,7 +33,14 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 @interface SeaHttpTask : NSObject
 
-/**请求失败错误码，成功 SeaHttpErrorCodeNoError 可能有 SeaHttpErrorCodeApiError
+/**
+ 请求超时 由于NSURLSession创建后 不能修改超时时间，只能自己模拟一个请求超时用于某些特殊场景
+ default is '0' 不使用这个字段
+ */
+@property(nonatomic, assign) NSTimeInterval timeoutInterval;
+
+/**
+ 请求失败错误码，成功 SeaHttpErrorCodeNoError 可能有 SeaHttpErrorCodeApiError
  */
 @property(nonatomic, readonly) NSInteger errorCode;
 
@@ -86,6 +94,22 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 - (nullable NSMutableDictionary*)files;
 
+/**获取二外的cookie
+ NSDictionary *dic = @{
+ NSHTTPCookieName : @"JSESSIONID",
+ NSHTTPCookieValue : @"5f9b51e3-8444-4ff2-a346-9e668c30c60d",
+ NSHTTPCookieDomain : @"simu.dtb.cn",
+ NSHTTPCookiePath : @"/"
+ };
+ 
+ NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dic];
+ */
+- (nullable NSArray<NSHTTPCookie*>*)cookies;
+
+/**获取额外的请求头
+ */
+- (nullable NSDictionary<NSString*, NSString*>*)headers;
+
 /**处理参数 比如签名
  */
 - (void)processParams:(nullable NSMutableDictionary*) params files:(nullable NSMutableDictionary*)files;
@@ -98,6 +122,11 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  默认自动识别
  */
 @property(nonnull, nonatomic, copy) NSString *httpMethod;
+
+/**
+ post请求 postBody 格式
+ */
+@property(nonatomic, assign) SeaPostFormat postFormat;
 
 /**请求是否成功
  *@return 是否成功
@@ -126,7 +155,7 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
 ///下载进度回调
 - (void)onDownloadProgressUpdate:(nonnull NSProgress*) progress NS_REQUIRES_SUPER;
 
-///请求完成
+///请求完成 无论是 失败 成功 或者取消
 - (void)onComplete NS_REQUIRES_SUPER;
 
 ///开始请求

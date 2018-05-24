@@ -48,6 +48,7 @@
     configuration.networkServiceType = NSURLNetworkServiceTypeDefault;
     configuration.allowsCellularAccess = YES;
     configuration.HTTPShouldSetCookies = YES;
+    configuration.HTTPCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     
     return configuration;
 }
