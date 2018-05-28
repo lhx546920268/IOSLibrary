@@ -253,7 +253,10 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     [contentView addSubview:progressView];
     self.progressView = progressView;
     
-    _webView = [WKWebView new];
+    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:[self webViewConfiguration]];
+    if(@available(iOS 9.0, *)){
+        _webView.allowsLinkPreview = NO;
+    }
     _webView.allowsBackForwardNavigationGestures = YES;
     _webView.navigationDelegate = self;
     _webView.scrollView.backgroundColor = [UIColor clearColor];
@@ -274,6 +277,33 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     }
 }
 
+- (WKWebViewConfiguration*)webViewConfiguration
+{
+    WKUserContentController *userContentController = [WKUserContentController new];
+    if(self.shouldCloseSystemLongPressGesture || self.useCumsterLongPressGesture){
+        //禁止长按弹出 UIMenuController 相关
+        //禁止选择 css 配置相关
+        NSString *css = @"('body{-webkit-user-select:none;-webkit-user-drag:none;}')";
+        //css 选中样式取消
+        NSMutableString *javaScript = [NSMutableString new];
+        [javaScript appendString:@"var style = document.createElement('style');"];
+        [javaScript appendString:@"style.type = 'text/css';"];
+        [javaScript appendFormat:@"var cssContent = document.createTextNode%@;", css];
+        [javaScript appendString:@"style.appendChild(cssContent);"];
+        [javaScript appendString:@"document.body.appendChild(style);"];
+        [javaScript appendString:@"document.documentElement.style.webkitUserSelect='none';"];//禁止选择
+        [javaScript appendString:@"document.documentElement.style.webkitTouchCallout='none';"];//禁止长按
+        
+        WKUserScript *script = [[WKUserScript alloc] initWithSource:javaScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+        [userContentController addUserScript:script];
+    }
+    
+    WKWebViewConfiguration *configuration = [WKWebViewConfiguration new];
+    configuration.userContentController = userContentController;
+    
+    return configuration;
+}
+
 - (void)loadWebContent
 {
     if(self.URL){
@@ -290,9 +320,6 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     if([keyPath isEqualToString:@"estimatedProgress"])
     {
         [self setProgress:_webView.estimatedProgress];
-        if(_webView.estimatedProgress == 1.0){
-            [self cancelLongPressGesture];
-        }
     }else if ([keyPath isEqualToString:@"title"]){
         if(self.useWebTitle){
             self.title = _webView.title;
@@ -309,6 +336,14 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     }else{
         decisionHandler(WKNavigationActionPolicyCancel);
     }
+    
+}
+
+#pragma mark WKUIDelegate
+
+- (BOOL)webView:(WKWebView *)webView shouldPreviewElement:(WKPreviewElementInfo *)elementInfo NS_AVAILABLE_IOS(10.0)
+{
+    return NO;
 }
 
 #pragma mark- progress handle
@@ -410,20 +445,6 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 - (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(JavaScriptCompletionHandler)completionHandler
 {
     [self.webView evaluateJavaScript:javaScriptString completionHandler:completionHandler];
-}
-
-#pragma mark- JavaScript
-
-/**取消长按手势
- */
-- (void)cancelLongPressGesture
-{
-    //取消系统的长按手势
-    if(self.useCumsterLongPressGesture){
-        [self evaluateJavaScript:
-         @"document.body.style.webkitTouchCallout='none';"
-         @"document.documentElement.style.webkitTouchCallout='none';" completionHandler:nil];
-    }
 }
 
 #pragma mark- UIActionSheet delegate

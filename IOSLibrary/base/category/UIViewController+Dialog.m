@@ -120,10 +120,12 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
 
 - (void)setDialog:(UIView *)dialog
 {
+#if SeaDebug
     if([self isKindOfClass:[SeaViewController class]]){
         SeaViewController *vc = (SeaViewController*)self;
         NSAssert(vc.container == nil, @"如果 UIViewController 是 SeaViewController 或者其子类，并且没有使用xib，dialog属性将自动设置为 SeaContainer");
     }
+#endif
     objc_setAssociatedObject(self, &SeaDialogKey, dialog, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

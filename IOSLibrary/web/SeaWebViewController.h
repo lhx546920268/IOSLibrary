@@ -9,7 +9,7 @@
 #import "SeaViewController.h"
 #import <WebKit/WebKit.h>
 
-@interface SeaWebViewController : SeaViewController<WKNavigationDelegate>
+@interface SeaWebViewController : SeaViewController<WKNavigationDelegate,WKUIDelegate>
 
 /**网页视图，ios8.0新出的api，更高效地显示网页
  */
@@ -35,6 +35,11 @@
  是否使用自定义的长按手势 default is 'NO'
  */
 @property(nonatomic,assign) BOOL useCumsterLongPressGesture;
+
+/**
+ 是否关闭系统的长按手势 default is 'NO'
+ */
+@property(nonatomic,assign) BOOL shouldCloseSystemLongPressGesture;
 
 /**
  当前链接
