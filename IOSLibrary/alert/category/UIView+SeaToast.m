@@ -48,7 +48,6 @@ static char SeaToastkey;
 - (SeaToast*)sea_toast
 {
     SeaToast *toast = objc_getAssociatedObject(self, &SeaToastkey);
-//    NSLog(@"%@", toast);
     if(!toast){
         toast = [SeaToast new];
         [self addSubview:toast];

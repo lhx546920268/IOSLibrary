@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
 /**
  弹窗类目
  如果 UIViewController 是 SeaViewController 或者其子类，并且没有使用xib，dialog属性将自动设置为 SeaContainer
- 此时 self.view 将不再是 SeaContainer
+ 此时 self.view 将不再是 SeaContainer，要设置 container的大小和位置
  */
 @interface UIViewController (Dialog)
 

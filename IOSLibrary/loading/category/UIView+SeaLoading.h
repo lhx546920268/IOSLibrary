@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-///显示加载中类目
+///显示加载中类目 可通过 SeaLoadingStyle 设置自定义类
 @interface UIView (SeaLoading)
 
 ///页面第一次加载显示

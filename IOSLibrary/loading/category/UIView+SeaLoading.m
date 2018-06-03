@@ -12,6 +12,7 @@
 #import "SeaNetworkActivityView.h"
 #import "SeaFailPageView.h"
 #import "UIView+SeaAutoLayout.h"
+#import "SeaLoadingStyle.h"
 
 static char SeaShowPageLoadingKey;
 static char SeaPageLoadingViewKey;
@@ -33,7 +34,7 @@ static char SeaReloadDataHandlerKey;
         if(sea_showPageLoading){
             UIView *pageLoadingView = self.sea_pageLoadingView;
             if(!pageLoadingView){
-                self.sea_pageLoadingView = [SeaPageLoadingView new];
+                self.sea_pageLoadingView = [[SeaLoadingStyle sharedInstance].pageLoadingClass new];
             }
             [self bringSubviewToFront:pageLoadingView];
         }else{
@@ -95,9 +96,11 @@ static char SeaReloadDataHandlerKey;
     UIView *networkActivity = self.sea_networkActivity;
     
     if(!networkActivity){
-        SeaNetworkActivityView *view = [SeaNetworkActivityView new];;
-        view.delay = delay;
-        self.sea_networkActivity = view;
+        networkActivity = [[SeaLoadingStyle sharedInstance].networkActivityClass new];
+        if([networkActivity isKindOfClass:[SeaNetworkActivityView class]]){
+            [(SeaNetworkActivityView*)networkActivity setDelay:delay];
+        }
+        self.sea_networkActivity = networkActivity;
     }
     if([networkActivity isKindOfClass:[SeaNetworkActivityView class]]){
         [(SeaNetworkActivityView*)networkActivity setDelay:delay];
@@ -147,7 +150,7 @@ static char SeaReloadDataHandlerKey;
             self.sea_showPageLoading = NO;
             UIView *failPageView = self.sea_failPageView;
             if(!failPageView){
-                self.sea_failPageView = [SeaFailPageView new];
+                self.sea_failPageView = [[SeaLoadingStyle sharedInstance].failPageClass new];
             }
             [self bringSubviewToFront:failPageView];
         }else{

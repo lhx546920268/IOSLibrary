@@ -8,6 +8,37 @@
 #import "NSString+Utils.h"
 #import "UIView+Utils.h"
 
+@implementation SeaToastStyle
+
+- (instancetype)init
+{
+    self = [super init];
+    if(self){
+        
+        _duration = 1.5;
+        _verticalSpace = 5;
+        _gravity = SeaToastGravityVertical;
+        _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
+        _contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+        _minimumSize = CGSizeMake(80, 20);
+    }
+    return self;
+}
+
++ (instancetype)sharedInstance
+{
+    static SeaToastStyle *style = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        style = [SeaToastStyle new];
+    });
+    
+    return style;
+}
+
+
+@end
+
 @interface SeaToast()
 
 /**信息内容
@@ -56,12 +87,6 @@
     
     self.shouldRemoveOnDismiss = YES;
     self.userInteractionEnabled = NO;
-    _verticalSpace = 5;
-    _gravity = SeaToastGravityCenterVertical;
-    _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
-    _contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
-    
-    _minSize = CGSizeMake(_contentEdgeInsets.left + _contentEdgeInsets.right + 80, _contentEdgeInsets.top + _contentEdgeInsets.bottom + 20);
     
     _translucentView = [[UIView alloc] init];
     _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
@@ -95,52 +120,12 @@
     return _textLabel;
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)contentEdgeInsets
+- (SeaToastStyle*)style
 {
-    if(!UIEdgeInsetsEqualToEdgeInsets(_contentEdgeInsets, contentEdgeInsets)){
-        _contentEdgeInsets = contentEdgeInsets;
-        [self setNeedsLayout];
+    if(!_style){
+        return [SeaToastStyle sharedInstance];
     }
-}
-
-- (void)setSuperEdgeInsets:(UIEdgeInsets)superEdgeInsets
-{
-    if(!UIEdgeInsetsEqualToEdgeInsets(_superEdgeInsets, superEdgeInsets)){
-        _superEdgeInsets = superEdgeInsets;
-        [self setNeedsLayout];
-    }
-}
-
-- (void)setGravity:(SeaToastGravity)gravity
-{
-    if(_gravity != gravity){
-        _gravity = gravity;
-        [self setNeedsLayout];
-    }
-}
-
-- (void)setText:(NSString *)text
-{
-    if(![_text isEqualToString:text]){
-        _text = text;
-        [self setNeedsLayout];
-    }
-}
-
-- (void)setIcon:(UIImage *)icon
-{
-    if(_icon != icon){
-        _icon = icon;
-        [self setNeedsLayout];
-    }
-}
-
-- (void)setVerticalSpace:(CGFloat)verticalSpace
-{
-    if(_verticalSpace != verticalSpace){
-        _verticalSpace = verticalSpace;
-        [self setNeedsLayout];
-    }
+    return _style;
 }
 
 - (void)layoutSubviews
@@ -157,77 +142,78 @@
         _imageView.hidden = YES;
     }
     
-    CGSize maxTranslucentSize = CGSizeMake(self.width - self.superEdgeInsets.left - self.superEdgeInsets.right, self.height - self.superEdgeInsets.bottom - self.superEdgeInsets.top);
+    SeaToastStyle *style = self.style;
+    CGSize maxTranslucentSize = CGSizeMake(self.width - style.superEdgeInsets.left - style.superEdgeInsets.right, self.height - style.superEdgeInsets.bottom - style.superEdgeInsets.top);
     
     if(self.text){
         self.textLabel.hidden = NO;
         self.textLabel.text = self.text;
-        textSize = [self.text sea_stringSizeWithFont:self.textLabel.font contraintWith:maxTranslucentSize.width - self.contentEdgeInsets.left - self.contentEdgeInsets.right];
+        textSize = [self.text sea_stringSizeWithFont:self.textLabel.font contraintWith:maxTranslucentSize.width - style.contentEdgeInsets.left - style.contentEdgeInsets.right];
         textSize.height += 1;
     }else{
         _textLabel.hidden = YES;
     }
     
     CGRect frame = self.translucentView.frame;
-    CGFloat contentHeight = imageSize.height + self.verticalSpace + textSize.height;
+    CGFloat contentHeight = imageSize.height + style.verticalSpace + textSize.height;
     if(!self.text || !self.icon){
-        contentHeight -= self.verticalSpace;
+        contentHeight -= style.verticalSpace;
     }
     
-    frame.size.width = MIN(maxTranslucentSize.width, MAX(textSize.width, imageSize.width) + self.contentEdgeInsets.left + self.contentEdgeInsets.right);
-    frame.size.height = MIN(maxTranslucentSize.height, self.contentEdgeInsets.top + self.contentEdgeInsets.bottom + contentHeight);
-    
-    if(frame.size.width < self.minSize.width){
-        frame.size.width = self.minSize.width;
+    CGFloat width = MAX(textSize.width, imageSize.width);
+    CGFloat height = contentHeight;
+    if(width < style.minimumSize.width){
+        width = style.minimumSize.width;
     }
     
-    if(frame.size.height < self.minSize.height){
-        frame.size.height = self.minSize.height;
+    if(height < style.minimumSize.height){
+        height = style.minimumSize.height;
     }
+    
+    frame.size.width = MIN(maxTranslucentSize.width, width + style.contentEdgeInsets.left + style.contentEdgeInsets.right);
+    frame.size.height = MIN(maxTranslucentSize.height, style.contentEdgeInsets.top + style.contentEdgeInsets.bottom + height);
     
     frame.origin.x = (self.width - frame.size.width) / 2.0;
-    switch (self.gravity) {
+    switch (style.gravity) {
         case SeaToastGravityTop :
-            frame.origin.y = self.superEdgeInsets.top;
+            frame.origin.y = style.superEdgeInsets.top;
             break;
         case SeaToastGravityBottom :
-            frame.origin.y = self.height - frame.size.height - self.superEdgeInsets.bottom;
+            frame.origin.y = self.height - frame.size.height - style.superEdgeInsets.bottom;
             break;
-        case SeaToastGravityCenterVertical :
+        case SeaToastGravityVertical :
             frame.origin.y = (self.height - frame.size.height) / 2.0;
             break;
     }
+    frame.origin.y += style.offset;
     
     self.translucentView.frame = frame;
     
     contentHeight = imageSize.height;
     if(self.icon && self.text){
-        contentHeight += self.verticalSpace;
+        contentHeight += style.verticalSpace;
     }
     contentHeight += textSize.height;
     
     if(self.icon){
-        
         _imageView.frame = CGRectMake((self.translucentView.width - imageSize.width) / 2.0, (self.translucentView.height - contentHeight) / 2.0, imageSize.width, imageSize.height);
     }
     
     if(self.text){
-        CGFloat height = self.translucentView.height - imageSize.height - self.contentEdgeInsets.top - self.contentEdgeInsets.bottom;
+        CGFloat height = self.translucentView.height - imageSize.height - style.contentEdgeInsets.top - style.contentEdgeInsets.bottom;
         if(self.icon){
-            height -= self.verticalSpace;
+            height -= style.verticalSpace;
         }
         _textLabel.bounds = CGRectMake(0, 0, textSize.width, height);
-        _textLabel.center = CGPointMake(self.translucentView.width / 2.0, self.translucentView.height - self.contentEdgeInsets.bottom - height / 2.0);
+        _textLabel.center = CGPointMake(self.translucentView.width / 2.0, self.translucentView.height - style.contentEdgeInsets.bottom - height / 2.0);
     }
 }
 
-// 显示提示框 2秒后消失
 - (void)show
 {
-    [self showAndHideDelay:1.5];
+    [self showAndHideDelay:self.style.duration];
 }
 
-// 隐藏
 - (void)dismiss
 {
     [UIView animateWithDuration:0.25 animations:^(void){
@@ -243,9 +229,6 @@
     }];
 }
 
-/**显示提示框并设置多少秒后消失
- *@param delay 消失延时时间
- */
 - (void)showAndHideDelay:(NSTimeInterval) delay
 {
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];

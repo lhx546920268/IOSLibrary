@@ -5,16 +5,56 @@
 
 #import <UIKit/UIKit.h>
 
-/**网络加载指示器
+/**
+ 网络加载指示器
  */
 @interface SeaNetworkActivityView : UIView
 
-/**提示信息
+/**
+ 提示信息
  */
 @property(nonatomic,copy) NSString *msg;
 
-/**内容视图是否延迟显示 0 不延迟
+/**
+ 内容视图是否延迟显示 0 不延迟
  */
 @property(nonatomic,assign) NSTimeInterval delay;
+
+/**
+ 内容视图
+ */
+@property(nonatomic,strong) UIView *contentView;
+
+/**
+ 黑色半透明背景视图
+ */
+@property(nonatomic,strong) UIView *translucentView;
+
+/**
+ 提示信息
+ */
+@property(nonatomic,strong) UILabel *textLabel;
+
+/**
+ 加载指示器
+ */
+@property(nonatomic,strong) UIActivityIndicatorView *activityIndicatorView;
+
+/**
+ 初始化 子类可自定义自己的实现
+ */
+- (void)initialization;
+
+#pragma mark- animate
+
+/**
+ 开始动画
+ */
+- (void)stopAnimating;
+
+/**
+ 停止动画
+ */
+- (void)startAnimating;
 
 @end

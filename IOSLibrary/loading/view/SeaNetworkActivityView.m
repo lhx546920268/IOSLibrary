@@ -9,18 +9,6 @@
 
 @interface SeaNetworkActivityView ()
 
-//加载指示器
-@property(nonatomic,strong) UIActivityIndicatorView *activityIndicatorView;
-
-//提示信息
-@property(nonatomic,strong) UILabel *textLabel;
-
-//内容视图
-@property(nonatomic,strong) UIView *contentView;
-
-//黑色半透明背景视图
-@property(nonatomic,strong) UIView *translucentView;
-
 //是否已延迟显示
 @property(nonatomic,assign) BOOL delaying;
 
