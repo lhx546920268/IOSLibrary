@@ -61,7 +61,9 @@
 {
     [super initialization];
     if(!_tableView){
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:_style];
+        Class clazz = [self tableViewClass];
+        NSAssert(![clazz isKindOfClass:[UITableView class]], @"tableViewClass 必须是UITableView 或者 其子类");
+        _tableView = [[clazz alloc] initWithFrame:CGRectZero style:_style];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundView = nil;
@@ -105,6 +107,11 @@
 - (void)registerClassForHeaderFooterView:(Class) clazz
 {
     [self.tableView registerClassForHeaderFooterView:clazz];
+}
+
+- (Class)tableViewClass
+{
+    return [UITableView class];
 }
 
 #pragma mark- tableView 代理

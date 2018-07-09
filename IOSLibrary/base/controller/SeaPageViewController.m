@@ -101,6 +101,7 @@
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.alwaysBounceVertical = NO;
     self.collectionView.scrollsToTop = NO;
+    self.collectionView.bounces = NO;
     
     [super initialization];
 }

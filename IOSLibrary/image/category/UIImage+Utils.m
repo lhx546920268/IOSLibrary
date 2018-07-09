@@ -208,7 +208,7 @@
     context = CGBitmapContextCreate (bitmap,
                                      width,
                                      height,
-                                     8,
+                                     CGImageGetBitsPerComponent(image),
                                      bytesPerRow,
                                      colorSpace,
                                      kBGRxBitmapInfo);

@@ -7,15 +7,18 @@
 #import "SeaScrollViewController.h"
 #import "UITableView+SeaRowHeight.h"
 
-/**列表控制视图
+/**
+ 列表控制视图
  */
 @interface SeaTableViewController : SeaScrollViewController<UITableViewDelegate,UITableViewDataSource>
 
-/**信息列表
+/**
+ 信息列表
  */
 @property(nonatomic,readonly) UITableView *tableView;
 
-/**列表风格
+/**
+ 列表风格
  */
 @property(nonatomic,assign) UITableViewStyle style;
 
@@ -23,7 +26,8 @@
  */
 @property(nonatomic,assign) UIEdgeInsets separatorEdgeInsets;
 
-/**构造方法
+/**
+ 构造方法
  *@param style 列表风格
  *@return 一个初始化的 SeaTableViewController 对象
  */
@@ -37,5 +41,12 @@
 - (void)registerNibForHeaderFooterView:(Class) clazz;
 - (void)registerClassForHeaderFooterView:(Class) clazz;
 
+
+/**
+ 获取tableView类，必须是UITableView 或者其子类
+
+ @return class
+ */
+- (Class)tableViewClass;
 
 @end
