@@ -57,6 +57,7 @@
     _pointRadius = 5.0;
     _hideWhenZero = YES;
     _max = 99;
+    _shouldDisplayPlusSign = YES;
     self.hidden = YES;
 }
 
@@ -115,6 +116,14 @@
 }
 
 #pragma mark- private method
+
+- (void)setShouldDisplayPlusSign:(BOOL)shouldDisplayPlusSign
+{
+    if(_shouldDisplayPlusSign != shouldDisplayPlusSign){
+        _shouldDisplayPlusSign = shouldDisplayPlusSign;
+        [self refresh];
+    }
+}
 
 - (void)setPoint:(BOOL)point
 {
@@ -189,7 +198,7 @@
             if(number <= self.max){
                 _value = [NSString stringWithFormat:@"%d", number];
             }else{
-                _value = [NSString stringWithFormat:@"%d+", self.max];
+                _value = _shouldDisplayPlusSign ? [NSString stringWithFormat:@"%d+", self.max] : [NSString stringWithFormat:@"%d", self.max];
             }
         }else{
             _value = [value copy];

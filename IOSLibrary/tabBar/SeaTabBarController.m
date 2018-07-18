@@ -240,6 +240,7 @@
             self.contentView = viewController.view;
             self.view.backgroundColor = viewController.view.backgroundColor;
             [viewController didMoveToParentViewController:self];
+            [self.view bringSubviewToFront:self.tabBar];
         }
         
         _selectedIndex = selectedItemIndex;

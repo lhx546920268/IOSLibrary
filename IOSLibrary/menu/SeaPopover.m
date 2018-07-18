@@ -442,8 +442,9 @@
             
             //绘制尖角左边
             CGContextMoveToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
-            CGContextAddLineToPoint(context, _arrowPoint.x - radius / 4.0, _arrowPoint.y + radius / 2.0);
-            CGContextAddArcToPoint(context, arrowPoint1.x, arrowPoint1.y, arrowPoint1.x - radius / 2.0, arrowPoint1.y, radius);
+//            CGContextAddLineToPoint(context, _arrowPoint.x - radius / 4.0, _arrowPoint.y + radius / 2.0);
+//            CGContextAddArcToPoint(context, arrowPoint1.x, arrowPoint1.y, arrowPoint1.x - radius / 2.0, arrowPoint1.y, radius);
+            CGContextAddLineToPoint(context, arrowPoint1.x, arrowPoint1.y);
             
             //绘制圆角矩形
             //向左边连接
@@ -468,11 +469,13 @@
             CGContextAddArcToPoint(context, rectangularRight, rectangular.origin.y, rectangularRight - cornerRadius, rectangular.origin.y, cornerRadius);
             
             //向尖角右下角连接
-            CGContextAddLineToPoint(context, arrowPoint2.x + radius / 2.0, arrowPoint2.y);
+            CGContextAddLineToPoint(context, arrowPoint2.x, arrowPoint2.y);
+            CGContextAddLineToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
+//            CGContextAddLineToPoint(context, arrowPoint2.x + radius / 2.0, arrowPoint2.y);
             
             //绘制尖角右边
-            CGContextAddArcToPoint(context, arrowPoint2.x, arrowPoint2.y, _arrowPoint.x + radius / 4.0, _arrowPoint.y + radius / 2.0, radius);
-            CGContextAddLineToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
+//            CGContextAddArcToPoint(context, arrowPoint2.x, arrowPoint2.y, _arrowPoint.x + radius / 4.0, _arrowPoint.y + radius / 2.0, radius);
+//            CGContextAddLineToPoint(context, _arrowPoint.x, _arrowPoint.y + lineWidth);
         }
             break;
         case SeaPopoverArrowDirectionBottom : {

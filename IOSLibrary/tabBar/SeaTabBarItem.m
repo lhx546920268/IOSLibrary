@@ -35,7 +35,7 @@
         _textLabel.backgroundColor = [UIColor clearColor];
         [contentView addSubview:_textLabel];
         
-        [contentView sea_bottomToSuperview:1];
+        [contentView sea_bottomToSuperview:3];
         [contentView sea_leftToSuperview];
         [contentView sea_rightToSuperview];
         
@@ -43,7 +43,7 @@
         [_imageView sea_centerXInSuperview];
         [_imageView sea_topToSuperview];
         
-        [_textLabel sea_topToItemBottom:_imageView margin:2];
+        [_textLabel sea_topToItemBottom:_imageView margin:4];
         [_textLabel sea_bottomToSuperview];
         [_textLabel sea_centerXInSuperview];
         

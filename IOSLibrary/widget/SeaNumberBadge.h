@@ -49,6 +49,11 @@
 @property(nonatomic,copy) NSString *value;
 
 /**
+ 是否要显示加号 当达到最大值时 default is YES
+ */
+@property(nonatomic,assign) BOOL shouldDisplayPlusSign;
+
+/**
  是否隐藏当 value = 0 时, default is 'YES'
  */
 @property(nonatomic,assign) BOOL hideWhenZero;
