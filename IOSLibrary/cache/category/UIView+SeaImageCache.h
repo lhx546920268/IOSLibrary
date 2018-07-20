@@ -15,15 +15,21 @@
  */
 @interface UIView (SeaImageCache)
 
-/**正在加载和显示的图片 URL
+/**
+ 正在加载和显示的图片 URL
  */
 @property(nonatomic,readonly) NSString *sea_imageURL;
 
 /**
  view 原始的 contentMode，在加载图片过程中，设置placeholderImage时，会改变contentMode，加载成功后会设置成 originalContentMode
- default is 'UIViewContentModeScaleToFill' 不传 options时试用
+ default is 'UIViewContentModeScaleToFill' 不传 options时试用 可以不设置 框架会根据是否第一次加载图片获取当前视图的 contentMode
  */
 @property(nonatomic, assign) UIViewContentMode sea_originalContentMode;
+
+/**
+ 是否是第一次加载 默认是YES,当第一次加载后 系统会设置其为NO
+ */
+@property(nonatomic,readonly) BOOL sea_firstLoadImage;
 
 /**
  取消当前下载

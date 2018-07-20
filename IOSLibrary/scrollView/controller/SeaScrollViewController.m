@@ -10,6 +10,7 @@
 #import "SeaLoadMoreControl.h"
 #import "UIView+Utils.h"
 #import "UIViewController+Keyboard.h"
+#import "SeaPageViewController.h"
 
 @interface SeaScrollViewController ()<UIScrollViewDelegate>
 
@@ -265,6 +266,25 @@
 {
     self.showScrollToTopButton = NO;
     [self.scrollView setContentOffset:CGPointZero animated:YES];
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    ///防止左右滑动时触发上下滑动
+    if([self.parentViewController isKindOfClass:[SeaPageViewController class]]){
+        SeaPageViewController *page = (SeaPageViewController*)self.parentViewController;
+        page.scrollView.scrollEnabled = NO;
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if([self.parentViewController isKindOfClass:[SeaPageViewController class]]){
+        SeaPageViewController *page = (SeaPageViewController*)self.parentViewController;
+        page.scrollView.scrollEnabled = YES;
+    }
 }
 
 @end

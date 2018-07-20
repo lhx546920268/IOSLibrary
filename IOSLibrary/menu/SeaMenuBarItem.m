@@ -56,6 +56,7 @@
     [_button sea_setImagePosition:info.iconPosition margin:info.iconPadding];
     
     _numberBadge.value = _info.badgeNumber;
+    self.customView = _info.customView;
 }
 
 - (void)setTick:(BOOL)item_selected
@@ -63,6 +64,17 @@
     _tick = item_selected;
     _button.selected = _tick;
     _button.tintColor = [_button titleColorForState:_tick ? UIControlStateSelected : UIControlStateNormal];
+}
+
+- (void)setCustomView:(UIView *)customView
+{
+    if(_customView != customView){
+        [_customView removeFromSuperview];
+        _customView = customView;
+        if(_customView){
+            [self.contentView addSubview:_customView];
+        }
+    }
 }
 
 @end

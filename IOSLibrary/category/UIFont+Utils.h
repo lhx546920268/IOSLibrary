@@ -23,4 +23,14 @@
 - (BOOL)isEqualToFont:(UIFont*) font;
 
 
+/**
+ 使用当前字体
+ */
++ (UIFont*)appFontWithSize:(CGFloat) size;
+
+/**
+ 使用当前数字字体
+ */
++ (UIFont*)appNumberFontWithSize:(CGFloat) size;
+
 @end

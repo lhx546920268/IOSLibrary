@@ -263,6 +263,16 @@
     return item;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    SeaMenuItemInfo *info = self.itemInfos[indexPath.item];
+    if(info.customView){
+        if([self.delegate respondsToSelector:@selector(menuBar:willDisplayCustomView:atIndex:)]){
+            [self.delegate menuBar:self willDisplayCustomView:info.customView atIndex:indexPath.item];
+        }
+    }
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];

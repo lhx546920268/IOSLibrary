@@ -211,9 +211,16 @@
 ///刷新
 - (void)refresh
 {
+    if(!self.value && self.hidden)
+        return;
+    
     BOOL zero = NO;
     if([self.value isInteger]){
         zero = [self.value intValue] == 0;
+    }
+    
+    if([NSString isEmpty:self.value]){
+        zero = YES;
     }
     
     self.hidden = zero && !self.point;

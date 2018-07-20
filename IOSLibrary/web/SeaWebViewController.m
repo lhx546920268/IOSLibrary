@@ -16,6 +16,7 @@
 #import "NSString+Utils.h"
 #import "UIWebView+Utils.h"
 #import "UIViewController+Utils.h"
+#import "SeaPageViewController.h"
 
 /**自定义UIWebView 中的长按手势
  */
@@ -54,7 +55,7 @@ static NSString *const SeaWebViewSaveImage = @"存储图像";
  */
 static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 
-@interface SeaWebViewController ()<UIActionSheetDelegate>
+@interface SeaWebViewController ()<UIActionSheetDelegate,UIScrollViewDelegate>
 
 /**加载进度条
  */
@@ -110,6 +111,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 - (void)initilization
 {
     self.useWebTitle = YES;
+    _shouldDisplayProgress = YES;
     self.useCumsterLongPressGesture = NO;
 }
 
@@ -154,6 +156,14 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 {
     if(_useNavigationGoBackWebPage != useNavigationGoBackWebPage){
         _useNavigationGoBackWebPage = useNavigationGoBackWebPage;
+    }
+}
+
+- (void)setShouldDisplayProgress:(BOOL)shouldDisplayProgress
+{
+    if(_shouldDisplayProgress != shouldDisplayProgress){
+        _shouldDisplayProgress = shouldDisplayProgress;
+        self.progressView.hidden = !_shouldDisplayProgress || self.progressView.progress == 0;
     }
 }
 
@@ -259,6 +269,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     }
     _webView.allowsBackForwardNavigationGestures = YES;
     _webView.navigationDelegate = self;
+    _webView.scrollView.delegate = self;
     _webView.scrollView.backgroundColor = [UIColor clearColor];
     _webView.backgroundColor = [UIColor clearColor];
     [_webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
@@ -357,7 +368,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 //设置加载进度
 - (void)setProgress:(float) progress
 {
-    self.progressView.progress = progress;
+    self.progressView.progress = self.shouldDisplayProgress ? progress : 0;
 }
 
 #pragma mark- longPress handler
@@ -488,5 +499,23 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     return YES;
 }
 
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    ///防止左右滑动时触发上下滑动
+    if([self.parentViewController isKindOfClass:[SeaPageViewController class]]){
+        SeaPageViewController *page = (SeaPageViewController*)self.parentViewController;
+        page.scrollView.scrollEnabled = NO;
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if([self.parentViewController isKindOfClass:[SeaPageViewController class]]){
+        SeaPageViewController *page = (SeaPageViewController*)self.parentViewController;
+        page.scrollView.scrollEnabled = YES;
+    }
+}
 
 @end

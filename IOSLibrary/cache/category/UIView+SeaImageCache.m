@@ -18,6 +18,9 @@ static char SeaImageURLKey;
 ///原始 contentMode
 static char SeaOriginContentModeKey;
 
+///第一次
+static char SeaFirstLoadImageKey;
+
 @implementation UIView (SeaImageCache)
 
 - (void)setSea_imageURL:(NSString *)sea_imageURL
@@ -50,6 +53,27 @@ static char SeaOriginContentModeKey;
     }
 }
 
+- (BOOL)sea_firstLoadImage
+{
+    NSNumber *value = objc_getAssociatedObject(self, &SeaOriginContentModeKey);
+    if(value){
+        return [value boolValue];
+    }else{
+        return YES;
+    }
+}
+
+- (void)setSea_firstLoadImage:(BOOL)sea_firstLoadImage
+{
+    if(!sea_firstLoadImage){
+        NSNumber *value = objc_getAssociatedObject(self, &SeaOriginContentModeKey);
+        if(!value){
+            self.sea_originalContentMode = self.contentMode;
+        }
+    }
+    objc_setAssociatedObject(self, &SeaFirstLoadImageKey, @(sea_firstLoadImage), OBJC_ASSOCIATION_RETAIN);
+}
+
 #pragma mark- get Image
 
 - (void)sea_setImageWithURL:(NSString*) URL
@@ -79,6 +103,9 @@ static char SeaOriginContentModeKey;
 
 - (void)sea_setImageWithURL:(NSString *)URL options:(SeaImageCacheOptions *)options completion:(SeaImageCacheCompletionHandler)completion progress:(SeaImageCacheProgressHandler)progress
 {
+    if(self.sea_firstLoadImage){
+        [self setSea_firstLoadImage:NO];
+    }
     if(!options){
         options = [SeaImageCacheOptions defaultOptions];
         options.originalContentMode = self.sea_originalContentMode;

@@ -32,6 +32,11 @@
 @property(nonatomic,assign) CGFloat iconPadding;
 
 /**
+ 自定义视图
+ */
+@property(nonatomic,strong) UIView *customView;
+
+/**
  图标位置 default is 'SeaButtonImagePositionLeft'
  */
 @property(nonatomic,assign) SeaButtonImagePosition iconPosition;
@@ -89,6 +94,9 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
 
 ///是否可以点击某个按钮 default is 'YES'
 - (BOOL)menuBar:(SeaMenuBar*) menu shouldSelectItemAtIndex:(NSUInteger) index;
+
+///要显示自定义视图了 要自己调整位置
+- (void)menuBar:(SeaMenuBar *)menu willDisplayCustomView:(UIView*) customView atIndex:(NSUInteger)index;
 
 @end
 

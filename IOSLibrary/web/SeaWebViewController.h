@@ -72,6 +72,11 @@
 @property(nonatomic,assign) BOOL adjustScreenWhenLoadHtmlString;
 
 /**
+ 是否需要显示进度条 default is 'YES'
+ */
+@property(nonatomic,assign) BOOL shouldDisplayProgress;
+
+/**
  构造方法
  *@param URL 将要打开的链接
  *@return 一个实例

@@ -28,6 +28,7 @@
 #import "UITextField+Utils.h"
 #import "UIButton+Utils.h"
 #import "NSDate+Utils.h"
+#import "UIFont+Utils.h"
 
 #pragma mark- loading
 

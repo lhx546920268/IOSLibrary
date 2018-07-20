@@ -7,6 +7,7 @@
 //
 
 #import "UIFont+Utils.h"
+#import "SeaBasic.h"
 
 @implementation UIFont (Utils)
 
@@ -29,6 +30,16 @@
         return NO;
     
     return [self.fontName isEqualToString:font.fontName] && self.pointSize == font.pointSize;
+}
+
++ (UIFont*)appFontWithSize:(CGFloat) size
+{
+    return [UIFont fontWithName:SeaMainFontName size:size];
+}
+
++ (UIFont*)appNumberFontWithSize:(CGFloat) size
+{
+    return [UIFont fontWithName:SeaMainNumberFontName size:size];
 }
 
 @end

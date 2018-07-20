@@ -37,5 +37,9 @@
  */
 @property(nonatomic,strong) SeaMenuItemInfo *info;
 
+/**
+ 自定义视图
+ */
+@property(nonatomic,strong) UIView *customView;
 
 @end

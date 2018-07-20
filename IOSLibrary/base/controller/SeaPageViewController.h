@@ -7,13 +7,12 @@
 //
 
 #import "SeaCollectionViewController.h"
-
-@class SeaMenuBar;
+#import "SeaMenuBar.h"
 
 /**
  翻页视图控制器
  */
-@interface SeaPageViewController : SeaCollectionViewController
+@interface SeaPageViewController : SeaCollectionViewController<SeaMenuBarDelegate>
 
 /**
  顶部菜单 当 shouldUseMenuBar = NO，return nil
@@ -24,6 +23,11 @@
  是否需要用菜单 menuBar default is 'YES'
  */
 @property(nonatomic, assign) BOOL shouldUseMenuBar;
+
+/**
+ 菜单栏高度 default is SeaMenuBarHeight
+ */
+@property(nonatomic, assign) CGFloat menuBarHeight;
 
 /**
  当前页码

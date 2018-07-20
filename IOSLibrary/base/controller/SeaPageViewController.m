@@ -7,10 +7,10 @@
 //
 
 #import "SeaPageViewController.h"
-#import "SeaMenuBar.h"
 #import "SeaContainer.h"
 #import "UIView+SeaAutoLayout.h"
 #import "UIView+Utils.h"
+#import "SeaWebViewController.h"
 
 ///翻页cell
 @interface SeaPageCollectionViewCell : UICollectionViewCell
@@ -55,7 +55,7 @@
 
 @end
 
-@interface SeaPageViewController ()<SeaMenuBarDelegate, UIScrollViewDelegate>
+@interface SeaPageViewController ()<UIScrollViewDelegate>
 
 ///起始滑动位置
 @property(nonatomic, assign) CGPoint beginOffset;
@@ -72,6 +72,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _shouldUseMenuBar = YES;
+    self.menuBarHeight = SeaMenuBarHeight;
 }
 
 - (SeaMenuBar*)menuBar
@@ -91,7 +92,7 @@
 - (void)initialization
 {
     if(self.shouldUseMenuBar){
-        [self.container setTopView:self.menuBar height:SeaMenuBarHeight];
+        [self.container setTopView:self.menuBar height:self.menuBarHeight];
     }
     
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -169,6 +170,24 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.beginOffset = scrollView.contentOffset;
+    if([self.currentViewController isKindOfClass:[SeaScrollViewController class]]){
+        SeaScrollViewController *vc = (SeaScrollViewController*)_currentViewController;
+        vc.scrollView.scrollEnabled = NO;
+    }else if ([self.currentViewController isKindOfClass:[SeaWebViewController class]]){
+        SeaWebViewController *web = (SeaWebViewController*)_currentViewController;
+        web.webView.scrollView.scrollEnabled = NO;
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if([self.currentViewController isKindOfClass:[SeaScrollViewController class]]){
+        SeaScrollViewController *vc = (SeaScrollViewController*)_currentViewController;
+        vc.scrollView.scrollEnabled = YES;
+    }else if ([self.currentViewController isKindOfClass:[SeaWebViewController class]]){
+        SeaWebViewController *web = (SeaWebViewController*)_currentViewController;
+        web.webView.scrollView.scrollEnabled = YES;
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
