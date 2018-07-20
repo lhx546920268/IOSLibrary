@@ -10,14 +10,16 @@
 #import "NSString+Utils.h"
 
 /**
- 文字提示内容改变
- */
-static NSString *const SeaLoadMoreControlText = @"text";
-
-/**
  UIScrollView 的内容大小
  */
 static NSString *const SeaDataControlContentSize = @"contentSize";
+
+@interface SeaLoadMoreControl()
+
+///是否需要动画
+@property(nonatomic, assign) BOOL shouldAnimate;
+
+@end
 
 @implementation SeaLoadMoreControl
 
@@ -26,6 +28,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     self = [super initWithScrollView:scrollView];
     if(self){
   
+        self.criticalPoint = 45;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tap];
         
@@ -119,9 +122,12 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 
 - (void)startLoading
 {
+    [super startLoading];
+    
     self.animating = NO;
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
     [self beginLoadMore:YES];
+    [self setNeedsLayout];
 }
 
 /**
@@ -154,128 +160,56 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     }
 }
 
-#pragma mark 设置滑动状态
-
-- (void)setState:(SeaDataControlState)state
+- (void)onStateChange:(SeaDataControlState)state
 {
-    [self setState:state animated:NO];
-}
-
-- (void)setState:(SeaDataControlState) aState animated:(BOOL) flag
-{
-    switch (aState)
-    {
-        case SeaDataControlNormal :
-        {
-            self.remindLabel.hidden = NO;
-            self.remindLabel.userInteractionEnabled = YES;
-            self.remindLabel.text = @"加载更多";
-            [self.activityIndicatorView stopAnimating];
-            self.scrollView.contentInset = self.originalContentInset;
-        }
-            break;
-        case SeaDataControlLoading :
-        {
-            if(self.shouldDisableScrollViewWhenLoading)
-            {
-                self.scrollView.userInteractionEnabled = NO;
-            }
-            if(self.autoLoadMore)
-            {
-                [self startRefresh];
-            }
-            else
-            {
-                [self performSelector:@selector(startRefresh) withObject:nil afterDelay:self.loadingDelay];
+    [super onStateChange:state];
+    switch (state) {
+        case SeaDataControlLoading : {
+            if(self.autoLoadMore){
+                [self onStartLoading];
+            }else{
+                [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
             }
         }
             break;
-        case SeaDataControlPulling :
-        {
-            
-        }
-            break;
-        case SeaDataControlReachCirticalPoint :
-        {
-            
-        }
-            break;
-        case SeaDataControlStateNoData :
-        {
-            [_activityIndicatorView stopAnimating];
-            self.remindLabel.text = @"已到底部";
-            self.remindLabel.userInteractionEnabled = NO;
-            self.remindLabel.hidden = YES;
-            
+        case SeaDataControlStateNoData : {
             UIEdgeInsets inset = self.originalContentInset;
             inset.top = self.scrollView.contentInset.top;
-            // inset.bottom = SeaLoadMoreControlCriticalPoint;
-            if(flag)
-            {
+            if(self.shouldStayWhileNoData){
+                inset.bottom = self.criticalPoint;
+            }
+            if(self.shouldAnimate){
                 [UIView animateWithDuration:0.25 animations:^(void){
                     
                     self.scrollView.contentInset = inset;
                 }];
-            }
-            else
-            {
+            }else{
                 self.scrollView.contentInset = inset;
             }
         }
+        default:
             break;
     }
-    
-    [super setState:aState];
 }
 
-/**数据加载完成
- */
-- (void)didFinishedLoading
-{
-    [self stopRefresh];
-}
 
-/**已经没有更多信息可以加载
- */
 - (void)noMoreInfo
 {
     [self stopRefreshWithNoInfo];
-    //[self performSelector:@selector(stopRefreshWithNoInfo) withObject:nil afterDelay:self.stopDelay];
 }
 
 - (void)stopRefreshWithNoInfo
 {
     self.scrollView.userInteractionEnabled = YES;
-    [self setState:SeaDataControlStateNoData animated:NO];
-}
-
-//停止刷新
-- (void)stopRefresh
-{
-    self.scrollView.userInteractionEnabled = YES;
-    self.remindLabel.userInteractionEnabled = YES;
-    
-    [self.scrollView setContentInset:self.originalContentInset];
-    [self setState:SeaDataControlNormal animated:NO];
-}
-
-//开始加载
-- (void)startRefresh
-{
-    [self layoutSubviews];
-    _remindLabel.hidden = NO;
-    _remindLabel.userInteractionEnabled = NO;
-    _remindLabel.text = @"加载中...";
-    [_activityIndicatorView startAnimating];
-    !self.handler ?: self.handler();
+    [self setState:SeaDataControlStateNoData];
 }
 
 #pragma mark action
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    if(self.state != SeaDataControlLoading)    {
-        [self setState:SeaDataControlLoading animated:YES];
+    if(self.state != SeaDataControlLoading && self.state != SeaDataControlStateNoData)    {
+        [self setState:SeaDataControlLoading];
     }
 }
 

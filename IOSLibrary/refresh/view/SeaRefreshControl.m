@@ -135,4 +135,18 @@
     }];
 }
 
+- (void)onStateChange:(SeaDataControlState)state
+{
+    [super onStateChange:state];
+    switch (state) {
+        case SeaDataControlLoading : {
+            [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 @end

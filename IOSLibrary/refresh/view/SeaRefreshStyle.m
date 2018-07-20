@@ -8,6 +8,7 @@
 
 #import "SeaRefreshStyle.h"
 #import "SeaDefaultRefreshControl.h"
+#import "SeaDefaultLoadMoreControl.h"
 
 @implementation SeaRefreshStyle
 
@@ -16,6 +17,7 @@
     self = [super init];
     if(self){
         self.refreshClass = [SeaDefaultRefreshControl class];
+        self.loadMoreClass = [SeaDefaultLoadMoreControl class];
     }
     
     return self;

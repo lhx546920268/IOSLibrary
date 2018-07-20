@@ -16,11 +16,11 @@
 /**
  加载菊花
  */
-@property(nonatomic,readonly) UIActivityIndicatorView *activityIndicatorView;
+@property(nonatomic,readonly) UIActivityIndicatorView *indicatorView;
 
 /**
  加载显示的提示信息
  */
-@property(nonatomic,readonly) UILabel *remindLabel;
+@property(nonatomic,readonly) UILabel *textLabel;
 
 @end

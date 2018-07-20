@@ -85,11 +85,10 @@
         [self onStateChange:state];
         
         switch (_state) {
-            case SeaDataControlPulling : {
+            case SeaDataControlLoading : {
                 if(self.shouldDisableScrollViewWhenLoading){
                     self.scrollView.userInteractionEnabled = NO;
                 }
-                [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
             }
                 break;
             default:
