@@ -159,12 +159,12 @@
         msg = @"刷新成功";
     self.refreshControl.finishText = msg;
     _refreshing = NO;
-    [self.refreshControl didFinishedLoading];
+    [self.refreshControl stopLoading];
 }
 
 - (void)refreshManually
 {
-    [self.refreshControl beginRefresh];
+    [self.refreshControl startLoading];
 }
 
 - (void)onRefesh{}
@@ -185,7 +185,7 @@
 {
     _loadingMore = NO;
     if(flag){
-        [self.loadMoreControl didFinishedLoading];
+        [self.loadMoreControl stopLoading];
     }else{
         
         [self.loadMoreControl noMoreInfo];
@@ -194,7 +194,7 @@
 
 - (void)loadMoreManually
 {
-    [self.loadMoreControl beginRefresh];
+    [self.loadMoreControl startLoading];
 }
 
 - (void)onLoadMore{}

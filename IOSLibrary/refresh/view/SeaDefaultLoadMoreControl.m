@@ -1,35 +1,39 @@
 //
-//  SeaLoadMoreControl.m
-//  Sea
-
+//  SeaDefaultLoadMoreControl.m
+//  IOSLibrary
+//
+//  Created by luohaixiong on 2018/7/20.
+//  Copyright © 2018年 罗海雄. All rights reserved.
 //
 
-#import "SeaLoadMoreControl.h"
-#import "SeaBasic.h"
-#import "UIView+Utils.h"
-#import "NSString+Utils.h"
+#import "SeaDefaultLoadMoreControl.h"
 
-/**
- 文字提示内容改变
- */
-static NSString *const SeaLoadMoreControlText = @"text";
-
-/**
- UIScrollView 的内容大小
- */
-static NSString *const SeaDataControlContentSize = @"contentSize";
-
-@implementation SeaLoadMoreControl
+@implementation SeaDefaultLoadMoreControl
 
 - (id)initWithScrollView:(UIScrollView *)scrollView
 {
     self = [super initWithScrollView:scrollView];
     if(self){
-  
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self addSubview:_activityIndicatorView];
+        
+        _remindLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _remindLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+        _remindLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
+        _remindLabel.backgroundColor = [UIColor clearColor];
+        _remindLabel.userInteractionEnabled = YES;
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [self addGestureRecognizer:tap];
+        [_remindLabel addGestureRecognizer:tap];
+        
+        [self addSubview:_remindLabel];
+        
+        //添加文字改变kvo
+        [_remindLabel addObserver:self forKeyPath:SeaLoadMoreControlText options:NSKeyValueObservingOptionNew context:NULL];
         
         [self setState:SeaDataControlStateNoData];
+        
         self.autoLoadMore = YES;
     }
     
@@ -40,13 +44,21 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 {
     [super layoutSubviews];
     //调整内容
-    CGFloat minHeight = self.criticalPoint;
+    CGFloat margin = 5.0;
+    CGFloat minHeight = SeaLoadMoreControlCriticalPoint;
     
     CGRect frame = self.frame;
     frame.size.height = MAX(minHeight, self.scrollView.contentOffset.y + self.scrollView.height - self.scrollView.contentSize.height);
     frame.origin.y = self.scrollView.contentSize.height;
     
     self.frame = frame;
+    
+    _activityIndicatorView.center = CGPointMake((self.width - _activityIndicatorView.width - _remindLabel.width - margin) / 2.0 + _activityIndicatorView.width / 2.0, minHeight / 2.0);
+    
+    frame = _remindLabel.frame;
+    frame.origin.x = _activityIndicatorView.right + margin;
+    frame.size.height = minHeight;
+    _remindLabel.frame = frame;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -60,6 +72,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 
 - (void)removeFromSuperview
 {
+    [_remindLabel removeObserver:self forKeyPath:SeaLoadMoreControlText];
     [self.superview removeObserver:self forKeyPath:SeaDataControlContentSize];
     [super removeFromSuperview];
 }
@@ -68,64 +81,85 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:SeaDataControlOffset]){
-      
+    if([keyPath isEqualToString:SeaDataControlOffset])
+    {
+        
         if(self.state == SeaDataControlStateNoData || self.state == SeaDataControlLoading || self.hidden)
             return;
         
-        if(!self.loadMoreEnableWhileZeroContent && CGSizeEqualToSize(self.scrollView.contentSize, CGSizeZero)){
+        if(CGSizeEqualToSize(self.scrollView.contentSize, CGSizeZero) && !self.loadMoreEnableWhileZeroContent)
+        {
             return;
         }
         
-        if(self.autoLoadMore){
+        if(self.autoLoadMore)
+        {
             
-            if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height - self.criticalPoint){
-                
+            if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height - SeaLoadMoreControlCriticalPoint)
+            {
                 [self beginLoadMore:NO];
             }
-        }else{
+        }
+        else
+        {
             if(self.scrollView.contentSize.height == 0 || self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height || self.scrollView.contentSize.height < self.scrollView.height)
                 return;
             
-            if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height){
-                
-                if(self.scrollView.dragging){
-                    if (self.scrollView.contentOffset.y == self.scrollView.contentSize.height - self.scrollView.height){
-                        
+            if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height)
+            {
+                if(self.scrollView.dragging)
+                {
+                    if (self.scrollView.contentOffset.y == self.scrollView.contentSize.height - self.scrollView.height)
+                    {
                         [self setState:SeaDataControlNormal];
-                    }else if (self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height + self.criticalPoint){
-                        
+                    }
+                    else if (self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height + SeaLoadMoreControlCriticalPoint)
+                    {
                         [self setState:SeaDataControlPulling];
-                    }else{
+                    }
+                    else
+                    {
                         [self setState:SeaDataControlReachCirticalPoint];
                     }
-                }else if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height + self.criticalPoint){
-                    
-                    [self beginLoadMore:YES];
+                }
+                else if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height + SeaLoadMoreControlCriticalPoint)
+                {
+                    if(!self.animating)
+                    {
+                        [self beginLoadMore:YES];
+                    }
                 }
             }
         }
         
-        if(!self.animating){
+        
+        if(!self.animating)
+        {
             [self setNeedsLayout];
         }
-    }else if ([keyPath isEqualToString:SeaDataControlContentSize]){
-        
+    }
+    else if ([keyPath isEqualToString:SeaLoadMoreControlText])
+    {
+        //调整内容
+        CGFloat margin = 5.0;
+        CGFloat textWidth = [_remindLabel.text sea_stringSizeWithFont:_remindLabel.font contraintWith:self.width - _activityIndicatorView.width - margin].width;
+        _remindLabel.width = textWidth;
+        [self setNeedsLayout];
+    }
+    else if ([keyPath isEqualToString:SeaDataControlContentSize])
+    {
         [self setNeedsLayout];
     }
 }
 
-#pragma mark super method
-
-- (void)startLoading
+- (void)beginRefresh
 {
     self.animating = NO;
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
     [self beginLoadMore:YES];
 }
 
-/**
- 开始加载更多
+/**开始加载更多
  */
 - (void)beginLoadMore:(BOOL) animate
 {
@@ -137,7 +171,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
         [UIView animateWithDuration:0.25 animations:^(void){
             
             UIEdgeInsets inset = self.originalContentInset;
-            inset.bottom += self.criticalPoint;
+            inset.bottom += SeaLoadMoreControlCriticalPoint;
             self.scrollView.contentInset = inset;
         }completion:^(BOOL finish){
             
@@ -145,16 +179,15 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
             self.animating = NO;
         }];
     }else{
-        
         [self setState:SeaDataControlLoading];
         UIEdgeInsets inset = self.originalContentInset;
-        inset.bottom += self.criticalPoint;
+        inset.bottom += SeaLoadMoreControlCriticalPoint;
         self.scrollView.contentInset = inset;
         self.animating = NO;
     }
 }
 
-#pragma mark 设置滑动状态
+#pragma mark- 设置滑动状态
 
 - (void)setState:(SeaDataControlState)state
 {

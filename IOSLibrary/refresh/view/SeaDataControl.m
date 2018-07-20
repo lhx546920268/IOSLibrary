@@ -7,20 +7,16 @@
 
 @implementation SeaDataControl
 
-/**构造方法
- *@param scrollView x
- *@return 一个实例，frame和 scrollView的frame一样
- */
 - (id)initWithScrollView:(UIScrollView*) scrollView
 {
     CGRect frame = scrollView.bounds;
     frame.size.height = 0;
     
     self = [super initWithFrame:frame];
-    if(self)
-    {
+    if(self){
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _originalContentInset = scrollView.contentInset;
-        self.refreshDelay = 0.4;
+        self.loadingDelay = 0.4;
         self.stopDelay = 0.25;
         self.shouldDisableScrollViewWhenLoading = NO;
         _scrollView = scrollView;
@@ -34,8 +30,7 @@
 {
     [super willMoveToSuperview:newSuperview];
     
-    if(newSuperview)
-    {
+    if(newSuperview){
         //添加 滚动位置更新监听
         [newSuperview addObserver:self forKeyPath:SeaDataControlOffset options:NSKeyValueObservingOptionNew context:nil];
     }
@@ -47,31 +42,65 @@
     [super removeFromSuperview];
 }
 
-#pragma mark- dealloc
+#pragma mark dealloc
 
 - (void)dealloc
 {
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
-    
 }
 
+#pragma mark public method
 
-
-#pragma mark- public method
-
-/**用于后台主动刷新
- */
-- (void)beginRefresh
+- (void)startLoading
 {
     
 }
 
-/**数据加载完成
- */
-- (void)didFinishedLoading
+- (void)stopLoading
+{
+    [self performSelector:@selector(onStopLoading) withObject:nil afterDelay:self.stopDelay];
+}
+
+- (void)onStopLoading
+{
+    [UIView animateWithDuration:0.25 animations:^(void){
+        
+         [self.scrollView setContentInset:self.originalContentInset];
+     }completion:^(BOOL finish){
+         
+         [self setState:SeaDataControlNormal];
+         self.scrollView.userInteractionEnabled = YES;
+     }];
+}
+
+- (void)onStartLoading
+{
+    !self.handler ?: self.handler();
+}
+
+- (void)setState:(SeaDataControlState)state
+{
+    if(_state != state){
+        _state = state;
+        [self onStateChange:state];
+        
+        switch (_state) {
+            case SeaDataControlPulling : {
+                if(self.shouldDisableScrollViewWhenLoading){
+                    self.scrollView.userInteractionEnabled = NO;
+                }
+                [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+- (void)onStateChange:(SeaDataControlState)state
 {
     
 }
-
 
 @end
