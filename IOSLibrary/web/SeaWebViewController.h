@@ -111,7 +111,10 @@
  */
 - (BOOL)shouldOpenURL:(NSURL*) URL;
 
-//初始化
+///初始化
 - (void)initilization NS_REQUIRES_SUPER;
+
+///进度条改变
+- (void)onProgressChange:(float) progress;
 
 @end

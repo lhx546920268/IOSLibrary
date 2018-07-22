@@ -214,7 +214,7 @@ static UIColor *sharedWebProgressColor = nil;
     
     //分割线颜色
     sharedSeparatorColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    sharedSeparatorWidth = 1.0 / [UIScreen mainScreen].scale;
+    sharedSeparatorWidth = 0.5 ;// [UIScreen mainScreen].scale;
     
     sharedStatusBarStyle = UIStatusBarStyleDefault;
     

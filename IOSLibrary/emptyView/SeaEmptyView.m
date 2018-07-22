@@ -18,13 +18,10 @@
 @end
 
 @implementation SeaEmptyView
-{
-    //文字
-    UILabel *_textLabel;
-    
-    //图标
-    UIImageView *_iconImageView;
-}
+
+@synthesize textLabel = _textLabel;
+@synthesize iconImageView = _iconImageView;
+@synthesize contentView = _contentView;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
@@ -43,8 +40,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self)
-    {
+    if(self){
         [self initlization];
     }
 
@@ -54,24 +50,28 @@
 ///初始化默认数据
 - (void)initlization
 {
-    if(!self.contentView)
-    {
+    
+}
+
+- (UIView*)contentView
+{
+    if(!_contentView){
         self.clipsToBounds = YES;
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor clearColor];
-
+        
         [self addSubview:_contentView];
         
         [_contentView sea_leftToSuperview:10];
         [_contentView sea_rightToSuperview:10];
         [_contentView sea_centerYInSuperview];
     }
+    return _contentView;
 }
 
 - (UILabel*)textLabel
 {
-    if(!_textLabel)
-    {
+    if(!_textLabel){
         _textLabel = [[UILabel alloc] init];
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.textColor = [UIColor grayColor];
@@ -80,13 +80,12 @@
         _textLabel.numberOfLines = 0;
         [self.contentView addSubview:_textLabel];
 
-        if(_iconImageView)
-        {
+        if(_iconImageView){
+            
             [self.contentView removeConstraint:_iconImageView.sea_bottomLayoutConstraint];
             [_textLabel sea_topToItemBottom:_iconImageView margin:10];
-        }
-        else
-        {
+        }else{
+            
             [_textLabel sea_topToSuperview];
         }
         [_textLabel sea_bottomToSuperview];
@@ -99,8 +98,7 @@
 
 - (UIImageView*)iconImageView
 {
-    if(!_iconImageView)
-    {
+    if(!_iconImageView){
         _iconImageView = [[UIImageView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_iconImageView];
@@ -110,13 +108,10 @@
         [_iconImageView sea_centerXInSuperview];
         [_iconImageView sea_topToSuperview];
 
-        if(_textLabel)
-        {
+        if(_textLabel){
             [self.contentView removeConstraint:_textLabel.sea_topLayoutConstraint];
             [_textLabel sea_topToItemBottom:_iconImageView margin:10];
-        }
-        else
-        {
+        }else{
             [_iconImageView sea_bottomToSuperview];
         }
     }
@@ -126,22 +121,14 @@
 
 - (void)setCustomView:(UIView *)customView
 {
-    if(_customView != customView)
-    {
+    if(_customView != customView){
         [_customView removeFromSuperview];
         _customView = customView;
 
         if(_customView){
-            [_textLabel removeFromSuperview];
-            [_iconImageView removeFromSuperview];
-            
-            [self.contentView addSubview:_customView];
-            
-            [_customView sea_leftToItem:_customView.superview margin:0 relation:NSLayoutRelationGreaterThanOrEqual];
-            [_customView sea_rightToItem:_customView.superview margin:0 relation:NSLayoutRelationGreaterThanOrEqual];
-            [_customView sea_centerXInSuperview];
-            [_customView sea_topToSuperview];
-            [_customView sea_bottomToSuperview];
+            [_contentView removeFromSuperview];
+            [self addSubview:_customView];
+            [_customView sea_insetsInSuperview:UIEdgeInsetsZero];
         }
     }
 }

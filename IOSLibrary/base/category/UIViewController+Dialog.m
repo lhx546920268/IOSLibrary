@@ -89,7 +89,7 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
         [backgroundView sea_insetsInSuperview:UIEdgeInsetsZero];
         [self setDialogBackgroundView:backgroundView];
         
-        self.dialogShowAnimate = YES;
+        self.dialogShouldAnimate = YES;
         self.automaticallyAdjustsScrollViewInsets = NO;
         self.view.backgroundColor = [UIColor clearColor];
         
@@ -265,7 +265,7 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
     
     [self setIsShowAsDialog:YES];
     ///设置使背景透明
-    self.dialogShowAnimate = YES;
+    self.dialogShouldAnimate = YES;
     self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
 }
@@ -274,66 +274,70 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
 - (void)executeShowAnimate
 {
     //出场动画
-    if(self.dialog && self.dialogShowAnimate && self.isDialogViewDidLayoutSubviews){
-        [self setDialogShouldAnimate:NO];
-        
-        switch (self.dialogShowAnimate) {
-            case SeaDialogAnimateNone : {
-                self.dialogBackgroundView.alpha = 1.0;
-            }
-                break;
-            case SeaDialogAnimateScale : {
-                
-                self.dialog.alpha = 0;
-                [UIView animateWithDuration:0.25 animations:^(void){
-                    
+    if(self.dialog && self.isDialogViewDidLayoutSubviews){
+        if(self.dialogShouldAnimate){
+            [self setDialogShouldAnimate:NO];
+            
+            switch (self.dialogShowAnimate) {
+                case SeaDialogAnimateNone : {
                     self.dialogBackgroundView.alpha = 1.0;
-                    self.dialog.alpha = 1.0;
-                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                    animation.fromValue = @(1.3);
-                    animation.toValue = @(1.0);
-                    animation.duration = 0.25;
-                    [self.dialog.layer addAnimation:animation forKey:@"scale"];
+                }
+                    break;
+                case SeaDialogAnimateScale : {
                     
-                }];
+                    self.dialog.alpha = 0;
+                    [UIView animateWithDuration:0.25 animations:^(void){
+                        
+                        self.dialogBackgroundView.alpha = 1.0;
+                        self.dialog.alpha = 1.0;
+                        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                        animation.fromValue = @(1.3);
+                        animation.toValue = @(1.0);
+                        animation.duration = 0.25;
+                        [self.dialog.layer addAnimation:animation forKey:@"scale"];
+                        
+                    }];
+                }
+                    break;
+                case SeaDialogAnimateFromTop : {
+                    [UIView animateWithDuration:0.25 animations:^(void){
+                        
+                        self.dialogBackgroundView.alpha = 1.0;
+                        
+                        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                        animation.fromValue = @(-self.dialog.height / 2.0);
+                        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                        animation.toValue = @(self.dialog.layer.position.y);
+                        animation.duration = 0.25;
+                        [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    }];
+                }
+                    break;
+                case SeaDialogAnimateFromBottom : {
+                    
+                    [UIView animateWithDuration:0.25 animations:^(void){
+                        
+                        self.dialogBackgroundView.alpha = 1.0;
+                        
+                        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
+                        animation.fromValue = @(self.view.height + self.dialog.height / 2);
+                        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                        animation.toValue = @(self.dialog.layer.position.y);
+                        animation.duration = 0.25;
+                        [self.dialog.layer addAnimation:animation forKey:@"position"];
+                    }];
+                }
+                    break;
+                case SeaDialogAnimateCustom : {
+                    
+                    [self didExecuteDialogShowCustomAnimate:^(BOOL finish){
+                        
+                    }];
+                }
+                    break;
             }
-                break;
-            case SeaDialogAnimateFromTop : {
-                [UIView animateWithDuration:0.25 animations:^(void){
-                    
-                    self.dialogBackgroundView.alpha = 1.0;
-                    
-                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
-                    animation.fromValue = @(-self.dialog.height / 2.0);
-                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-                    animation.toValue = @(self.dialog.layer.position.y);
-                    animation.duration = 0.25;
-                    [self.dialog.layer addAnimation:animation forKey:@"position"];
-                }];
-            }
-                break;
-            case SeaDialogAnimateFromBottom : {
-                
-                [UIView animateWithDuration:0.25 animations:^(void){
-                    
-                    self.dialogBackgroundView.alpha = 1.0;
-                    
-                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.y"];
-                    animation.fromValue = @(self.view.height + self.dialog.height / 2);
-                    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-                    animation.toValue = @(self.dialog.layer.position.y);
-                    animation.duration = 0.25;
-                    [self.dialog.layer addAnimation:animation forKey:@"position"];
-                }];
-            }
-                break;
-            case SeaDialogAnimateCustom : {
-                
-                [self didExecuteDialogShowCustomAnimate:^(BOOL finish){
-                    
-                }];
-            }
-                break;
+        }else{
+            self.dialogBackgroundView.alpha = 1.0;
         }
     }
     

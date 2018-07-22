@@ -369,6 +369,12 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 - (void)setProgress:(float) progress
 {
     self.progressView.progress = self.shouldDisplayProgress ? progress : 0;
+    [self onProgressChange:progress];
+}
+
+- (void)onProgressChange:(float) progress
+{
+    
 }
 
 #pragma mark- longPress handler
