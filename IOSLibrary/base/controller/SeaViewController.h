@@ -22,7 +22,7 @@
 ///内容视图 xib 不要用
 @property(nonatomic, strong) UIView *contentView;
 
-///视图容器 self.view xib 不要用，如果 showAsDialog = YES，self.view将不再是 container
+///视图容器 self.view xib 不要用，如果 showAsDialog = YES，self.view将不再是 container 且 要自己设置container的约束
 @property(nonatomic, readonly) SeaContainer *container;
 
 ///是否已计算出frame，使用约束时用到

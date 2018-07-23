@@ -70,6 +70,12 @@
     return self.viewController ? self.viewController : self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    !self.layoutSubviewsHandler ?: self.layoutSubviewsHandler();
+}
+
 #pragma mark- topView
 
 - (void)setTopView:(UIView *)topView
@@ -91,7 +97,7 @@
                 [_topView removeFromSuperview];
                 [self addSubview:_topView];
             }
-            
+   
             if(self.safeLayoutGuide & SeaSafeLayoutGuideTop){
                 [_topView sea_topToItem:self.item];
             }else{

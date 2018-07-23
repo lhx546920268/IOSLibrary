@@ -25,6 +25,11 @@
 @property(nonatomic, assign) BOOL shouldUseMenuBar;
 
 /**
+ 是否需要设置菜单 为 topView default is 'YES'
+ */
+@property(nonatomic, assign) BOOL shouldSetMenuBarTopView;
+
+/**
  菜单栏高度 default is SeaMenuBarHeight
  */
 @property(nonatomic, assign) CGFloat menuBarHeight;
@@ -35,9 +40,10 @@
 @property(nonatomic, readonly) NSInteger currentPage;
 
 /**
- 当前显示的 viewController
+ 显示的viewControllers 调用时会自动创建，需要自己添加 viewController
+ 这里的Controller 如果是ScrollViewController 或者webViewController， 左右滑动时会关闭上下滑动
  */
-@property(nonatomic, readonly, weak) UIViewController *currentViewController;
+@property(nonatomic, readonly) NSMutableArray<UIViewController*> *pageViewControllers;
 
 /**
  刷新数据

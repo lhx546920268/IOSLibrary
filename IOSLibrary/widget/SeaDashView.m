@@ -39,6 +39,7 @@
 - (void)initlization
 {
     _lineWidth = 1;
+    _shape = SeaDashShapeLine;
     if(!self.dashesColor){
         self.dashesColor = [UIColor grayColor];
     }
@@ -88,6 +89,24 @@
     }
 }
 
+- (void)setCornerRadius:(CGFloat)cornerRadius
+{
+    if(_cornerRadius != cornerRadius){
+        _cornerRadius = cornerRadius;
+        if(self.shape != SeaDashShapeLine){
+            [self setNeedsDisplay];
+        }
+    }
+}
+
+- (void)setShape:(SeaDashShape)shape
+{
+    if(_shape != shape){
+        _shape = shape;
+        [self setNeedsDisplay];
+    }
+}
+
 - (void)drawRect:(CGRect)rect
 {
     CGFloat lengths[] = {self.dashesLength,self.dashesInterval};
@@ -96,12 +115,21 @@
     CGContextSetLineWidth(context, self.lineWidth);
     
     CGContextSetLineDash(context, 0, lengths, 2);  //画虚线
-    if(_isVertical){
-        CGContextMoveToPoint(context, rect.size.width / 2, 0);    //开始画线
-        CGContextAddLineToPoint(context, rect.size.width / 2.0, rect.size.height);
-    }else{
-        CGContextMoveToPoint(context, 0.0, rect.size.height / 2);    //开始画线
-        CGContextAddLineToPoint(context, rect.size.width, rect.size.height / 2);
+    switch (_shape) {
+        case SeaDashShapeLine : {
+            if(_isVertical){
+                CGContextMoveToPoint(context, rect.size.width / 2, 0);    //开始画线
+                CGContextAddLineToPoint(context, rect.size.width / 2.0, rect.size.height);
+            }else{
+                CGContextMoveToPoint(context, 0.0, rect.size.height / 2);    //开始画线
+                CGContextAddLineToPoint(context, rect.size.width, rect.size.height / 2);
+            }
+        }
+            break;
+        case SeaDashShapeRect : {
+            CGContextAddPath(context, [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.lineWidth / 2, self.lineWidth / 2, rect.size.width - self.lineWidth, rect.size.height - self.lineWidth) cornerRadius:self.cornerRadius].CGPath);
+        }
+            break;
     }
     CGContextStrokePath(context);
 }

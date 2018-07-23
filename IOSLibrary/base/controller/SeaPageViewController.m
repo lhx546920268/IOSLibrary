@@ -68,10 +68,12 @@
 @implementation SeaPageViewController
 
 @synthesize menuBar = _menuBar;
+@synthesize pageViewControllers = _pageViewControllers;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _shouldUseMenuBar = YES;
+    _shouldSetMenuBarTopView = YES;
     self.menuBarHeight = SeaMenuBarHeight;
 }
 
@@ -89,9 +91,18 @@
     return _menuBar;
 }
 
+- (NSMutableArray<UIViewController*>*)pageViewControllers
+{
+    if(!_pageViewControllers){
+        _pageViewControllers = [NSMutableArray arrayWithCapacity:self.numberOfPage];
+    }
+    
+    return _pageViewControllers;
+}
+
 - (void)initialization
 {
-    if(self.shouldUseMenuBar){
+    if(self.shouldUseMenuBar && self.shouldSetMenuBarTopView){
         [self.container setTopView:self.menuBar height:self.menuBarHeight];
     }
     
@@ -110,10 +121,13 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    self.flowLayout.itemSize = self.collectionView.frame.size;
-    if(self.shouldScrollToPage){
-        self.shouldScrollToPage = NO;
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.menuBar.selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    
+    if(!CGSizeEqualToSize(self.collectionView.frame.size, CGSizeZero) && !CGSizeEqualToSize(self.collectionView.frame.size, self.flowLayout.itemSize)){
+        self.flowLayout.itemSize = self.collectionView.frame.size;
+        if(self.shouldScrollToPage || self.menuBar.selectedIndex != 0){
+            self.shouldScrollToPage = NO;
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.menuBar.selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+        }
     }
 }
 
@@ -170,24 +184,7 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.beginOffset = scrollView.contentOffset;
-    if([self.currentViewController isKindOfClass:[SeaScrollViewController class]]){
-        SeaScrollViewController *vc = (SeaScrollViewController*)_currentViewController;
-        vc.scrollView.scrollEnabled = NO;
-    }else if ([self.currentViewController isKindOfClass:[SeaWebViewController class]]){
-        SeaWebViewController *web = (SeaWebViewController*)_currentViewController;
-        web.webView.scrollView.scrollEnabled = NO;
-    }
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    if([self.currentViewController isKindOfClass:[SeaScrollViewController class]]){
-        SeaScrollViewController *vc = (SeaScrollViewController*)_currentViewController;
-        vc.scrollView.scrollEnabled = YES;
-    }else if ([self.currentViewController isKindOfClass:[SeaWebViewController class]]){
-        SeaWebViewController *web = (SeaWebViewController*)_currentViewController;
-        web.webView.scrollView.scrollEnabled = YES;
-    }
+    [self setScrollEnable:NO];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -221,12 +218,14 @@
 {
     if(!decelerate){
         [self scrollToVisibleIndex];
+        [self setScrollEnable:YES];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self scrollToVisibleIndex];
+    [self setScrollEnable:YES];
 }
 
 ///滑动到可见位置
@@ -245,6 +244,20 @@
     }
 }
 
+///设置是否可以滑动
+- (void)setScrollEnable:(BOOL) enable
+{
+    for(UIViewController *viewController in _pageViewControllers){
+        if([viewController isKindOfClass:[SeaScrollViewController class]]){
+            SeaScrollViewController *vc = (SeaScrollViewController*)viewController;
+            vc.scrollView.scrollEnabled = enable;
+        }else if ([viewController isKindOfClass:[SeaWebViewController class]]){
+            SeaWebViewController *web = (SeaWebViewController*)viewController;
+            web.webView.scrollView.scrollEnabled = enable;
+        }
+    }
+}
+
 #pragma mark- UICollectionViewDelegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -257,8 +270,7 @@
     SeaPageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SeaPageCollectionViewCell class]) forIndexPath:indexPath];
     
     cell.parentViewController = self;
-    _currentViewController = [self viewControllerForIndex:indexPath.item];
-    cell.viewController = _currentViewController;
+    cell.viewController = [self viewControllerForIndex:indexPath.item];
     
     return cell;
 }

@@ -114,15 +114,22 @@
 {
     [super viewDidLoad];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
     if(self.isShowAsDialog){
         if(self.container){
+            self.container.safeLayoutGuide = SeaSafeLayoutGuideNone;
+            
+            //当 self.view 不是 container时， container中的子视图布局完成不会调用 viewDidLayoutSubviews 要手动，否则在 viewDidLayoutSubviews中获取 self.contentView的大小时会失败
+            WeakSelf(self)
+            self.container.layoutSubviewsHandler = ^(void){
+                [weakSelf viewDidLayoutSubviews];
+            };
             [self.view addSubview:self.container];
         }
     }else{
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.navigationController.navigationBar.translucent = NO;
+
         self.view.backgroundColor = [UIColor whiteColor];
-        
         if(self.navigationController.viewControllers.count > 1 && !self.sea_showBackItem){
             self.sea_showBackItem = YES;
         }

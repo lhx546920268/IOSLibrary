@@ -101,6 +101,7 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
 {
     [self sea_dialog_viewDidLayoutSubviews];
     [self setIsDialogViewDidLayoutSubviews:YES];
+  
     if(self.isShowAsDialog){
         [self executeShowAnimate];
     }
