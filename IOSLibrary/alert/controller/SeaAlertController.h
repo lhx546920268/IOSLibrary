@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
 @interface SeaAlertStyle : NSObject<NSCopying>
 
 /**
- 内容边距
+ 整个内容边距
  */
 @property(nonatomic,assign) UIEdgeInsets contentInsets;
 
@@ -73,9 +73,9 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
 @property(nonatomic,assign) CGFloat cornerRadius;
 
 /**
- 内容水平间距
+ 文字和图标和父视图的间距
  */
-@property(nonatomic,assign) CGFloat horizontalSpacing;
+@property(nonatomic,assign) UIEdgeInsets textInsets;
 
 /**
  内容垂直间距

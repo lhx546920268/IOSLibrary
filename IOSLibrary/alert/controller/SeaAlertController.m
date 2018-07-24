@@ -324,7 +324,7 @@
         self.cornerRadius = 8.0;
         self.contentInsets = UIEdgeInsetsMake(15, 15, 15, 15);
         self.cancelButtonVerticalSpacing = 15;
-        self.horizontalSpacing = 15;
+        self.textInsets = UIEdgeInsetsMake(15, 15, 15, 15);
         self.verticalSpacing = 8;
     }
     
@@ -360,7 +360,7 @@
     SeaAlertStyle *style = [SeaAlertStyle allocWithZone:zone];
     style.contentInsets = self.contentInsets;
     style.cornerRadius = self.cornerRadius;
-    style.horizontalSpacing = self.horizontalSpacing;
+    style.textInsets = self.textInsets;
     style.verticalSpacing = self.verticalSpacing;
     
     style.cancelButtonFont = self.cancelButtonFont;
@@ -548,9 +548,9 @@
         
         if(self.titleString || self.message || self.icon){
             self.header = [[SeaAlertHeader alloc] initWithFrame:CGRectMake(0, 0, width, 0)];
-            CGFloat constraintWidth = self.header.width - style.horizontalSpacing * 2;
+            CGFloat constraintWidth = self.header.width - style.textInsets.left - style.textInsets.right;
             
-            CGFloat y = style.horizontalSpacing;
+            CGFloat y = style.textInsets.top;
             if(self.icon){
                 self.header.imageView.image = self.icon;
                 if(self.icon.size.width > constraintWidth){
@@ -579,7 +579,7 @@
                     size = [self.titleString sea_boundsWithConstraintWidth:constraintWidth];
                 }
                 
-                self.header.titleLabel.frame = CGRectMake(style.horizontalSpacing, y, constraintWidth, size.height + 1.0);
+                self.header.titleLabel.frame = CGRectMake(style.textInsets.left, y, constraintWidth, size.height + 1.0);
                 y += self.header.titleLabel.height;
             }
             
@@ -599,11 +599,11 @@
                     self.header.messageLabel.attributedText = self.message;
                     size = [self.message sea_boundsWithConstraintWidth:constraintWidth];
                 }
-                self.header.messageLabel.frame = CGRectMake(style.horizontalSpacing, y, constraintWidth, size.height + 1.0);
+                self.header.messageLabel.frame = CGRectMake(style.textInsets.left, y, constraintWidth, size.height + 1.0);
                 y += self.header.messageLabel.height;
             }
             
-            self.header.height = y + style.horizontalSpacing;
+            self.header.height = y + style.textInsets.bottom;
             self.header.contentSize = CGSizeMake(self.header.width, self.header.height);
             
             self.header.backgroundColor = style.mainColor;

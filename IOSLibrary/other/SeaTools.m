@@ -88,12 +88,12 @@ void unregisterRemoteNotification()
 
 void openSystemSettings()
 {
-    NSURL *url;
-    if(@available(iOS 8.0, *)){
-        url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    }else{
-        url = [NSURL URLWithString:@"app-settings:"];
-    }
+    NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+//    if(@available(iOS 8.0, *)){
+//        url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+//    }else{
+//        url = [NSURL URLWithString:@"app-settings:"];
+//    }
     
     if([[UIApplication sharedApplication] canOpenURL:url]){
         [[UIApplication sharedApplication] openURL:url];
