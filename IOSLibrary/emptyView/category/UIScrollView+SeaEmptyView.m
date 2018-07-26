@@ -29,12 +29,9 @@ static char SeaEmptyViewInsetsKey;
     {
         objc_setAssociatedObject(self, &SeaShouldShowEmptyViewKey, [NSNumber numberWithBool:sea_shouldShowEmptyView], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        if(sea_shouldShowEmptyView)
-        {
+        if(sea_shouldShowEmptyView){
             [self layoutEmtpyView];
-        }
-        else
-        {
+        }else{
             [self.sea_emptyView removeFromSuperview];
         }
     }

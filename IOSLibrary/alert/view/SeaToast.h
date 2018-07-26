@@ -57,6 +57,21 @@ typedef NS_ENUM(NSInteger, SeaToastGravity){
 @property(nonatomic,assign) CGSize minimumSize;
 
 /**
+ 字体
+ */
+@property(nonatomic, strong) UIFont *font;
+
+/**
+ 文字颜色
+ */
+@property(nonatomic, strong) UIColor *textColor;
+
+/**
+ 背景颜色
+ */
+@property(nonatomic, strong) UIColor *backgroundColor;
+
+/**
  单例
  */
 + (instancetype)sharedInstance;

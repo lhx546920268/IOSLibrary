@@ -58,7 +58,11 @@
 
 - (void)stopLoading
 {
-    [self performSelector:@selector(onStopLoading) withObject:nil afterDelay:self.stopDelay];
+    if(self.stopDelay){
+        [self performSelector:@selector(onStopLoading) withObject:nil afterDelay:self.stopDelay];
+    }else{
+        [self onStopLoading];
+    }
 }
 
 - (void)onStopLoading

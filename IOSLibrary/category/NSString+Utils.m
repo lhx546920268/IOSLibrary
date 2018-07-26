@@ -13,7 +13,7 @@
 
 + (BOOL)isEmpty:(NSString *)str
 {
-    if([str isEqual:[NSNull null]] || str == nil || str == NULL){
+    if([str isEqual:[NSNull null]] || str == nil || str == NULL || ![str isKindOfClass:[NSString class]]){
         return YES;
     }
     

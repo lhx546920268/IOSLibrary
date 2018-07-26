@@ -140,7 +140,11 @@
     [super onStateChange:state];
     switch (state) {
         case SeaDataControlLoading : {
-            [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
+            if(self.loadingDelay > 0){
+                [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
+            }else{
+                [self onStartLoading];
+            }
         }
             break;
             

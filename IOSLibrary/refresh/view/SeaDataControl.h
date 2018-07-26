@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, SeaDataControlState)
 /**
  停止加载 外部调用 默认延迟刷新UI
  */
-- (void)stopLoading NS_REQUIRES_SUPER;
+- (void)stopLoading;
 
 /**
  已经开始加载 默认调用回调

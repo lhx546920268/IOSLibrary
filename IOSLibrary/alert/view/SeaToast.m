@@ -21,6 +21,9 @@
         _superEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30);
         _contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
         _minimumSize = CGSizeMake(80, 20);
+        _font = [UIFont fontWithName:SeaMainFontName size:15.0];
+        _textColor = [UIColor whiteColor];
+        _backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
     }
     return self;
 }
@@ -87,19 +90,26 @@
     
     self.shouldRemoveOnDismiss = YES;
     self.userInteractionEnabled = NO;
+}
+
+- (UIView*)translucentView
+{
+    if(!_translucentView){
+        _translucentView = [[UIView alloc] init];
+        _translucentView.backgroundColor = self.style.backgroundColor;
+        _translucentView.layer.cornerRadius = 8;
+        _translucentView.layer.masksToBounds = YES;
+        [self addSubview:_translucentView];
+    }
     
-    _translucentView = [[UIView alloc] init];
-    _translucentView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
-    _translucentView.layer.cornerRadius = 8;
-    _translucentView.layer.masksToBounds = YES;
-    [self addSubview:_translucentView];
+    return _translucentView;
 }
 
 - (UIImageView*)imageView
 {
     if(!_imageView){
         _imageView = [[UIImageView alloc] init];
-        [_translucentView addSubview:_imageView];
+        [self.translucentView addSubview:_imageView];
     }
     
     return _imageView;
@@ -110,11 +120,11 @@
     if(!_textLabel){
         _textLabel = [[UILabel alloc] init];
         _textLabel.textAlignment = NSTextAlignmentCenter;
-        _textLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
+        _textLabel.font = self.style.font;
         _textLabel.numberOfLines = 0;
         _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.textColor = [UIColor whiteColor];
-        [_translucentView addSubview:_textLabel];
+        _textLabel.textColor = self.style.textColor;
+        [self.translucentView addSubview:_textLabel];
     }
     
     return _textLabel;

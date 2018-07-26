@@ -130,6 +130,13 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     [self setNeedsLayout];
 }
 
+- (void)stopLoading
+{
+    [self.scrollView setContentInset:self.originalContentInset];
+    [self setState:SeaDataControlNormal];
+    self.scrollView.userInteractionEnabled = YES;
+}
+
 /**
  开始加载更多
  */
@@ -163,9 +170,10 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 - (void)onStateChange:(SeaDataControlState)state
 {
     [super onStateChange:state];
+
     switch (state) {
         case SeaDataControlLoading : {
-            if(self.autoLoadMore){
+            if(self.autoLoadMore || self.loadingDelay <= 0){
                 [self onStartLoading];
             }else{
                 [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
