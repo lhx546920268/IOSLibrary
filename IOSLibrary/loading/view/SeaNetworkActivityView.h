@@ -9,6 +9,12 @@
  网络加载指示器
  */
 @interface SeaNetworkActivityView : UIView
+{
+    UIView *_translucentView;
+    UIView *_contentView;
+    UILabel *_textLabel;
+    UIActivityIndicatorView *_activityIndicatorView;
+}
 
 /**
  提示信息
@@ -23,22 +29,22 @@
 /**
  内容视图
  */
-@property(nonatomic,strong) UIView *contentView;
+@property(nonatomic,readonly) UIView *contentView;
 
 /**
  黑色半透明背景视图
  */
-@property(nonatomic,strong) UIView *translucentView;
+@property(nonatomic,readonly) UIView *translucentView;
 
 /**
  提示信息
  */
-@property(nonatomic,strong) UILabel *textLabel;
+@property(nonatomic,readonly) UILabel *textLabel;
 
 /**
  加载指示器
  */
-@property(nonatomic,strong) UIActivityIndicatorView *activityIndicatorView;
+@property(nonatomic,readonly) UIActivityIndicatorView *activityIndicatorView;
 
 /**
  初始化 子类可自定义自己的实现

@@ -117,4 +117,7 @@
 ///进度条改变
 - (void)onProgressChange:(float) progress;
 
+///返回需要注入的js
+- (NSString*)javascript;
+
 @end

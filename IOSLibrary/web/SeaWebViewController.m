@@ -304,6 +304,10 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
         [javaScript appendString:@"document.body.appendChild(style);"];
         [javaScript appendString:@"document.documentElement.style.webkitUserSelect='none';"];//禁止选择
         [javaScript appendString:@"document.documentElement.style.webkitTouchCallout='none';"];//禁止长按
+        NSString *js = [self javascript];
+        if(![NSString isEmpty:js]){
+            [javaScript appendString:js];
+        }
         
         WKUserScript *script = [[WKUserScript alloc] initWithSource:javaScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         [userContentController addUserScript:script];
@@ -313,6 +317,11 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     configuration.userContentController = userContentController;
     
     return configuration;
+}
+
+- (NSString*)javascript
+{
+    return nil;
 }
 
 - (void)loadWebContent
