@@ -458,10 +458,17 @@
     SeaMenuBarItem *item = [self itemForIndex:_selectedIndex];
     item.tick = NO;
     
+    NSInteger previousIndex = _selectedIndex;
     _selectedIndex = selectedIndex;
     
     [self layoutIndicatorWithAnimate:flag];
     [self scrollToVisibleRectWithAnimate:flag];
+    
+    if(previousIndex < self.itemInfos.count && ( _isTapItem || _callDelegateWhenSetSelectedIndex)){
+        if([self.delegate respondsToSelector:@selector(menuBar:didDeselectItemAtIndex:)]){
+            [self.delegate menuBar:self didDeselectItemAtIndex:previousIndex];
+        }
+    }
     
     if(_isTapItem || _callDelegateWhenSetSelectedIndex){
         if([self.delegate respondsToSelector:@selector(menuBar:didSelectItemAtIndex:)]){

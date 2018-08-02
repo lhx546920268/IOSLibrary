@@ -82,4 +82,9 @@
  */
 + (instancetype)loadFromNib;
 
+/**
+ 删除所有子视图
+ */
+- (void)sea_removeAllSubviews;
+
 @end

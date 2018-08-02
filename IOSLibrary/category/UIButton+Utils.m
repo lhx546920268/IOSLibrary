@@ -7,6 +7,7 @@
 //
 
 #import "UIButton+Utils.h"
+#import "NSString+Utils.h"
 
 @implementation UIButton (Utils)
 
@@ -31,6 +32,12 @@
     UIEdgeInsets titleInsets = UIEdgeInsetsZero;
     UIEdgeInsets imageInsets = UIEdgeInsetsZero;
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    if([NSString isEmpty:title] || !image){
+        self.titleEdgeInsets = titleInsets;
+        self.imageEdgeInsets = imageInsets;
+        self.contentEdgeInsets = contentInsets;
+        return;
+    }
     
     switch (position) {
         case SeaButtonImagePositionLeft : {

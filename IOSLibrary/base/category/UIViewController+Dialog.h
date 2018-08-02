@@ -86,14 +86,22 @@ typedef NS_ENUM(NSInteger, SeaDialogAnimate)
 @property(nonatomic,copy) void(^dialogDismissCompletionHandler)(void);
 
 /**
- 显示 在 window.rootViewController.topest
+ 显示 在 window.rootViewController.topest 通过present方式显示
  */
 - (void)showAsDialog;
 
 /**
- 显示在指定viewController
+ 显示在指定viewController 通过present方式显示
  */
 - (void)showAsDialogInViewController:(UIViewController*) viewController;
+
+
+/**
+ 显示在制定viewControlelr
+ *@param inPresentWay 是否通过present方式显示
+ *@param layoutHandler 布局回调 ， inPresentWay = NO时有用 如果为空 则 为 sea_insetsInSuperview:UIEdgeInsetsZero
+ */
+- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void(^)(UIView *view, UIView *superview)) layoutHandler;
 
 /**
  隐藏

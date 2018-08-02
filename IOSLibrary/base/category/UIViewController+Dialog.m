@@ -30,6 +30,7 @@ static char SeaDialogDismissCompletionHandlerKey;
 static char SeaDialogShouldAnimateKey;
 static char SeaTapDialogBackgroundGestureRecognizerKey;
 static char SeaIsDialogViewDidLayoutSubviewsKey;
+static char SeaInPresentWayKey;
 
 @implementation UIViewController (Dialog)
 
@@ -251,6 +252,16 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
     return [objc_getAssociatedObject(self, &SeaIsDialogViewDidLayoutSubviewsKey) boolValue];
 }
 
+- (BOOL)inPresentWay
+{
+    return [objc_getAssociatedObject(self, &SeaInPresentWayKey) boolValue];
+}
+
+- (void)setInPresentWay:(BOOL) value
+{
+    objc_setAssociatedObject(self, &SeaInPresentWayKey, @(value), OBJC_ASSOCIATION_RETAIN);
+}
+
 #pragma mark- public method
 
 - (void)showAsDialog
@@ -260,15 +271,34 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
 
 - (void)showAsDialogInViewController:(UIViewController *)viewController
 {
+    [self showAsDialogInViewController:viewController inPresentWay:YES layoutHandler:nil];
+}
+
+- (void)showAsDialogInViewController:(UIViewController *)viewController inPresentWay:(BOOL) inPresentWay layoutHandler:(void (^)(UIView *, UIView *))layoutHandler
+{
     if(self.isDialogShowing){
         return;
     }
-    
     [self setIsShowAsDialog:YES];
-    ///设置使背景透明
     self.dialogShouldAnimate = YES;
-    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
+    
+    if(inPresentWay){
+        ///设置使背景透明
+        [self setInPresentWay:YES];
+        self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [viewController presentViewController:self animated:NO completion:self.dialogShowCompletionHandler];
+    }else{
+        [self setIsDialogShowing:YES];
+        [self willMoveToParentViewController:viewController];
+        [viewController.view addSubview:self.view];
+        [viewController addChildViewController:self];
+        if(layoutHandler){
+            layoutHandler(self.view, viewController.view);
+        }else{
+            [self.view sea_insetsInSuperview:UIEdgeInsetsZero];
+        }
+        [self didMoveToParentViewController:viewController];
+    }
 }
 
 ///执行出场动画
@@ -427,7 +457,12 @@ static char SeaIsDialogViewDidLayoutSubviewsKey;
 ///消失动画完成
 - (void)onDialogDismiss
 {
-    [self dismissViewControllerAnimated:NO completion:self.dialogDismissCompletionHandler];
+    if([self inPresentWay]){
+        [self dismissViewControllerAnimated:NO completion:self.dialogDismissCompletionHandler];
+    }else{
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+    }
 }
 
 - (void)didExecuteDialogShowCustomAnimate:(void(^)(BOOL finish)) completion

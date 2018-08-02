@@ -197,12 +197,17 @@ static char SeaDashBorderLayerKey;
 
 #pragma mark- init
 
-/**
- 通过xib加载
- */
 + (instancetype)loadFromNib
 {
     return [[[NSBundle mainBundle] loadNibNamed:[self sea_nameOfClass] owner:nil options:nil] lastObject];
+}
+
+- (void)sea_removeAllSubviews
+{
+    NSArray *subviews = self.subviews;
+    for(UIView *view in subviews){
+        [view removeFromSuperview];
+    }
 }
 
 @end

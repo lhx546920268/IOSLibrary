@@ -89,6 +89,9 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
 
 @optional
 
+///取消选择某个按钮
+- (void)menuBar:(SeaMenuBar *)menu didDeselectItemAtIndex:(NSUInteger)index;
+
 ///点击高亮的按钮
 - (void)menuBar:(SeaMenuBar*) menu didSelectHighlightedItemAtIndex:(NSUInteger) index;
 

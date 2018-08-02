@@ -313,13 +313,12 @@
 
 + (UIImage*)sea_imageWithColor:(UIColor*) color size:(CGSize) size
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    view.backgroundColor = color;
-    
-    UIGraphicsBeginImageContextWithOptions(size, view.opaque, SeaImageScale);
+    UIGraphicsBeginImageContextWithOptions(size, NO, SeaImageScale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    [view.layer renderInContext:context];
+    [color setFill];
+    CGContextAddRect(context, CGRectMake(0, 0, size.width, size.height));
+    CGContextDrawPath(context, kCGPathFill);
+
     UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
