@@ -14,6 +14,11 @@
 @interface SeaDefaultLoadMoreControl : SeaLoadMoreControl
 
 /**
+ 是否要显示菊花 默认显示
+ */
+@property(nonatomic, assign) BOOL showIndicatorView;
+
+/**
  加载菊花
  */
 @property(nonatomic,readonly) UIActivityIndicatorView *indicatorView;

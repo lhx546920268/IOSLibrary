@@ -3,7 +3,7 @@
 //  WuMei
 //
 //  Created by 罗海雄 on 15/7/23.
-//  Copyright (c) 2015年 QSIT. All rights reserved.
+//  Copyright (c) 2015年 luohaixiong. All rights reserved.
 //
 
 #import "SeaAlbumGroupListView.h"

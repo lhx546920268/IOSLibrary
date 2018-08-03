@@ -31,7 +31,7 @@
         
         [self updatePosition];
         
-        [self setState:SeaDataControlNormal];
+        [self setState:SeaDataControlStateNormal];
     }
     
     return self;
@@ -53,32 +53,32 @@
 {
     [super onStateChange:state];
     switch (state) {
-        case SeaDataControlPulling : {
+        case SeaDataControlStatePulling : {
             
             if(!self.animating){
-                _statusLabel.text = @"下拉刷新";
+                _statusLabel.text = [self titleForState:state];
                 [self updatePosition];
             }
         }
             break;
-        case SeaDataControlReachCirticalPoint : {
+        case SeaDataControlStateReachCirticalPoint : {
             
-            _statusLabel.text = @"松开即可刷新";
+            _statusLabel.text = [self titleForState:state];
             [self updatePosition];
         }
             break;
-        case SeaDataControlNormal : {
+        case SeaDataControlStateNormal : {
             
             if(!self.animating){
-                _statusLabel.text = @"下拉刷新";
+                _statusLabel.text = [self titleForState:state];
                 [self updatePosition];
             }
         }
             
             break;
-        case SeaDataControlLoading : {
+        case SeaDataControlStateLoading : {
             
-            _statusLabel.text = @"加载中...";
+            _statusLabel.text = [self titleForState:state];
             [_indicatorView startAnimating];
             [self updatePosition];
         }

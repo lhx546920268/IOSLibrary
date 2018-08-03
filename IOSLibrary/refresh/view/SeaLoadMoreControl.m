@@ -32,6 +32,11 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tap];
         
+        [self setTitle:@"加载更多" forState:SeaDataControlStateNormal];
+        [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
+        [self setTitle:@"松开即可加载" forState:SeaDataControlStateReachCirticalPoint];
+        [self setTitle:@"已到底部" forState:SeaDataControlStateNoData];
+        
         [self setState:SeaDataControlStateNoData];
         self.autoLoadMore = YES;
     }
@@ -73,16 +78,18 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 {
     if([keyPath isEqualToString:SeaDataControlOffset]){
       
-        if(self.state == SeaDataControlStateNoData || self.state == SeaDataControlLoading || self.hidden)
+        if(self.state == SeaDataControlStateNoData || self.state == SeaDataControlStateLoading || self.hidden)
             return;
         
         if(!self.loadMoreEnableWhileZeroContent && CGSizeEqualToSize(self.scrollView.contentSize, CGSizeZero)){
             return;
         }
         
+        CGSize contentSize = self.scrollView.contentSize;
+
         if(self.autoLoadMore){
             
-            if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height - self.criticalPoint){
+            if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height - self.criticalPoint){
                 
                 [self beginLoadMore:NO];
             }
@@ -90,19 +97,19 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
             if(self.scrollView.contentSize.height == 0 || self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height || self.scrollView.contentSize.height < self.scrollView.height)
                 return;
             
-            if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height){
+            if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height){
                 
                 if(self.scrollView.dragging){
-                    if (self.scrollView.contentOffset.y == self.scrollView.contentSize.height - self.scrollView.height){
+                    if (self.scrollView.contentOffset.y == contentSize.height - self.scrollView.height){
                         
-                        [self setState:SeaDataControlNormal];
-                    }else if (self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height + self.criticalPoint){
+                        [self setState:SeaDataControlStateNormal];
+                    }else if (self.scrollView.contentOffset.y < contentSize.height - self.scrollView.height + self.criticalPoint){
                         
-                        [self setState:SeaDataControlPulling];
+                        [self setState:SeaDataControlStatePulling];
                     }else{
-                        [self setState:SeaDataControlReachCirticalPoint];
+                        [self setState:SeaDataControlStateReachCirticalPoint];
                     }
-                }else if(self.scrollView.contentOffset.y >= self.scrollView.contentSize.height - self.scrollView.height + self.criticalPoint){
+                }else if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height + self.criticalPoint){
                     
                     [self beginLoadMore:YES];
                 }
@@ -133,7 +140,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 - (void)stopLoading
 {
     [self.scrollView setContentInset:self.originalContentInset];
-    [self setState:SeaDataControlNormal];
+    [self setState:SeaDataControlStateNormal];
     self.scrollView.userInteractionEnabled = YES;
 }
 
@@ -154,12 +161,12 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
             self.scrollView.contentInset = inset;
         }completion:^(BOOL finish){
             
-            [self setState:SeaDataControlLoading];
+            [self setState:SeaDataControlStateLoading];
             self.animating = NO;
         }];
     }else{
         
-        [self setState:SeaDataControlLoading];
+        [self setState:SeaDataControlStateLoading];
         UIEdgeInsets inset = self.originalContentInset;
         inset.bottom += self.criticalPoint;
         self.scrollView.contentInset = inset;
@@ -172,7 +179,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     [super onStateChange:state];
 
     switch (state) {
-        case SeaDataControlLoading : {
+        case SeaDataControlStateLoading : {
             if(self.autoLoadMore || self.loadingDelay <= 0){
                 [self onStartLoading];
             }else{
@@ -216,8 +223,8 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 
 - (void)handleTap:(UITapGestureRecognizer*) tap
 {
-    if(self.state != SeaDataControlLoading && self.state != SeaDataControlStateNoData)    {
-        [self setState:SeaDataControlLoading];
+    if(self.state != SeaDataControlStateLoading && self.state != SeaDataControlStateNoData)    {
+        [self setState:SeaDataControlStateLoading];
     }
 }
 

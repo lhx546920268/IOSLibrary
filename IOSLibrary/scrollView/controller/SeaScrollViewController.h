@@ -115,4 +115,8 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset NS_REQUIRES_SUPER;
+
 @end

@@ -19,16 +19,16 @@ static NSString *const SeaDataControlOffset = @"contentOffset";
 typedef NS_ENUM(NSInteger, SeaDataControlState)
 {
     ///正在滑动
-    SeaDataControlPulling = 0,
+    SeaDataControlStatePulling = 0,
     
     ///状态正常，用户没有滑动
-    SeaDataControlNormal,
+    SeaDataControlStateNormal,
     
     ///正在加载
-    SeaDataControlLoading,
+    SeaDataControlStateLoading,
     
     ///到达临界点
-    SeaDataControlReachCirticalPoint,
+    SeaDataControlStateReachCirticalPoint,
     
     ///没有数据了
     SeaDataControlStateNoData,
@@ -115,5 +115,15 @@ typedef NS_ENUM(NSInteger, SeaDataControlState)
  刷新状态改变 子类可通过这个改变UI
  */
 - (void)onStateChange:(SeaDataControlState) state NS_REQUIRES_SUPER;
+
+/**
+ 获取对应状态的标题 没有则返回normal的标题
+ */
+- (NSString*)titleForState:(SeaDataControlState) state;
+
+/**
+ 设置对应状态的标题
+ */
+- (void)setTitle:(NSString*) title forState:(SeaDataControlState) state;
 
 @end

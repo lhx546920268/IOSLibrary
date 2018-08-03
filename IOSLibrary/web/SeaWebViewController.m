@@ -55,7 +55,7 @@ static NSString *const SeaWebViewSaveImage = @"存储图像";
  */
 static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 
-@interface SeaWebViewController ()<UIActionSheetDelegate,UIScrollViewDelegate>
+@interface SeaWebViewController ()<UIActionSheetDelegate>
 
 /**加载进度条
  */

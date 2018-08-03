@@ -26,6 +26,7 @@
         _textLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_textLabel];
         
+        _showIndicatorView = NO;
         [self setState:SeaDataControlStateNoData];
     }
     
@@ -47,8 +48,14 @@
 {
     [super onStateChange:state];
     switch (state){
-        case SeaDataControlNormal : {
-            _textLabel.text = @"加载更多";
+        case SeaDataControlStateNormal : {
+            _textLabel.text = [self titleForState:state];
+            [_indicatorView stopAnimating];
+            [self updatePosition];
+        }
+            break;
+        case SeaDataControlStatePulling : {
+            _textLabel.text = [self titleForState:state];
             [_indicatorView stopAnimating];
             [self updatePosition];
         }
@@ -56,14 +63,21 @@
         case SeaDataControlStateNoData :
         {
             [_indicatorView stopAnimating];
-            _textLabel.text = @"已到底部";
+            _textLabel.text = [self titleForState:state];
             _textLabel.hidden = !self.shouldStayWhileNoData;
             [self updatePosition];
         }
             break;
-        case SeaDataControlLoading : {
-            _textLabel.text = @"加载中...";
-            [_indicatorView startAnimating];
+        case SeaDataControlStateLoading : {
+            _textLabel.text = [self titleForState:state];
+            if(_showIndicatorView){
+                [_indicatorView startAnimating];
+            }
+            [self updatePosition];
+        }
+            break;
+        case SeaDataControlStateReachCirticalPoint : {
+            _textLabel.text = [self titleForState:state];
             [self updatePosition];
         }
             break;

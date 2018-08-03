@@ -5,6 +5,13 @@
 
 #import "SeaDataControl.h"
 
+@interface SeaDataControl()
+
+///标题
+@property(nonatomic, strong) NSMutableDictionary<NSNumber*, NSString*> *titles;
+
+@end
+
 @implementation SeaDataControl
 
 - (id)initWithScrollView:(UIScrollView*) scrollView
@@ -21,6 +28,8 @@
         self.shouldDisableScrollViewWhenLoading = NO;
         _scrollView = scrollView;
         self.backgroundColor = _scrollView.backgroundColor;
+        
+        self.titles = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -72,7 +81,7 @@
          [self.scrollView setContentInset:self.originalContentInset];
      }completion:^(BOOL finish){
          
-         [self setState:SeaDataControlNormal];
+         [self setState:SeaDataControlStateNormal];
          self.scrollView.userInteractionEnabled = YES;
      }];
 }
@@ -89,7 +98,7 @@
         [self onStateChange:state];
         
         switch (_state) {
-            case SeaDataControlLoading : {
+            case SeaDataControlStateLoading : {
                 if(self.shouldDisableScrollViewWhenLoading){
                     self.scrollView.userInteractionEnabled = NO;
                 }
@@ -104,6 +113,21 @@
 - (void)onStateChange:(SeaDataControlState)state
 {
     
+}
+
+- (void)setTitle:(NSString *)title forState:(SeaDataControlState)state
+{
+    [self.titles setObject:title forKey:@(state)];
+    [self onStateChange:self.state];
+}
+
+- (NSString*)titleForState:(SeaDataControlState)state
+{
+    NSString *title = [self.titles objectForKey:@(state)];
+    if(!title){
+        return [self.titles objectForKey:@(SeaDataControlStateNormal)];
+    }
+    return title;
 }
 
 @end

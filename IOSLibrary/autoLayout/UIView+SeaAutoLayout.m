@@ -550,8 +550,7 @@
 - (CGSize)sea_sizeThatFits:(CGSize) fitsSize type:(SeaAutoLayoutCalculateType) type
 {
     CGSize size = CGSizeZero;
-    if (type != SeaAutoLayoutCalculateTypeSize)
-    {
+    if (type != SeaAutoLayoutCalculateTypeSize){
         //        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
         //        self.translatesAutoresizingMaskIntoConstraints = NO;
         //添加临时约束
@@ -561,15 +560,12 @@
         size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         [self removeConstraint:constraint];
         //        self.translatesAutoresizingMaskIntoConstraints = translatesAutoresizingMaskIntoConstraints;
-    }
-    else
-    {
+    }else{
         //        BOOL translatesAutoresizingMaskIntoConstraints = self.translatesAutoresizingMaskIntoConstraints;
         //        self.translatesAutoresizingMaskIntoConstraints = NO;
         //添加临时约束
         NSLayoutConstraint *constraint = nil;
-        if(!CGSizeEqualToSize(fitsSize, CGSizeZero))
-        {
+        if(!CGSizeEqualToSize(fitsSize, CGSizeZero)){
             constraint = [NSLayoutConstraint constraintWithItem:self attribute:fitsSize.width != 0 ? NSLayoutAttributeWidth : NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:fitsSize.width != 0 ? fitsSize.width : fitsSize.height];
             constraint.priority = SeaAutoLayoutPriorityDefault;
             [self addConstraint:constraint];
@@ -578,8 +574,7 @@
         
         size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         
-        if(constraint != nil)
-        {
+        if(constraint != nil){
             [self removeConstraint:constraint];
         }
         

@@ -254,13 +254,6 @@
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(self.shouldShowScrollToTopButton){
-        self.showScrollToTopButton = scrollView.contentOffset.y >= self.scrollView.height * 3;
-    }
-}
-
 ///回到顶部
 - (void)scrollToTop:(id) sender
 {
@@ -269,6 +262,13 @@
 }
 
 #pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(self.shouldShowScrollToTopButton){
+        self.showScrollToTopButton = scrollView.contentOffset.y >= self.scrollView.height * 3;
+    }
+}
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {

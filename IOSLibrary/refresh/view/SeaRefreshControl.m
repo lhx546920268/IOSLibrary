@@ -62,7 +62,10 @@
     if(self){
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.criticalPoint = 60;
-        [self setState:SeaDataControlNormal];
+        [self setTitle:@"下拉刷新" forState:SeaDataControlStateNormal];
+        [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
+        [self setTitle:@"松开即可刷新" forState:SeaDataControlStateReachCirticalPoint];
+        [self setState:SeaDataControlStateNormal];
     }
     
     return self;
@@ -86,21 +89,21 @@
     CGFloat y = self.scrollView.contentOffset.y;
     if(y <= 0.0f  && [keyPath isEqualToString:SeaDataControlOffset]){
         
-        if(self.state != SeaDataControlLoading){
+        if(self.state != SeaDataControlStateLoading){
             
             if(!self.animating){
                 if(self.scrollView.dragging){
                     if (y == 0.0f){
                         
-                        [self setState:SeaDataControlNormal];
+                        [self setState:SeaDataControlStateNormal];
                     }else if (y > - self.criticalPoint){
                         
-                        [self setState:SeaDataControlPulling];
+                        [self setState:SeaDataControlStatePulling];
                     }else{
                         
-                        [self setState:SeaDataControlReachCirticalPoint];
+                        [self setState:SeaDataControlStateReachCirticalPoint];
                     }
-                }else if(y <= - self.criticalPoint || self.state == SeaDataControlReachCirticalPoint){
+                }else if(y <= - self.criticalPoint || self.state == SeaDataControlStateReachCirticalPoint){
                     
                     [self startLoading];
                 }
@@ -130,7 +133,7 @@
         self.scrollView.contentOffset = CGPointMake(0, - self.criticalPoint);
         
     }completion:^(BOOL finish){
-         [self setState:SeaDataControlLoading];
+         [self setState:SeaDataControlStateLoading];
          self.animating = NO;
     }];
 }
@@ -139,7 +142,7 @@
 {
     [super onStateChange:state];
     switch (state) {
-        case SeaDataControlLoading : {
+        case SeaDataControlStateLoading : {
             if(self.loadingDelay > 0){
                 [self performSelector:@selector(onStartLoading) withObject:nil afterDelay:self.loadingDelay];
             }else{

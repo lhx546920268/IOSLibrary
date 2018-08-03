@@ -9,7 +9,7 @@
 #import "SeaViewController.h"
 #import <WebKit/WebKit.h>
 
-@interface SeaWebViewController : SeaViewController<WKNavigationDelegate,WKUIDelegate>
+@interface SeaWebViewController : SeaViewController<WKNavigationDelegate,WKUIDelegate,UIScrollViewDelegate>
 
 /**网页视图，ios8.0新出的api，更高效地显示网页
  */
@@ -119,5 +119,9 @@
 
 ///返回需要注入的js
 - (NSString*)javascript;
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset NS_REQUIRES_SUPER;
 
 @end
