@@ -107,6 +107,11 @@
 @property(nonatomic, strong) UIColor *separatorColor;
 
 /**
+ cell 分割线间距 default is '(0, 0, 0, 0)' ，只有left和right生效
+ */
+@property(nonatomic, assign) UIEdgeInsets separatorInsets;
+
+/**
  按钮信息
  */
 @property(nonatomic, strong) NSArray<SeaPopoverMenuItemInfo*> *menuItemInfos;

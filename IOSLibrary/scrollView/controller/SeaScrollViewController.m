@@ -281,6 +281,8 @@
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
+    [self.loadMoreControl scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+    
     if([self.parentViewController isKindOfClass:[SeaPageViewController class]]){
         SeaPageViewController *page = (SeaPageViewController*)self.parentViewController;
         page.scrollView.scrollEnabled = YES;

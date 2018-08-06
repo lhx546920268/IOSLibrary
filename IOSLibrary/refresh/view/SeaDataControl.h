@@ -126,4 +126,11 @@ typedef NS_ENUM(NSInteger, SeaDataControlState)
  */
 - (void)setTitle:(NSString*) title forState:(SeaDataControlState) state;
 
+/**
+ UIScrollView 代理，主要用于当刚好到到达临界点时 松开手时获取contentOffset无法满足临界点
+ */
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView 
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset;
+
 @end

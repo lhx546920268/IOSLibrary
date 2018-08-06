@@ -165,10 +165,12 @@
 
 - (void)layoutSubviews
 {
-    ///在这里计算 item
-    self.mesureEnable = YES;
-    [self reloadData];
-    [self layoutIndicatorWithAnimate:NO];
+    ///在这里计算 item 有时候 宽度或者高度等于0的
+    if(self.width > 0 && self.height > 0){
+        self.mesureEnable = YES;
+        [self reloadData];
+        [self layoutIndicatorWithAnimate:NO];
+    }
 }
 
 ///刷新数据

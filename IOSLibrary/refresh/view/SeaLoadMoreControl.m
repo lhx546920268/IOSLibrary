@@ -78,54 +78,65 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 {
     if([keyPath isEqualToString:SeaDataControlOffset]){
       
-        if(self.state == SeaDataControlStateNoData || self.state == SeaDataControlStateLoading || self.hidden)
-            return;
-        
-        if(!self.loadMoreEnableWhileZeroContent && CGSizeEqualToSize(self.scrollView.contentSize, CGSizeZero)){
-            return;
-        }
-        
-        CGSize contentSize = self.scrollView.contentSize;
-
-        if(self.autoLoadMore){
-            
-            if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height - self.criticalPoint){
-                
-                [self beginLoadMore:NO];
-            }
-        }else{
-            if(self.scrollView.contentSize.height == 0 || self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height || self.scrollView.contentSize.height < self.scrollView.height)
-                return;
-            
-            if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height){
-                
-                if(self.scrollView.dragging){
-                    if (self.scrollView.contentOffset.y == contentSize.height - self.scrollView.height){
-                        
-                        [self setState:SeaDataControlStateNormal];
-                    }else if (self.scrollView.contentOffset.y < contentSize.height - self.scrollView.height + self.criticalPoint){
-                        
-                        [self setState:SeaDataControlStatePulling];
-                    }else{
-                        [self setState:SeaDataControlStateReachCirticalPoint];
-                    }
-                }else if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height + self.criticalPoint){
-                    
-                    [self beginLoadMore:YES];
-                }
-            }
-        }
-        
-        if(!self.animating){
-            [self setNeedsLayout];
-        }
+        [self onContentOffsetChange];
     }else if ([keyPath isEqualToString:SeaDataControlContentSize]){
         
         [self setNeedsLayout];
     }
 }
 
+///contentOffset改变
+- (void)onContentOffsetChange
+{
+    if(self.state == SeaDataControlStateNoData || self.state == SeaDataControlStateLoading || self.hidden)
+        return;
+    
+    if(!self.loadMoreEnableWhileZeroContent && CGSizeEqualToSize(self.scrollView.contentSize, CGSizeZero)){
+        return;
+    }
+    
+    CGSize contentSize = self.scrollView.contentSize;
+    
+    if(self.autoLoadMore){
+        
+        if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height - self.criticalPoint){
+            
+            [self beginLoadMore:NO];
+        }
+    }else{
+        if(self.scrollView.contentSize.height == 0 || self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height || self.scrollView.contentSize.height < self.scrollView.height)
+            return;
+        
+        if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height){
+            
+            if(self.scrollView.dragging){
+                if (self.scrollView.contentOffset.y == contentSize.height - self.scrollView.height){
+                    
+                    [self setState:SeaDataControlStateNormal];
+                }else if (self.scrollView.contentOffset.y < contentSize.height - self.scrollView.height + self.criticalPoint){
+                    
+                    [self setState:SeaDataControlStatePulling];
+                }else{
+                    [self setState:SeaDataControlStateReachCirticalPoint];
+                }
+            }else if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height + self.criticalPoint){
+                
+                [self beginLoadMore:YES];
+            }
+        }
+    }
+    
+    if(!self.animating){
+        [self setNeedsLayout];
+    }
+}
+
 #pragma mark super method
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self onContentOffsetChange];
+}
 
 - (void)startLoading
 {

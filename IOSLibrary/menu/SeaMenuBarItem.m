@@ -20,6 +20,7 @@
         _button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _button.titleLabel.textAlignment = NSTextAlignmentCenter;
         _button.userInteractionEnabled = NO;
+        _button.titleLabel.numberOfLines = 0;
         [self.contentView addSubview:_button];
         
         _separator = [UIView new];

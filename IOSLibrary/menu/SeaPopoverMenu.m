@@ -178,6 +178,14 @@
     }
 }
 
+- (void)setSeparatorInsets:(UIEdgeInsets)separatorInsets
+{
+    if(!UIEdgeInsetsEqualToEdgeInsets(_separatorInsets, separatorInsets)){
+        _separatorInsets = separatorInsets;
+        [self.tableView reloadData];
+    }
+}
+
 - (void)setRowHeight:(CGFloat)rowHeight
 {
     if(_rowHeight != rowHeight){
@@ -266,7 +274,6 @@
     cell.button.titleLabel.font = _font;
     [cell.button setTitleColor:_textColor forState:UIControlStateNormal];
     cell.button.tintColor = _textColor;
-    [cell.button sea_setImagePosition:SeaButtonImagePositionLeft margin:_iconTitleInterval];
     cell.button.sea_leftLayoutConstraint.constant = _cellContentInsets.left;
     cell.button.sea_rightLayoutConstraint.constant = _cellContentInsets.right;
     
@@ -275,7 +282,11 @@
     [cell.button setImage:info.icon forState:UIControlStateNormal];
     
     cell.divider.hidden = indexPath.row == _menuItemInfos.count - 1;
-    cell.divider.backgroundColor = self.separatorColor;
+    cell.divider.backgroundColor = _separatorColor;
+    cell.divider.sea_leftLayoutConstraint.constant = _separatorInsets.left;
+    cell.divider.sea_rightLayoutConstraint.constant = _separatorInsets.right;
+    
+    [cell.button sea_setImagePosition:SeaButtonImagePositionLeft margin:_iconTitleInterval];
     
     return cell;
 }
