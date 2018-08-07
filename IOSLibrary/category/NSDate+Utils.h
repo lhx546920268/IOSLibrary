@@ -30,6 +30,15 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
 
 #pragma mark- 单个时间
 
+///获取当前时间的 秒
+- (int)sea_second;
+
+///获取当前时间的 分
+- (int)sea_minute;
+
+///获取当前时间的 小时
+- (int)sea_hour;
+
 ///获取当前时间的 日期
 - (int)sea_day;
 

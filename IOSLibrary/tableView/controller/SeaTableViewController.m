@@ -9,6 +9,7 @@
 #import "NSString+Utils.h"
 #import "UIView+SeaEmptyView.h"
 #import "UITableView+Utils.h"
+#import "SeaBasic.h"
 
 @interface SeaTableViewController ()
 
@@ -67,6 +68,9 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundView = nil;
+        if(_style == UITableViewStyleGrouped){
+            _tableView.backgroundColor = SeaGrayBackgroundColor;
+        }
         _tableView.sea_emptyViewDelegate = self;
         
         [_tableView setSeparatorInset:self.separatorEdgeInsets];

@@ -33,6 +33,27 @@ static const int SeaMinutesPerHour = 60;
 
 #pragma mark- 单个时间
 
+- (int)sea_second
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitSecond fromDate:self];
+    return (int)components.second;
+}
+
+- (int)sea_minute
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitMinute fromDate:self];
+    return (int)components.minute;
+}
+
+- (int)sea_hour
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitHour fromDate:self];
+    return (int)components.hour;
+}
+
 - (int)sea_day
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];

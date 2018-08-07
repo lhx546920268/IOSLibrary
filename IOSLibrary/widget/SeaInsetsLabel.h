@@ -5,8 +5,6 @@
 
 #import <UIKit/UIKit.h>
 
-IB_DESIGNABLE
-
 /**
  可设置文字边距的lable
  */
@@ -15,10 +13,10 @@ IB_DESIGNABLE
 /**
  文本边距 default is 'UIEdgeInsetsZero'
  */
-@property(nonatomic,assign) IBInspectable CGFloat paddingLeft;
-@property(nonatomic,assign) IBInspectable CGFloat paddingTop;
-@property(nonatomic,assign) IBInspectable CGFloat paddingRight;
-@property(nonatomic,assign) IBInspectable CGFloat paddingBottom;
+@property(nonatomic,assign) CGFloat paddingLeft;
+@property(nonatomic,assign) CGFloat paddingTop;
+@property(nonatomic,assign) CGFloat paddingRight;
+@property(nonatomic,assign) CGFloat paddingBottom;
 
 @property(nonatomic,assign) UIEdgeInsets contentInsets;
 
