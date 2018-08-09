@@ -288,7 +288,8 @@
 
 #pragma mark- 键盘
 
-/**添加键盘监听
+/**
+ 添加键盘监听
  */
 - (void)addKeyboardNotification
 {
@@ -297,7 +298,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
-/**移除键盘监听
+/**
+ 移除键盘监听
  */
 - (void)removeKeyboardNotification
 {
@@ -306,7 +308,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
-/**键盘高度改变
+/**
+ 键盘高度改变
  */
 - (void)keyboardWillChangeFrame:(NSNotification*) notification
 {
