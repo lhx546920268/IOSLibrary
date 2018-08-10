@@ -117,7 +117,7 @@ static char SeaDashBorderLayerKey;
     self.center = CGPointMake(self.center.x, centerY);
 }
 
-#pragma mark- dash 虚线
+#pragma mark dash 虚线
 
 - (void)makeBorderWidth:(CGFloat)width Color:(UIColor *)color CornerRadius:(CGFloat)cornerRadius
 {
@@ -195,7 +195,7 @@ static char SeaDashBorderLayerKey;
     self.layer.mask = layer;
 }
 
-#pragma mark- init
+#pragma mark init
 
 + (instancetype)loadFromNib
 {

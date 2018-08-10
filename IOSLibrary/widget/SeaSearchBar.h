@@ -135,7 +135,7 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
  设置 像 UIBarPositionTopAttached default is 'NO'，父视图clipsToBounds = NO，否则将不生效，如在UITableView.tableViewHeader
  顶部约束必须 为 topLayoutGuide.bottom ios11以下，safeAreaLayoutGuide ios11
  或者 当父视图为UIScrollView 时，可设置 automaticallyAdjustsScrollViewInsets = YES ios11以下， UIScrollViewContentInsetAdjustmentAutomatic ios11，
- IPhoneX 将忽略，clipsToBounds = YES 时无效
+ clipsToBounds = YES 时无效
  */
 @property(nonatomic, assign) BOOL showsAttachedContent;
 

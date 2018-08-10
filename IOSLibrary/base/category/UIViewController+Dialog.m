@@ -262,7 +262,7 @@ static char SeaInPresentWayKey;
     objc_setAssociatedObject(self, &SeaInPresentWayKey, @(value), OBJC_ASSOCIATION_RETAIN);
 }
 
-#pragma mark- public method
+#pragma mark public method
 
 - (void)showAsDialog
 {

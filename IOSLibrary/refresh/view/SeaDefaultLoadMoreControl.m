@@ -26,7 +26,8 @@
         _textLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_textLabel];
         
-        _showIndicatorView = NO;
+        _showIndicatorView = YES;
+        
         [self setState:SeaDataControlStateNoData];
     }
     

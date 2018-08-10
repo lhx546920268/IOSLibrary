@@ -43,7 +43,7 @@
  */
 @property (nonatomic) CGFloat centerY;
 
-#pragma mark- 虚线 dash
+#pragma mark 虚线 dash
 
 /** 虚线边框图层
  */
