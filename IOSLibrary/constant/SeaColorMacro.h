@@ -38,7 +38,7 @@
 #define UIKitTintColor [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0]
 
 ///图片没加载前默认背景颜色
-#define SeaImageBackgroundColorBeforeDownload [UIColor sea_colorFromHex:@"e6e6e6"]
+#define SeaImageBackgroundColorBeforeDownload [UIColor sea_colorFromHex:@"fcfcfc"]
 
 ///分割线颜色
 #define SeaSeparatorColor [SeaConstant separatorColor]

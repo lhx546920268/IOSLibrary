@@ -56,6 +56,11 @@
 - (void)start;
 
 /**
+ 串行执行所有任务，按照添加顺序来执行
+ */
+- (void)startSerially;
+
+/**
  取消所有请求
  */
 - (void)cancelAllTasks;

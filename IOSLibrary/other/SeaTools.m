@@ -100,22 +100,36 @@ void openSystemSettings()
     }
 }
 
-void makePhoneCall(NSString *mobile, BOOL flag)
+void makePhoneCall(NSArray<NSString*> *mobiles, BOOL flag)
 {
-    if([NSString isEmpty:mobile])
+    if(mobiles.count == 0)
         return;
     
     if(flag){
-        SeaAlertController *controller = [[SeaAlertController alloc] initWithTitle:[NSString stringWithFormat:@"%@", mobile] message:nil icon:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:nil otherButtonTitles:@[@"取消", @"拨打"]];
-        controller.selectionHandler = ^(NSUInteger index){
-          
-            if(index == 1){
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
-            }
-        };
-        [controller show];
+        if(mobiles.count > 1){
+            
+            SeaAlertController *controller = [SeaAlertController actionSheetWithTitle:nil message:nil otherButtonTitles:mobiles];
+            controller.selectionHandler = ^(NSUInteger index){
+                
+                if(index < mobiles.count){
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobiles[index]]]];
+                }
+            };
+            [controller show];
+            
+        }else{
+            NSString *mobile = [mobiles firstObject];
+            SeaAlertController *controller = [[SeaAlertController alloc] initWithTitle:[NSString stringWithFormat:@"%@", mobile] message:nil icon:nil style:SeaAlertControllerStyleAlert cancelButtonTitle:nil otherButtonTitles:@[@"取消", @"拨打"]];
+            controller.selectionHandler = ^(NSUInteger index){
+                
+                if(index == 1){
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
+                }
+            };
+            [controller show];
+        }
     }else{
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", [mobiles firstObject]]]];
     }
 }
 

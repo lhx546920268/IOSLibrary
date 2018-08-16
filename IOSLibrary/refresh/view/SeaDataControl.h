@@ -133,4 +133,9 @@ typedef NS_ENUM(NSInteger, SeaDataControlState)
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset;
 
+/**
+ 初始化
+ */
+- (void)initialization NS_REQUIRES_SUPER;
+
 @end

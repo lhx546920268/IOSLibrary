@@ -18,6 +18,15 @@
  */
 - (ObjectType)sea_objectAtIndex:(NSUInteger) index;
 
+/**
+ objectAtIndex 如果index 越界，返回nil 并且判断返回的值是否是对应类型
+
+ @param index index 下标
+ @param class 要获取值得类型
+ @return object
+ */
+- (ObjectType)sea_objectAtIndex:(NSUInteger) index class:(Class) class;
+
 @end
 
 @interface NSMutableArray<ObjectType> (Utils)

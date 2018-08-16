@@ -21,17 +21,22 @@
     
     self = [super initWithFrame:frame];
     if(self){
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _originalContentInset = scrollView.contentInset;
-        self.loadingDelay = 0.4;
-        self.stopDelay = 0.25;
-        self.shouldDisableScrollViewWhenLoading = NO;
         _scrollView = scrollView;
-        self.backgroundColor = _scrollView.backgroundColor;
-        
-        self.titles = [NSMutableDictionary dictionary];
+        [self initialization];
     }
     return self;
+}
+
+- (void)initialization
+{
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _originalContentInset = _scrollView.contentInset;
+    self.loadingDelay = 0.4;
+    self.stopDelay = 0.25;
+    self.shouldDisableScrollViewWhenLoading = NO;
+    self.backgroundColor = _scrollView.backgroundColor;
+    
+    self.titles = [NSMutableDictionary dictionary];
 }
 
 //将要添加到父视图中

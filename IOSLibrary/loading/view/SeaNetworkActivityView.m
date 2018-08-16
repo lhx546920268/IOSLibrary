@@ -134,10 +134,10 @@
     }
 }
 
-- (void)willMoveToSuperview:(UIView *)newSuperview
+- (void)didMoveToWindow
 {
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(delayShow) object:nil];
-    if(newSuperview){
+    if(self.window){
         if(self.delaying){
             return;
         }
@@ -148,6 +148,8 @@
         }else{
             [self delayShow];
         }
+    }else{
+        [self stopAnimating];
     }
 }
 

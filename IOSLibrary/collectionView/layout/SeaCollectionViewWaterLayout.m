@@ -289,6 +289,7 @@
 
 - (void)prepareLayout
 {
+    [super prepareLayout];
     [self caculateContentSize];
 }
 

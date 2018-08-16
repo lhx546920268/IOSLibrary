@@ -7,6 +7,7 @@
 //
 
 #import "SeaCollectionViewFlowFillLayout.h"
+#import "SeaBasic.h"
 
 @class SeaCollectionFlowRowInfo;
 
@@ -110,7 +111,12 @@
         return point;
     }
 
-    if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost > self.layoutAttributes.layout.collectionView.frame.size.width){
+    CGFloat width = self.layoutAttributes.layout.collectionView.frame.size.width;
+    if(width == 0){
+        width = SeaScreenWidth;
+    }
+    
+    if(size.width + self.layoutAttributes.sectionInset.right + self.layoutAttributes.minimumInteritemSpacing + self.rightmost > width){
         ///这一行已经没有位置可以放item了
         if(self.outmostItemInfos.count < 2){
             point.x = -1;
@@ -427,7 +433,11 @@
     NSAssert(sizeForItemDelegate, @"必须实现 collectionViewFlowFillLayout:itemSizeForIndexPath:");
 #endif
 
+    [self.collectionView layoutIfNeeded];
     CGFloat width = self.collectionView.bounds.size.width;
+    if(width == 0){
+        width = SeaScreenWidth;
+    }
     //计算内容高度
     CGFloat height = 0;
 
@@ -576,6 +586,8 @@
 
 - (void)prepareLayout
 {
+    [super prepareLayout];
+
     [self caculateContentSize];
 }
 
@@ -644,6 +656,15 @@
     CGFloat top = rect.origin.y;
     CGFloat bottom = top + rect.size.height;
 
+    //有事宽度为空 CGRectIntersectsRect 计算会失败
+    if(rect.size.width == 0){
+        rect.size.width = self.collectionView.frame.size.width;
+    }
+    
+    if(rect.size.width == 0){
+        rect.size.width = SeaScreenWidth;
+    }
+    
     for(NSUInteger i = 0;i < self.attributes.count;i ++){
         SeaCollectionViewFlowFillLayoutAttributes *attribute = self.attributes[i];
         ///该区域没有元素

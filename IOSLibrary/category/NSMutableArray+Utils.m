@@ -18,6 +18,15 @@
     return nil;
 }
 
+- (id)sea_objectAtIndex:(NSUInteger) index class:(Class) class
+{
+    id obj = [self sea_objectAtIndex:index];
+    if([obj isKindOfClass:class]){
+        return obj;
+    }
+    return nil;
+}
+
 @end
 
 @implementation NSMutableArray (Utils)

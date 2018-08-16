@@ -41,9 +41,9 @@ UIKIT_EXTERN void unregisterRemoteNotification(void);
 UIKIT_EXTERN void openSystemSettings(void);
 
 /**拨打电话
- *@param mobile 电话号码
- *@param flag 是否有弹窗提示
+ *@param mobiles 电话号码
+ *@param flag 是否有弹窗提示 没弹窗显示只拨打第一个
  */
-UIKIT_EXTERN void makePhoneCall(NSString *mobile, BOOL flag);
+UIKIT_EXTERN void makePhoneCall(NSArray<NSString*> *mobiles, BOOL flag);
 
 

@@ -27,21 +27,25 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 {
     self = [super initWithScrollView:scrollView];
     if(self){
-  
-        self.criticalPoint = 45;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [self addGestureRecognizer:tap];
-        
-        [self setTitle:@"加载更多" forState:SeaDataControlStateNormal];
-        [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
-        [self setTitle:@"松开即可加载" forState:SeaDataControlStateReachCirticalPoint];
-        [self setTitle:@"已到底部" forState:SeaDataControlStateNoData];
         
         [self setState:SeaDataControlStateNoData];
-        self.autoLoadMore = YES;
     }
     
     return self;
+}
+
+- (void)initialization
+{
+    [super initialization];
+    self.criticalPoint = 45;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self addGestureRecognizer:tap];
+    
+    [self setTitle:@"加载更多" forState:SeaDataControlStateNormal];
+    [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
+    [self setTitle:@"松开即可加载" forState:SeaDataControlStateReachCirticalPoint];
+    [self setTitle:@"已到底部" forState:SeaDataControlStateNoData];
+    self.autoLoadMore = YES;
 }
 
 - (void)layoutSubviews

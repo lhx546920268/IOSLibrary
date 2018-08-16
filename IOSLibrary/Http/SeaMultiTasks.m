@@ -14,10 +14,13 @@
 @interface SeaMultiTasks()<SeaHttpTaskDelegate>
 
 ///任务列表
-@property(nonatomic, strong) NSMutableSet<NSURLSessionTask*> *tasks;
+@property(nonatomic, strong) NSMutableArray<NSURLSessionTask*> *tasks;
 
 ///是否有请求失败
 @property(nonatomic, assign) BOOL hasFail;
+
+///是否并发执行
+@property(nonatomic, assign) BOOL concurrent;
 
 @end
 
@@ -40,7 +43,7 @@
     self = [super init];
     if(self){
         
-        self.tasks = [NSMutableSet set];
+        self.tasks = [NSMutableArray array];
         self.shouldCancelAllTaskWhileOneFail = YES;
     }
     
@@ -71,11 +74,14 @@
 
 - (void)start
 {
-    [[SeaMultiTasks sharedContainers] addObject:self];
-    self.hasFail = NO;
-    for(NSURLSessionTask *task in self.tasks){
-        [task resume];
-    }
+    self.concurrent = YES;
+    [self startTask];
+}
+
+- (void)startSerially
+{
+    self.concurrent = NO;
+    [self startTask];
 }
 
 - (void)cancelAllTasks
@@ -85,6 +91,28 @@
     }
     [self.tasks removeAllObjects];
     [[SeaMultiTasks sharedContainers] removeObject:self];
+}
+
+///开始任务
+- (void)startTask
+{
+    [[SeaMultiTasks sharedContainers] addObject:self];
+    self.hasFail = NO;
+    
+    if(self.concurrent){
+        for(NSURLSessionTask *task in self.tasks){
+            [task resume];
+        }
+    }else{
+        [self startNextTask];
+    }
+}
+
+///开始执行下一个任务 串行时用到
+- (void)startNextTask
+{
+    NSURLSessionTask *task = [self.tasks firstObject];
+    [task resume];
 }
 
 ///删除任务
@@ -105,6 +133,8 @@
     if(self.tasks.count == 0){
         !self.completionHandler ?: self.completionHandler(self.hasFail);
         [[SeaMultiTasks sharedContainers] removeObject:self];
+    }else if (!self.concurrent){
+        [self startNextTask];
     }
 }
 

@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, SeaCollectionViewDraggableLayoutDragDirection)
  */
 - (void)prepareLayout
 {
+    [super prepareLayout];
     if(!self.longGestureRecognizer)
     {
         _longGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
