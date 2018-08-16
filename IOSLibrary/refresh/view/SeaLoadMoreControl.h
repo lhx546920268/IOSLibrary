@@ -30,4 +30,9 @@
  */
 - (void)noMoreInfo;
 
+/**
+ 加载失败
+ */
+- (void)loadFail;
+
 @end

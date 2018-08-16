@@ -97,10 +97,16 @@
  */
 - (void)stopRefreshWithMsg:(NSString*) msg NS_REQUIRES_SUPER;
 
-/**结束加载更多
+/**
+ 结束加载更多
  *@param flag 是否还有更多信息
  */
 - (void)stopLoadMoreWithMore:(BOOL) flag NS_REQUIRES_SUPER;
+
+/**
+ 加载更多失败
+ */
+- (void)stopLoadMoreWithFail NS_REQUIRES_SUPER;
 
 /**手动调用下拉刷新，会有下拉动画
  */

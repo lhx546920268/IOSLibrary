@@ -32,7 +32,11 @@ static char SeaLoadMoreControlKey;
 
 - (void)sea_removeRefreshControl
 {
-    self.sea_refreshControl = nil;
+    SeaRefreshControl *refreshControl = self.sea_refreshControl;
+    if(refreshControl){
+        self.contentInset = refreshControl.originalContentInset;
+        self.sea_refreshControl = nil;
+    }
 }
 
 - (SeaRefreshControl*)sea_refreshControl
@@ -65,7 +69,11 @@ static char SeaLoadMoreControlKey;
 
 - (void)sea_removeLoadMoreControl
 {
-    self.sea_loadMoreControl = nil;
+    SeaLoadMoreControl *loadMoreControl = self.sea_loadMoreControl;
+    if(loadMoreControl){
+        self.contentInset = loadMoreControl.originalContentInset;
+        self.sea_loadMoreControl = nil;
+    }
 }
 
 - (void)setSea_loadMoreControl:(SeaLoadMoreControl *) loadMoreControl

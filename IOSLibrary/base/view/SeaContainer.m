@@ -292,6 +292,11 @@
 
 #pragma mark fail page
 
+- (UIView*)sea_failPageView
+{
+    return self.failPageView;
+}
+
 - (void)setSea_failPageView:(UIView *)sea_failPageView
 {
     if(sea_failPageView == nil){
@@ -340,6 +345,11 @@
 }
 
 #pragma mark page loading
+
+- (UIView*)sea_pageLoadingView
+{
+    return self.pageLoadingView;
+}
 
 - (void)setSea_pageLoadingView:(UIView *)sea_pageLoadingView
 {

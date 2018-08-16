@@ -45,6 +45,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
     [self setTitle:@"松开即可加载" forState:SeaDataControlStateReachCirticalPoint];
     [self setTitle:@"已到底部" forState:SeaDataControlStateNoData];
+    [self setTitle:@"加载失败，点击重新加载" forState:SeaDataControlStateFail];
     self.autoLoadMore = YES;
 }
 
@@ -92,7 +93,10 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 ///contentOffset改变
 - (void)onContentOffsetChange
 {
-    if(self.state == SeaDataControlStateNoData || self.state == SeaDataControlStateLoading || self.hidden)
+    if(self.state == SeaDataControlStateNoData
+       || self.state == SeaDataControlStateLoading
+       || self.state == SeaDataControlStateFail
+       || self.hidden)
         return;
     
     if(!self.loadMoreEnableWhileZeroContent && CGSizeEqualToSize(self.scrollView.contentSize, CGSizeZero)){
@@ -148,7 +152,7 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     
     self.animating = NO;
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
-    [self beginLoadMore:YES];
+    [self beginLoadMore:NO];
     [self setNeedsLayout];
 }
 
@@ -217,6 +221,21 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
                 self.scrollView.contentInset = inset;
             }
         }
+            break;
+        case SeaDataControlStateFail : {
+            UIEdgeInsets inset = self.originalContentInset;
+            inset.top = self.scrollView.contentInset.top;
+            inset.bottom = self.criticalPoint;
+            if(self.shouldAnimate){
+                [UIView animateWithDuration:0.25 animations:^(void){
+                    
+                    self.scrollView.contentInset = inset;
+                }];
+            }else{
+                self.scrollView.contentInset = inset;
+            }
+        }
+            break;
         default:
             break;
     }
@@ -232,6 +251,12 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
 {
     self.scrollView.userInteractionEnabled = YES;
     [self setState:SeaDataControlStateNoData];
+}
+
+- (void)loadFail
+{
+    self.scrollView.userInteractionEnabled = YES;
+    [self setState:SeaDataControlStateFail];
 }
 
 #pragma mark action

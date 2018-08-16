@@ -32,6 +32,9 @@ typedef NS_ENUM(NSInteger, SeaDataControlState)
     
     ///没有数据了
     SeaDataControlStateNoData,
+    
+    ///加载失败
+    SeaDataControlStateFail,
 };
 
 /**

@@ -67,7 +67,8 @@
             [self updatePosition];
         }
             break;
-        case SeaDataControlStateNormal : {
+        case SeaDataControlStateNormal :
+        case SeaDataControlStateFail : {
             
             if(!self.animating){
                 _statusLabel.text = [self titleForState:state];

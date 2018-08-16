@@ -192,6 +192,12 @@
     }
 }
 
+- (void)stopLoadMoreWithFail
+{
+    _loadingMore = NO;
+    [self.loadMoreControl loadFail];
+}
+
 - (void)loadMoreManually
 {
     [self.loadMoreControl startLoading];
