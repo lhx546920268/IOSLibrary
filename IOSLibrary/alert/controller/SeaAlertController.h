@@ -68,6 +68,11 @@ typedef NS_ENUM(NSUInteger, SeaAlertControllerStyle)
 @property(nonatomic,assign) UIEdgeInsets contentInsets;
 
 /**
+ 提示框内容（除了按钮）最低高度
+ */
+@property(nonatomic,assign) CGFloat contentMinHeight;
+
+/**
  圆角
  */
 @property(nonatomic,assign) CGFloat cornerRadius;

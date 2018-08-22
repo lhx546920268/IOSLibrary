@@ -14,6 +14,7 @@
     UIView *_contentView;
     UILabel *_textLabel;
     UIActivityIndicatorView *_activityIndicatorView;
+    BOOL _animating;
 }
 
 /**
@@ -47,7 +48,12 @@
 @property(nonatomic,readonly) UIActivityIndicatorView *activityIndicatorView;
 
 /**
- 初始化 子类可自定义自己的实现
+ 是否正在动画
+ */
+@property(nonatomic,readonly) BOOL animating;
+
+/**
+ 初始化 子类可自定义自己的实现 可能会调用多次
  */
 - (void)initialization;
 

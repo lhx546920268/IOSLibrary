@@ -17,6 +17,7 @@
 #import "UIWebView+Utils.h"
 #import "UIViewController+Utils.h"
 #import "SeaPageViewController.h"
+#import "SeaTools.h"
 
 /**自定义UIWebView 中的长按手势
  */
@@ -54,6 +55,9 @@ static NSString *const SeaWebViewSaveImage = @"存储图像";
 /**拷贝链接
  */
 static NSString *const SeaWebViewCopyLink = @"拷贝链接";
+
+///当前系统默认的 userAgent
+static NSString *SeaSystemUserAgent = nil;
 
 @interface SeaWebViewController ()<UIActionSheetDelegate>
 
@@ -267,8 +271,14 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     if(@available(iOS 9.0, *)){
         _webView.allowsLinkPreview = NO;
     }
+    
+    if(@available(iOS 11.0, *)){
+        _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    
     _webView.allowsBackForwardNavigationGestures = YES;
     _webView.navigationDelegate = self;
+    _webView.opaque = NO;
     _webView.scrollView.delegate = self;
     _webView.scrollView.backgroundColor = [UIColor clearColor];
     _webView.backgroundColor = [UIColor clearColor];
@@ -324,12 +334,54 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
     return nil;
 }
 
+- (NSString*)customerUserAgent
+{
+    return nil;
+}
+
 - (void)loadWebContent
 {
-    if(self.URL){
-        [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
-    }else if(self.htmlString){
-        [_webView loadHTMLString:self.htmlString baseURL:nil];
+    BOOL loadEnable = YES;
+    
+    //判断需不需要设置 自定义ua，没有获取的系统的ua 先获取
+    if(!SeaSystemUserAgent){
+        NSString *userAgent = [self customerUserAgent];
+        if(![NSString isEmpty:userAgent]){
+            loadEnable = NO;
+            WeakSelf(self)
+            [self.webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+                
+                if([NSString isEmpty:result]){
+                    result = @"";
+                }
+                SeaSystemUserAgent = result;
+                if(@available(iOS 9.0, *)){
+                    
+                }else{
+                    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"UserAgent" : [NSString stringWithFormat:@"%@ %@", SeaSystemUserAgent, userAgent]}];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                [weakSelf loadWebContent];
+            }];
+        }
+    }else{
+        
+        //ios 8以下只需要设置一次
+        if(@available(iOS 9.0, *)){
+            if([NSString isEmpty:self.webView.customUserAgent]){
+                NSString *userAgent = [self customerUserAgent];
+                if(![NSString isEmpty:userAgent]){
+                    self.webView.customUserAgent = [NSString stringWithFormat:@"%@ %@", SeaSystemUserAgent, userAgent];
+                }
+            }
+        }
+    }
+    if(loadEnable){
+        if(self.URL){
+            [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
+        }else if(self.htmlString){
+            [_webView loadHTMLString:self.htmlString baseURL:nil];
+        }
     }
 }
 
@@ -351,7 +403,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if([self shouldOpenURL:navigationAction.request.URL]){
+    if([self shouldOpenURL:navigationAction.request.URL action:navigationAction]){
         decisionHandler(WKNavigationActionPolicyAllow);
     }else{
         decisionHandler(WKNavigationActionPolicyCancel);
@@ -509,7 +561,7 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 
 #pragma mark- 页面是否可以打开
 
-- (BOOL)shouldOpenURL:(NSURL*) URL
+- (BOOL)shouldOpenURL:(NSURL*) URL action:(WKNavigationAction *)action
 {
     return YES;
 }

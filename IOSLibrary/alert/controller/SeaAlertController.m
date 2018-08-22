@@ -604,6 +604,33 @@
             }
             
             self.header.height = y + style.textInsets.bottom;
+            
+            //小于最低高度
+            if(self.header.height < style.contentMinHeight){
+                CGFloat rest = (style.contentMinHeight - self.header.height) / 2.0;
+                CGFloat y = style.textInsets.top + rest;
+                if(self.icon){
+                    self.header.imageView.top = y;
+                    y += self.header.imageView.height;
+                }
+                
+                if(self.titleString){
+                    if(self.icon){
+                        y += style.verticalSpacing;
+                    }
+                    self.header.titleLabel.top = y;
+                    y += self.header.titleLabel.height;
+                }
+                
+                if(self.message){
+                    if(self.icon || self.titleString){
+                        y += style.verticalSpacing;
+                    }
+                    self.header.messageLabel.top = y;
+                    y += self.header.messageLabel.height;
+                }
+                self.header.height = y + style.textInsets.bottom;
+            }
             self.header.contentSize = CGSizeMake(self.header.width, self.header.height);
             
             self.header.backgroundColor = style.mainColor;

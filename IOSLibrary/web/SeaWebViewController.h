@@ -109,7 +109,7 @@
 /**
  是否应该打开某个链接 default is 'YES'
  */
-- (BOOL)shouldOpenURL:(NSURL*) URL;
+- (BOOL)shouldOpenURL:(NSURL*) URL action:(WKNavigationAction*) action;
 
 ///初始化
 - (void)initilization NS_REQUIRES_SUPER;
@@ -119,6 +119,9 @@
 
 ///返回需要注入的js
 - (NSString*)javascript;
+
+///返回需要设置的自定义 userAgent 会拼在系统的userAgent后面 default is nil
+- (NSString*)customerUserAgent;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 

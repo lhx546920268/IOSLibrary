@@ -116,28 +116,20 @@
 - (void)setHidden:(BOOL)hidden
 {
     [super setHidden:hidden];
-    
-    if(self.hidden){
-        if(self.delaying){
-            return;
-        }
-        if(self.delay > 0){
-            self.delaying = YES;
-            _translucentView.hidden = YES;
-            self.delaying = YES;
-            [self performSelector:@selector(delayShow) withObject:nil afterDelay:self.delay];
-        }else{
-            [self delayShow];
-        }
-    }else{
-        [self startAnimating];
-    }
+    [self updateStatus];
 }
 
 - (void)didMoveToWindow
 {
+    [super didMoveToWindow];
+    [self updateStatus];
+}
+
+///更新菊花状态
+- (void)updateStatus
+{
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(delayShow) object:nil];
-    if(self.window){
+    if(self.window && !self.hidden){
         if(self.delaying){
             return;
         }
@@ -157,11 +149,13 @@
 
 - (void)stopAnimating
 {
+    _animating = YES;
     [self.activityIndicatorView stopAnimating];
 }
 
 - (void)startAnimating
 {
+    _animating = NO;
     [self.activityIndicatorView startAnimating];
 }
 

@@ -211,8 +211,14 @@
 ///刷新
 - (void)refresh
 {
-    if(!self.value && self.hidden)
+    if(self.hidden){
         return;
+    }
+    
+    if(!self.value){
+        self.hidden = YES;
+        return;
+    }
     
     BOOL zero = NO;
     if([self.value isInteger]){
