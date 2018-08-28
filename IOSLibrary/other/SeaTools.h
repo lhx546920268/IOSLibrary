@@ -46,4 +46,12 @@ UIKIT_EXTERN void openSystemSettings(void);
  */
 UIKIT_EXTERN void makePhoneCall(NSArray<NSString*> *mobiles, BOOL flag);
 
+/**
+ 判断某个多边形是否包含某个点
+ */
+UIKIT_EXTERN BOOL polygonContainsPoint(NSArray<NSValue*> *points, CGPoint point);
 
+/**
+ 判断两条线是否相交
+ */
+UIKIT_EXTERN BOOL areIntersecting(CGPoint point1, CGPoint point2, CGPoint point3, CGPoint point4);

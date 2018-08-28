@@ -138,6 +138,14 @@
     return _style;
 }
 
+- (void)setText:(NSString *)text
+{
+    if(![_text isEqualToString:text]){
+        _text = text;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)layoutSubviews
 {
     //调整位置

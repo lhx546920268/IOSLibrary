@@ -105,6 +105,9 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     
     CGSize contentSize = self.scrollView.contentSize;
     
+    if(contentSize.height == 0 || self.scrollView.contentOffset.y < contentSize.height - self.scrollView.height || contentSize.height < self.scrollView.height)
+        return;
+    
     if(self.autoLoadMore){
         
         if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height - self.criticalPoint){
@@ -112,8 +115,6 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
             [self beginLoadMore:NO];
         }
     }else{
-        if(self.scrollView.contentSize.height == 0 || self.scrollView.contentOffset.y < self.scrollView.contentSize.height - self.scrollView.height || self.scrollView.contentSize.height < self.scrollView.height)
-            return;
         
         if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height){
             
