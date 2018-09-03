@@ -10,6 +10,7 @@
 #import "UIView+SeaAutoLayout.h"
 #import "SeaBasic.h"
 #import "UIView+SeaLoading.h"
+#import "UIView+SeaEmptyView.h"
 
 @interface SeaContainer()
 
@@ -290,6 +291,54 @@
     }
 }
 
+#pragma mark emptyView
+
+- (void)layoutEmtpyView
+{
+    if(self.sea_showEmptyView){
+        SeaEmptyView *emptyView = self.sea_emptyView;
+        if(emptyView != nil && emptyView.superview == nil){
+            id<SeaEmptyViewDelegate> delegate = self.sea_emptyViewDelegate;
+            if([delegate respondsToSelector:@selector(emptyViewWillAppear:)]){
+                [delegate emptyViewWillAppear:emptyView];
+            }
+            [self addSubview:emptyView];
+            
+            if(self.safeLayoutGuide & SeaSafeLayoutGuideLeft){
+                [emptyView sea_leftToItem:self.item];
+            }else{
+                [emptyView sea_leftToSuperview];
+            }
+            
+            if(self.safeLayoutGuide & SeaSafeLayoutGuideRight){
+                [emptyView sea_rightToItem:self.item];
+            }else{
+                [emptyView sea_rightToSuperview];
+            }
+            
+            if(_topView && !(self.overlayArea & SeaOverlayAreaEmptyViewTop)){
+                [emptyView sea_topToItemBottom:_topView];
+            }else{
+                if(self.safeLayoutGuide & SeaSafeLayoutGuideTop){
+                    [emptyView sea_topToItem:self.item];
+                }else{
+                    [emptyView sea_topToSuperview];
+                }
+            }
+            
+            if(_bottomView && !(self.overlayArea & SeaOverlayAreaEmptyViewBottom)){
+                [emptyView sea_bottomToItemTop:_bottomView];
+            }else{
+                if(self.safeLayoutGuide & SeaSafeLayoutGuideBottom){
+                    [emptyView sea_bottomToItem:self.item];
+                }else{
+                    [emptyView sea_bottomToSuperview];
+                }
+            }
+        }
+    }
+}
+
 #pragma mark fail page
 
 - (UIView*)sea_failPageView
@@ -321,7 +370,7 @@
                 [sea_failPageView sea_rightToSuperview];
             }
             
-            if(_topView && !(self.overlayArea & SeaLoadingOverlayAreaFailTop)){
+            if(_topView && !(self.overlayArea & SeaOverlayAreaFailTop)){
                 [sea_failPageView sea_topToItemBottom:_topView];
             }else{
                 if(self.safeLayoutGuide & SeaSafeLayoutGuideTop){
@@ -331,7 +380,7 @@
                 }
             }
             
-            if(_bottomView && !(self.overlayArea & SeaLoadingOverlayAreaFailBottom)){
+            if(_bottomView && !(self.overlayArea & SeaOverlayAreaFailBottom)){
                 [sea_failPageView sea_bottomToItemTop:_bottomView];
             }else{
                 if(self.safeLayoutGuide & SeaSafeLayoutGuideBottom){
@@ -373,7 +422,7 @@
                 [sea_pageLoadingView sea_rightToSuperview];
             }
             
-            if(_topView && !(self.overlayArea & SeaLoadingOverlayAreaPageLoadingTop)){
+            if(_topView && !(self.overlayArea & SeaOverlayAreaPageLoadingTop)){
                 [sea_pageLoadingView sea_topToItemBottom:_topView];
             }else{
                 if(self.safeLayoutGuide & SeaSafeLayoutGuideTop){
@@ -383,7 +432,7 @@
                 }
             }
             
-            if(_bottomView && !(self.overlayArea & SeaLoadingOverlayAreaPageLoadingBottom)){
+            if(_bottomView && !(self.overlayArea & SeaOverlayAreaPageLoadingBottom)){
                 [sea_pageLoadingView sea_bottomToItemTop:_bottomView];
             }else{
                 if(self.safeLayoutGuide & SeaSafeLayoutGuideBottom){

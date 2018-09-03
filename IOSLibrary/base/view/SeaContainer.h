@@ -31,22 +31,28 @@ typedef NS_OPTIONS(NSUInteger, SeaSafeLayoutGuide){
 };
 
 ///自动布局 loading 范围
-typedef NS_OPTIONS(NSUInteger, SeaLoadingOverlayArea){
+typedef NS_OPTIONS(NSUInteger, SeaOverlayArea){
     
     ///都不遮住 header 和 footer会看到得到
-    SeaLoadingOverlayAreaNone = 0,
+    SeaOverlayAreaNone = 0,
     
     ///失败视图将遮住header
-    SeaLoadingOverlayAreaFailTop = 1 << 0,
+    SeaOverlayAreaFailTop = 1 << 0,
     
     ///失败视图将遮住footer
-    SeaLoadingOverlayAreaFailBottom = 1 << 1,
+    SeaOverlayAreaFailBottom = 1 << 1,
     
     ///pageloading视图将遮住header
-    SeaLoadingOverlayAreaPageLoadingTop = 1 << 2,
+    SeaOverlayAreaPageLoadingTop = 1 << 2,
     
     ///pageloading视图将遮住footer
-    SeaLoadingOverlayAreaPageLoadingBottom = 1 << 3,
+    SeaOverlayAreaPageLoadingBottom = 1 << 3,
+    
+    ///空视图将遮住header
+    SeaOverlayAreaEmptyViewTop = 1 << 4,
+    
+    ///空视图将遮住footer
+    SeaOverlayAreaEmptyViewBottom = 1 << 5,
 };
 
 /**
@@ -76,7 +82,7 @@ typedef NS_OPTIONS(NSUInteger, SeaLoadingOverlayArea){
 @property(nonatomic, assign) SeaSafeLayoutGuide safeLayoutGuide;
 
 ///自动布局 loading 范围
-@property(nonatomic, assign) SeaLoadingOverlayArea overlayArea;
+@property(nonatomic, assign) SeaOverlayArea overlayArea;
 
 ///布局完成回调
 @property(nonatomic, copy) void(^layoutSubviewsHandler)(void);
