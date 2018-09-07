@@ -84,7 +84,7 @@ static char SeaInPresentWayKey;
     if(self.isShowAsDialog){
         UIView *backgroundView = [UIView new];
         backgroundView.alpha = 0;
-        backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+        backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
         [self.view insertSubview:backgroundView atIndex:0];
         
         [backgroundView sea_insetsInSuperview:UIEdgeInsetsZero];
