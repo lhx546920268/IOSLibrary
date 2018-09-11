@@ -334,7 +334,7 @@ static NSString *SeaSystemUserAgent = nil;
     return nil;
 }
 
-- (NSString*)customerUserAgent
+- (NSString*)customUserAgent
 {
     return nil;
 }
@@ -345,7 +345,7 @@ static NSString *SeaSystemUserAgent = nil;
     
     //判断需不需要设置 自定义ua，没有获取的系统的ua 先获取
     if(!SeaSystemUserAgent){
-        NSString *userAgent = [self customerUserAgent];
+        NSString *userAgent = [self customUserAgent];
         if(![NSString isEmpty:userAgent]){
             loadEnable = NO;
             WeakSelf(self)
@@ -369,7 +369,7 @@ static NSString *SeaSystemUserAgent = nil;
         //ios 8以下只需要设置一次
         if(@available(iOS 9.0, *)){
             if([NSString isEmpty:self.webView.customUserAgent]){
-                NSString *userAgent = [self customerUserAgent];
+                NSString *userAgent = [self customUserAgent];
                 if(![NSString isEmpty:userAgent]){
                     self.webView.customUserAgent = [NSString stringWithFormat:@"%@ %@", SeaSystemUserAgent, userAgent];
                 }

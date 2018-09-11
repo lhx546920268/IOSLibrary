@@ -121,7 +121,7 @@
 - (NSString*)javascript;
 
 ///返回需要设置的自定义 userAgent 会拼在系统的userAgent后面 default is nil
-- (NSString*)customerUserAgent;
+- (NSString*)customUserAgent;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView NS_REQUIRES_SUPER;
 

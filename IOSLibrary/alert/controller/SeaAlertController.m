@@ -629,7 +629,7 @@
                     self.header.messageLabel.top = y;
                     y += self.header.messageLabel.height;
                 }
-                self.header.height = y + style.textInsets.bottom;
+                self.header.height = y + style.textInsets.bottom + rest;
             }
             self.header.contentSize = CGSizeMake(self.header.width, self.header.height);
             
@@ -669,11 +669,11 @@
         
         if(self.actions.count > 0){
             self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.header.bottom, width, 0)collectionViewLayout:[self layout]];
-            self.collectionView.backgroundColor = [UIColor colorWithWhite:0.90 alpha:0.9];
+            self.collectionView.backgroundColor = SeaGrayBackgroundColor;
             [self.collectionView registerClass:[SeaAlertButtonCell class] forCellWithReuseIdentifier:@"SeaAlertButtonCell"];
             self.collectionView.dataSource = self;
             self.collectionView.delegate = self;
-            self.collectionView.bounces = YES;
+            self.collectionView.bounces = NO;
             [self.container addSubview:self.collectionView];
         }
         
