@@ -51,7 +51,7 @@
 {
     self = [super init];
     if(self){
-        self.duration = 0.35;
+        self.duration = 0.25;
         self.completePercent = 0.5;
         self.transitionStyle = SeaPresentTransitionStyleCoverHorizontal;
     }

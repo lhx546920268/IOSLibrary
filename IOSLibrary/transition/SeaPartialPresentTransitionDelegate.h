@@ -39,7 +39,7 @@
 ///点击背景是否会关闭当前显示的viewController，default is 'YES'
 @property(nonatomic,assign) BOOL dismissWhenTapBackground;
 
-///动画时间 default is '0.35'
+///动画时间 default is '0.25'
 @property(nonatomic,assign) NSTimeInterval duration;
 
 ///动画样式 default is 'SeaPresentTransitionStyleCoverVertical'

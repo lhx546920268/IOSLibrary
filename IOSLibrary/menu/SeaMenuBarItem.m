@@ -56,6 +56,13 @@
     
     [_button sea_setImagePosition:info.iconPosition margin:info.iconPadding];
     
+    UIEdgeInsets insets = _button.titleEdgeInsets;
+    insets.left += _info.titleInsets.left;
+    insets.right += _info.titleInsets.right;
+    insets.bottom += _info.titleInsets.bottom;
+    insets.top += _info.titleInsets.top;
+    _button.titleEdgeInsets = insets;
+    
     _numberBadge.value = _info.badgeNumber;
     self.customView = _info.customView;
 }

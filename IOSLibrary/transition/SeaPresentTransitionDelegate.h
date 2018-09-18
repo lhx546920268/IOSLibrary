@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, SeaPresentTransitionStyle)
 ///动画样式 default is 'SeaPresentTransitionStyleCoverHorizontal'
 @property(nonatomic,assign) SeaPresentTransitionStyle transitionStyle;
 
-///动画时间 default is '0.35'
+///动画时间 default is '0.25'
 @property(nonatomic,assign) NSTimeInterval duration;
 
 /**添加手势交互的过渡

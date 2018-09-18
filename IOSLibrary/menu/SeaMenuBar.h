@@ -57,6 +57,11 @@
 @property(nonatomic,assign) CGFloat itemWidth;
 
 /**
+ 标题偏移量
+ */
+@property(nonatomic,assign) UIEdgeInsets titleInsets;
+
+/**
  构造方法
  *@param title 标题
  *@return 已初始化的 SeaMenuItemInfo

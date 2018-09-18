@@ -393,7 +393,11 @@ static const int SeaMinutesPerHour = 60;
     NSDateFormatter *formatter = [NSDate sharedDateFormatter];
     [formatter setDateFormat:format];
     
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+    double interval = [timeInterval doubleValue];
+    if(timeInterval.length == 13){
+        interval /= 1000;
+    }
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:interval];
     
     return [formatter stringFromDate:date];
 }

@@ -49,7 +49,7 @@
     self = [super init];
     if(self){
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-        self.duration = 0.35;
+        self.duration = 0.25;
         self.dismissWhenTapBackground = YES;
         self.backTransform = CGAffineTransformMakeScale(0.95, 0.95);
         self.transitionStyle = SeaPresentTransitionStyleCoverVertical;

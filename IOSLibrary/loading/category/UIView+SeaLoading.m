@@ -179,7 +179,6 @@ static char SeaReloadDataHandlerKey;
         
         [sea_failPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlerTapFailPage:)]];
         [sea_failPageView sea_insetsInSuperview:UIEdgeInsetsZero];
-        sea_failPageView.hidden = !self.sea_showFailPage;
         if([self isKindOfClass:[UIScrollView class]]){
             [sea_failPageView sea_widthToItem:self];
             [sea_failPageView sea_heightToItem:self];

@@ -357,7 +357,7 @@
             [self addSubview:sea_failPageView];
             
             [sea_failPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlerTapFailPage:)]];
-            sea_failPageView.hidden = !self.sea_showFailPage;
+        
             if(self.safeLayoutGuide & SeaSafeLayoutGuideLeft){
                 [sea_failPageView sea_leftToItem:self.item];
             }else{

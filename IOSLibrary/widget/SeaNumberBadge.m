@@ -211,10 +211,6 @@
 ///刷新
 - (void)refresh
 {
-    if(self.hidden){
-        return;
-    }
-    
     if(!self.value){
         self.hidden = YES;
         return;
