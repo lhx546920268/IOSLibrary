@@ -427,6 +427,16 @@ static const int SeaMinutesPerHour = 60;
     return [formatter stringFromDate:date];
 }
 
++ (NSString*)formatSeconds:(long)seconds
+{
+    long result = seconds / 60;
+    int second = (int)(seconds % 60);
+    int minute = (int)(result % 60);
+    int hour =(int)(result / 60);
+    
+    return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, second];
+}
+
 #pragma mark- 时间比较
 
 + (BOOL)sea_TimeMinusNow:(NSString*) time greaterThan:(NSTimeInterval) timeInterval

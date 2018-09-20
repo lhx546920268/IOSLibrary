@@ -30,7 +30,7 @@
             
             //_UINavigationBarContentView
             if([NSStringFromClass([view class]) isEqualToString:@"_UINavigationBarContentView"]){
-                CGFloat margin = 10; //系统默认为20
+                CGFloat margin = 12; //系统默认为20
                 view.layoutMargins = UIEdgeInsetsMake(0, margin, 0, margin);
                 view.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(0, margin, 0, margin);
                 break;

@@ -18,7 +18,7 @@ static char SeaLoadMoreControlKey;
 
 @implementation UIScrollView (SeaDataControl)
 
-- (void)sea_addRefreshWithHandler:(SeaDataControlHandler)handler
+- (SeaRefreshControl*)sea_addRefreshWithHandler:(SeaDataControlHandler)handler
 {
     SeaRefreshControl *refreshControl = self.sea_refreshControl;
     if(!refreshControl){
@@ -28,6 +28,7 @@ static char SeaLoadMoreControlKey;
     self.sea_refreshControl = refreshControl;
     self.sea_loadMoreControl.originalContentInset = self.contentInset;
     
+    return refreshControl;
 }
 
 - (void)sea_removeRefreshControl
@@ -56,7 +57,7 @@ static char SeaLoadMoreControlKey;
 
 #pragma mark loadmore control
 
-- (void)sea_addLoadMoreWithHandler:(SeaDataControlHandler)handler
+- (SeaLoadMoreControl*)sea_addLoadMoreWithHandler:(SeaDataControlHandler)handler
 {
     SeaLoadMoreControl *loadMoreControl = self.sea_loadMoreControl;
     if(!loadMoreControl){
@@ -65,6 +66,8 @@ static char SeaLoadMoreControlKey;
     loadMoreControl.handler = handler;
     self.sea_loadMoreControl = loadMoreControl;
     self.sea_refreshControl.originalContentInset = self.contentInset;
+    
+    return loadMoreControl;
 }
 
 - (void)sea_removeLoadMoreControl

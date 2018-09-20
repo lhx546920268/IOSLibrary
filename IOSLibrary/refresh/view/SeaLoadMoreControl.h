@@ -26,6 +26,11 @@
 @property(nonatomic, assign) BOOL shouldStayWhileNoData;
 
 /**
+ 是否是水平滑动 默认是垂直
+ */
+@property(nonatomic, assign) BOOL isHorizontal;
+
+/**
  已经没有更多信息可以加载
  */
 - (void)noMoreInfo;

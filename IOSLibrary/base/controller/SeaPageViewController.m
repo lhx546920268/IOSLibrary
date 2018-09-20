@@ -155,7 +155,7 @@
 
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index
 {
-    return nil;
+    return self.pageViewControllers[index];
 }
 
 - (NSInteger)numberOfPage

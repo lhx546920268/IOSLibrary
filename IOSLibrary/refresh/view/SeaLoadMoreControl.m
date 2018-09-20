@@ -49,17 +49,37 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
     self.autoLoadMore = YES;
 }
 
+- (void)setIsHorizontal:(BOOL)isHorizontal
+{
+    if(_isHorizontal != isHorizontal){
+        _isHorizontal = isHorizontal;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     //调整内容
-    CGFloat minHeight = self.criticalPoint;
-    
-    CGRect frame = self.frame;
-    frame.size.height = MAX(minHeight, self.scrollView.contentOffset.y + self.scrollView.height - self.scrollView.contentSize.height);
-    frame.origin.y = self.scrollView.contentSize.height;
-    
-    self.frame = frame;
+    if(self.isHorizontal){
+        CGFloat minWidth = self.criticalPoint;
+        
+        CGRect frame = self.frame;
+        frame.size.height = self.scrollView.height;
+        frame.size.width = MAX(minWidth, self.scrollView.contentOffset.x + self.scrollView.width - self.scrollView.contentSize.width);
+        frame.origin.x = self.scrollView.contentSize.width;
+        
+        self.frame = frame;
+    }else{
+        CGFloat minHeight = self.criticalPoint;
+        
+        CGRect frame = self.frame;
+        frame.size.width = self.scrollView.width;
+        frame.size.height = MAX(minHeight, self.scrollView.contentOffset.y + self.scrollView.height - self.scrollView.contentSize.height);
+        frame.origin.y = self.scrollView.contentSize.height;
+        
+        self.frame = frame;
+    }
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -103,32 +123,34 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
         return;
     }
     
-    CGSize contentSize = self.scrollView.contentSize;
+    CGFloat contentSize = self.isHorizontal ? self.scrollView.contentSize.width : self.scrollView.contentSize.height;
+    CGFloat offset = self.isHorizontal ? self.scrollView.contentOffset.x : self.scrollView.contentOffset.y;
+    CGFloat size = self.isHorizontal ? self.scrollView.width : self.scrollView.height;
     
-    if(contentSize.height == 0 || self.scrollView.contentOffset.y < contentSize.height - self.scrollView.height || contentSize.height < self.scrollView.height)
+    if(contentSize == 0 || offset < contentSize - size || contentSize < size)
         return;
     
     if(self.autoLoadMore){
         
-        if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height - self.criticalPoint){
+        if(offset >= contentSize - size - self.criticalPoint){
             
             [self beginLoadMore:NO];
         }
     }else{
         
-        if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height){
+        if(offset >= contentSize - size){
             
             if(self.scrollView.dragging){
-                if (self.scrollView.contentOffset.y == contentSize.height - self.scrollView.height){
+                if (offset == contentSize - size){
                     
                     [self setState:SeaDataControlStateNormal];
-                }else if (self.scrollView.contentOffset.y < contentSize.height - self.scrollView.height + self.criticalPoint){
+                }else if (offset < contentSize - size + self.criticalPoint){
                     
                     [self setState:SeaDataControlStatePulling];
                 }else{
                     [self setState:SeaDataControlStateReachCirticalPoint];
                 }
-            }else if(self.scrollView.contentOffset.y >= contentSize.height - self.scrollView.height + self.criticalPoint){
+            }else if(offset >= contentSize - size + self.criticalPoint){
                 
                 [self beginLoadMore:YES];
             }
@@ -177,7 +199,11 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
         [UIView animateWithDuration:0.25 animations:^(void){
             
             UIEdgeInsets inset = self.originalContentInset;
-            inset.bottom += self.criticalPoint;
+            if(self.isHorizontal){
+                inset.right += self.criticalPoint;
+            }else{
+                inset.bottom += self.criticalPoint;
+            }
             self.scrollView.contentInset = inset;
         }completion:^(BOOL finish){
             
@@ -188,7 +214,12 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
         
         [self setState:SeaDataControlStateLoading];
         UIEdgeInsets inset = self.originalContentInset;
-        inset.bottom += self.criticalPoint;
+        if(self.isHorizontal){
+            inset.right += self.criticalPoint;
+        }else{
+            inset.bottom += self.criticalPoint;
+        }
+        
         self.scrollView.contentInset = inset;
         self.animating = NO;
     }
@@ -209,9 +240,16 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
             break;
         case SeaDataControlStateNoData : {
             UIEdgeInsets inset = self.originalContentInset;
-            inset.top = self.scrollView.contentInset.top;
-            if(self.shouldStayWhileNoData){
-                inset.bottom = self.criticalPoint;
+            if(self.isHorizontal){
+                inset.left = self.scrollView.contentInset.left;
+                if(self.shouldStayWhileNoData){
+                    inset.right = self.criticalPoint;
+                }
+            }else{
+                inset.top = self.scrollView.contentInset.top;
+                if(self.shouldStayWhileNoData){
+                    inset.bottom = self.criticalPoint;
+                }
             }
             if(self.shouldAnimate){
                 [UIView animateWithDuration:0.25 animations:^(void){
@@ -225,8 +263,13 @@ static NSString *const SeaDataControlContentSize = @"contentSize";
             break;
         case SeaDataControlStateFail : {
             UIEdgeInsets inset = self.originalContentInset;
-            inset.top = self.scrollView.contentInset.top;
-            inset.bottom = self.criticalPoint;
+            if(self.isHorizontal){
+                inset.left = self.scrollView.contentInset.left;
+                inset.right = self.criticalPoint;
+            }else{
+                inset.top = self.scrollView.contentInset.top;
+                inset.bottom = self.criticalPoint;
+            }
             if(self.shouldAnimate){
                 [UIView animateWithDuration:0.25 animations:^(void){
                     

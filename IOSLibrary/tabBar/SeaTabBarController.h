@@ -129,4 +129,9 @@
  */
 - (UIViewController*)viewControllerForIndex:(NSUInteger) index;
 
+/**
+ 获取指定的item
+ */
+- (SeaTabBarItem*)itemForIndex:(NSUInteger) index;
+
 @end

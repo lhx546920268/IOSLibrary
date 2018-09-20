@@ -272,7 +272,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(self.shouldShowScrollToTopButton){
-        self.showScrollToTopButton = MIN(scrollView.contentOffset.y, scrollView.contentSize.height - scrollView.height) >= scrollView.height * 3;
+        self.showScrollToTopButton = MIN(scrollView.contentOffset.y, scrollView.contentSize.height - scrollView.height) >= scrollView.height;
     }
 }
 

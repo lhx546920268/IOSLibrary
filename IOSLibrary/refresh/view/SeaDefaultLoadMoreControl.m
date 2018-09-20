@@ -34,12 +34,24 @@
     return self;
 }
 
+- (void)setIsHorizontal:(BOOL)isHorizontal
+{
+    [super setIsHorizontal:isHorizontal];
+    _textLabel.numberOfLines = self.isHorizontal ? 0 : 1;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
 
-    _indicatorView.top = (self.criticalPoint - _indicatorView.height) / 2;
-    _textLabel.top = (self.criticalPoint - _textLabel.height) / 2;
+    if(self.isHorizontal){
+        CGFloat contentWidth = (_indicatorView.isAnimating ? (_indicatorView.width + + 3.0) : 0) + _textLabel.width;
+        _indicatorView.left = (self.criticalPoint - contentWidth) / 2;
+        _textLabel.left = (_indicatorView.isAnimating ? _indicatorView.right + 3.0 : _indicatorView.left);
+    }else{
+        _indicatorView.top = (self.criticalPoint - _indicatorView.height) / 2;
+        _textLabel.top = (self.criticalPoint - _textLabel.height) / 2;
+    }
 }
 
 
@@ -90,13 +102,29 @@
 ///更新位置
 - (void)updatePosition
 {
-    CGFloat width = _indicatorView.isAnimating ? _indicatorView.width : 0;
-    CGSize size = [_textLabel.text sea_stringSizeWithFont:_textLabel.font contraintWith:self.width - width];
-    _indicatorView.left = (self.width - size.width - width) / 2.0;
-    
-    CGRect frame = _indicatorView.frame;
-    frame.origin.x = _indicatorView.left + width + 3.0;
-    frame.size.width = self.width - _indicatorView.left - width;
-    _textLabel.frame = frame;
+    if(self.isHorizontal){
+        CGFloat height = _indicatorView.height;
+        CGSize size = [_textLabel.text sea_stringSizeWithFont:_textLabel.font contraintWith:18];
+        size.width += 1.0;
+        size.height += 1.0;
+        _indicatorView.top = (self.height - height) / 2.0;
+        
+        CGRect frame = _textLabel.frame;
+        frame.origin.y = (self.height - size.height) / 2.0;
+        frame.size.width = size.width;
+        frame.size.height = size.height;
+        _textLabel.frame = frame;
+    }else{
+        CGFloat width = _indicatorView.isAnimating ? _indicatorView.width : 0;
+        CGSize size = [_textLabel.text sea_stringSizeWithFont:_textLabel.font contraintWith:self.width - width];
+        size.width += 1.0;
+        size.height += 1.0;
+        _indicatorView.left = (self.width - size.width - width) / 2.0;
+        
+        CGRect frame = _textLabel.frame;
+        frame.origin.x = _indicatorView.left + width + 3.0;
+        frame.size.width = self.width - _indicatorView.left - width;
+        _textLabel.frame = frame;
+    }
 }
 @end

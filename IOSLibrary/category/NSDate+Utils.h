@@ -161,6 +161,13 @@ static NSString *const SeaTimeZoneBeiJing = @"Asia/BeiJing";
  */
 + (NSString*)sea_timeFromDate:(NSDate*) date format:(NSString*) format;
 
+/**
+ 格式化秒
+ @param seconds 要格式化的秒
+ @return 00:00:00
+ */
++ (NSString*)formatSeconds:(long) seconds;
+
 #pragma mark- 时间比较
 
 /**

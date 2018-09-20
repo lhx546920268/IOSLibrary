@@ -90,6 +90,12 @@ SeaTabBarController;
  */
 - (void)sea_backAnimated:(BOOL) flag;
 
+/**返回方法 支持present和push出来的视图
+ *@param flag 是否动画
+ *@param completion 完成回调
+ */
+- (void)sea_backAnimated:(BOOL) flag completion: (void (^)(void))completion;
+
 /**返回根视图，支持present和push出来的视图
  *@param flag 是否动画
  */

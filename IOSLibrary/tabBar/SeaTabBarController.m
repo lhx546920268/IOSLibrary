@@ -265,4 +265,9 @@
     return nil;
 }
 
+- (SeaTabBarItem*)itemForIndex:(NSUInteger) index
+{
+    return self.tabBar.items[index];
+}
+
 @end

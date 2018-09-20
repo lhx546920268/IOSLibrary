@@ -140,7 +140,7 @@
     if(flag){
         UINavigationController *nav = [vc sea_createWithNavigationController];
         nav.sea_transitioningDelegate = delegate;
-        [parentedViewConttroller presentViewController:nav animated:YES completion:^(void){
+        [parentedViewConttroller.sea_topestPresentedViewController presentViewController:nav animated:YES completion:^(void){
             
             if(vc.navigationController){
                 [delegate addInteractiveTransitionToViewController:vc];
@@ -148,7 +148,7 @@
         }];
     }else{
         vc.sea_transitioningDelegate = delegate;
-        [parentedViewConttroller presentViewController:vc animated:YES completion:^(void){
+        [parentedViewConttroller.sea_topestPresentedViewController presentViewController:vc animated:YES completion:^(void){
             
             [delegate addInteractiveTransitionToViewController:vc];
         }];

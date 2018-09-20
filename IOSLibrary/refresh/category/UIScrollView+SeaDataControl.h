@@ -15,7 +15,7 @@
  添加下拉刷新功能
  *@param handler 刷新回调方法
  */
-- (void)sea_addRefreshWithHandler:(SeaDataControlHandler) handler;
+- (SeaRefreshControl*)sea_addRefreshWithHandler:(SeaDataControlHandler) handler;
 
 /**
  删除下拉刷新功能
@@ -32,7 +32,7 @@
  添加加载更多
  *@param handler 加载回调
  */
-- (void)sea_addLoadMoreWithHandler:(SeaDataControlHandler) handler;
+- (SeaLoadMoreControl*)sea_addLoadMoreWithHandler:(SeaDataControlHandler) handler;
 
 /**
  删除加载更多功能

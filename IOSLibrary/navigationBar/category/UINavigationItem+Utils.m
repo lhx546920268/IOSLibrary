@@ -120,7 +120,7 @@
 - (UIBarButtonItem*)fixedBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    item.width = -6;
+    item.width = -4;
     return item;
 }
 

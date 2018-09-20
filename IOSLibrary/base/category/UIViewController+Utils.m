@@ -427,13 +427,19 @@ static char SeaTransitioningDelegateKey;
 
 - (void)sea_backAnimated:(BOOL) flag
 {
+    [self sea_backAnimated:flag completion:nil];
+}
+
+- (void)sea_backAnimated:(BOOL) flag completion: (void (^)(void))completion
+{
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
-
+    
     if(self.navigationController.viewControllers.count <= 1){
-        [self dismissViewControllerAnimated:flag completion:nil];
+        [self dismissViewControllerAnimated:flag completion:completion];
     }else{
         [self.navigationController popViewControllerAnimated:flag];
+        !completion ?: completion();
     }
 }
 
@@ -665,9 +671,7 @@ static char SeaTransitioningDelegateKey;
     if(backgroundColor){
         navigationBar.barTintColor = backgroundColor;
     }
-    if(backgroundImage){
-        [navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-    }
+    [navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
 }
 
 
