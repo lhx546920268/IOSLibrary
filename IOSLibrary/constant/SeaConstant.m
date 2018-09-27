@@ -30,6 +30,8 @@ static UIStatusBarStyle sharedStatusBarStyle;
 
 static UIColor *sharedWebProgressColor = nil;
 
+static CGFloat sharedNavigationBarMargin = 0;
+
 @implementation SeaConstant
 
 + (void)setGrayBackgroundColor:(UIColor *)color
@@ -182,6 +184,19 @@ static UIColor *sharedWebProgressColor = nil;
     return sharedWebProgressColor;
 }
 
+#pragma mark navigationBar
+
+///导航栏左右间距
++ (void)setNavigationBarMargin:(CGFloat) margin
+{
+    sharedNavigationBarMargin = margin;
+}
+
++ (CGFloat)navigationBarMargin
+{
+    return sharedNavigationBarMargin;
+}
+
 /**初始化
  */
 + (void)initialize
@@ -195,6 +210,9 @@ static UIColor *sharedWebProgressColor = nil;
     //app主色调
     sharedAppMainColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];
     sharedAppMainTintColor = [UIColor whiteColor];
+    
+    //导航栏左右间距
+    sharedNavigationBarMargin = 12;
     
     ///按钮颜色
     sharedButtonBackgroundColor = [UIColor colorWithRed:0 green:0.4784314 blue:1.0 alpha:1.0];

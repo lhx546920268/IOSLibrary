@@ -22,6 +22,7 @@
 #import "SeaPresentTransitionDelegate.h"
 #import "UIViewController+Dialog.h"
 #import "NSString+Utils.h"
+#import "UINavigationBar+Utils.h"
 
 /**导航条按钮位置
  */
@@ -33,19 +34,28 @@ typedef NS_ENUM(NSInteger, SeaNavigationItemPosition)
 
 /**objc rutime 属性，key **/
 
-/**返回按钮标题
+/**
+ 返回按钮标题
  */
 static char SeaBackItemTitleKey;
 
-/**状态栏隐藏
+/**
+ 返回按钮
+ */
+static char SeaBackImageViewKey;
+
+/**
+ 状态栏隐藏
  */
 static char SeaStatusBarHiddenKey;
 
-/**按钮标题颜色
+/**
+ 按钮标题颜色
  */
 static char SeaIconTintColorKey;
 
-/**过渡代理
+/**
+ 过渡代理
  */
 static char SeaTransitioningDelegateKey;
 
@@ -350,34 +360,47 @@ static char SeaTransitioningDelegateKey;
                 image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             }
             
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + 5.0, 44)];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + SeaNavigationBarMargin, 44)];
             imageView.image = image;
-            imageView.contentMode = UIViewContentModeLeft;
+            imageView.contentMode = UIViewContentModeRight;
             imageView.userInteractionEnabled = YES;
             imageView.tintColor = self.sea_iconTintColor;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sea_back)];
+            imageView.tag = SeaBackItemTag;
             [imageView addGestureRecognizer:tap];
             
             UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBack:)];
             longPress.minimumPressDuration = 1.0;
             [imageView addGestureRecognizer:longPress];
             
+            objc_setAssociatedObject(self, &SeaBackImageViewKey, imageView, OBJC_ASSOCIATION_RETAIN);
+            self.navigationController.navigationBar.sea_existBackItem = YES;
+            
             UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
             self.navigationItem.leftBarButtonItem = item;
         }else{
             self.navigationItem.hidesBackButton = NO;
             self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.sea_backItemTitle style:UIBarButtonItemStyleDone target:nil action:nil];
+            objc_setAssociatedObject(self, &SeaBackImageViewKey, nil, OBJC_ASSOCIATION_RETAIN);
+            self.navigationController.navigationBar.sea_existBackItem = NO;
         }
     }else{
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.leftBarButtonItems = nil;
         self.navigationItem.hidesBackButton = YES;
+        objc_setAssociatedObject(self, &SeaBackImageViewKey, nil, OBJC_ASSOCIATION_RETAIN);
+        self.navigationController.navigationBar.sea_existBackItem = NO;
     }
 }
 
 - (BOOL)sea_showBackItem
 {
-    return self.navigationItem.backBarButtonItem || [self.navigationItem.leftBarButtonItem.customView isKindOfClass:[UIImageView class]];
+    return self.navigationItem.backBarButtonItem ||self.navigationItem.leftBarButtonItem.customView.tag == SeaBackItemTag;
+}
+
+- (UIImageView*)sea_backImageView
+{
+    return objc_getAssociatedObject(self, &SeaBackImageViewKey);
 }
 
 #pragma mark- triansition
@@ -591,12 +614,16 @@ static char SeaTransitioningDelegateKey;
 
 - (void)sea_alertMsg:(NSString*) msg
 {
-    [self.view sea_alertMessage:msg];
+    [self sea_alertMsg:msg icon:nil];
 }
 
 - (void)sea_alertMsg:(NSString*) msg icon:(UIImage*) icon
 {
-    [self.view sea_alertMessage:msg icon:icon];
+    if(self.isShowAsDialog){
+        [self.dialog sea_alertMessage:msg icon:icon];
+    }else{
+        [self.view sea_alertMessage:msg icon:icon];
+    }
 }
 
 - (void)sea_alerBadNetworkMsg:(NSString*) msg

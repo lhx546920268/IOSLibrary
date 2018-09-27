@@ -170,8 +170,8 @@
 {
     if(![_selectedColor isEqualToColor:selectedColor]){
         _selectedColor = selectedColor;
-        if(!selectedColor)
-            selectedColor = SeaAppMainColor;
+        if(!_selectedColor)
+            _selectedColor = SeaAppMainColor;
         if(_selectedItemIndex < self.tabBarItems.count){
             SeaTabBarItem *item = self.tabBarItems[_selectedItemIndex];
             item.imageView.tintColor = _selectedColor;
@@ -184,7 +184,7 @@
 {
     if(![_font isEqual:font]){
         if(!font)
-            font = [UIFont fontWithName:SeaMainFontName size:13.0];
+            font = [UIFont fontWithName:SeaMainFontName size:11.0];
         _font = font;
         for(NSUInteger i = 0;i < self.tabBarItems.count;i ++){
             SeaTabBarItem *item = self.tabBarItems[i];

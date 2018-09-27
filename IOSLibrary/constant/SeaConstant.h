@@ -76,4 +76,10 @@
 + (void)setWebProgressColor:(UIColor*) color;
 + (UIColor*)webProgressColor;
 
+#pragma mark navigationBar
+
+///导航栏左右间距
++ (void)setNavigationBarMargin:(CGFloat) margin;
++ (CGFloat)navigationBarMargin;
+
 @end

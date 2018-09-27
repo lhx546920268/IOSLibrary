@@ -34,7 +34,8 @@ static char SeaReloadDataHandlerKey;
         if(sea_showPageLoading){
             UIView *pageLoadingView = self.sea_pageLoadingView;
             if(!pageLoadingView){
-                self.sea_pageLoadingView = [[SeaLoadingStyle sharedInstance].pageLoadingClass new];
+                pageLoadingView = [[SeaLoadingStyle sharedInstance].pageLoadingClass new];;
+                self.sea_pageLoadingView = pageLoadingView;
             }
             [self bringSubviewToFront:pageLoadingView];
         }else{
@@ -150,7 +151,8 @@ static char SeaReloadDataHandlerKey;
             self.sea_showPageLoading = NO;
             UIView *failPageView = self.sea_failPageView;
             if(!failPageView){
-                self.sea_failPageView = [[SeaLoadingStyle sharedInstance].failPageClass new];
+                failPageView = [[SeaLoadingStyle sharedInstance].failPageClass new];
+                self.sea_failPageView = failPageView;
             }
             [self bringSubviewToFront:failPageView];
         }else{

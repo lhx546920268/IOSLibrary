@@ -17,6 +17,7 @@
 #import "UIViewController+Dialog.h"
 #import "UIViewController+Keyboard.h"
 #import "UIView+Utils.h"
+#import "UINavigationBar+Utils.h"
 
 @interface SeaViewController ()
 
@@ -134,6 +135,7 @@
             self.sea_showBackItem = YES;
         }
     }
+    self.navigationController.navigationBar.sea_existBackItem = self.sea_showBackItem;
 }
 
 #pragma mark- UIStatusBar

@@ -18,7 +18,7 @@ static char SeaLoadMoreControlKey;
 
 @implementation UIScrollView (SeaDataControl)
 
-- (SeaRefreshControl*)sea_addRefreshWithHandler:(SeaDataControlHandler)handler
+- (__kindof SeaRefreshControl*)sea_addRefreshWithHandler:(SeaDataControlHandler)handler
 {
     SeaRefreshControl *refreshControl = self.sea_refreshControl;
     if(!refreshControl){
@@ -26,7 +26,17 @@ static char SeaLoadMoreControlKey;
     }
     refreshControl.handler = handler;
     self.sea_refreshControl = refreshControl;
-    self.sea_loadMoreControl.originalContentInset = self.contentInset;
+    SeaLoadMoreControl *loadMoreControl = self.sea_loadMoreControl;
+    if(loadMoreControl){
+        UIEdgeInsets contentInsets = self.contentInset;
+        if(loadMoreControl.state == SeaDataControlStateLoading){
+            contentInsets.bottom -= loadMoreControl.criticalPoint;
+            if(contentInsets.bottom < 0){
+                contentInsets.bottom = 0;
+            }
+        }
+        loadMoreControl.originalContentInset = contentInsets;
+    }
     
     return refreshControl;
 }
@@ -57,7 +67,7 @@ static char SeaLoadMoreControlKey;
 
 #pragma mark loadmore control
 
-- (SeaLoadMoreControl*)sea_addLoadMoreWithHandler:(SeaDataControlHandler)handler
+- (__kindof SeaLoadMoreControl*)sea_addLoadMoreWithHandler:(SeaDataControlHandler)handler
 {
     SeaLoadMoreControl *loadMoreControl = self.sea_loadMoreControl;
     if(!loadMoreControl){
@@ -65,7 +75,17 @@ static char SeaLoadMoreControlKey;
     }
     loadMoreControl.handler = handler;
     self.sea_loadMoreControl = loadMoreControl;
-    self.sea_refreshControl.originalContentInset = self.contentInset;
+    SeaRefreshControl *refreshControl = self.sea_refreshControl;
+    if(refreshControl){
+        UIEdgeInsets contentInsets = self.contentInset;
+        if(refreshControl.state == SeaDataControlStateLoading){
+            contentInsets.top -= refreshControl.criticalPoint;
+            if(contentInsets.top < 0){
+                contentInsets.top = 0;
+            }
+        }
+        refreshControl.originalContentInset = contentInsets;
+    }
     
     return loadMoreControl;
 }

@@ -12,7 +12,7 @@
 /**获取圆上的坐标点
  *@param center 圆心坐标
  *@param radius 圆半径
- *@param arc 要获取坐标的弧度
+ *@param arc 要获取坐标的弧度 0 - 360
  */
 UIKIT_EXTERN CGPoint pointInCircle(CGPoint center, CGFloat radius, CGFloat arc);
 

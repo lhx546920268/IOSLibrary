@@ -10,8 +10,8 @@
 
 CGPoint pointInCircle(CGPoint center, CGFloat radius, CGFloat arc)
 {
-    CGFloat x = center.x + cos(arc) * radius;
-    CGFloat y = center.y + sin(arc) * radius;
+    CGFloat x = center.x + cos(arc * M_PI / 180) * radius;
+    CGFloat y = center.y + sin(arc * M_PI / 180) * radius;
     
     
     return CGPointMake(x, y);

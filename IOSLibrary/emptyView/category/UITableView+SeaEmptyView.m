@@ -139,8 +139,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 - (BOOL)sea_shouldShowEmptyViewWhenExistTableHeaderView
 {
     NSNumber *number = objc_getAssociatedObject(self, &SeaShouldShowEmptyViewWhenExistTableHeaderViewKey);
-    if(number)
-    {
+    if(number){
         return [number boolValue];
     }
     
@@ -155,8 +154,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 - (BOOL)sea_shouldShowEmptyViewWhenExistTableFooterView
 {
     NSNumber *number = objc_getAssociatedObject(self, &SeaShouldShowEmptyViewWhenExistTableFooterViewKey);
-    if(number)
-    {
+    if(number){
         return [number boolValue];
     }
     
@@ -172,8 +170,7 @@ static char SeaShouldShowEmptyViewWhenExistSectionFooterViewKey;
 - (BOOL)sea_shouldShowEmptyViewWhenExistSectionHeaderView
 {
     NSNumber *number = objc_getAssociatedObject(self, &SeaShouldShowEmptyViewWhenExistSectionHeaderViewKey);
-    if(number)
-    {
+    if(number){
         return [number boolValue];
     }
     

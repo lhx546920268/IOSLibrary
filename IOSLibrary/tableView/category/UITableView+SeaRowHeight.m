@@ -93,16 +93,17 @@
 {
     NSMutableDictionary *caches = [self sea_rowHeightCaches];
     if(caches.count > 0){
-        NSMutableDictionary *dic = [caches objectForKey:@(section)];
-        NSMutableDictionary *newDic = [caches objectForKey:@(newSection)];
         
-        if(dic != nil && newDic != nil){
-            [caches setObject:dic forKey:@(newSection)];
-            [caches setObject:newDic forKey:@(section)];
-        }else if(dic != nil){
-            [caches setObject:dic forKey:@(newSection)];
-        }else if (newDic != nil){
-            [caches setObject:newDic forKey:@(section)];
+        SeaTableViewSectionInfo *info = [caches objectForKey:@(section)];
+        SeaTableViewSectionInfo *newInfo = [caches objectForKey:@(newSection)];
+        
+        if(info != nil && newInfo != nil){
+            [caches setObject:info forKey:@(newSection)];
+            [caches setObject:newInfo forKey:@(section)];
+        }else if(info != nil){
+            [caches setObject:info forKey:@(newSection)];
+        }else if (newInfo != nil){
+            [caches setObject:newInfo forKey:@(section)];
         }
     }
     

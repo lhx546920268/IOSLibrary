@@ -18,6 +18,7 @@
     self = [super initWithScrollView:scrollView];
     if(self){
         
+        _showIndicatorView = YES;
         _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self addSubview:_indicatorView];
         
@@ -80,7 +81,9 @@
         case SeaDataControlStateLoading : {
             
             _statusLabel.text = [self titleForState:state];
-            [_indicatorView startAnimating];
+            if(self.showIndicatorView){
+                [_indicatorView startAnimating];
+            }
             [self updatePosition];
         }
             break;

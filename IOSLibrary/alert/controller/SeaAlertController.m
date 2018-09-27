@@ -807,16 +807,15 @@
 ///取消
 - (void)cancel:(id) sender
 {
-    switch (_style){
-        case SeaAlertControllerStyleAlert : {
-            !self.selectionHandler ?: self.selectionHandler(0);
-        }
-            break;
-        case SeaAlertControllerStyleActionSheet : {
-            !self.selectionHandler ?: self.selectionHandler(self.actions.count);
-        }
-            break;
+    NSUInteger index = 0;
+    if(_style == SeaAlertControllerStyleActionSheet){
+        index = self.actions.count;
     }
+   
+    void(^handler)(NSUInteger index) = self.selectionHandler;
+    self.dialogDismissCompletionHandler = ^{
+        handler(index);
+    };
     [self dismiss];
 }
 
@@ -982,8 +981,16 @@
     
     SeaAlertAction *action = [self.actions objectAtIndex:indexPath.item];
     if(action.enable){
-        !self.dismissWhenSelectButton ?: [self dismiss];
-        !self.selectionHandler ?: self.selectionHandler(indexPath.item);
+        if(self.dismissWhenSelectButton){
+            
+            void(^handler)(NSUInteger index) = self.selectionHandler;
+            self.dialogDismissCompletionHandler = ^{
+                handler(indexPath.item);
+            };
+            [self dismiss];
+        }else{
+            !self.selectionHandler ?: self.selectionHandler(indexPath.item);
+        }
     }
 }
 

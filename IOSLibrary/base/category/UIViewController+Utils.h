@@ -22,6 +22,9 @@ SeaTabBarController;
 ///是否返回按钮标题 当上一个标题超过4个字时，使用 ‘返回’
 @property(nonatomic, copy) NSString *sea_backItemTitle;
 
+///自定义的返回按钮
+@property(nonatomic, readonly) UIImageView *sea_backImageView;
+
 ///显示返回按钮 图片名称 back_icon，当图片为空时，使用系统返回按钮
 @property(nonatomic, assign) BOOL sea_showBackItem;
 

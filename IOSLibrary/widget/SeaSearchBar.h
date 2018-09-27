@@ -145,16 +145,6 @@ typedef NS_ENUM(NSUInteger, SeaSearchBarIconPosition){
 @property(nonatomic, weak) id<SeaSearchBarDelegate> delegate;
 
 /**
- 成为第一响应者
- */
-- (void)becomeFirstResponder;
-
-/**
- 取消第一响应者
- */
-- (BOOL)resignFirstResponder;
-
-/**
  取消搜索
  */
 - (void)cancel;

@@ -8,6 +8,8 @@
 
 #import "UINavigationItem+Utils.h"
 #import <objc/runtime.h>
+#import "SeaBasic.h"
+#import "UIViewController+Utils.h"
 
 @implementation UINavigationItem (Utils)
 
@@ -45,7 +47,11 @@
         //只有当 item是自定义item 和 图标，系统item 才需要修正
         if(leftBarButtonItem.customView || leftBarButtonItem.image || [self isSystemItem:leftBarButtonItem]){
             
-            [self sea_setLeftBarButtonItems:@[[self fixedBarButtonItem], leftBarButtonItem] animated:animated];
+            UIBarButtonItem *fixedItem = [self fixedBarButtonItem];
+            if(leftBarButtonItem.customView.tag == SeaBackItemTag){
+                fixedItem.width -= SeaNavigationBarMargin;
+            }
+            [self sea_setLeftBarButtonItems:@[fixedItem, leftBarButtonItem] animated:animated];
         }else{
             [self sea_setLeftBarButtonItem:leftBarButtonItem animated:animated];
         }
@@ -120,7 +126,7 @@
 - (UIBarButtonItem*)fixedBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    item.width = -4;
+    item.width = -16 + SeaNavigationBarMargin;
     return item;
 }
 

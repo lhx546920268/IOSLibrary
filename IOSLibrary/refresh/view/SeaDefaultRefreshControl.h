@@ -23,4 +23,9 @@
  */
 @property(nonatomic,readonly) UIActivityIndicatorView *indicatorView;
 
+/**
+ 是否要显示菊花 默认显示
+ */
+@property(nonatomic, assign) BOOL showIndicatorView;
+
 @end

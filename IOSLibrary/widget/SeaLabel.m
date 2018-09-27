@@ -242,6 +242,7 @@ static NSString *const SeaURLRegex = @"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\
             [_attributedText addAttribute:(NSString*)kCTFontAttributeName value:(__bridge id)font  range:NSMakeRange(0, _attributedText.length)];
             [self setSelectableAttributesWithAttributedText:_attributedText];
             [self redrawText];
+            CFRelease(font);
         }
     }
 }
@@ -542,7 +543,7 @@ static NSString *const SeaURLRegex = @"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\
         else if(lineRange.location > range.location + range.length)
             break;
     }
-    
+    CFRelease(lines);
     
     return rects;
 }

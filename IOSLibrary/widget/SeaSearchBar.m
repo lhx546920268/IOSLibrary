@@ -350,13 +350,14 @@
 
 #pragma mark- public method
 
-- (void)becomeFirstResponder
+- (BOOL)becomeFirstResponder
 {
-    [_textField becomeFirstResponder];
+   return [_textField becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder
 {
+    [super resignFirstResponder];
     return [_textField resignFirstResponder];
 }
 

@@ -111,16 +111,16 @@
 }
 
 
-- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
-{
-    UIViewController *viewController = viewControllerToPresent;
-    
-    if([viewController isKindOfClass:[UINavigationController class]]){
-        viewController = [[(UINavigationController*)viewControllerToPresent viewControllers] lastObject];
-    }
-    
-    [super presentViewController:viewControllerToPresent animated:flag completion:completion];
-}
+//- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
+//{
+//    UIViewController *viewController = viewControllerToPresent;
+//
+//    if([viewController isKindOfClass:[UINavigationController class]]){
+//        viewController = [[(UINavigationController*)viewControllerToPresent viewControllers] lastObject];
+//    }
+//
+//    [super presentViewController:viewControllerToPresent animated:flag completion:completion];
+//}
 
 
 @end

@@ -124,6 +124,7 @@
         CGRect frame = _textLabel.frame;
         frame.origin.x = _indicatorView.left + width + 3.0;
         frame.size.width = self.width - _indicatorView.left - width;
+        frame.size.height = size.height;
         _textLabel.frame = frame;
     }
 }
