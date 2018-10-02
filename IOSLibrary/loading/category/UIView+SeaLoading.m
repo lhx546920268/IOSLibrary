@@ -30,8 +30,9 @@ static char SeaReloadDataHandlerKey;
 {
     if(sea_showPageLoading != self.sea_showPageLoading){
         objc_setAssociatedObject(self, &SeaShowPageLoadingKey, @(sea_showPageLoading), OBJC_ASSOCIATION_RETAIN);
-        self.sea_showFailPage = NO;
+      
         if(sea_showPageLoading){
+            self.sea_showFailPage = NO;
             UIView *pageLoadingView = self.sea_pageLoadingView;
             if(!pageLoadingView){
                 pageLoadingView = [[SeaLoadingStyle sharedInstance].pageLoadingClass new];;
@@ -146,7 +147,7 @@ static char SeaReloadDataHandlerKey;
 {
     if(sea_showFailPage != self.sea_showFailPage){
         objc_setAssociatedObject(self, &SeaShowFailPageKey, @(sea_showFailPage), OBJC_ASSOCIATION_RETAIN);
-        
+       
         if(sea_showFailPage){
             self.sea_showPageLoading = NO;
             UIView *failPageView = self.sea_failPageView;
