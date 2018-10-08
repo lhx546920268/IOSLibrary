@@ -343,7 +343,7 @@
             if(animate && !CGRectEqualToRect(_indicator.frame, CGRectZero)){
                 [UIView animateWithDuration:0.25 animations:^(void){
                     
-                    _indicator.frame = frame;
+                    self.indicator.frame = frame;
                 }];
             }else{
                 _indicator.frame = frame;
@@ -533,13 +533,13 @@
     self.isAnimating = YES;
     [UIView animateWithDuration:0.25 animations:^(void){
         
-        _listBackgroundView.alpha = 0;
-        _tableView.height = 0;
+        self.listBackgroundView.alpha = 0;
+        self.tableView.height = 0;
     }completion:^(BOOL finish){
         
         self.isAnimating = NO;
-        [_listBackgroundView removeFromSuperview];
-        [_tableView removeFromSuperview];
+        [self.listBackgroundView removeFromSuperview];
+        [self.tableView removeFromSuperview];
     }];
 }
 
@@ -577,7 +577,7 @@
     if(self.tableView.superview != nil){
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            self.tableView.height = MIN(_tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - _tableView.top : self.listMaxHeight);
+            self.tableView.height = MIN(self.tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - self.tableView.top : self.listMaxHeight);
 
         }completion:^(BOOL finish){
            
@@ -610,8 +610,8 @@
         
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            _listBackgroundView.alpha = 1.0;
-            _tableView.height = MIN(_tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - _tableView.top : self.listMaxHeight);
+            self.listBackgroundView.alpha = 1.0;
+            self.tableView.height = MIN(self.tableView.rowHeight * item.titleLists.count, self.listMaxHeight == 0 ? self.tableView.superview.height - self.tableView.top : self.listMaxHeight);
         }
         completion:^(BOOL finish)
         {

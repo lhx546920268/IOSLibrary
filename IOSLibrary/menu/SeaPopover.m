@@ -123,7 +123,7 @@
     if(animated){
         
         [UIView animateWithDuration:0.25 animations:^(void){
-             _overlay.alpha = 1.0;
+             self->_overlay.alpha = 1.0;
              self.alpha = 1.0;
              self.transform = CGAffineTransformMakeScale(1.0, 1.0);
          }completion:^(BOOL finish){
@@ -154,13 +154,13 @@
     if(animated){
         [UIView animateWithDuration:0.25 animations:^(void){
             self.alpha = 0;
-            _overlay.alpha = 0;
+            self->_overlay.alpha = 0;
             self.transform = CGAffineTransformMakeScale(0.1, 0.1);
          }completion:^(BOOL finish){
              if([self.delegate respondsToSelector:@selector(popoverDidDismiss:)]){
                  [self.delegate popoverDidDismiss:self];
              }
-             [_overlay removeFromSuperview];
+             [self->_overlay removeFromSuperview];
              [self removeFromSuperview];
          }];
     }else{

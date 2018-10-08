@@ -28,10 +28,10 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
 {
     //获取图片队列
     dispatch_queue_t _cacheQueue;
-    
-    //文件管理器,不能在其他线程中使用defaultManager
-    NSFileManager *_fileManager;
 }
+
+//文件管理器,不能在其他线程中使用defaultManager
+@property(nonatomic, strong) NSFileManager *fileManager;
 
 //下载队列
 @property(nonatomic,strong) SeaURLSessionManager *sessionManager;
@@ -53,7 +53,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
     {
         _cacheQueue = dispatch_queue_create("SeaImageCahce", DISPATCH_QUEUE_CONCURRENT);
         
-        _fileManager = [[NSFileManager alloc] init];
+        self.fileManager = [[NSFileManager alloc] init];
         _cachePath = [[self getCachePath] copy];
         
         self.sessionManager = [[SeaURLSessionManager alloc] initWithConfiguration:[self defaultURLSessionConfiguration]];
@@ -508,7 +508,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
             data = UIImageJPEGRepresentation(image, 1.0);
         }
         
-        [_fileManager createFileAtPath:imagePath contents:data attributes:nil];
+        [self.fileManager createFileAtPath:imagePath contents:data attributes:nil];
     });
     
     return ret;
@@ -521,7 +521,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
     
     dispatch_async(_cacheQueue, ^(void){
         NSString *imagePath = [self pathForURL:URL];
-        [_fileManager moveItemAtPath:imageFile toPath:imagePath error:nil];
+        [self.fileManager moveItemAtPath:imageFile toPath:imagePath error:nil];
     });
 }
 
@@ -558,7 +558,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
         return;
     
     dispatch_async(_cacheQueue, ^(void){
-         [_fileManager createFileAtPath:path contents:imageData attributes:nil];
+         [self.fileManager createFileAtPath:path contents:imageData attributes:nil];
     });
 }
 
@@ -571,11 +571,11 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
     cache = [cache stringByAppendingPathComponent:SeaImageCacheDirectory];
     
     BOOL isDir;
-    BOOL exist = [_fileManager fileExistsAtPath:cache isDirectory:&isDir];
+    BOOL exist = [self.fileManager fileExistsAtPath:cache isDirectory:&isDir];
     
     if(!(exist && isDir)){
         NSError *error = nil;
-        if(![_fileManager createDirectoryAtPath:cache withIntermediateDirectories:YES attributes:nil error:&error]){
+        if(![self.fileManager createDirectoryAtPath:cache withIntermediateDirectories:YES attributes:nil error:&error]){
             NSLog(@"创建缓存文件夹失败 %@",error);
             return nil;
         }
@@ -593,7 +593,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
         for(NSString *URL in URLs){
             NSString *imagePath = [self pathForURL:URL];
             if(imagePath){
-                [_fileManager removeItemAtPath:imagePath error:nil];
+                [self.fileManager removeItemAtPath:imagePath error:nil];
             }
             NSCache *cache = [SeaImageCacheTool defaultCache];
             [cache removeObjectForKey:URL];
@@ -609,7 +609,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
         [[SeaMovieDurationDataBase sharedInstance] clear];
         
         NSString *path = [[SeaImageCacheTool sharedInstance] getCachePath];
-        [_fileManager removeItemAtPath:path error:&error];
+        [self.fileManager removeItemAtPath:path error:&error];
         
         if(error){
             NSLog(@"清空缓存图片失败");
@@ -635,14 +635,14 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
         NSString *path = [[SeaImageCacheTool sharedInstance] getCachePath];
         
         NSArray *resourceKeys = [NSArray arrayWithObjects:NSURLContentModificationDateKey, nil];
-        NSDirectoryEnumerator *enumerator = [_fileManager enumeratorAtURL:[NSURL fileURLWithPath:path isDirectory:YES] includingPropertiesForKeys:resourceKeys options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:NULL];
+        NSDirectoryEnumerator *enumerator = [self.fileManager enumeratorAtURL:[NSURL fileURLWithPath:path isDirectory:YES] includingPropertiesForKeys:resourceKeys options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:NULL];
         
         
         //要删除的图片
         NSMutableArray *URLsToDelete = [NSMutableArray array];
         
         //过期时间
-        NSDate *expirationDate = [NSDate dateWithTimeIntervalSinceNow:- _diskCacheExpirationTimeInterval];
+        NSDate *expirationDate = [NSDate dateWithTimeIntervalSinceNow:- self.diskCacheExpirationTimeInterval];
         
         //获取已过期的图片
         for(NSURL *URL in enumerator){
@@ -656,7 +656,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
         //删除已过期的图片
         for(NSURL *URL in URLsToDelete){
           //  NSLog(@"%@", url);
-            [_fileManager removeItemAtURL:URL error:nil];
+            [self.fileManager removeItemAtURL:URL error:nil];
         }
         
         [[SeaMovieDurationDataBase sharedInstance] deleteCachesEarlierOrEqualDate:expirationDate];
@@ -685,11 +685,11 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
 
         unsigned long long fileSize = 0;
         
-        if([_fileManager fileExistsAtPath:path]){
-            NSArray *subPaths = [_fileManager subpathsAtPath:path];
+        if([self.fileManager fileExistsAtPath:path]){
+            NSArray *subPaths = [self.fileManager subpathsAtPath:path];
             
             for(NSString *subPath in subPaths){
-                NSDictionary *dic = [_fileManager attributesOfItemAtPath:[path stringByAppendingPathComponent:subPath] error:nil];
+                NSDictionary *dic = [self.fileManager attributesOfItemAtPath:[path stringByAppendingPathComponent:subPath] error:nil];
                 fileSize += [dic fileSize];
             }
         }

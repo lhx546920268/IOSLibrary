@@ -527,7 +527,7 @@
     if(flag){
         [UIView animateWithDuration:0.25 animations:^(void){
             
-            _indicator.frame = frame;
+            self->_indicator.frame = frame;
         }];
     }else{
         _indicator.frame = frame;

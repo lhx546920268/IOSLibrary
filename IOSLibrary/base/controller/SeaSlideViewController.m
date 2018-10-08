@@ -355,12 +355,12 @@
     {
         [UIView animateWithDuration:0.25 animations:^(void){
            
-            _middleViewController.view.frame = frame;
+            self.middleViewController.view.frame = frame;
         }completion:^(BOOL finish){
             
-            if(fromPosition != position && _delegates.count > 0)
+            if(fromPosition != position && self.delegates.count > 0)
             {
-                for(id<SeaSlideViewControllerDelegate> delegate in _delegates)
+                for(id<SeaSlideViewControllerDelegate> delegate in self.delegates)
                 {
                     if([delegate respondsToSelector:@selector(slideViewController:didTransitionPosition:toPosition:)])
                     {

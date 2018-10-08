@@ -201,7 +201,7 @@ typedef NS_ENUM(NSInteger, SeaCollectionViewDraggableLayoutDragDirection)
          }
                          completion:^(BOOL finish)
          {
-             _editing = NO;
+             self->_editing = NO;
 
              NSIndexPath *selectedItem = self.selectedItem;
              NSIndexPath *toItem = self.toItem;

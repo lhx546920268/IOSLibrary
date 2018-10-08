@@ -63,9 +63,9 @@
         return;
     self.isAnimating = YES;
     [UIView animateWithDuration:0.5 animations:^(void){
-        _highlightView.alpha = 0;
+        self.highlightView.alpha = 0;
     }completion:^(BOOL finish){
-        _highlightView.hidden = YES;
+        self.highlightView.hidden = YES;
         self.isAnimating = NO;
     }];
 }

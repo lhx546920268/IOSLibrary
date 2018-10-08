@@ -131,7 +131,7 @@
         if(group == nil){
             //显示图片数量最多的分组
             NSInteger count = 0;
-            for(ALAssetsGroup *g in _groupInfos){
+            for(ALAssetsGroup *g in self.groupInfos){
                 if(g.numberOfAssets > count){
                     self.group = g;
                     count = g.numberOfAssets;
@@ -144,7 +144,7 @@
             
             //只要有图片的分组
             if(group.numberOfAssets > 0){
-                [_groupInfos addObject:group];
+                [self.groupInfos addObject:group];
             }
         }
     }failureBlock:^(NSError *error){
@@ -235,7 +235,7 @@
                 [infos addObject:result];
             }else{
                 //遍历完成
-                _assetInfos = infos;
+                self.assetInfos = infos;
                 
                 if(self.collectionView.superview){
                     [self.collectionView reloadData];

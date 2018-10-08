@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, SeaPostFormat)
 
 /**网络请求封装
  */
-@property(nonatomic,readonly, strong) NSURLRequest *request;
+@property(nonatomic,readonly, strong) NSMutableURLRequest *request;
 
 /**
  请求方法

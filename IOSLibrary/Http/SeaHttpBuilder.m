@@ -31,13 +31,6 @@ static NSString *const SeaContentType = @"Content-Type";
 //定义
 
 @interface SeaHttpBuilder ()
-{
-    ///http请求链接
-    NSString *_URL;
-    
-    ///请求
-    NSMutableURLRequest *_request;
-}
 
 //请求参数 数组元素是 SeaHttpRequestParam
 @property(nonatomic,strong) NSMutableArray *params;
@@ -57,6 +50,9 @@ static NSString *const SeaContentType = @"Content-Type";
 @end
 
 @implementation SeaHttpBuilder
+
+@synthesize URL = _URL;
+@synthesize request = _request;
 
 #pragma mark- init
 
@@ -132,7 +128,7 @@ static NSString *const SeaContentType = @"Content-Type";
 
     if(self.headers.count > 0){
         [self.headers enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop){
-            [_request addValue:value forHTTPHeaderField:key];
+            [self->_request addValue:value forHTTPHeaderField:key];
         }];
     }
     
