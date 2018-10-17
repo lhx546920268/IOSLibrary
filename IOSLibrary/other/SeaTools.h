@@ -40,6 +40,15 @@ UIKIT_EXTERN void unregisterRemoteNotification(void);
  */
 UIKIT_EXTERN void openSystemSettings(void);
 
+/**
+ 打开定位服务设置
+ */
+UIKIT_EXTERN void openLocationSettings(void);
+
+/**打开系统某个设置
+ */
+UIKIT_EXTERN void openSpecialSettings(NSString *settingsURL);
+
 /**拨打电话
  *@param mobiles 电话号码
  *@param flag 是否有弹窗提示 没弹窗显示只拨打第一个

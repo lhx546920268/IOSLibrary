@@ -109,7 +109,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    CGFloat lengths[] = {self.dashesLength,self.dashesInterval};
+    CGFloat lengths[] = {self.dashesLength, self.dashesInterval};
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, self.dashesColor.CGColor);
     CGContextSetLineWidth(context, self.lineWidth);
