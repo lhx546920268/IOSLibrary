@@ -110,7 +110,9 @@
     
     if(overlay){
         [view addSubview:self.overlay];
-        self.overlay.frame = view.bounds;
+        CGRect frame = view.bounds;
+        frame.origin.y += self.offset;
+        self.overlay.frame = frame;
     }
     
     if(animated){
@@ -213,7 +215,7 @@
     CGFloat relateHeight = rect.size.height;
     
     CGFloat superWidth = view.frame.size.width;
-    CGFloat superHeight = view.frame.size.height;
+    CGFloat superHeight = view.frame.size.height - self.offset;
     
     CGFloat margin = _mininumMargin;
     CGFloat scale = 2.0 / 3.0;

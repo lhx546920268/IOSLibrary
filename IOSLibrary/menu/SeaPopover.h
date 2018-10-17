@@ -100,6 +100,11 @@ typedef NS_ENUM(NSInteger, SeaPopoverArrowDirection){
 @property(nonatomic, readonly) SeaPopoverOverlay *overlay;
 
 /**
+ 顶部偏移量
+ */
+@property(nonatomic, assign) CGFloat offset;
+
+/**
  是否正在显示
  */
 @property(nonatomic, readonly) BOOL isShowing;
