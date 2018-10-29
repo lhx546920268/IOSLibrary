@@ -814,7 +814,7 @@
    
     void(^handler)(NSUInteger index) = self.selectionHandler;
     self.dialogDismissCompletionHandler = ^{
-        handler(index);
+        !handler ?: handler(index);
     };
     [self dismiss];
 }
@@ -985,7 +985,7 @@
             
             void(^handler)(NSUInteger index) = self.selectionHandler;
             self.dialogDismissCompletionHandler = ^{
-                handler(indexPath.item);
+                !handler ?: handler(indexPath.item);
             };
             [self dismiss];
         }else{

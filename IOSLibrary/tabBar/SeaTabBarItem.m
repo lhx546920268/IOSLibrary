@@ -59,14 +59,7 @@
     if(_badgeValue != badgeValue){
         _badgeValue = badgeValue;
         
-        if(!_badge){
- 
-            _badge = [SeaNumberBadge new];
-            _badge.font = [UIFont fontWithName:SeaMainNumberFontName size:13];
-            [self addSubview:_badge];
-            _badge.sea_alb.centerXToRight(_imageView).margin(0).build();
-            [_badge sea_topToSuperview:5];
-        }
+        [self initBadge];
         
         if([_badgeValue isEqualToString:@""]){
             _badge.point = YES;
@@ -74,6 +67,19 @@
             _badge.point = NO;
             _badge.value = _badgeValue;
         }
+    }
+}
+
+///创建角标
+- (void)initBadge
+{
+    if(!_badge){
+        
+        _badge = [SeaNumberBadge new];
+        _badge.font = [UIFont fontWithName:SeaMainNumberFontName size:13];
+        [self addSubview:_badge];
+        _badge.sea_alb.centerXToRight(_imageView).margin(0).build();
+        [_badge sea_topToSuperview:5];
     }
 }
 

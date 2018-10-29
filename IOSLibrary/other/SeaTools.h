@@ -45,6 +45,11 @@ UIKIT_EXTERN void openSystemSettings(void);
  */
 UIKIT_EXTERN void openLocationSettings(void);
 
+/**
+ 打开一个路径
+ */
+UIKIT_EXTERN void openCompactURL(NSURL *URL);
+
 /**打开系统某个设置
  */
 UIKIT_EXTERN void openSpecialSettings(NSString *settingsURL);

@@ -32,4 +32,7 @@
  */
 @property(nonatomic,readonly) UIImageView *imageView;
 
+///创建角标
+- (void)initBadge;
+
 @end

@@ -462,6 +462,7 @@ static char SeaInPresentWayKey;
     }else{
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
+        !self.dialogDismissCompletionHandler ?: self.dialogDismissCompletionHandler();
     }
 }
 

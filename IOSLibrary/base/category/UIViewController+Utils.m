@@ -393,6 +393,26 @@ static char SeaTransitioningDelegateKey;
     }
 }
 
+- (void)setSea_backItemEnable:(BOOL)sea_backItemEnable
+{
+    UIImageView *imageView = self.sea_backImageView;
+    if(imageView){
+        self.navigationItem.leftBarButtonItem.enabled = sea_backItemEnable;
+    }else{
+        self.navigationItem.backBarButtonItem.enabled = sea_backItemEnable;
+    }
+}
+
+- (BOOL)sea_backItemEnable
+{
+    UIImageView *imageView = self.sea_backImageView;
+    if(imageView){
+        return self.navigationItem.leftBarButtonItem.enabled;
+    }else{
+        return self.navigationItem.backBarButtonItem.enabled;
+    }
+}
+
 - (BOOL)sea_showBackItem
 {
     return self.navigationItem.backBarButtonItem ||self.navigationItem.leftBarButtonItem.customView.tag == SeaBackItemTag;
@@ -640,7 +660,12 @@ static char SeaTransitioningDelegateKey;
 
 - (void)sea_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController
 {
-    [SeaPresentTransitionDelegate pushViewController:viewController useNavigationBar:YES parentedViewConttroller:self];
+    [self sea_pushViewControllerUseTransitionDelegate:viewController useNavigationBar:YES];
+}
+
+- (void)sea_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use
+{
+    [SeaPresentTransitionDelegate pushViewController:viewController useNavigationBar:use parentedViewConttroller:self];
 }
 
 #pragma mark- Class Method

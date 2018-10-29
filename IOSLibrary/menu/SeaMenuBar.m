@@ -581,6 +581,18 @@
     [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
 }
 
+- (void)setTitle:(NSString*) title forIndex:(NSUInteger) index
+{
+#if SeaDebug
+    NSAssert(index < self.itemInfos.count, @"SeaMenuBar setIcon: forIndex:，index %ld 已越界", (long)index);
+#endif
+    
+    SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:index];
+    info.title = title;
+    
+    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]]];
+}
+
 - (void)setIcon:(UIImage*) icon forIndex:(NSUInteger) index
 {
 #if SeaDebug

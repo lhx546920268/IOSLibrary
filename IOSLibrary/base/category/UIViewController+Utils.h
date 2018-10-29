@@ -22,6 +22,9 @@ SeaTabBarController;
 ///是否返回按钮标题 当上一个标题超过4个字时，使用 ‘返回’
 @property(nonatomic, copy) NSString *sea_backItemTitle;
 
+///返回按钮是否可以点击
+@property(nonatomic, assign) BOOL sea_backItemEnable;
+
 ///自定义的返回按钮
 @property(nonatomic, readonly) UIImageView *sea_backImageView;
 
@@ -82,7 +85,6 @@ SeaTabBarController;
 /**重新加载数据 默认不做任何事，子类可以重写该方法
  */
 - (void)sea_reloadData;
-
 
 /**返回方法 支持present和push出来的视图
  */
@@ -215,6 +217,8 @@ SeaTabBarController;
  使用自定义过渡方式
  */
 - (void)sea_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController;
+
+- (void)sea_pushViewControllerUseTransitionDelegate:(UIViewController *)viewController useNavigationBar:(BOOL) use;
 
 #pragma mark- Class Method
 

@@ -234,14 +234,7 @@ void openSpecialSettings(NSString *settingsURL)
     //    }else{
     //        url = [NSURL URLWithString:@"app-settings:"];
     //    }
-    
-    if([[UIApplication sharedApplication] canOpenURL:URL]){
-        if(@available(iOS 10, *)){
-            [[UIApplication sharedApplication] openURL:URL options:[NSDictionary dictionary] completionHandler:nil];
-        }else{
-            [[UIApplication sharedApplication] openURL:URL];
-        }
-    }
+    openCompactURL(URL);
 }
 
 void makePhoneCall(NSArray<NSString*> *mobiles, BOOL flag)
@@ -256,7 +249,7 @@ void makePhoneCall(NSArray<NSString*> *mobiles, BOOL flag)
             controller.selectionHandler = ^(NSUInteger index){
                 
                 if(index < mobiles.count){
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobiles[index]]]];
+                    openCompactURL([NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobiles[index]]]);
                 }
             };
             [controller show];
@@ -267,13 +260,24 @@ void makePhoneCall(NSArray<NSString*> *mobiles, BOOL flag)
             controller.selectionHandler = ^(NSUInteger index){
                 
                 if(index == 1){
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]];
+                    openCompactURL([NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", mobile]]);
                 }
             };
             [controller show];
         }
     }else{
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", [mobiles firstObject]]]];
+    }
+}
+
+void openCompactURL(NSURL *URL)
+{
+    if([[UIApplication sharedApplication] canOpenURL:URL]){
+        if(@available(iOS 10, *)){
+            [[UIApplication sharedApplication] openURL:URL options:[NSDictionary dictionary] completionHandler:nil];
+        }else{
+            [[UIApplication sharedApplication] openURL:URL];
+        }
     }
 }
 

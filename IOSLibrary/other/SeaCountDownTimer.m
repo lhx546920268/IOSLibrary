@@ -99,7 +99,9 @@
 {
     [self stopTimer];
     [self addNotifications];
+    
     self.timer = [NSTimer timerWithTimeInterval:self.timeInterval target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    [self timerFired:self.timer];
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 

@@ -260,6 +260,12 @@ typedef NS_ENUM(NSInteger, SeaMenuBarStyle)
  */
 - (void)setBadgeValue:(NSString*) badgeValue forIndex:(NSUInteger) index;
 
+/**改变按钮标题
+ *@param title 按钮标题
+ *@param index 按钮下标
+ */
+- (void)setTitle:(NSString*) title forIndex:(NSUInteger) index;
+
 /**改变按钮图标
  *@param icon 按钮图标
  *@param index 按钮下标
