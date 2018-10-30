@@ -13,6 +13,7 @@
 #import "UIView+Utils.h"
 #import "UIView+SeaAutoLayout.h"
 #import "NSMutableArray+Utils.h"
+#import "NSObject+Utils.h"
 
 @implementation SeaMenuItemInfo
 
@@ -133,7 +134,7 @@
     collectionView.scrollsToTop = NO;
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    [collectionView registerClass:[SeaMenuBarItem class] forCellWithReuseIdentifier:@"SeaMenuBarItem"];
+    [collectionView registerClass:[SeaMenuBarItem class] forCellWithReuseIdentifier:[SeaMenuBarItem sea_nameOfClass]];
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
@@ -165,11 +166,16 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     ///在这里计算 item 有时候 宽度或者高度等于0的
     if(self.width > 0 && self.height > 0){
-        self.mesureEnable = YES;
-        [self reloadData];
-        [self layoutIndicatorWithAnimate:NO];
+        //不这样会有bug item的数量超过时间数量
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+           
+            self.mesureEnable = YES;
+            [self reloadData];
+            [self layoutIndicatorWithAnimate:NO];
+        });
     }
 }
 
@@ -218,8 +224,8 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if(!self.mesureEnable){
-        return 0;
+    if(self.mesureEnable){
+        [self mesureItems];
     }
     return _itemInfos.count;
 }
@@ -251,8 +257,7 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"SeaMenuBarItem";
-    SeaMenuBarItem *item = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    SeaMenuBarItem *item = [collectionView dequeueReusableCellWithReuseIdentifier:[SeaMenuBarItem sea_nameOfClass] forIndexPath:indexPath];
     
     SeaMenuItemInfo *info = [self.itemInfos objectAtIndex:indexPath.item];
     [item.button setTitleColor:_selectedTextColor forState:UIControlStateSelected];
@@ -322,8 +327,7 @@
         
         _titles = [titles copy];
         
-        [self mesureItems];
-        [self.collectionView reloadData];
+        [self reloadData];
         self.selectedIndex = 0;
     }
 }
