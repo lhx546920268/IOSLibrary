@@ -51,6 +51,11 @@
  */
 @property(nonatomic,assign) BOOL mesureEnable;
 
+/**
+ 是否已计算 item
+ */
+@property(nonatomic,assign) BOOL hasMesured;
+
 @end
 
 @implementation SeaMenuBar
@@ -170,20 +175,24 @@
     ///在这里计算 item 有时候 宽度或者高度等于0的
     if(self.width > 0 && self.height > 0){
         //不这样会有bug item的数量超过时间数量
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-           
-            self.mesureEnable = YES;
-            [self reloadData];
-            [self layoutIndicatorWithAnimate:NO];
-        });
+        self.mesureEnable = YES;
+        if(!self.hasMesured){
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+
+                [self reloadData];
+                [self layoutIndicatorWithAnimate:NO];
+            });
+        }
     }
 }
 
 ///刷新数据
 - (void)reloadData
 {
-    [self mesureItems];
-    [self.collectionView reloadData];
+    if(self.mesureEnable){
+        [self mesureItems];
+        [self.collectionView reloadData];
+    }
 }
 
 ///测量item
@@ -191,6 +200,8 @@
 {
     if(!self.mesureEnable)
         return;
+    
+    self.hasMesured = YES;
     CGFloat totalWidth = 0;
     int i = 0;
     for(SeaMenuItemInfo *info in self.itemInfos){
@@ -224,8 +235,8 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if(self.mesureEnable){
-        [self mesureItems];
+    if(!self.mesureEnable){
+        return 0;
     }
     return _itemInfos.count;
 }
