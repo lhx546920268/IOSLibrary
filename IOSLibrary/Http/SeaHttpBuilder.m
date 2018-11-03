@@ -357,10 +357,10 @@ static NSString *const SeaContentType = @"Content-Type";
     _uploadSize = postData.length;
     
 #if SeaHttpLogConfig
-    if(postData.length < 200){
-        self.debugPostBodyString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
-        NSLog(@"URLEncodedPostBody begin == \n%@\n URLEncodedPostBody end ===\n", self.debugPostBodyString);
-    }
+//    if(postData.length < 500){
+//        self.debugPostBodyString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
+//        NSLog(@"URLEncodedPostBody begin == \n%@\n URLEncodedPostBody end ===\n", self.debugPostBodyString);
+//    }
 #endif
     [_request setValue:[NSString stringWithFormat:@"%ld", (long)postData.length] forHTTPHeaderField:@"Content-Length"];
     

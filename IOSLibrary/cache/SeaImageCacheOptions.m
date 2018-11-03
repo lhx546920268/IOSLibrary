@@ -18,6 +18,7 @@
         self.originalContentMode = UIViewContentModeScaleToFill;
         self.placeholderContentMode = UIViewContentModeScaleAspectFit;
         self.shouldAspectRatioFit = YES;
+        self.resetImage = YES;
     }
     
     return self;
@@ -40,6 +41,7 @@
     self.shouldAspectRatioFit = options.shouldAspectRatioFit;
     self.activityIndicatorViewStyle = options.activityIndicatorViewStyle;
     self.shouldShowLoadingActivity = options.shouldShowLoadingActivity;
+    self.resetImage = options.resetImage;
 }
 
 ///单例

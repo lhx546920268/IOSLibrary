@@ -24,6 +24,11 @@
 @property(nonatomic, strong) UIImage *placeholderImage;
 
 /**
+ 是否 重设图片 加载中 default is 'YES'
+ */
+@property(nonatomic, assign) BOOL resetImage;
+
+/**
  view 原始的 contentMode，在加载图片过程中，设置placeholderImage时，会改变contentMode，加载成功后会设置成 originalContentMode
  default is 'UIViewContentModeScaleToFill'
  */

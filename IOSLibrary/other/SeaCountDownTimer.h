@@ -25,6 +25,11 @@ static const NSTimeInterval SeaCountDownUnlimited = LONG_MAX;
 @property(nonatomic, assign) NSTimeInterval timeToCountDown;
 
 /**
+ 倒计时是否马上开始 默认 是 timeInterval 后只需第一次回调
+ */
+@property(nonatomic, assign) BOOL shouldStartImmediately;
+
+/**
  倒计时间隔
  设置不同的时间会导致倒计时结束 且不会有回调
  */

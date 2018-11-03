@@ -20,7 +20,9 @@
             self.image = options.placeholderImage;
             self.contentMode = options.placeholderContentMode;
         }else{
-            self.image = nil;
+            if(options.resetImage){
+                self.image = nil;
+            }
         }
     }
 }
