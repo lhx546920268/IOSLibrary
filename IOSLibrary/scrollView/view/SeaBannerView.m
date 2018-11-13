@@ -52,11 +52,6 @@
 @property(nonatomic,assign) BOOL isLayoutSubviews;
 
 /**
- 是否需要刷新数据
- */
-@property(nonatomic,assign) BOOL shouldReloadData;
-
-/**
  layout
  */
 @property(nonatomic,strong) UICollectionViewFlowLayout *layout;
@@ -103,7 +98,6 @@
         _enableScrollCircularly = YES;
         _showPageControl = NO;
         _enableAutoScroll = YES;
-        self.shouldReloadData = YES;
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.minimumLineSpacing = 0;
@@ -120,8 +114,6 @@
         _collectionView.dataSource = self;
         _collectionView.scrollsToTop = NO;
         [self addSubview:_collectionView];
-        
-        [_collectionView sea_insetsInSuperview:UIEdgeInsetsZero];
     }
 }
 
@@ -148,7 +140,9 @@
 {
     [super layoutSubviews];
     self.isLayoutSubviews = YES;
-    if(self.shouldReloadData){
+    
+    if(!CGSizeEqualToSize(self.collectionView.frame.size, self.bounds.size)){
+        self.collectionView.frame = self.bounds;
         [self fetchData];
     }
 }
@@ -177,7 +171,6 @@
 
 - (void)reloadData
 {
-    self.shouldReloadData = YES;
     if(self.isLayoutSubviews){
         [self fetchData];
     }
@@ -185,7 +178,6 @@
 
 - (void)fetchData
 {
-    self.shouldReloadData = NO;
     if([self.delegate respondsToSelector:@selector(numberOfCellsInBannerView:)]){
         _numberOfCells = [self.delegate numberOfCellsInBannerView:self];
     }else{
@@ -396,7 +388,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.bounds.size;
+    return collectionView.bounds.size;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

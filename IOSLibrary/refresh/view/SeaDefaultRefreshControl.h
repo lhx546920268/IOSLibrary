@@ -28,4 +28,9 @@
  */
 @property(nonatomic, assign) BOOL showIndicatorView;
 
+/**
+ 更新位置
+ */
+- (void)updatePosition;
+
 @end

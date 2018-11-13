@@ -29,7 +29,8 @@ static char SeaLoadMoreControlKey;
     SeaLoadMoreControl *loadMoreControl = self.sea_loadMoreControl;
     if(loadMoreControl){
         UIEdgeInsets contentInsets = self.contentInset;
-        if(loadMoreControl.state == SeaDataControlStateLoading){
+        if(loadMoreControl.state == SeaDataControlStateLoading
+           || (loadMoreControl.state == SeaDataControlStateNoData && loadMoreControl.shouldStayWhileNoData)){
             contentInsets.bottom -= loadMoreControl.criticalPoint;
             if(contentInsets.bottom < 0){
                 contentInsets.bottom = 0;
@@ -63,6 +64,11 @@ static char SeaLoadMoreControlKey;
         
         [self addSubview:refreshControl];
     }
+}
+
+- (BOOL)sea_refreshing
+{
+    return self.sea_refreshControl.state == SeaDataControlStateLoading;
 }
 
 #pragma mark loadmore control
@@ -117,6 +123,11 @@ static char SeaLoadMoreControlKey;
 - (SeaLoadMoreControl*)sea_loadMoreControl
 {
     return objc_getAssociatedObject(self, &SeaLoadMoreControlKey);
+}
+
+- (BOOL)sea_loadingMore
+{
+    return self.sea_loadMoreControl.state == SeaDataControlStateLoading;
 }
 
 @end

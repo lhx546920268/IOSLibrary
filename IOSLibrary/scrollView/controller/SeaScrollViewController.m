@@ -142,7 +142,7 @@
 {
     if(self.loadingMore && !self.coexistRefreshAndLoadMore){
         self.curPage --;
-        [self stopLoadMoreWithMore:true];
+        [self stopLoadMoreWithMore:YES];
     }
     _refreshing = YES;
     [self onRefesh];

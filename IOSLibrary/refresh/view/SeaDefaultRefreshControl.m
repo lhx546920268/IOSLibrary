@@ -103,7 +103,6 @@
     [self updatePosition];
 }
 
-///更新位置
 - (void)updatePosition
 {
     CGFloat width = _indicatorView.isAnimating ? _indicatorView.width : 0;

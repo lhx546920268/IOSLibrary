@@ -59,6 +59,9 @@ static NSString *const SeaWebViewCopyLink = @"拷贝链接";
 ///当前系统默认的 userAgent
 static NSString *SeaSystemUserAgent = nil;
 
+///使用单例 防止 存储信息不一致
+static WKProcessPool *sharedProcessPool;
+
 @interface SeaWebViewController ()<UIActionSheetDelegate>
 
 /**加载进度条
@@ -289,7 +292,7 @@ static NSString *SeaSystemUserAgent = nil;
     [progressView sea_leftToSuperview];
     [progressView sea_rightToSuperview];
     [progressView sea_topToSuperview];
-    [progressView sea_heightToSelf:2.5];
+    [progressView sea_heightToSelf:2];
     
     [_webView sea_insetsInSuperview:UIEdgeInsetsZero];
     
@@ -325,6 +328,10 @@ static NSString *SeaSystemUserAgent = nil;
     
     WKWebViewConfiguration *configuration = [WKWebViewConfiguration new];
     configuration.userContentController = userContentController;
+    if(!sharedProcessPool){
+        sharedProcessPool = [WKProcessPool new];
+    }
+    configuration.processPool = sharedProcessPool;
     
     return configuration;
 }

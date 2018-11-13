@@ -61,14 +61,19 @@
     self = [super initWithScrollView:scrollView];
     if(self){
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.criticalPoint = 60;
-        [self setTitle:@"下拉刷新" forState:SeaDataControlStateNormal];
-        [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
-        [self setTitle:@"松开即可刷新" forState:SeaDataControlStateReachCirticalPoint];
         [self setState:SeaDataControlStateNormal];
     }
     
     return self;
+}
+
+- (void)initialization
+{
+    [super initialization];
+    self.criticalPoint = 60;
+    [self setTitle:@"下拉刷新" forState:SeaDataControlStateNormal];
+    [self setTitle:@"加载中..." forState:SeaDataControlStateLoading];
+    [self setTitle:@"松开即可刷新" forState:SeaDataControlStateReachCirticalPoint];
 }
 
 - (void)layoutSubviews

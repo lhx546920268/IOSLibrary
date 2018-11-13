@@ -27,6 +27,10 @@
  */
 @property(nonatomic, strong) SeaRefreshControl *sea_refreshControl;
 
+/**
+ 是否正在下拉刷新
+ */
+@property(nonatomic, readonly) BOOL sea_refreshing;
 
 /**
  添加加载更多
@@ -43,5 +47,10 @@
  加载更多控制类
  */
 @property(nonatomic, strong) SeaLoadMoreControl *sea_loadMoreControl;
+
+/**
+ 是否正在加载更多
+ */
+@property(nonatomic, readonly) BOOL sea_loadingMore;
 
 @end

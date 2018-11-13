@@ -177,6 +177,7 @@
 - (void)menuBar:(SeaMenuBar *)menu didSelectItemAtIndex:(NSUInteger)index
 {
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    [self onScrollTopPage:index];
 }
 
 #pragma mark- UIScrollViewDelegate

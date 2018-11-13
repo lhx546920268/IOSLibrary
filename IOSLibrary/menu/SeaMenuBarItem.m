@@ -37,11 +37,10 @@
         
         [_separator sea_sizeToSelf:CGSizeMake(SeaSeparatorWidth, 15.0)];
         [_separator sea_rightToSuperview];
-        [_separator sea_centerInSuperview];
+        [_separator sea_centerYInSuperview];
         
         [_numberBadge sea_rightToSuperview];
-        [_numberBadge sea_centerYInSuperview];
-        [_numberBadge sea_sizeToSelf:CGSizeMake(44.0, 40)];
+        [_numberBadge sea_topToSuperview:5];
     }
     return self;
 }
