@@ -59,6 +59,11 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 @property(nonatomic, readonly) BOOL isSuspended;
 
+/*
+ 是否是自己取消
+ */
+@property(nonatomic, readonly) BOOL isCanceled;
+
 /**
  获取请求
  */

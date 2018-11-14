@@ -231,8 +231,13 @@ static NSString *const SeaProgressKeyPath = @"fractionCompleted";
     dispatch_main_async_safe(^(void){
         if(error){
             //取消将忽略
-            if(error.code != NSURLErrorCancelled){
-                NSLog(@"%@ \n error = %@", task.originalRequest.URL, error.description);
+            BOOL cancel = error.code == NSURLErrorCancelled;
+            if(self.httpTask){
+                cancel = self.httpTask.isCanceled;
+            }
+            
+            if(!cancel){
+//                NSLog(@"%@ \n error = %@", task.originalRequest.URL, error.description);
                 if(self.dataTask){
                     !self.completionHandler ?: self.completionHandler(self.dataTask, nil, error.code);
                     

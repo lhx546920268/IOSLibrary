@@ -128,6 +128,8 @@
             self.shouldScrollToPage = NO;
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.menuBar.selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
         }
+        
+        [self onScrollTopPage:self.menuBar.selectedIndex];
     }
 }
 
