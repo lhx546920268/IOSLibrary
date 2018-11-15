@@ -42,7 +42,7 @@
 {
     if([NSJSONSerialization isValidJSONObject:object]){
         NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:&error];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:object options:kNilOptions error:&error];
         
         if(error){
             NSLog(@"生成json 出错%@",error);

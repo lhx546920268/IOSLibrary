@@ -11,7 +11,6 @@
 #import "NSString+Utils.h"
 #import "UIFont+Utils.h"
 #import "UIView+Utils.h"
-#import "UIView+SeaAutoLayout.h"
 #import "NSMutableArray+Utils.h"
 #import "NSObject+Utils.h"
 
@@ -50,11 +49,6 @@
  是否已经可以计算item
  */
 @property(nonatomic,assign) BOOL mesureEnable;
-
-/**
- 是否已计算 item
- */
-@property(nonatomic,assign) BOOL hasMesured;
 
 @end
 
@@ -156,33 +150,31 @@
     _topSeparator.backgroundColor = SeaSeparatorColor;
     [self addSubview:_topSeparator];
     
-    [collectionView sea_insetsInSuperview:UIEdgeInsetsZero];
-    
-    [_topSeparator sea_leftToSuperview];
-    [_topSeparator sea_rightToSuperview];
-    [_topSeparator sea_topToSuperview];
-    [_topSeparator sea_heightToSelf:SeaSeparatorWidth];
-    
-    [_bottomSeparator sea_leftToSuperview];
-    [_bottomSeparator sea_rightToSuperview];
-    [_bottomSeparator sea_bottomToSuperview];
-    [_bottomSeparator sea_heightToSelf:SeaSeparatorWidth];
+//    [collectionView sea_insetsInSuperview:UIEdgeInsetsZero];
+//
+//    [_topSeparator sea_leftToSuperview];
+//    [_topSeparator sea_rightToSuperview];
+//    [_topSeparator sea_topToSuperview];
+//    [_topSeparator sea_heightToSelf:SeaSeparatorWidth];
+//
+//    [_bottomSeparator sea_leftToSuperview];
+//    [_bottomSeparator sea_rightToSuperview];
+//    [_bottomSeparator sea_bottomToSuperview];
+//    [_bottomSeparator sea_heightToSelf:SeaSeparatorWidth];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    ///在这里计算 item 有时候 宽度或者高度等于0的
-    if(self.width > 0 && self.height > 0){
-        //不这样会有bug item的数量超过时间数量
+    if(!CGSizeEqualToSize(self.bounds.size, _collectionView.frame.size)){
+        _topSeparator.frame = CGRectMake(0, 0, self.width, SeaSeparatorWidth);
+        _bottomSeparator.frame = CGRectMake(0, self.height - SeaSeparatorWidth, self.width, SeaSeparatorWidth);
+        _collectionView.frame = self.bounds;
+        
         self.mesureEnable = YES;
-        if(!self.hasMesured){
-            dispatch_async(dispatch_get_main_queue(), ^(void){
-
-                [self reloadData];
-                [self layoutIndicatorWithAnimate:NO];
-            });
-        }
+        
+        [self reloadData];
+        [self layoutIndicatorWithAnimate:NO];
     }
 }
 
@@ -201,7 +193,6 @@
     if(!self.mesureEnable)
         return;
     
-    self.hasMesured = YES;
     CGFloat totalWidth = 0;
     int i = 0;
     for(SeaMenuItemInfo *info in self.itemInfos){

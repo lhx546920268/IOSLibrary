@@ -216,7 +216,6 @@
 ///超时
 - (void)onTimeout
 {
-    NSLog(@"%d", _URLSessionTask.state);
     if(self.isExecuting || self.isSuspended){
         [self cancel];
         NSLog(@"自己设定的请求超时 %@", _URLSessionTask.originalRequest.URL);

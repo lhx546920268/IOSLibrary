@@ -129,7 +129,9 @@
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.menuBar.selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
         }
         
-        [self onScrollTopPage:self.menuBar.selectedIndex];
+        if(self.menuBar.selectedIndex < [self numberOfPage]){
+            [self onScrollTopPage:self.menuBar.selectedIndex];
+        }
     }
 }
 
