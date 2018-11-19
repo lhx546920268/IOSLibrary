@@ -166,7 +166,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if(!CGSizeEqualToSize(self.bounds.size, _collectionView.frame.size)){
+    if(self.width > 0 && self.height > 0 && !CGSizeEqualToSize(self.bounds.size, _collectionView.frame.size)){
         _topSeparator.frame = CGRectMake(0, 0, self.width, SeaSeparatorWidth);
         _bottomSeparator.frame = CGRectMake(0, self.height - SeaSeparatorWidth, self.width, SeaSeparatorWidth);
         _collectionView.frame = self.bounds;
