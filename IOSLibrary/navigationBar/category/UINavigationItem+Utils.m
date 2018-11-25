@@ -45,17 +45,16 @@
 {
     if(leftBarButtonItem){
         //只有当 item是自定义item 和 图标，系统item 才需要修正
-        if(leftBarButtonItem.customView || leftBarButtonItem.image || [self isSystemItem:leftBarButtonItem]){
-            
-            UIBarButtonItem *fixedItem = [self fixedBarButtonItem];
-            if(leftBarButtonItem.customView.tag == SeaBackItemTag){
-                fixedItem.width -= SeaNavigationBarMargin;
-            }
-            [self sea_setLeftBarButtonItems:@[fixedItem, leftBarButtonItem] animated:animated];
-        }else{
-            [self sea_setLeftBarButtonItem:leftBarButtonItem animated:animated];
+        
+        UIBarButtonItem *fixedItem = [self fixedBarButtonItem];
+        if(!(leftBarButtonItem.customView || leftBarButtonItem.image || [self isSystemItem:leftBarButtonItem])){
+            fixedItem.width -= 8;
         }
         
+        if(leftBarButtonItem.customView.tag == SeaBackItemTag){
+            fixedItem.width -= SeaNavigationBarMargin;
+        }
+        [self sea_setLeftBarButtonItems:@[fixedItem, leftBarButtonItem] animated:animated];
     }else{
         [self sea_setLeftBarButtonItem:leftBarButtonItem animated:animated];
     }
@@ -66,18 +65,17 @@
     if(leftBarButtonItems.count > 0){
         
         UIBarButtonItem *item = [leftBarButtonItems firstObject];
+        NSMutableArray *items = [NSMutableArray arrayWithArray:leftBarButtonItems];
+        
+        UIBarButtonItem *fixedItem = [self fixedBarButtonItem];
         
         //只有当第一个 item是自定义item 和 图标，系统item 才需要修正
-        if(item.customView || item.image || [self isSystemItem:item]){
-            
-            NSMutableArray *items = [NSMutableArray arrayWithArray:leftBarButtonItems];
-            item = [self fixedBarButtonItem];
-            [items insertObject:item atIndex:0];
-            [self sea_setLeftBarButtonItems:items animated:animated];
-        }else{
-            [self sea_setLeftBarButtonItems:leftBarButtonItems animated:animated];
+        if(!(item.customView || item.image || [self isSystemItem:item])){
+            fixedItem.width += 8;
         }
         
+        [items insertObject:fixedItem atIndex:0];
+        [self sea_setLeftBarButtonItems:items animated:animated];
     }else{
         [self sea_setLeftBarButtonItems:leftBarButtonItems animated:animated];
     }
@@ -86,14 +84,14 @@
 - (void)sea_setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem animated:(BOOL)animated
 {
     if(rightBarButtonItem){
-        //只有当 item是自定义item 和 图标，系统item 才需要修正
-        if(rightBarButtonItem.customView || rightBarButtonItem.image || [self isSystemItem:rightBarButtonItem]){
-      
-            [self sea_setRightBarButtonItems:@[[self fixedBarButtonItem], rightBarButtonItem] animated:animated];
-        }else{
-            [self sea_setRightBarButtonItem:rightBarButtonItem animated:animated];
-        }
         
+        UIBarButtonItem *item = [self fixedBarButtonItem];
+        
+        //只有当 item是自定义item 和 图标，系统item 才需要修正
+        if(!(rightBarButtonItem.customView || rightBarButtonItem.image || [self isSystemItem:rightBarButtonItem])){
+            item.width += 8;
+        }
+        [self sea_setRightBarButtonItems:@[item, rightBarButtonItem] animated:animated];
     }else{
         [self sea_setRightBarButtonItem:rightBarButtonItem animated:animated];
     }
@@ -104,19 +102,16 @@
 {
     if(rightBarButtonitems.count > 0){
         
+        NSMutableArray *items = [NSMutableArray arrayWithArray:rightBarButtonitems];
         UIBarButtonItem *item = [rightBarButtonitems firstObject];
         
+        UIBarButtonItem *fixedItem = [self fixedBarButtonItem];;
         //只有当第一个 item是自定义item 和 图标，系统item 才需要修正
-        if(item.customView || item.image || [self isSystemItem:item]){
-            
-            NSMutableArray *items = [NSMutableArray arrayWithArray:rightBarButtonitems];
-            item = [self fixedBarButtonItem];
-            [items insertObject:item atIndex:0];
-            [self sea_setRightBarButtonItems:items animated:animated];
-        }else{
-            [self sea_setRightBarButtonItems:rightBarButtonitems animated:animated];
+        if(!(item.customView || item.image || [self isSystemItem:item])){
+            fixedItem.width += 8;
         }
-        
+        [items insertObject:fixedItem atIndex:0];
+        [self sea_setRightBarButtonItems:items animated:animated];
     }else{
         [self sea_setRightBarButtonItems:rightBarButtonitems animated:animated];
     }

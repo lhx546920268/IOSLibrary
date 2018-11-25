@@ -360,9 +360,9 @@ static char SeaTransitioningDelegateKey;
                 image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             }
             
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + SeaNavigationBarMargin, 44)];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + SeaNavigationBarMargin * 2, 44)];
             imageView.image = image;
-            imageView.contentMode = UIViewContentModeRight;
+            imageView.contentMode = UIViewContentModeCenter;
             imageView.userInteractionEnabled = YES;
             imageView.tintColor = self.sea_iconTintColor;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sea_back)];
