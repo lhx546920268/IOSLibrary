@@ -153,27 +153,31 @@
 //添加任务
 - (SeaURLSessionTaskDelegate*)addDataTask:(NSURLSessionDataTask*) dataTask httpTask:(SeaHttpTask*) httpTask completion:(SeaURLSessionCompletionHandler) completionHandler
 {
-    if(!dataTask)
-        return nil;
-    SeaURLSessionTaskDelegate *delegate = [[SeaURLSessionTaskDelegate alloc] initWithDataTask:dataTask];
-    delegate.completionHandler = completionHandler;
-    delegate.httpTask = httpTask;
-    
-    [self.delegates setObject:delegate forKey:@(dataTask.taskIdentifier)];
-    return delegate;
+    @synchronized (self) {
+        if(!dataTask)
+            return nil;
+        SeaURLSessionTaskDelegate *delegate = [[SeaURLSessionTaskDelegate alloc] initWithDataTask:dataTask];
+        delegate.completionHandler = completionHandler;
+        delegate.httpTask = httpTask;
+        
+        [self.delegates setObject:delegate forKey:@(dataTask.taskIdentifier)];
+        return delegate;
+    }
 }
 
 ///添加下载任务
 - (SeaURLSessionTaskDelegate*)addDownloadTask:(NSURLSessionDownloadTask*) downloadTask destinationPath:(NSString*) destinationPath
                            completion:(SeaURLSessionDownloadHandler) completionHandler
 {
-    if(!downloadTask)
-        return nil;
-    SeaURLSessionTaskDelegate *delegate = [[SeaURLSessionTaskDelegate alloc] initWithDownloadTask:downloadTask destinationPath:destinationPath];
-    delegate.downloadHandler = completionHandler;
-    
-    [self.delegates setObject:delegate forKey:@(downloadTask.taskIdentifier)];
-    return delegate;
+    @synchronized (self) {
+        if(!downloadTask)
+            return nil;
+        SeaURLSessionTaskDelegate *delegate = [[SeaURLSessionTaskDelegate alloc] initWithDownloadTask:downloadTask destinationPath:destinationPath];
+        delegate.downloadHandler = completionHandler;
+        
+        [self.delegates setObject:delegate forKey:@(downloadTask.taskIdentifier)];
+        return delegate;
+    }
 }
 
 //获取代理
@@ -185,7 +189,9 @@
 //删除代理
 - (void)removeTask:(NSURLSessionTask*) task
 {
-    [self.delegates removeObjectForKey:@(task.taskIdentifier)];
+    @synchronized (self) {
+        [self.delegates removeObjectForKey:@(task.taskIdentifier)];
+    }
 }
 
 #pragma mark- NSURLSessionTaskDelegate
