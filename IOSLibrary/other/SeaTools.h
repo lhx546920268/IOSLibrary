@@ -41,18 +41,9 @@ UIKIT_EXTERN void unregisterRemoteNotification(void);
 UIKIT_EXTERN void openSystemSettings(void);
 
 /**
- 打开定位服务设置
- */
-UIKIT_EXTERN void openLocationSettings(void);
-
-/**
  打开一个路径
  */
 UIKIT_EXTERN void openCompactURL(NSURL *URL);
-
-/**打开系统某个设置
- */
-UIKIT_EXTERN void openSpecialSettings(NSString *settingsURL);
 
 /**拨打电话
  *@param mobiles 电话号码
