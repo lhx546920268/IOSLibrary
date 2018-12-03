@@ -10,6 +10,7 @@
 #import "SeaHttpTask.h"
 #import "SeaHttpTaskDelegate.h"
 #import "SeaURLSessionManager.h"
+#import "NSObject+Utils.h"
 
 @interface SeaMultiTasks()<SeaHttpTaskDelegate>
 
@@ -21,6 +22,9 @@
 
 ///是否并发执行
 @property(nonatomic, assign) BOOL concurrent;
+
+///对应任务
+@property(nonatomic, strong) NSMutableDictionary<NSString*, __kindof SeaHttpTask*> *taskDictionary;
 
 @end
 
@@ -38,20 +42,32 @@
     return sharedContainers;
 }
 
+- (void)dealloc
+{
+    
+}
+
 - (instancetype)init
 {
     self = [super init];
     if(self){
         
         self.tasks = [NSMutableArray array];
+        self.taskDictionary = [NSMutableDictionary dictionary];
         self.shouldCancelAllTaskWhileOneFail = YES;
     }
     
     return self;
 }
 
-- (void)addTask:(SeaHttpTask*) task
+- (void)addTask:(SeaHttpTask *)task
 {
+    [self addTask:task forKey:[task sea_nameOfClass]];
+}
+
+- (void)addTask:(SeaHttpTask*) task forKey:(NSString *)key
+{
+    [self.taskDictionary setObject:task forKey:key];
     [self addURLSessionTask:[task getURLSessionTask] URLSessionManager:task.URLSessionManager];
 }
 
@@ -90,7 +106,14 @@
         [task cancel];
     }
     [self.tasks removeAllObjects];
+    [self.taskDictionary removeAllObjects];
+    
     [[SeaMultiTasks sharedContainers] removeObject:self];
+}
+
+- (__kindof SeaHttpTask*)taskForKey:(NSString*) key
+{
+    return [self.taskDictionary objectForKey:key];
 }
 
 ///开始任务
@@ -131,8 +154,10 @@
     }
     
     if(self.tasks.count == 0){
-        !self.completionHandler ?: self.completionHandler(self.hasFail);
+        !self.completionHandler ?: self.completionHandler(self, self.hasFail);
+        [self.taskDictionary removeAllObjects];
         [[SeaMultiTasks sharedContainers] removeObject:self];
+        
     }else if (!self.concurrent){
         [self startNextTask];
     }

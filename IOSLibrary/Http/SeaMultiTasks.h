@@ -24,16 +24,23 @@
 /**
  所有任务完成回调 hasFail 是否有任务失败了
  */
-@property(nonatomic, copy) void(^completionHandler)(BOOL hasFail);
+@property(nonatomic, copy) void(^completionHandler)(SeaMultiTasks *tasks, BOOL hasFail);
+
+/**
+ 添加任务 key 为className
+ */
+- (void)addTask:(SeaHttpTask*) task;
 
 /**
  添加任务
-
+ 
  @param task 对应任务，会通过 getURLSessionTask 添加
  不要需要调用 SeaHttpTask 的start方法
  SeaHttpTask中 onStart 方法将不会触发
+ 
+ @param key 唯一标识符
  */
-- (void)addTask:(SeaHttpTask*) task;
+- (void)addTask:(SeaHttpTask*) task forKey:(NSString*) key;
 
 /**
  添加任务
@@ -64,5 +71,10 @@
  取消所有请求
  */
 - (void)cancelAllTasks;
+
+/**
+ 获取某个请求
+ */
+- (__kindof SeaHttpTask*)taskForKey:(NSString*) key;
 
 @end
