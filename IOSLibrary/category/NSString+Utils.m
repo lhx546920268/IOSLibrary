@@ -259,7 +259,7 @@
     if(self.length != 11){
         return NO;
     }
-    return [self sea_evaluateWithFormat:@"^1[3|4|5|7|8]\\d{9}$"];
+    return [self sea_evaluateWithFormat:@"^1[3|4|5|7|8|9]\\d{9}$"];
 }
 
 - (BOOL)isContainSpecialCharacter
