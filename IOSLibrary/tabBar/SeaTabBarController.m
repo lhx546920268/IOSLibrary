@@ -95,8 +95,8 @@
 
 - (UIViewController*)showedViewConroller
 {
-    if(_selectedItemIndex < _itemInfos.count){
-        SeaTabBarItemInfo *info = [_itemInfos objectAtIndex:_selectedItemIndex];
+    if(self.tabBar.selectedIndex < _itemInfos.count){
+        SeaTabBarItemInfo *info = [_itemInfos objectAtIndex:self.tabBar.selectedIndex];
         return info.viewController;
     }
     
@@ -140,7 +140,8 @@
 
 - (BOOL)tabBar:(SeaTabBar *)tabBar shouldSelectItemAtIndex:(NSInteger)index
 {
-    BOOL should = [self selectedViewController] != nil;
+    SeaTabBarItemInfo *info = _itemInfos[index];
+    BOOL should = info.viewController != nil;
     if([self.delegate respondsToSelector:@selector(sea_tabBarController:shouldSelectAtIndex:)]){
         should = [self.delegate sea_tabBarController:self shouldSelectAtIndex:index];
     }
@@ -157,7 +158,7 @@
             normalColor = [UIColor grayColor];
         _normalColor = normalColor;
         for(NSUInteger i = 0;i < self.tabBarItems.count;i ++){
-            if(i != _selectedItemIndex){
+            if(i != self.tabBar.selectedIndex){
                 SeaTabBarItem *item = self.tabBarItems[i];
                 item.imageView.tintColor = normalColor;
                 item.textLabel.textColor = normalColor;
@@ -172,8 +173,8 @@
         _selectedColor = selectedColor;
         if(!_selectedColor)
             _selectedColor = SeaAppMainColor;
-        if(_selectedItemIndex < self.tabBarItems.count){
-            SeaTabBarItem *item = self.tabBarItems[_selectedItemIndex];
+        if(self.tabBar.selectedIndex < self.tabBarItems.count){
+            SeaTabBarItem *item = self.tabBarItems[self.tabBar.selectedIndex];
             item.imageView.tintColor = _selectedColor;
             item.textLabel.textColor = _selectedColor;
         }
@@ -244,14 +245,18 @@
         }
         
         _selectedIndex = selectedItemIndex;
+        
+        if([self.delegate respondsToSelector:@selector(sea_tabBarController:didSelectAtIndex:)]){
+            [self.delegate sea_tabBarController:self didSelectAtIndex:_selectedIndex];
+        }
     }
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
     if(_selectedIndex != selectedIndex){
-        _selectedIndex = selectedIndex;
-        self.tabBar.selectedIndex = _selectedIndex;
+        self.tabBar.selectedIndex = selectedIndex;
+        _selectedIndex = self.tabBar.selectedIndex;
     }
 }
 

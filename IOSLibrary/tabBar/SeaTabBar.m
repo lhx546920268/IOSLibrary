@@ -62,14 +62,7 @@
     if(item.selected == YES)
         return;
     
-    BOOL shouldSelect = YES;
-    if([self.delegate respondsToSelector:@selector(tabBar:shouldSelectItemAtIndex:)]){
-        shouldSelect = [self.delegate tabBar:self shouldSelectItemAtIndex:[_items indexOfObject:item]];
-    }
-    
-    if(shouldSelect){
-        self.selectedIndex = [_items indexOfObject:item];
-    }
+    self.selectedIndex = [self.items indexOfObject:item];
 }
 
 #pragma mark- property
@@ -78,21 +71,29 @@
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
     if(_selectedIndex != selectedIndex){
-        if(_selectedIndex < _items.count){
+        
+        BOOL shouldSelect = YES;
+        if([self.delegate respondsToSelector:@selector(tabBar:shouldSelectItemAtIndex:)]){
+            shouldSelect = [self.delegate tabBar:self shouldSelectItemAtIndex:selectedIndex];
+        }
+        
+        if(shouldSelect){
+            if(_selectedIndex < _items.count){
+                SeaTabBarItem *item = [_items objectAtIndex:_selectedIndex];
+                item.backgroundColor = [UIColor clearColor];
+                item.selected = NO;
+            }
+            
+            _selectedIndex = selectedIndex;
             SeaTabBarItem *item = [_items objectAtIndex:_selectedIndex];
-            item.backgroundColor = [UIColor clearColor];
-            item.selected = NO;
-        }
-        
-        _selectedIndex = selectedIndex;
-        SeaTabBarItem *item = [_items objectAtIndex:_selectedIndex];
-        item.selected = YES;
-        if(self.selectedButtonBackgroundColor){
-            item.backgroundColor = self.selectedButtonBackgroundColor;
-        }
-        
-        if([self.delegate respondsToSelector:@selector(tabBar:didSelectItemAtIndex:)]){
-            [self.delegate tabBar:self didSelectItemAtIndex:_selectedIndex];
+            item.selected = YES;
+            if(self.selectedButtonBackgroundColor){
+                item.backgroundColor = self.selectedButtonBackgroundColor;
+            }
+            
+            if([self.delegate respondsToSelector:@selector(tabBar:didSelectItemAtIndex:)]){
+                [self.delegate tabBar:self didSelectItemAtIndex:_selectedIndex];
+            }
         }
     }
 }

@@ -57,6 +57,11 @@
  */
 - (BOOL)sea_tabBarController:(SeaTabBarController*) tabBarController shouldSelectAtIndex:(NSInteger) index;
 
+/**
+ 选中某个
+ */
+- (void)sea_tabBarController:(SeaTabBarController*) tabBarController didSelectAtIndex:(NSInteger) index;
+
 @end
 
 /**

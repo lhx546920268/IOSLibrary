@@ -40,4 +40,19 @@
 + (void)sea_exchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
 
 
+/**
+ 自动化归档，在encodeWithCoder 中调用，子类不需要重写encodeWithCoder
+ 
+ @param coder encodeWithCoder 中的coder
+ */
+- (void)sea_encodeWithCoder:(NSCoder*) coder;
+
+/**
+ 自动化解档，在initWithCoder 中调用，子类不需要重写initWithCoder
+ 
+ @param decoder initWithCoder 中的decoder
+ */
+- (void)sea_initWithCoder:(NSCoder*) decoder;
+
+
 @end
