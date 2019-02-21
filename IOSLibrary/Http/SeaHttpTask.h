@@ -69,11 +69,13 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 @property(nonnull, nonatomic, readonly) NSURLRequest *request;
 
-/**成功回调
+/**
+ 成功回调
  */
 @property(nonatomic, copy) void(^ _Nullable successHandler)(__kindof SeaHttpTask * _Nonnull task);
 
-/**失败回调
+/**
+ 失败回调
  */
 @property(nonatomic, copy) void(^ _Nullable failHandler)(__kindof SeaHttpTask * _Nonnull task);
 
@@ -87,15 +89,18 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 @property(nonatomic, copy) void(^ _Nullable downloadProgressHandler)(__kindof NSProgress * _Nonnull progress);
 
-/**请求URL
+/**
+ 请求URL
  */
 - (nonnull NSString*)requestURL;
 
-/**获取参数
+/**
+ 获取参数
  */
 - (nullable NSMutableDictionary*)params;
 
-/**获取文件
+/**
+ 获取文件
  */
 - (nullable NSMutableDictionary*)files;
 
@@ -111,15 +116,18 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 - (nullable NSArray<NSHTTPCookie*>*)cookies;
 
-/**获取额外的请求头
+/**
+ 获取额外的请求头
  */
 - (nullable NSDictionary<NSString*, NSString*>*)headers;
 
-/**处理参数 比如签名
+/**
+ 处理参数 比如签名
  */
 - (void)processParams:(nullable NSMutableDictionary*) params files:(nullable NSMutableDictionary*)files;
 
-/**请求标识 默认返回类的名称
+/**
+ 请求标识 默认返回类的名称
  */
 @property(nonnull, nonatomic, copy) NSString *name;
 
@@ -133,7 +141,8 @@ typedef NS_ENUM(NSInteger, SeaHttpErrorCode)
  */
 @property(nonatomic, assign) SeaPostFormat postFormat;
 
-/**请求是否成功
+/**
+ 请求是否成功
  *@return 是否成功
  */
 - (BOOL)resultFromData:(nullable NSData*) data;

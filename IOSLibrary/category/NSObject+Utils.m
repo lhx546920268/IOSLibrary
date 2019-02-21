@@ -98,6 +98,7 @@
     if(clazz == [NSObject class]){
         return;
     }
+    
     unsigned int count;
     objc_property_t *properties = class_copyPropertyList(clazz, &count);
     for(int i = 0;i < count;i ++){
