@@ -223,6 +223,8 @@
     if(self){
         self.alwaysBounceHorizontal = NO;
         self.alwaysBounceVertical = NO;
+        self.showsVerticalScrollIndicator = NO;
+        self.showsHorizontalScrollIndicator = NO;
         
         self.backgroundColor = [UIColor clearColor];
     }
@@ -541,7 +543,7 @@
         CGFloat width = [self alertViewWidth];
         CGFloat margin = (self.view.width - width) / 2.0;
         
-        self.container.backgroundColor = [UIColor clearColor];
+        self.container.backgroundColor = [UIColor redColor];
         self.container.layer.cornerRadius = style.cornerRadius;
         self.container.layer.masksToBounds = YES;
         
@@ -669,11 +671,12 @@
         
         if(self.actions.count > 0){
             self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.header.bottom, width, 0)collectionViewLayout:[self layout]];
-            self.collectionView.backgroundColor = SeaGrayBackgroundColor;
+            self.collectionView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
             [self.collectionView registerClass:[SeaAlertButtonCell class] forCellWithReuseIdentifier:@"SeaAlertButtonCell"];
             self.collectionView.dataSource = self;
             self.collectionView.delegate = self;
             self.collectionView.bounces = NO;
+            self.collectionView.showsHorizontalScrollIndicator = NO;
             [self.container addSubview:self.collectionView];
         }
         

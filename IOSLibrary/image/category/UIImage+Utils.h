@@ -122,6 +122,11 @@ static const CGFloat SeaImageScale = 2.0f;
  */
 - (unsigned char*)sea_bitmap;
 
+/*
+ 解压缩图片
+ */
+- (UIImage*)sea_decompressedImage;
+
 /**
  拷贝图片
  */

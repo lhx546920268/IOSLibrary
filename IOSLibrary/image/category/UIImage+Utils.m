@@ -9,6 +9,21 @@
 #import "UIImage+Utils.h"
 #import "UIColor+Utils.h"
 
+
+/**
+ 获取图片颜色空间
+ */
+static CGColorSpaceRef SeaImageColorSpaceCreateDeviceRGB(void)
+{
+    static CGColorSpaceRef colorSpaceRef;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    });
+    
+    return colorSpaceRef;
+}
+
 @implementation UIImage (Utils)
 
 #pragma mark- init
@@ -225,6 +240,39 @@
     
     return bitmap;
 }
+
+- (UIImage*)sea_decompressedImage
+{
+    CGImageRef imageRef = self.CGImage;
+    
+    //判断是否包含透明通道
+    CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(imageRef);
+    if(alphaInfo == kCGImageAlphaPremultipliedLast
+       || alphaInfo == kCGImageAlphaPremultipliedFirst
+       || alphaInfo == kCGImageAlphaLast
+       || alphaInfo == kCGImageAlphaFirst){
+        return self;
+    }
+    
+    size_t width = CGImageGetWidth(imageRef);
+    size_t height = CGImageGetHeight(imageRef);
+    
+    
+    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, SeaImageColorSpaceCreateDeviceRGB(), kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst);
+    if(context == NULL){
+        return self;
+    }
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
+    CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
+    UIImage *image = [[UIImage alloc] initWithCGImage:decompressedImageRef scale:self.scale orientation:self.imageOrientation];
+    
+    CGImageRelease(decompressedImageRef);
+    CGContextRelease(context);
+    
+    return image;
+}
+
 
 - (UIImage*)sea_deepCopy
 {

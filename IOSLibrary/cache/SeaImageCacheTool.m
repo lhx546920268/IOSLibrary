@@ -330,6 +330,7 @@ static NSString *const SeaImageCacheDirectory = @"SeaImageCache";
 {
     if(!URL)
         return;
+    
     dispatch_main_async_safe(^(void){
         
         SeaImageCacheTask *task = [self.downloadTasks objectForKey:URL];

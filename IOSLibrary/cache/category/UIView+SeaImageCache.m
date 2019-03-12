@@ -110,38 +110,38 @@ static char SeaFirstLoadImageKey;
         options = [SeaImageCacheOptions defaultOptions];
         options.originalContentMode = self.sea_originalContentMode;
     }
-    
+
     SeaImageCacheTool *cache = [SeaImageCacheTool sharedInstance];
-    
+
     //取消以前的下载
     if(![self.sea_imageURL isEqualToString:URL]){
         [cache cancelDownloadForURL:self.sea_imageURL target:self];
     }
-    
+
     //无效的URL
     if([NSString isEmpty:URL]){
-        
+
         options.shouldShowLoadingActivity = NO;
         [self sea_setLoading:YES options:options];
-        
+
         self.sea_imageURL = nil;
         !completion ?: completion(nil);
         return;
     }
-    
+
     [self layoutIfNeeded];
     CGSize size = CGSizeZero;
     if(options.shouldAspectRatioFit){
         size = self.bounds.size;
     }
-    
+
     self.sea_imageURL = URL;
-    
+
     //判断内存中是否有图片
     UIImage *image = [cache imageFromMemoryForURL:URL thumbnailSize:size];
-    
+
     if(image){
-        
+
         self.contentMode = options.originalContentMode;
         [self sea_imageDidLoad:image];
         [self sea_setLoading:NO options:options];
@@ -149,20 +149,20 @@ static char SeaFirstLoadImageKey;
     }else{
         [self sea_setLoading:YES options:options];
         //重新加载图片
-        
+
         __weak UIView *weakSelf = self;
         [cache imageForURL:URL thumbnailSize:size completion:^(UIImage *image){
-            
+
             if(image){
                 [weakSelf sea_setLoading:NO options:options];
                 weakSelf.contentMode = options.originalContentMode;
                 [weakSelf sea_imageDidLoad:image];
                 weakSelf.backgroundColor = options.originalBackgroundColor;
             }
-            
+
             !completion ?: completion(image);
         } target:self];
-        
+
         if(progress){
             [cache addProgressHandler:progress forURL:URL target:self];
         }

@@ -65,6 +65,8 @@
     if(clazz == [NSObject class]){
         return;
     }
+    
+    //获取当前类的所有属性，该方法无法获取父类或者子类的属性
     unsigned int count;
     objc_property_t *properties = class_copyPropertyList(clazz, &count);
     for(int i = 0;i < count;i ++){
@@ -77,7 +79,7 @@
         
         NSArray *attrs = [attr componentsSeparatedByString:@","];
         
-        //判断是否是只读
+        //判断是否是只读属性
         if(attrs.count > 0 && ![attrs containsObject:@"R"]){
             
             id value = [self valueForKey:name];
@@ -85,6 +87,7 @@
         }
     }
     
+    //递归获取父类的属性
     [self sea_encodeWithCoder:coder clazz:[clazz superclass]];
 }
 
@@ -99,6 +102,7 @@
         return;
     }
     
+    //获取当前类的所有属性，该方法无法获取父类或者子类的属性
     unsigned int count;
     objc_property_t *properties = class_copyPropertyList(clazz, &count);
     for(int i = 0;i < count;i ++){
@@ -111,11 +115,12 @@
         
         NSArray *attrs = [attr componentsSeparatedByString:@","];
         
-        //判断是否是只读
+        //判断是否是只读属性
         if(attrs.count > 0 && ![attrs containsObject:@"R"]){
             
             NSString *type = [attrs firstObject];
             id value = nil;
+            //判断是否是对象属性
             if([type containsString:@"T@\""]){
                 type = [type stringByReplacingOccurrencesOfString:@"T@\"" withString:@""];
                 type = [type stringByReplacingOccurrencesOfString:@"\"" withString:@""];
@@ -126,11 +131,11 @@
                 value = [decoder decodeObjectForKey:name];
             }
             
-            NSLog(@"value = %@", value);
             [self setValue:value forKey:name];
         }
     }
     
+    //递归获取父类的属性
     [self sea_initWithCoder:decoder clazz:[clazz superclass]];
 }
 
