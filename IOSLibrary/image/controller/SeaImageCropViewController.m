@@ -192,7 +192,7 @@
 - (void)initControlBtn
 {
 //    CGFloat buttonHeight = 50.0f;
-//    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - buttonHeight, SeaScreenWidth, buttonHeight)];
+//    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - buttonHeight, UIScreen.screenWidth, buttonHeight)];
 //    bgView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
 //    [self.view addSubview:bgView];
 //    
@@ -406,7 +406,7 @@
     
     //裁剪图片
     CGFloat height = self.view.height;
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(SeaScreenWidth, height), NO, SeaImageScale);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(UIScreen.screenWidth, height), NO, SeaImageScale);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     

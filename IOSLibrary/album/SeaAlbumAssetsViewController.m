@@ -253,7 +253,7 @@
 - (void)seeGroup:(UIButton*) button
 {
     if(!self.listView){
-        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - self.sea_statusBarHeight - self.sea_navigationBarHeight) groups:self.groupInfos];
+        _listView = [[SeaAlbumGroupListView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.screenWidth, UIScreen.screenHeight - self.sea_statusBarHeight - self.sea_navigationBarHeight) groups:self.groupInfos];
         _listView.delegate = self;
         [self.view addSubview:_listView];
     }

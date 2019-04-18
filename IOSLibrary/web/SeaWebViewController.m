@@ -273,13 +273,14 @@ static WKProcessPool *sharedProcessPool;
     _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:[self webViewConfiguration]];
     if(@available(iOS 9.0, *)){
         _webView.allowsLinkPreview = NO;
+        //ios8 闪退
+        _webView.allowsBackForwardNavigationGestures = YES;
     }
     
     if(@available(iOS 11.0, *)){
         _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     
-    _webView.allowsBackForwardNavigationGestures = YES;
     _webView.navigationDelegate = self;
     _webView.opaque = NO;
     _webView.scrollView.delegate = self;
@@ -293,6 +294,7 @@ static WKProcessPool *sharedProcessPool;
     [progressView sea_rightToSuperview];
     [progressView sea_topToSuperview];
     [progressView sea_heightToSelf:2];
+    
     
     [_webView sea_insetsInSuperview:UIEdgeInsetsZero];
     
@@ -368,11 +370,13 @@ static WKProcessPool *sharedProcessPool;
                     result = @"";
                 }
                 SeaSystemUserAgent = result;
+                NSString *customUserAgent = [NSString stringWithFormat:@"%@ %@", SeaSystemUserAgent, userAgent];
                 if(@available(iOS 9.0, *)){
-                    weakSelf.webView.customUserAgent = [NSString stringWithFormat:@"%@ %@", SeaSystemUserAgent, userAgent];
+                    weakSelf.webView.customUserAgent = customUserAgent;
                 }else{
-                    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"UserAgent" : [NSString stringWithFormat:@"%@ %@", SeaSystemUserAgent, userAgent]}];
+                    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"UserAgent" : customUserAgent}];
                     [[NSUserDefaults standardUserDefaults] synchronize];
+                    [weakSelf.webView setValue:customUserAgent forKey:@"applicationNameForUserAgent"];
                 }
                 [weakSelf loadWebContent];
             }];

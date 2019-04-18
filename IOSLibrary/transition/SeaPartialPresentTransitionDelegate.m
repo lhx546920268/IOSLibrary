@@ -190,7 +190,7 @@
             toView.frame = toFrame;
             [containerView insertSubview:toView belowSubview:fromView];
         }else{
-            toFrame = CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight);
+            toFrame = CGRectMake(0, 0, UIScreen.screenWidth, UIScreen.screenHeight);
         }
     }
 

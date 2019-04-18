@@ -64,7 +64,7 @@
 //        [container addSubview:button];
         
         //分割线
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, containerHeight - SeaSeparatorWidth, SeaScreenWidth, SeaSeparatorWidth)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, containerHeight - SeaSeparatorWidth, UIScreen.screenWidth, SeaSeparatorWidth)];
         line.backgroundColor = SeaSeparatorColor;
         [container addSubview:line];
         

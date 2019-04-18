@@ -43,15 +43,15 @@ dispatch_async(dispatch_get_main_queue(), block);\
 #define WeakSelf(parameter) typeof(self) __weak weakSelf = parameter;
 
 //判断是否是3.5寸手机
-#define is3_5Inch (SeaScreenHeight == 480)
+#define is3_5Inch (UIScreen.screenHeight == 480)
 
 //判断是否是5.5寸手机
-#define is5_5Inch (SeaScreenHeight == 736)
+#define is5_5Inch (UIScreen.screenHeight == 736)
 
 //判断是否是IPhone X
-#define isIPhoneX (SeaScreenHeight == 812 && SeaScreenWidth == 375)
+#define isIPhoneX (UIScreen.screenHeight == 812 && UIScreen.screenWidth== 375)
 
 //判断是否是4.0寸手机
-#define is4_0Inch (SeaScreenHeight == 568 && SeaScreenWidth == 320)
+#define is4_0Inch (UIScreen.screenHeight == 568 && UIScreen.screenWidth== 320)
 
 #endif

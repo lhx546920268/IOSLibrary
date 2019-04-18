@@ -53,11 +53,11 @@ typedef NS_ENUM(NSInteger, SeaSlideViewPosition)
  */
 @property(nonatomic,weak) UIView *panGestureRecognizerInView;
 
-/**左边视图宽度 default is '260.0 / 320.0 * SeaScreenWidth'
+/**左边视图宽度 default is '260.0 / 320.0 * UIScreen.screenWidth'
  */
 @property(nonatomic,assign) CGFloat leftViewWidth;
 
-/**左边视图宽度 default is '260.0 / 320.0 * SeaScreenWidth'
+/**左边视图宽度 default is '260.0 / 320.0 * UIScreen.screenWidth'
  */
 @property(nonatomic,assign) CGFloat rightViewWidth;
 

@@ -66,9 +66,9 @@
     _controlByNavigationController = NO;
     self.delegates = [NSMutableArray array];
     _position = SeaSlideViewPositionMiddle;
-    _leftViewWidth = _rightViewWidth = 260.0 / 320.0 * SeaScreenWidth;
+    _leftViewWidth = _rightViewWidth = 260.0 / 320.0 * UIScreen.screenWidth;
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.screenWidth, UIScreen.screenHeight)];
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     view.backgroundColor = [UIColor whiteColor];
     self.contentView = view;
@@ -217,7 +217,7 @@
 
 #pragma mark- content wdith
 
-/**左边视图宽度 default is '260.0 / 320.0 * SeaScreenWidth'
+/**左边视图宽度 default is '260.0 / 320.0 * UIScreen.screenWidth'
  */
 - (void)setLeftViewWidth:(CGFloat)leftViewWidth
 {
@@ -228,7 +228,7 @@
     }
 }
 
-/**左边视图宽度 default is '260.0 / 320.0 * SeaScreenWidth'
+/**左边视图宽度 default is '260.0 / 320.0 * UIScreen.screenWidth'
  */
 - (void)setRightViewWidth:(CGFloat)rightViewWidth
 {

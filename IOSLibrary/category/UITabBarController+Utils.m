@@ -46,7 +46,7 @@
     
     point.backgroundColor = color;
     
-    CGFloat width = SeaScreenWidth / self.viewControllers.count;
+    CGFloat width = UIScreen.screenWidth/ self.viewControllers.count;
     CGFloat x = width * index + width / 2.0 + image.size.width / 2.0;
     if(x + size.width > width * (index + 1))
     {

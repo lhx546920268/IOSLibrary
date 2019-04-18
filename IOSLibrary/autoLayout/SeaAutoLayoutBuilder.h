@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 ///默认约束优先级
-static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityRequired - 1;
+static const UILayoutPriority SeaAutoLayoutPriorityDefault = UILayoutPriorityRequired;
 
 /**
  item 可以为 UIView, UILayoutGuide, UIViewController, id<UILayoutSupport>， 比如 UIViewController 中的 topLayoutGuide

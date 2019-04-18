@@ -125,7 +125,7 @@
     if(_menuWidth == 0){
         CGFloat contentWidth = 0;
         for(SeaPopoverMenuItemInfo *info in self.menuItemInfos){
-            CGSize size = [info.title sea_stringSizeWithFont:_font contraintWith:SeaScreenWidth];
+            CGSize size = [info.title sea_stringSizeWithFont:_font contraintWith:UIScreen.screenWidth];
             size.width += 1.0;
             contentWidth = MAX(contentWidth, size.width + info.icon.size.width + _iconTitleInterval);
         }

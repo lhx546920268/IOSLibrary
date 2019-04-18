@@ -16,7 +16,7 @@
 
  viewController.view.backgroundColor = [UIColor whiteColor];
 
- nav.view.frame = CGRectMake(0, 0, SeaScreenWidth, SeaScreenHeight - 200.0);
+ nav.view.frame = CGRectMake(0, 0, UIScreen.screenWidth, UIScreen.screenHeight - 200.0);
  self.p_delegate = [[SeaPartialPresentTransitionDelegate alloc] init]; ///delegate要保存起来
  nav.transitioningDelegate = self.p_delegate;
 

@@ -321,7 +321,7 @@
 
     CGPoint point = [gesture locationInView:containerView];
     CGFloat width = CGRectGetWidth(containerView.bounds);
-    CGFloat percent = gesture.edges == UIRectEdgeLeft ? point.x / width : (width - point.x) / width;
+    CGFloat percent = point.x / width;
     
     return percent;
 }

@@ -70,6 +70,8 @@
 		101AB8CF1FA2E46800711095 /* SeaSystemSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 1032E3DC1FA2E3B700709FDC /* SeaSystemSound.m */; };
 		101B8B2E1FB5A56C00D333DB /* UIView+SeaAutoLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		101B8B2F1FB5A58900D333DB /* UIView+SeaAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */; };
+		10251D4F224F342D0011EF12 /* UIScreen+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 10251D4D224F342D0011EF12 /* UIScreen+Utils.h */; };
+		10251D50224F342D0011EF12 /* UIScreen+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 10251D4E224F342D0011EF12 /* UIScreen+Utils.m */; };
 		103B43EE1FE7C76600853EBC /* SeaAutoLayoutBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1051BB291FE3768900658772 /* SeaAutoLayoutBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1044C01A1FEC9495006BC8CA /* SeaImageCacheOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1044C0181FEC9495006BC8CA /* SeaImageCacheOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1044C01B1FEC9495006BC8CA /* SeaImageCacheOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1044C0191FEC9495006BC8CA /* SeaImageCacheOptions.m */; };
@@ -337,6 +339,8 @@
 		1011C99620947A8400AD3A82 /* UIViewController+Keyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Keyboard.m"; sourceTree = "<group>"; };
 		101B8B2C1FB5A53F00D333DB /* UIView+SeaAutoLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaAutoLayout.h"; sourceTree = "<group>"; };
 		101B8B2D1FB5A53F00D333DB /* UIView+SeaAutoLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaAutoLayout.m"; sourceTree = "<group>"; };
+		10251D4D224F342D0011EF12 /* UIScreen+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Utils.h"; sourceTree = "<group>"; };
+		10251D4E224F342D0011EF12 /* UIScreen+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+Utils.m"; sourceTree = "<group>"; };
 		1032E3DC1FA2E3B700709FDC /* SeaSystemSound.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSystemSound.m; sourceTree = "<group>"; };
 		1032E3DD1FA2E3B700709FDC /* SeaSystemSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSystemSound.h; sourceTree = "<group>"; };
 		1032E3DF1FA2E3C200709FDC /* SeaAlbumAssetsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaAlbumAssetsViewController.h; sourceTree = "<group>"; };
@@ -1297,6 +1301,8 @@
 				1011C992209453DA00AD3A82 /* UIViewController+Dialog.m */,
 				1011C99520947A8400AD3A82 /* UIViewController+Keyboard.h */,
 				1011C99620947A8400AD3A82 /* UIViewController+Keyboard.m */,
+				10251D4D224F342D0011EF12 /* UIScreen+Utils.h */,
+				10251D4E224F342D0011EF12 /* UIScreen+Utils.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -1403,6 +1409,7 @@
 				1053E3E21FFB703B00F2B548 /* UIColor+Utils.h in Headers */,
 				1068F9CD1FF3999700DB0C3F /* NSDate+Utils.h in Headers */,
 				1011C993209453DA00AD3A82 /* UIViewController+Dialog.h in Headers */,
+				10251D4F224F342D0011EF12 /* UIScreen+Utils.h in Headers */,
 				107CE06620031C1200D17E82 /* UIWebView+Utils.h in Headers */,
 				1053E3DE1FFB6E8900F2B548 /* UIButton+Utils.h in Headers */,
 				1044C01E1FEC9995006BC8CA /* SeaImageCacheTask.h in Headers */,
@@ -1648,6 +1655,7 @@
 				109D7F32204942490050D1F7 /* UIView+SeaImageCache.m in Sources */,
 				10C3EFAA1FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m in Sources */,
 				10C3EFB21FFB246400BFD1E2 /* NSObject+Utils.m in Sources */,
+				10251D50224F342D0011EF12 /* UIScreen+Utils.m in Sources */,
 				107CE06B20031CB500D17E82 /* SeaWebViewController.m in Sources */,
 				1055A2421FFDBA1600D18470 /* UIFont+Utils.m in Sources */,
 				105FEC5E1FF0D8D500EBD7CB /* SeaMovieCacheTask.m in Sources */,

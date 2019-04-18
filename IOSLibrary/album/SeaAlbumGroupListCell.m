@@ -22,7 +22,7 @@
         [self.contentView addSubview:_iconImageView];
         
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImageView.right + SeaAlbumGroupListCellMargin, _iconImageView.top, SeaScreenWidth - SeaAlbumGroupListCellMargin * 3 - SeaAlbumGroupListCellImageSize, SeaAlbumGroupListCellImageSize)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImageView.right + SeaAlbumGroupListCellMargin, _iconImageView.top, UIScreen.screenWidth - SeaAlbumGroupListCellMargin * 3 - SeaAlbumGroupListCellImageSize, SeaAlbumGroupListCellImageSize)];
         _nameLabel.textColor = [UIColor sea_colorWithRed:153 green:153 blue:153 alpha:1.0];
         _nameLabel.font = [UIFont fontWithName:SeaMainFontName size:15.0];
         [self.contentView addSubview:_nameLabel];

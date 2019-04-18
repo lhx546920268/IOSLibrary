@@ -8,6 +8,7 @@
 
 #ifndef SeaSizeMacro_h
 #define SeaSizeMacro_h
+#import "UIScreen+Utils.h"
 
 /**
  全局尺寸宏定义
@@ -30,12 +31,6 @@ static const NSInteger SeaBackItemTag = 10329;
 
 ///分割线高度
 #define SeaSeparatorWidth [SeaConstant separatorWidth]
-
-///手机屏幕的宽度
-#define SeaScreenWidth MIN([UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height)
-
-///手机屏幕的高度
-#define SeaScreenHeight MAX([UIScreen mainScreen].bounds.size.height,[UIScreen mainScreen].bounds.size.width)
 
 ///导航栏间隔
 #define SeaNavigationBarMargin [SeaConstant navigationBarMargin]
