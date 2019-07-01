@@ -5,27 +5,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SeaAlbumDelegate.h"
-
-///裁剪设置
-@interface SeaImageCropSettings : NSObject
-
-///裁剪图片
-@property(nonatomic,strong) UIImage *image;
-
-///裁剪框大小
-@property(nonatomic,assign) CGSize cropSize;
-
-///裁剪框圆角
-@property(nonatomic,assign) CGFloat cropCornerRadius;
-
-///是否使用满屏裁剪框 default is 'YES'
-@property(nonatomic,assign) BOOL useFullScreenCropFrame;
-
-/**图片可以被放大的最大比例，default is '2.5'
- */
-@property (nonatomic, assign) CGFloat limitRatio;
-
-@end
+#import "SeaImageCropSettings.h"
 
 /**图片裁剪
  */

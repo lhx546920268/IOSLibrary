@@ -18,6 +18,7 @@
 #import "UIScrollView+SeaEmptyView.h"
 #import "SeaTools.h"
 #import "SeaImageGenerator.h"
+#import "SeaImageCropViewController.h"
 
 @interface SeaAlbumAssetsViewController ()<SeaAlbumGroupListViewDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 

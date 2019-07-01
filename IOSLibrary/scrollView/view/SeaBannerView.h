@@ -51,6 +51,26 @@
 @interface SeaBannerView : UIView
 
 /**
+ 图片显示占比 defalult is '1.0' 和容器一样宽
+ */
+@property(nonatomic, assign) CGFloat widthRatio;
+
+/*
+ 两边图片大小比例 默认 1.0
+ */
+@property(nonatomic, assign) CGFloat bothScale;
+
+/**
+ 两端透明度 default 1.0
+ */
+@property(nonatomic, assign) CGFloat bothAlpha;
+
+/**
+ 间距
+ */
+@property(nonatomic, assign) CGFloat bothSpacing;
+
+/**
  滚动视图
  */
 @property(nonatomic,readonly) UICollectionView *collectionView;

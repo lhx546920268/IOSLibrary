@@ -9,6 +9,7 @@
 #import "UIView+SeaAutoLayout.h"
 #import "SeaCountDownTimer.h"
 #import "UICollectionView+Utils.h"
+#import <objc/message.h>
 
 @implementation SeaPageControl
 
@@ -26,6 +27,66 @@
 {
     return _pointSize;
 }
+
+@end
+
+///布局
+@interface SeaCollectionViewBannerLayout : UICollectionViewFlowLayout
+
+/*
+ 两边图片大小比例 默认 1.0
+ */
+@property(nonatomic, assign) CGFloat bothScale;
+
+/**
+ 两端透明度 default 1.0
+ */
+@property(nonatomic, assign) CGFloat bothAlpha;
+
+@end
+
+@implementation SeaCollectionViewBannerLayout
+
+- (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect
+{
+    if([self shouldConfigAttributes]){
+        //目标区域中包含的cell
+        CGFloat width = self.collectionView.superview.frame.size.width * self.bothScale + self.minimumLineSpacing;
+        
+        NSArray *layoutAttributes = [[NSArray alloc] initWithArray:[super layoutAttributesForElementsInRect:rect] copyItems:YES];
+        CGRect visibleRect = CGRectZero;
+        visibleRect.origin = self.collectionView.contentOffset;
+        visibleRect.size = self.collectionView.bounds.size;
+        
+        //让中间的保持 1:1 两边的缩小
+        for(UICollectionViewLayoutAttributes *attr in layoutAttributes){
+            CGFloat distance = CGRectGetMidX(visibleRect) - attr.center.x;
+            CGFloat normalizedDistance = distance / width / 2.0;
+            CGFloat zoom = 1.0 - (1 - self.bothScale) * fabs(normalizedDistance);
+            CGFloat alpha = 1.0 - (1 - self.bothAlpha) * fabs(normalizedDistance);
+            attr.transform3D = CATransform3DMakeScale(1.0, zoom, 1.0);
+            attr.alpha = alpha;
+            attr.zIndex = 1;
+        }
+        
+        return layoutAttributes;
+    }else{
+        return [super layoutAttributesForElementsInRect:rect];
+    }
+}
+
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+    //滑动放大缩小  需要实时刷新layout
+    return [self shouldConfigAttributes] ? YES : [super shouldInvalidateLayoutForBoundsChange:newBounds];
+}
+
+///是否需要配置布局属性
+- (BOOL)shouldConfigAttributes
+{
+    return self.bothAlpha != 1.0 || self.bothScale != 1.0;
+}
+
 
 @end
 
@@ -54,7 +115,7 @@
 /**
  layout
  */
-@property(nonatomic,strong) UICollectionViewFlowLayout *layout;
+@property(nonatomic,strong) SeaCollectionViewBannerLayout *layout;
 
 @end
 
@@ -98,8 +159,13 @@
         _enableScrollCircularly = YES;
         _showPageControl = NO;
         _enableAutoScroll = YES;
+        _bothScale = 1.0;
+        _widthRatio = 1.0;
+        _bothAlpha = 1.0;
         
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        SeaCollectionViewBannerLayout *layout = [SeaCollectionViewBannerLayout new];
+        layout.bothScale = _bothScale;
+        layout.bothAlpha = _bothAlpha;
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
         layout.scrollDirection = _scrollDirection;
@@ -114,6 +180,21 @@
         _collectionView.dataSource = self;
         _collectionView.scrollsToTop = NO;
         [self addSubview:_collectionView];
+    }
+}
+
+//设置翻页范围
+- (void)setPageRange
+{
+    if(self.isLayoutSubviews){
+        CGFloat width = self.collectionView.frame.size.width;
+        CGFloat interpageSpacing = -(1.0 - self.widthRatio) * width;
+        
+        //scrollView 宽度 - 翻页宽度
+        ((void(*)(id, SEL, CGSize))objc_msgSend)(self.collectionView, NSSelectorFromString(@"_setInterpageSpacing:"), CGSizeMake(interpageSpacing + self.bothSpacing, 0));
+        
+        //interpageSpacing / 2
+        ((void(*)(id, SEL, CGPoint))objc_msgSend)(self.collectionView, NSSelectorFromString(@"_setPagingOrigin:"), CGPointMake(interpageSpacing / 2.0, 0));
     }
 }
 
@@ -141,9 +222,47 @@
     [super layoutSubviews];
     self.isLayoutSubviews = YES;
     
-    if(!CGSizeEqualToSize(self.collectionView.frame.size, self.bounds.size)){
-        self.collectionView.frame = self.bounds;
+    CGRect frame = self.bounds;
+    if(!CGRectEqualToRect(self.collectionView.frame, frame)){
+        self.collectionView.frame = frame;
+        [self setPageRange];
         [self fetchData];
+    }
+}
+
+- (void)setWidthRatio:(CGFloat)widthRatio
+{
+    if(_widthRatio != widthRatio){
+        _widthRatio = widthRatio;
+        [self setPageRange];
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setBothScale:(CGFloat)bothScale
+{
+    if(_bothScale != bothScale){
+        _bothScale = bothScale;
+        self.layout.bothScale = _bothScale;
+        [self reloadData];
+    }
+}
+
+- (void)setBothAlpha:(CGFloat)bothAlpha
+{
+    if(_bothAlpha != bothAlpha){
+        _bothAlpha = bothAlpha;
+        self.layout.bothAlpha = _bothAlpha;
+        [self reloadData];
+    }
+}
+
+- (void)setBothSpacing:(CGFloat)bothSpacing
+{
+    if(_bothSpacing != bothSpacing){
+        _bothSpacing = bothSpacing;
+        self.layout.minimumLineSpacing = bothSpacing;
+        [self setPageRange];
     }
 }
 
@@ -201,8 +320,8 @@
 {
     NSInteger count = _numberOfCells;
     if(self.shouldScrollCircularly){
-        index ++;
-        count += 2;
+        index += self.extensionCount / 2;
+        count += self.extensionCount;
     }
     
     if(index < count){
@@ -331,7 +450,7 @@
     return NSNotFound;
 }
 
-#pragma mark- private method
+#pragma mark private method
 
 //点击pageControl
 - (void)pageDidChange:(UIPageControl*) pageControl
@@ -345,16 +464,27 @@
     NSInteger pageIndex = index;
     
     if(_shouldScrollCircularly){
-        pageIndex = index - 1;
+        pageIndex = index - self.extensionCount / 2;
         if(pageIndex < 0){
-            pageIndex = _numberOfCells - 1;
+            pageIndex += _numberOfCells;
         }
         
         if(pageIndex >= _numberOfCells){
-            pageIndex = 0;
+            pageIndex = _numberOfCells - pageIndex;
         }
     }
+    
     return pageIndex;
+}
+
+//扩展数量
+- (NSInteger)extensionCount
+{
+    if(self.scrollDirection == UICollectionViewScrollDirectionHorizontal){
+        return self.widthRatio == 1.0 ? 2 : 4;
+    }else{
+        return 2;
+    }
 }
 
 //计时器滚动
@@ -380,7 +510,7 @@
 {
     NSInteger count = _numberOfCells;
     if(self.shouldScrollCircularly){
-        count += 2;
+        count += [self extensionCount];
     }
     
     return count;
@@ -388,7 +518,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return collectionView.bounds.size;
+    CGSize size = collectionView.bounds.size;
+    size.width *= self.widthRatio;
+    return size;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -420,7 +552,7 @@
 {
     if(!decelerate){
         [self startAnimate];
-        self.contentOffset = CGPointZero;
+      //  self.contentOffset = CGPointZero;
     }
 }
 
@@ -428,7 +560,7 @@
 {
     if(!scrollView.dragging){
         [self startAnimate];
-        self.contentOffset = CGPointZero;
+       // self.contentOffset = CGPointZero;
     }
 }
 
@@ -436,22 +568,26 @@
 {
     switch (_scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal : {
-            CGFloat pagewidth = scrollView.width;
-            int page = floor(scrollView.contentOffset.x / pagewidth);
+            
+            CGFloat pagewidth = scrollView.width * self.widthRatio + self.bothSpacing;
+            CGFloat offsetX = (scrollView.width - scrollView.width * self.widthRatio) / 2.0;
+            NSInteger page = floor((offsetX + scrollView.contentOffset.x) / pagewidth);
+            
             if(self.shouldScrollCircularly){
                 if(page == 0){
                     if(self.contentOffset.x > scrollView.contentOffset.x){
-                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth * (_numberOfCells + 1), 0, pagewidth, scrollView.height) animated:NO]; // 最后+1,循环到第1页
-                        self.contentOffset = CGPointMake(pagewidth * (_numberOfCells + 1), 0);
+                        self.contentOffset = CGPointMake(pagewidth * (_numberOfCells + 1) - offsetX, 0);
+                        [self.collectionView setContentOffset:self.contentOffset animated:NO];// 最后+1,循环到第1页
                         self.pageControl.currentPage = _numberOfCells - 1;
                     }
-                }else if (page >= (_numberOfCells + 1)){
-                    if(self.contentOffset.x < scrollView.contentOffset.x){
-                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth, 0, pagewidth, scrollView.height) animated:NO]; // 最后+1,循环第1页
+                }else if (page >= (_numberOfCells + [self extensionCount] / 2)){
+                    if(self.contentOffset.x < floor(scrollView.contentOffset.x)){
+                        [self.collectionView scrollRectToVisible:CGRectMake(pagewidth * [self extensionCount] / 2  - offsetX, 0, pagewidth, scrollView.height) animated:NO]; // 最后+1,循环第1页
                         self.pageControl.currentPage = 0;
                     }
                 }else{
-                    self.pageControl.currentPage = [self getActualIndexFromIndex:page];
+                    page = [self getActualIndexFromIndex:page];
+                    self.pageControl.currentPage = page;
                 }
             }else{
                 self.pageControl.currentPage = page;
@@ -461,7 +597,6 @@
         case UICollectionViewScrollDirectionVertical : {
             CGFloat pageHeight = scrollView.height;
             int page = floor(scrollView.contentOffset.y / pageHeight);
-            
             if(self.shouldScrollCircularly){
                 if(page == 0){
                     if(self.contentOffset.y > scrollView.contentOffset.y){

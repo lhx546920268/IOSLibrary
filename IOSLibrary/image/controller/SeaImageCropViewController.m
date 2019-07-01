@@ -10,22 +10,6 @@
 #import "UIImage+Utils.h"
 #import "SeaAlbumAssetsViewController.h"
 
-@implementation SeaImageCropSettings
-
-- (instancetype)init
-{
-    self = [super init];
-    if(self)
-    {
-        self.useFullScreenCropFrame = YES;
-        self.limitRatio = 2.5;
-    }
-    
-    return self;
-}
-
-@end
-
 @interface SeaImageCropViewController ()
 
 /**图片相框

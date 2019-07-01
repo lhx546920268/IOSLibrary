@@ -296,6 +296,18 @@
 		10F6A35E1FD9328000F2B30E /* SeaNetworkActivityView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A35A1FD9322B00F2B30E /* SeaNetworkActivityView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10F6A35F1FD9328000F2B30E /* SeaPageLoadingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3551FD9320600F2B30E /* SeaPageLoadingView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10F6A3601FD9328000F2B30E /* SeaFailPageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F6A3561FD9320600F2B30E /* SeaFailPageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CEA7BFFD22CA02DB00DBE068 /* SeaPhotosViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA7BFFB22CA02DB00DBE068 /* SeaPhotosViewController.h */; };
+		CEA7BFFE22CA02DB00DBE068 /* SeaPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7BFFC22CA02DB00DBE068 /* SeaPhotosViewController.m */; };
+		CEA7C00222CA032B00DBE068 /* SeaPhotosOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA7C00022CA032B00DBE068 /* SeaPhotosOptions.h */; };
+		CEA7C00322CA032B00DBE068 /* SeaPhotosOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7C00122CA032B00DBE068 /* SeaPhotosOptions.m */; };
+		CEA7C00622CA045600DBE068 /* SeaImageCropSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA7C00422CA045600DBE068 /* SeaImageCropSettings.h */; };
+		CEA7C00722CA045600DBE068 /* SeaImageCropSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7C00522CA045600DBE068 /* SeaImageCropSettings.m */; };
+		CEA7C00A22CA063100DBE068 /* SeaPhotosGridViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA7C00822CA063100DBE068 /* SeaPhotosGridViewController.h */; };
+		CEA7C00B22CA063100DBE068 /* SeaPhotosGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7C00922CA063100DBE068 /* SeaPhotosGridViewController.m */; };
+		CEA7C00E22CA0FED00DBE068 /* SeaPhotosCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA7C00C22CA0FED00DBE068 /* SeaPhotosCollection.h */; };
+		CEA7C00F22CA0FED00DBE068 /* SeaPhotosCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7C00D22CA0FED00DBE068 /* SeaPhotosCollection.m */; };
+		CEBCA0D922C4ADC7008CFE1B /* SeaPhotoListViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CEBCA0D722C4ADC7008CFE1B /* SeaPhotoListViewController.h */; };
+		CEBCA0DA22C4ADC7008CFE1B /* SeaPhotoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBCA0D822C4ADC7008CFE1B /* SeaPhotoListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -593,6 +605,18 @@
 		10F6A3581FD9320600F2B30E /* SeaFailPageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaFailPageView.m; sourceTree = "<group>"; };
 		10F6A3591FD9322A00F2B30E /* SeaNetworkActivityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaNetworkActivityView.m; sourceTree = "<group>"; };
 		10F6A35A1FD9322B00F2B30E /* SeaNetworkActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaNetworkActivityView.h; sourceTree = "<group>"; };
+		CEA7BFFB22CA02DB00DBE068 /* SeaPhotosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosViewController.h; sourceTree = "<group>"; };
+		CEA7BFFC22CA02DB00DBE068 /* SeaPhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosViewController.m; sourceTree = "<group>"; };
+		CEA7C00022CA032B00DBE068 /* SeaPhotosOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosOptions.h; sourceTree = "<group>"; };
+		CEA7C00122CA032B00DBE068 /* SeaPhotosOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosOptions.m; sourceTree = "<group>"; };
+		CEA7C00422CA045600DBE068 /* SeaImageCropSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaImageCropSettings.h; sourceTree = "<group>"; };
+		CEA7C00522CA045600DBE068 /* SeaImageCropSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaImageCropSettings.m; sourceTree = "<group>"; };
+		CEA7C00822CA063100DBE068 /* SeaPhotosGridViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosGridViewController.h; sourceTree = "<group>"; };
+		CEA7C00922CA063100DBE068 /* SeaPhotosGridViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosGridViewController.m; sourceTree = "<group>"; };
+		CEA7C00C22CA0FED00DBE068 /* SeaPhotosCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosCollection.h; sourceTree = "<group>"; };
+		CEA7C00D22CA0FED00DBE068 /* SeaPhotosCollection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosCollection.m; sourceTree = "<group>"; };
+		CEBCA0D722C4ADC7008CFE1B /* SeaPhotoListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotoListViewController.h; sourceTree = "<group>"; };
+		CEBCA0D822C4ADC7008CFE1B /* SeaPhotoListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotoListViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1119,6 +1143,7 @@
 		10E7B0481F9F2CAD006A83D8 /* IOSLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				CEBCA0D422C4AD8C008CFE1B /* Photos */,
 				1032E3DE1FA2E3C200709FDC /* album */,
 				100EC6ED1FDA2A1B001CCE74 /* alert */,
 				1032E3DB1FA2E3B700709FDC /* audio */,
@@ -1235,6 +1260,8 @@
 				10BB623C1FA0293100E1EA40 /* SeaImageGenerator.m */,
 				109D7F19204900FD0050D1F7 /* SeaTiledImageView.h */,
 				109D7F1A204900FD0050D1F7 /* SeaTiledImageView.m */,
+				CEA7C00422CA045600DBE068 /* SeaImageCropSettings.h */,
+				CEA7C00522CA045600DBE068 /* SeaImageCropSettings.m */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -1355,6 +1382,47 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		CEA7BFFF22CA031500DBE068 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CEA7C00022CA032B00DBE068 /* SeaPhotosOptions.h */,
+				CEA7C00122CA032B00DBE068 /* SeaPhotosOptions.m */,
+				CEA7C00C22CA0FED00DBE068 /* SeaPhotosCollection.h */,
+				CEA7C00D22CA0FED00DBE068 /* SeaPhotosCollection.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CEBCA0D422C4AD8C008CFE1B /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				CEA7BFFF22CA031500DBE068 /* Model */,
+				CEBCA0D522C4AD8C008CFE1B /* Controller */,
+				CEBCA0D622C4AD8C008CFE1B /* View */,
+			);
+			path = Photos;
+			sourceTree = "<group>";
+		};
+		CEBCA0D522C4AD8C008CFE1B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CEBCA0D722C4ADC7008CFE1B /* SeaPhotoListViewController.h */,
+				CEBCA0D822C4ADC7008CFE1B /* SeaPhotoListViewController.m */,
+				CEA7BFFB22CA02DB00DBE068 /* SeaPhotosViewController.h */,
+				CEA7BFFC22CA02DB00DBE068 /* SeaPhotosViewController.m */,
+				CEA7C00822CA063100DBE068 /* SeaPhotosGridViewController.h */,
+				CEA7C00922CA063100DBE068 /* SeaPhotosGridViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CEBCA0D622C4AD8C008CFE1B /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1431,6 +1499,7 @@
 				1068F9C01FF392A000DB0C3F /* SeaURLSessionTaskDelegate.h in Headers */,
 				1068F9C11FF392A000DB0C3F /* SeaHttpTask.h in Headers */,
 				1068F9C21FF392A000DB0C3F /* SeaURLSessionManager.h in Headers */,
+				CEA7BFFD22CA02DB00DBE068 /* SeaPhotosViewController.h in Headers */,
 				1068F9C31FF392A000DB0C3F /* SeaHttpParam.h in Headers */,
 				1068F9C41FF392A000DB0C3F /* SeaHttpTaskDelegate.h in Headers */,
 				1068F9C51FF392A000DB0C3F /* SeaMultiTasks.h in Headers */,
@@ -1438,6 +1507,7 @@
 				100E480C1FF1E2F700CAB10A /* FMDatabase.h in Headers */,
 				100E480D1FF1E2F700CAB10A /* FMDatabaseAdditions.h in Headers */,
 				100E480E1FF1E2F700CAB10A /* FMDatabasePool.h in Headers */,
+				CEBCA0D922C4ADC7008CFE1B /* SeaPhotoListViewController.h in Headers */,
 				100E480F1FF1E2F700CAB10A /* FMDatabaseQueue.h in Headers */,
 				100E48101FF1E2F800CAB10A /* FMDB.h in Headers */,
 				100E48111FF1E2F800CAB10A /* FMResultSet.h in Headers */,
@@ -1449,6 +1519,7 @@
 				100E48151FF1E2F800CAB10A /* UIView+SeaActivityIndicatorView.h in Headers */,
 				107CE0622003197F00D17E82 /* UITextView+Utils.h in Headers */,
 				100B1C971FDA97BE00FBCD62 /* SeaCollectionViewController.h in Headers */,
+				CEA7C00E22CA0FED00DBE068 /* SeaPhotosCollection.h in Headers */,
 				100B1C951FDA97BE00FBCD62 /* SeaCollectionViewDraggableLayout.h in Headers */,
 				100B1C931FDA97BE00FBCD62 /* SeaCollectionViewFlowLayout.h in Headers */,
 				100B1C921FDA97BE00FBCD62 /* SeaCollectionViewWaterLayout.h in Headers */,
@@ -1489,9 +1560,11 @@
 				10BB623D1FA0293100E1EA40 /* SeaImageGenerator.h in Headers */,
 				101AB8C31FA2E45100711095 /* SeaAlbumAssetsCell.h in Headers */,
 				101AB8C41FA2E45100711095 /* SeaAlbumAssetsViewController.h in Headers */,
+				CEA7C00622CA045600DBE068 /* SeaImageCropSettings.h in Headers */,
 				101AB8C51FA2E45100711095 /* SeaAlbumDelegate.h in Headers */,
 				101AB8C61FA2E45100711095 /* SeaAlbumGroupListCell.h in Headers */,
 				101AB8C71FA2E45100711095 /* SeaAlbumGroupListView.h in Headers */,
+				CEA7C00222CA032B00DBE068 /* SeaPhotosOptions.h in Headers */,
 				10E66483206E262F0095071E /* UICollectionView+Utils.h in Headers */,
 				101AB8C81FA2E45100711095 /* SeaSystemSound.h in Headers */,
 				101AB8CA1FA2E45100711095 /* IOSLibrary.h in Headers */,
@@ -1508,6 +1581,7 @@
 				10E7B2381F9F2D48006A83D8 /* SeaPresentTransitionDelegate.h in Headers */,
 				10E7B2391F9F2D48006A83D8 /* SeaPartialPresentTransitionDelegate.h in Headers */,
 				10E7B23A1F9F2D48006A83D8 /* SeaDetectVersion.h in Headers */,
+				CEA7C00A22CA063100DBE068 /* SeaPhotosGridViewController.h in Headers */,
 				10E7B2831F9F2D49006A83D8 /* SeaWebDetailController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1588,12 +1662,15 @@
 				10704CEA200EF7B800279C88 /* SeaImageCropViewController.m in Sources */,
 				10513541202049F20081C70D /* SeaPopoverMenu.m in Sources */,
 				10CB0A762005BCD70067ADDB /* UITableView+SeaEmptyView.m in Sources */,
+				CEA7C00B22CA063100DBE068 /* SeaPhotosGridViewController.m in Sources */,
 				10CB0A772005BCD70067ADDB /* UIView+SeaEmptyView.m in Sources */,
 				10CB0A782005BCD70067ADDB /* UICollectionView+SeaEmptyView.m in Sources */,
+				CEA7C00F22CA0FED00DBE068 /* SeaPhotosCollection.m in Sources */,
 				1048BDFD206C81C7004D9410 /* SeaConstant.m in Sources */,
 				10CB0A792005BCD70067ADDB /* UIScrollView+SeaEmptyView.m in Sources */,
 				10CB0A7A2005BCD70067ADDB /* SeaEmptyView.m in Sources */,
 				10CB0A7B2005BCD70067ADDB /* SeaDropDownMenu.m in Sources */,
+				CEA7BFFE22CA02DB00DBE068 /* SeaPhotosViewController.m in Sources */,
 				10CB0A7C2005BCD70067ADDB /* SeaLetterSearchMenu.m in Sources */,
 				10CB0A7E2005BCD70067ADDB /* SeaMenuBarItem.m in Sources */,
 				10CB0A7F2005BCD70067ADDB /* SeaMenuBar.m in Sources */,
@@ -1611,6 +1688,7 @@
 				10CB0A8F2005BCD70067ADDB /* SeaHighlightView.m in Sources */,
 				10CB0A902005BCD70067ADDB /* SeaNumberBadge.m in Sources */,
 				10CB0A912005BCD70067ADDB /* SeaGridPasswordLabel.m in Sources */,
+				CEA7C00722CA045600DBE068 /* SeaImageCropSettings.m in Sources */,
 				10CB0A922005BCD70067ADDB /* SeaLabel.m in Sources */,
 				10CB0A932005BCD70067ADDB /* SeaInsetsLabel.m in Sources */,
 				10CB0A942005BCD70067ADDB /* SeaProgressView.m in Sources */,
@@ -1658,6 +1736,7 @@
 				10251D50224F342D0011EF12 /* UIScreen+Utils.m in Sources */,
 				107CE06B20031CB500D17E82 /* SeaWebViewController.m in Sources */,
 				1055A2421FFDBA1600D18470 /* UIFont+Utils.m in Sources */,
+				CEBCA0DA22C4ADC7008CFE1B /* SeaPhotoListViewController.m in Sources */,
 				105FEC5E1FF0D8D500EBD7CB /* SeaMovieCacheTask.m in Sources */,
 				100EC6F71FDA2A30001CCE74 /* UIAlertController+Utils.m in Sources */,
 				100EC6F81FDA2A30001CCE74 /* SeaAlertController.m in Sources */,
@@ -1708,6 +1787,7 @@
 				1053E3E31FFB703B00F2B548 /* UIColor+Utils.m in Sources */,
 				10E7B1A71F9F2D38006A83D8 /* SeaImageFilterColorMatrix.m in Sources */,
 				10E7B1AA1F9F2D38006A83D8 /* SeaObject.m in Sources */,
+				CEA7C00322CA032B00DBE068 /* SeaPhotosOptions.m in Sources */,
 				10E7B1AD1F9F2D38006A83D8 /* SeaCacheCrash.m in Sources */,
 				10E3A51E200617FC0062A23D /* SeaPageViewController.m in Sources */,
 				10BFED541FFDC6950065F4D1 /* UITabBarController+Utils.m in Sources */,

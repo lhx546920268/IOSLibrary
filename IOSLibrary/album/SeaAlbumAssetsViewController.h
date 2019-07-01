@@ -5,7 +5,7 @@
 
 #import "SeaCollectionViewController.h"
 #import "SeaAlbumDelegate.h"
-#import "SeaImageCropViewController.h"
+#import "SeaImageCropSettings.h"
 
 @class ALAssetsGroup, ALAssetsLibrary;
 
