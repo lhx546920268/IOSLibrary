@@ -95,7 +95,7 @@ static char SeaSkeletonAnimationHelperKey;
 
 - (void)sea_showSkeletonWithCompletion:(SeaShowSkeletonCompletionHandler) completion
 {
-    [self sea_showSkeletonWithDuration:0.3 completion:completion];
+    [self sea_showSkeletonWithDuration:0.5 completion:completion];
 }
 
 - (void)sea_showSkeletonWithDuration:(NSTimeInterval) duration completion:(SeaShowSkeletonCompletionHandler) completion
@@ -108,11 +108,16 @@ static char SeaSkeletonAnimationHelperKey;
         }
         
         if(duration > 0 && completion){
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 completion();
             });
         }
     }
+}
+
+- (void)sea_hideSkeletonWithAnimate:(BOOL)animate
+{
+    [self sea_hideSkeletonWithAnimate:animate completion:nil];
 }
 
 - (void)sea_hideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion

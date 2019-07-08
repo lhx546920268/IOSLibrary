@@ -43,11 +43,17 @@ static char SeaSkeletonHideAnimateKey;
     [self sea_skeleton_setDataSource:dataSource];
 }
 
-- (void)sea_showSkeleton
+- (void)sea_showSkeletonWithDuration:(NSTimeInterval)duration completion:(SeaShowSkeletonCompletionHandler)completion
 {
     if(self.sea_skeletonStatus == SeaSkeletonStatusNone){
         self.sea_skeletonStatus = SeaSkeletonStatusShowing;
         [self reloadData];
+        
+        if(duration > 0 && completion){
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                completion();
+            });
+        }
     }
 }
 

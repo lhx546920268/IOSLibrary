@@ -24,28 +24,35 @@ static char SeaSkeletonHideAnimateKey;
 
 - (void)sea_skeleton_setDelegate:(id<UICollectionViewDelegate>)delegate
 {
-    [self sea_skeleton_setDelegate:delegate];
-    
     if(delegate){
         [SeaSkeletonHelper replaceImplementations:@selector(collectionView:didSelectItemAtIndexPath:) owner:delegate implementer:self];
         [SeaSkeletonHelper replaceImplementations:@selector(collectionView:shouldHighlightItemAtIndexPath:) owner:delegate implementer:self];
     }
+    
+    [self sea_skeleton_setDelegate:delegate];
 }
 
 - (void)sea_skeleton_setDataSource:(id<UICollectionViewDataSource>)dataSource
 {
-    [self sea_skeleton_setDataSource:dataSource];
     if(dataSource){
         [SeaSkeletonHelper replaceImplementations:@selector(collectionView:cellForItemAtIndexPath:) owner:dataSource implementer:self];
         [SeaSkeletonHelper replaceImplementations:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:) owner:dataSource implementer:self];
     }
+    
+    [self sea_skeleton_setDataSource:dataSource];
 }
 
-- (void)sea_showSkeleton
+- (void)sea_showSkeletonWithDuration:(NSTimeInterval)duration completion:(SeaShowSkeletonCompletionHandler)completion
 {
     if(self.sea_skeletonStatus == SeaSkeletonStatusNone){
         self.sea_skeletonStatus = SeaSkeletonStatusShowing;
         [self reloadData];
+        
+        if(duration > 0 && completion){
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                completion();
+            });
+        }
     }
 }
 
@@ -92,13 +99,13 @@ static char SeaSkeletonHideAnimateKey;
     switch (status) {
         case SeaSkeletonStatusShowing : {
             
-            [cell.contentView sea_showSkeleton];
+            [cell sea_showSkeleton];
         }
             break;
         case SeaSkeletonStatusWillHide: {
             
             __weak UICollectionView *weakSelf = collectionView;
-            [cell.contentView sea_hideSkeletonWithAnimate:collectionView.sea_skeletonHideAnimate completion:^(BOOL finished) {
+            [cell sea_hideSkeletonWithAnimate:collectionView.sea_skeletonHideAnimate completion:^(BOOL finished) {
                 if(weakSelf.sea_skeletonStatus == SeaSkeletonStatusWillHide){
                     weakSelf.sea_skeletonLayer = nil;
                 }

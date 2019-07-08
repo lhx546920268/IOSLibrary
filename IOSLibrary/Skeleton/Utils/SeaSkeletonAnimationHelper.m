@@ -17,6 +17,7 @@
     animation.fromValue = @(1.0);
     animation.toValue = @(0);
     animation.duration = 0.25;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     animation.delegate = (id<CAAnimationDelegate>)self;
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;

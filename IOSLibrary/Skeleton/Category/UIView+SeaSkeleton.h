@@ -44,11 +44,14 @@ typedef NS_ENUM(NSInteger, SeaSkeletonStatus){
 ///显示骨架
 - (void)sea_showSkeleton;
 
-///显示骨架 0.3s 延迟
+///显示骨架 0.5s 延迟
 - (void)sea_showSkeletonWithCompletion:(SeaShowSkeletonCompletionHandler) completion;
 
 ///显示骨架
 - (void)sea_showSkeletonWithDuration:(NSTimeInterval) duration completion:(SeaShowSkeletonCompletionHandler) completion;
+
+///隐藏骨架
+- (void)sea_hideSkeletonWithAnimate:(BOOL) animate;
 
 ///隐藏骨架
 - (void)sea_hideSkeletonWithAnimate:(BOOL) animate completion:(void(^)(BOOL finished)) completion;
