@@ -41,16 +41,26 @@
 
 + (void)sea_exchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix
 {
-    Method method1 = class_getInstanceMethod(self.class, selector1);
-    Method method2 = class_getInstanceMethod(self.class, NSSelectorFromString([NSString stringWithFormat:@"%@%@", prefix, NSStringFromSelector(selector1)]));
+    [self sea_exchangeImplementations:selector1 prefix:prefix clazz:self.class];
+}
+
++ (void)sea_exchangeImplementations:(SEL)selector1 prefix:(NSString *)prefix clazz:(Class)clazz
+{
+    Method method1 = class_getInstanceMethod(clazz, selector1);
+    Method method2 = class_getInstanceMethod(clazz, NSSelectorFromString([NSString stringWithFormat:@"%@%@", prefix, NSStringFromSelector(selector1)]));
     
     method_exchangeImplementations(method1, method2);
 }
 
 + (void)sea_exchangeImplementations:(SEL)selector1 selector2:(SEL)selector2
 {
-    Method method1 = class_getInstanceMethod(self.class, selector1);
-    Method method2 = class_getInstanceMethod(self.class, selector2);
+    [self sea_exchangeImplementations:selector1 selector2:selector2 clazz:self.class];
+}
+
++ (void)sea_exchangeImplementations:(SEL)selector1 selector2:(SEL)selector2 clazz:(Class)clazz
+{
+    Method method1 = class_getInstanceMethod(clazz, selector1);
+    Method method2 = class_getInstanceMethod(clazz, selector2);
     
     method_exchangeImplementations(method1, method2);
 }

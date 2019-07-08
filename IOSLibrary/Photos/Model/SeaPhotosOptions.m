@@ -17,6 +17,7 @@
         self.maxCount = 1;
         self.gridInterval = 3;
         self.numberOfItemsPerRow = 4;
+        self.shouldDisplayAllPhotos = YES;
     }
     return self;
 }

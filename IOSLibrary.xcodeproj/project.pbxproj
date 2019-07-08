@@ -306,8 +306,26 @@
 		CEA7C00B22CA063100DBE068 /* SeaPhotosGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7C00922CA063100DBE068 /* SeaPhotosGridViewController.m */; };
 		CEA7C00E22CA0FED00DBE068 /* SeaPhotosCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA7C00C22CA0FED00DBE068 /* SeaPhotosCollection.h */; };
 		CEA7C00F22CA0FED00DBE068 /* SeaPhotosCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA7C00D22CA0FED00DBE068 /* SeaPhotosCollection.m */; };
-		CEBCA0D922C4ADC7008CFE1B /* SeaPhotoListViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CEBCA0D722C4ADC7008CFE1B /* SeaPhotoListViewController.h */; };
-		CEBCA0DA22C4ADC7008CFE1B /* SeaPhotoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBCA0D822C4ADC7008CFE1B /* SeaPhotoListViewController.m */; };
+		CEB63EB622CB29EA00BA68BA /* SeaPhotosListCell.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB63EB422CB29EA00BA68BA /* SeaPhotosListCell.h */; };
+		CEB63EB722CB29EA00BA68BA /* SeaPhotosListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB63EB522CB29EA00BA68BA /* SeaPhotosListCell.m */; };
+		CEB63EBA22CB56FE00BA68BA /* SeaPhotosGridCell.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB63EB822CB56FE00BA68BA /* SeaPhotosGridCell.h */; };
+		CEB63EBB22CB56FE00BA68BA /* SeaPhotosGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB63EB922CB56FE00BA68BA /* SeaPhotosGridCell.m */; };
+		CEB63EBE22CB657400BA68BA /* SeaPhotosCheckBox.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB63EBC22CB657400BA68BA /* SeaPhotosCheckBox.h */; };
+		CEB63EBF22CB657400BA68BA /* SeaPhotosCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB63EBD22CB657400BA68BA /* SeaPhotosCheckBox.m */; };
+		CEB7FA4022CD9F72009662AC /* UIView+SeaSkeleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB7FA3E22CD9F72009662AC /* UIView+SeaSkeleton.h */; };
+		CEB7FA4122CD9F72009662AC /* UIView+SeaSkeleton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7FA3F22CD9F72009662AC /* UIView+SeaSkeleton.m */; };
+		CEB7FA4522CDA568009662AC /* SeaSkeletonLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB7FA4322CDA568009662AC /* SeaSkeletonLayer.h */; };
+		CEB7FA4622CDA568009662AC /* SeaSkeletonLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7FA4422CDA568009662AC /* SeaSkeletonLayer.m */; };
+		CEB7FA4A22CDA850009662AC /* SeaSkeletonHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB7FA4822CDA850009662AC /* SeaSkeletonHelper.h */; };
+		CEB7FA4B22CDA850009662AC /* SeaSkeletonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7FA4922CDA850009662AC /* SeaSkeletonHelper.m */; };
+		CEB7FA4E22CDA9DA009662AC /* SeaSkeletonSubLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB7FA4C22CDA9DA009662AC /* SeaSkeletonSubLayer.h */; };
+		CEB7FA4F22CDA9DA009662AC /* SeaSkeletonSubLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7FA4D22CDA9DA009662AC /* SeaSkeletonSubLayer.m */; };
+		CEB7FA5D22CDDBA3009662AC /* UITableView+SeaSkeleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB7FA5B22CDDBA3009662AC /* UITableView+SeaSkeleton.h */; };
+		CEB7FA5E22CDDBA3009662AC /* UITableView+SeaSkeleton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7FA5C22CDDBA3009662AC /* UITableView+SeaSkeleton.m */; };
+		CEB7FA6122CDE998009662AC /* SeaSkeletonAnimationHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB7FA5F22CDE998009662AC /* SeaSkeletonAnimationHelper.h */; };
+		CEB7FA6222CDE998009662AC /* SeaSkeletonAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB7FA6022CDE998009662AC /* SeaSkeletonAnimationHelper.m */; };
+		CED1519622D32A1000EC70B2 /* UICollectionView+SeaSkeleton.h in Headers */ = {isa = PBXBuildFile; fileRef = CED1519422D32A1000EC70B2 /* UICollectionView+SeaSkeleton.h */; };
+		CED1519722D32A1000EC70B2 /* UICollectionView+SeaSkeleton.m in Sources */ = {isa = PBXBuildFile; fileRef = CED1519522D32A1000EC70B2 /* UICollectionView+SeaSkeleton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -615,8 +633,26 @@
 		CEA7C00922CA063100DBE068 /* SeaPhotosGridViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosGridViewController.m; sourceTree = "<group>"; };
 		CEA7C00C22CA0FED00DBE068 /* SeaPhotosCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosCollection.h; sourceTree = "<group>"; };
 		CEA7C00D22CA0FED00DBE068 /* SeaPhotosCollection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosCollection.m; sourceTree = "<group>"; };
-		CEBCA0D722C4ADC7008CFE1B /* SeaPhotoListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotoListViewController.h; sourceTree = "<group>"; };
-		CEBCA0D822C4ADC7008CFE1B /* SeaPhotoListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotoListViewController.m; sourceTree = "<group>"; };
+		CEB63EB422CB29EA00BA68BA /* SeaPhotosListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosListCell.h; sourceTree = "<group>"; };
+		CEB63EB522CB29EA00BA68BA /* SeaPhotosListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosListCell.m; sourceTree = "<group>"; };
+		CEB63EB822CB56FE00BA68BA /* SeaPhotosGridCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosGridCell.h; sourceTree = "<group>"; };
+		CEB63EB922CB56FE00BA68BA /* SeaPhotosGridCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosGridCell.m; sourceTree = "<group>"; };
+		CEB63EBC22CB657400BA68BA /* SeaPhotosCheckBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaPhotosCheckBox.h; sourceTree = "<group>"; };
+		CEB63EBD22CB657400BA68BA /* SeaPhotosCheckBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaPhotosCheckBox.m; sourceTree = "<group>"; };
+		CEB7FA3E22CD9F72009662AC /* UIView+SeaSkeleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SeaSkeleton.h"; sourceTree = "<group>"; };
+		CEB7FA3F22CD9F72009662AC /* UIView+SeaSkeleton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SeaSkeleton.m"; sourceTree = "<group>"; };
+		CEB7FA4322CDA568009662AC /* SeaSkeletonLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSkeletonLayer.h; sourceTree = "<group>"; };
+		CEB7FA4422CDA568009662AC /* SeaSkeletonLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSkeletonLayer.m; sourceTree = "<group>"; };
+		CEB7FA4822CDA850009662AC /* SeaSkeletonHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSkeletonHelper.h; sourceTree = "<group>"; };
+		CEB7FA4922CDA850009662AC /* SeaSkeletonHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSkeletonHelper.m; sourceTree = "<group>"; };
+		CEB7FA4C22CDA9DA009662AC /* SeaSkeletonSubLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSkeletonSubLayer.h; sourceTree = "<group>"; };
+		CEB7FA4D22CDA9DA009662AC /* SeaSkeletonSubLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSkeletonSubLayer.m; sourceTree = "<group>"; };
+		CEB7FA5B22CDDBA3009662AC /* UITableView+SeaSkeleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+SeaSkeleton.h"; sourceTree = "<group>"; };
+		CEB7FA5C22CDDBA3009662AC /* UITableView+SeaSkeleton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SeaSkeleton.m"; sourceTree = "<group>"; };
+		CEB7FA5F22CDE998009662AC /* SeaSkeletonAnimationHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeaSkeletonAnimationHelper.h; sourceTree = "<group>"; };
+		CEB7FA6022CDE998009662AC /* SeaSkeletonAnimationHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeaSkeletonAnimationHelper.m; sourceTree = "<group>"; };
+		CED1519422D32A1000EC70B2 /* UICollectionView+SeaSkeleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+SeaSkeleton.h"; sourceTree = "<group>"; };
+		CED1519522D32A1000EC70B2 /* UICollectionView+SeaSkeleton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+SeaSkeleton.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1143,6 +1179,7 @@
 		10E7B0481F9F2CAD006A83D8 /* IOSLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				CEB7FA3C22CD9F05009662AC /* Skeleton */,
 				CEBCA0D422C4AD8C008CFE1B /* Photos */,
 				1032E3DE1FA2E3C200709FDC /* album */,
 				100EC6ED1FDA2A1B001CCE74 /* alert */,
@@ -1393,6 +1430,51 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CEB7FA3C22CD9F05009662AC /* Skeleton */ = {
+			isa = PBXGroup;
+			children = (
+				CEB7FA4722CDA832009662AC /* Utils */,
+				CEB7FA4222CDA553009662AC /* View */,
+				CEB7FA3D22CD9F05009662AC /* Category */,
+			);
+			path = Skeleton;
+			sourceTree = "<group>";
+		};
+		CEB7FA3D22CD9F05009662AC /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				CEB7FA3E22CD9F72009662AC /* UIView+SeaSkeleton.h */,
+				CEB7FA3F22CD9F72009662AC /* UIView+SeaSkeleton.m */,
+				CEB7FA5B22CDDBA3009662AC /* UITableView+SeaSkeleton.h */,
+				CEB7FA5C22CDDBA3009662AC /* UITableView+SeaSkeleton.m */,
+				CED1519422D32A1000EC70B2 /* UICollectionView+SeaSkeleton.h */,
+				CED1519522D32A1000EC70B2 /* UICollectionView+SeaSkeleton.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		CEB7FA4222CDA553009662AC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEB7FA4322CDA568009662AC /* SeaSkeletonLayer.h */,
+				CEB7FA4422CDA568009662AC /* SeaSkeletonLayer.m */,
+				CEB7FA4C22CDA9DA009662AC /* SeaSkeletonSubLayer.h */,
+				CEB7FA4D22CDA9DA009662AC /* SeaSkeletonSubLayer.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CEB7FA4722CDA832009662AC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CEB7FA4822CDA850009662AC /* SeaSkeletonHelper.h */,
+				CEB7FA4922CDA850009662AC /* SeaSkeletonHelper.m */,
+				CEB7FA5F22CDE998009662AC /* SeaSkeletonAnimationHelper.h */,
+				CEB7FA6022CDE998009662AC /* SeaSkeletonAnimationHelper.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		CEBCA0D422C4AD8C008CFE1B /* Photos */ = {
 			isa = PBXGroup;
 			children = (
@@ -1406,8 +1488,6 @@
 		CEBCA0D522C4AD8C008CFE1B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CEBCA0D722C4ADC7008CFE1B /* SeaPhotoListViewController.h */,
-				CEBCA0D822C4ADC7008CFE1B /* SeaPhotoListViewController.m */,
 				CEA7BFFB22CA02DB00DBE068 /* SeaPhotosViewController.h */,
 				CEA7BFFC22CA02DB00DBE068 /* SeaPhotosViewController.m */,
 				CEA7C00822CA063100DBE068 /* SeaPhotosGridViewController.h */,
@@ -1419,6 +1499,12 @@
 		CEBCA0D622C4AD8C008CFE1B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CEB63EB422CB29EA00BA68BA /* SeaPhotosListCell.h */,
+				CEB63EB522CB29EA00BA68BA /* SeaPhotosListCell.m */,
+				CEB63EB822CB56FE00BA68BA /* SeaPhotosGridCell.h */,
+				CEB63EB922CB56FE00BA68BA /* SeaPhotosGridCell.m */,
+				CEB63EBC22CB657400BA68BA /* SeaPhotosCheckBox.h */,
+				CEB63EBD22CB657400BA68BA /* SeaPhotosCheckBox.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1430,6 +1516,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB7FA6122CDE998009662AC /* SeaSkeletonAnimationHelper.h in Headers */,
 				104D19902015C0B800BAB3EF /* UIDevice+Utils.h in Headers */,
 				1051353C202019CA0081C70D /* SeaPopover.h in Headers */,
 				1011C99720947A8400AD3A82 /* UIViewController+Keyboard.h in Headers */,
@@ -1441,6 +1528,7 @@
 				109D7F2720492C3E0050D1F7 /* UIImagePickerController+Utils.h in Headers */,
 				10704CE7200EF78D00279C88 /* SeaImageBrowseViewController.h in Headers */,
 				10CF26F6200DDA80009A9295 /* SeaNavigationBarTitleView.h in Headers */,
+				CED1519622D32A1000EC70B2 /* UICollectionView+SeaSkeleton.h in Headers */,
 				10704CE9200EF7A100279C88 /* SeaImageCropViewController.h in Headers */,
 				10E3A51D200617FC0062A23D /* SeaPageViewController.h in Headers */,
 				10CB0A9B2005BDF30067ADDB /* SeaCountDownTimer.h in Headers */,
@@ -1462,6 +1550,7 @@
 				10CB0A6B2005BCB70067ADDB /* SeaLabel.h in Headers */,
 				109D7F35204951BC0050D1F7 /* SeaTiledImageView+SeaImageCache.h in Headers */,
 				10CB0A6C2005BCB70067ADDB /* SeaInsetsLabel.h in Headers */,
+				CEB7FA4E22CDA9DA009662AC /* SeaSkeletonSubLayer.h in Headers */,
 				10CB0A6D2005BCB70067ADDB /* SeaGridPasswordLabel.h in Headers */,
 				10CB0A6E2005BCB70067ADDB /* SeaNumberKeyboard.h in Headers */,
 				10CB0A6F2005BCB70067ADDB /* SeaCountDownButton.h in Headers */,
@@ -1475,6 +1564,7 @@
 				100E481B1FF1E86E00CAB10A /* NSMutableArray+Utils.h in Headers */,
 				10BFED571FFDC7520065F4D1 /* UITextField+Utils.h in Headers */,
 				1053E3E21FFB703B00F2B548 /* UIColor+Utils.h in Headers */,
+				CEB7FA4522CDA568009662AC /* SeaSkeletonLayer.h in Headers */,
 				1068F9CD1FF3999700DB0C3F /* NSDate+Utils.h in Headers */,
 				1011C993209453DA00AD3A82 /* UIViewController+Dialog.h in Headers */,
 				10251D4F224F342D0011EF12 /* UIScreen+Utils.h in Headers */,
@@ -1485,6 +1575,7 @@
 				10C3EFB11FFB246400BFD1E2 /* NSObject+Utils.h in Headers */,
 				10BFED4F1FFDC6590065F4D1 /* UISearchBar+Utils.h in Headers */,
 				109D162D1FF0A352005E01C7 /* SeaDataBase.h in Headers */,
+				CEB7FA5D22CDDBA3009662AC /* UITableView+SeaSkeleton.h in Headers */,
 				10C3EFA91FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.h in Headers */,
 				1044C01A1FEC9495006BC8CA /* SeaImageCacheOptions.h in Headers */,
 				1048BDFC206C81C7004D9410 /* SeaConstant.h in Headers */,
@@ -1494,6 +1585,7 @@
 				10BFED531FFDC6950065F4D1 /* UITabBarController+Utils.h in Headers */,
 				105FEC5D1FF0D8D500EBD7CB /* SeaMovieCacheTask.h in Headers */,
 				10DD3B35210187BD00B12E13 /* SeaRefreshStyle.h in Headers */,
+				CEB63EBA22CB56FE00BA68BA /* SeaPhotosGridCell.h in Headers */,
 				1068F9C91FF3981C00DB0C3F /* NSAttributedString+Utils.h in Headers */,
 				1055A2411FFDBA1600D18470 /* UIFont+Utils.h in Headers */,
 				1068F9C01FF392A000DB0C3F /* SeaURLSessionTaskDelegate.h in Headers */,
@@ -1507,7 +1599,6 @@
 				100E480C1FF1E2F700CAB10A /* FMDatabase.h in Headers */,
 				100E480D1FF1E2F700CAB10A /* FMDatabaseAdditions.h in Headers */,
 				100E480E1FF1E2F700CAB10A /* FMDatabasePool.h in Headers */,
-				CEBCA0D922C4ADC7008CFE1B /* SeaPhotoListViewController.h in Headers */,
 				100E480F1FF1E2F700CAB10A /* FMDatabaseQueue.h in Headers */,
 				100E48101FF1E2F800CAB10A /* FMDB.h in Headers */,
 				100E48111FF1E2F800CAB10A /* FMResultSet.h in Headers */,
@@ -1527,12 +1618,14 @@
 				10A0EBBB20C373A000A81F0A /* SeaLoadingStyle.h in Headers */,
 				10509CB11FE8F45F003468EB /* UINavigationItem+Utils.h in Headers */,
 				10509CB21FE8F45F003468EB /* UINavigationBar+Utils.h in Headers */,
+				CEB63EBE22CB657400BA68BA /* SeaPhotosCheckBox.h in Headers */,
 				10509CB31FE8F45F003468EB /* SeaNavigationController.h in Headers */,
 				108E6F051FDF85FC00F1B121 /* UIScrollView+SeaDataControl.h in Headers */,
 				108E6F061FDF85FC00F1B121 /* SeaDataControl.h in Headers */,
 				108E6F071FDF85FC00F1B121 /* SeaRefreshControl.h in Headers */,
 				108E6F081FDF85FC00F1B121 /* SeaLoadMoreControl.h in Headers */,
 				103B43EE1FE7C76600853EBC /* SeaAutoLayoutBuilder.h in Headers */,
+				CEB7FA4022CD9F72009662AC /* UIView+SeaSkeleton.h in Headers */,
 				10DD3B3921018B1300B12E13 /* SeaDefaultLoadMoreControl.h in Headers */,
 				100B1C901FDA97BE00FBCD62 /* SeaCollectionViewFlowFillLayout.h in Headers */,
 				100B1C8D1FDA97BE00FBCD62 /* UICollectionView+SeaCellSize.h in Headers */,
@@ -1545,12 +1638,14 @@
 				1045CE5F1FDA1D38003506BA /* UIView+SeaLoading.h in Headers */,
 				10F6A35E1FD9328000F2B30E /* SeaNetworkActivityView.h in Headers */,
 				10F6A35F1FD9328000F2B30E /* SeaPageLoadingView.h in Headers */,
+				CEB63EB622CB29EA00BA68BA /* SeaPhotosListCell.h in Headers */,
 				10F6A3601FD9328000F2B30E /* SeaFailPageView.h in Headers */,
 				10F6A32F1FD8F0B400F2B30E /* SeaViewController.h in Headers */,
 				10F6A3301FD8F0B400F2B30E /* SeaSlideViewController.h in Headers */,
 				109D7F31204942490050D1F7 /* UIView+SeaImageCache.h in Headers */,
 				10F6A3331FD8F0B400F2B30E /* SeaDialogViewController.h in Headers */,
 				10F6A3191FD8DEEF00F2B30E /* UIView+Utils.h in Headers */,
+				CEB7FA4A22CDA850009662AC /* SeaSkeletonHelper.h in Headers */,
 				10F6A31A1FD8DEEF00F2B30E /* SeaContainer.h in Headers */,
 				1052CAEC1FD790D300F6F01F /* UITableView+SeaRowHeight.h in Headers */,
 				1052CAE31FD78EC700F6F01F /* UITableView+Utils.h in Headers */,
@@ -1673,6 +1768,7 @@
 				CEA7BFFE22CA02DB00DBE068 /* SeaPhotosViewController.m in Sources */,
 				10CB0A7C2005BCD70067ADDB /* SeaLetterSearchMenu.m in Sources */,
 				10CB0A7E2005BCD70067ADDB /* SeaMenuBarItem.m in Sources */,
+				CEB63EB722CB29EA00BA68BA /* SeaPhotosListCell.m in Sources */,
 				10CB0A7F2005BCD70067ADDB /* SeaMenuBar.m in Sources */,
 				10CB0A812005BCD70067ADDB /* SeaTabBar.m in Sources */,
 				1011C99820947A8400AD3A82 /* UIViewController+Keyboard.m in Sources */,
@@ -1682,6 +1778,7 @@
 				109D7F1C204900FD0050D1F7 /* SeaTiledImageView.m in Sources */,
 				109D7F36204951BC0050D1F7 /* SeaTiledImageView+SeaImageCache.m in Sources */,
 				10CB0A8B2005BCD70067ADDB /* SeaRadarView.m in Sources */,
+				CEB7FA4F22CDA9DA009662AC /* SeaSkeletonSubLayer.m in Sources */,
 				10CB0A8C2005BCD70067ADDB /* SeaDashView.m in Sources */,
 				10CB0A8D2005BCD70067ADDB /* SeaCheckBox.m in Sources */,
 				10CB0A8E2005BCD70067ADDB /* SeaHighlightButton.m in Sources */,
@@ -1714,7 +1811,9 @@
 				100E48051FF1E2E700CAB10A /* FMDatabasePool.m in Sources */,
 				100E48061FF1E2E700CAB10A /* FMDatabaseQueue.m in Sources */,
 				10BFED501FFDC6590065F4D1 /* UISearchBar+Utils.m in Sources */,
+				CEB7FA4622CDA568009662AC /* SeaSkeletonLayer.m in Sources */,
 				100E48071FF1E2E700CAB10A /* FMResultSet.m in Sources */,
+				CEB63EBF22CB657400BA68BA /* SeaPhotosCheckBox.m in Sources */,
 				10509CB41FE8F46D003468EB /* UINavigationBar+Utils.m in Sources */,
 				10509CB51FE8F46D003468EB /* UINavigationItem+Utils.m in Sources */,
 				1068F9CA1FF3981C00DB0C3F /* NSAttributedString+Utils.m in Sources */,
@@ -1730,13 +1829,14 @@
 				107CE0632003197F00D17E82 /* UITextView+Utils.m in Sources */,
 				1011C994209453DA00AD3A82 /* UIViewController+Dialog.m in Sources */,
 				10BFED581FFDC7520065F4D1 /* UITextField+Utils.m in Sources */,
+				CEB7FA4B22CDA850009662AC /* SeaSkeletonHelper.m in Sources */,
 				109D7F32204942490050D1F7 /* UIView+SeaImageCache.m in Sources */,
+				CED1519722D32A1000EC70B2 /* UICollectionView+SeaSkeleton.m in Sources */,
 				10C3EFAA1FFB1B7A00BFD1E2 /* NSJSONSerialization+Utils.m in Sources */,
 				10C3EFB21FFB246400BFD1E2 /* NSObject+Utils.m in Sources */,
 				10251D50224F342D0011EF12 /* UIScreen+Utils.m in Sources */,
 				107CE06B20031CB500D17E82 /* SeaWebViewController.m in Sources */,
 				1055A2421FFDBA1600D18470 /* UIFont+Utils.m in Sources */,
-				CEBCA0DA22C4ADC7008CFE1B /* SeaPhotoListViewController.m in Sources */,
 				105FEC5E1FF0D8D500EBD7CB /* SeaMovieCacheTask.m in Sources */,
 				100EC6F71FDA2A30001CCE74 /* UIAlertController+Utils.m in Sources */,
 				100EC6F81FDA2A30001CCE74 /* SeaAlertController.m in Sources */,
@@ -1749,6 +1849,7 @@
 				10C3EFAE1FFB1C6400BFD1E2 /* NSDictionary+Utils.m in Sources */,
 				10F6A3381FD8F0C700F2B30E /* SeaDialogViewController.m in Sources */,
 				10F6A33D1FD8F0C700F2B30E /* SeaViewController.m in Sources */,
+				CEB7FA4122CD9F72009662AC /* UIView+SeaSkeleton.m in Sources */,
 				10F6A3171FD8DEE500F2B30E /* UIView+Utils.m in Sources */,
 				10F6A3181FD8DEE500F2B30E /* SeaContainer.m in Sources */,
 				104662031FE1230400A88D3C /* UIView+SeaToast.m in Sources */,
@@ -1760,6 +1861,7 @@
 				101AB8CB1FA2E46800711095 /* SeaAlbumAssetsCell.m in Sources */,
 				101AB8CC1FA2E46800711095 /* SeaAlbumAssetsViewController.m in Sources */,
 				101AB8CD1FA2E46800711095 /* SeaAlbumGroupListCell.m in Sources */,
+				CEB7FA5E22CDDBA3009662AC /* UITableView+SeaSkeleton.m in Sources */,
 				101AB8CE1FA2E46800711095 /* SeaAlbumGroupListView.m in Sources */,
 				101AB8CF1FA2E46800711095 /* SeaSystemSound.m in Sources */,
 				10DD3B36210187BD00B12E13 /* SeaRefreshStyle.m in Sources */,
@@ -1780,6 +1882,7 @@
 				109D162E1FF0A352005E01C7 /* SeaDataBase.m in Sources */,
 				1044C01F1FEC9995006BC8CA /* SeaImageCacheTask.m in Sources */,
 				10E7B19F1F9F2D38006A83D8 /* UINavigationController+Utils.m in Sources */,
+				CEB7FA6222CDE998009662AC /* SeaSkeletonAnimationHelper.m in Sources */,
 				1051BB2C1FE3768900658772 /* SeaAutoLayoutBuilder.m in Sources */,
 				100B1C8F1FDA97BE00FBCD62 /* SeaCollectionViewWaterLayout.m in Sources */,
 				100B1C7B1FDA913A00FBCD62 /* SeaBannerView.m in Sources */,
@@ -1791,6 +1894,7 @@
 				10E7B1AD1F9F2D38006A83D8 /* SeaCacheCrash.m in Sources */,
 				10E3A51E200617FC0062A23D /* SeaPageViewController.m in Sources */,
 				10BFED541FFDC6950065F4D1 /* UITabBarController+Utils.m in Sources */,
+				CEB63EBB22CB56FE00BA68BA /* SeaPhotosGridCell.m in Sources */,
 				10E7B1AE1F9F2D38006A83D8 /* SeaTools.m in Sources */,
 				10E7B1B31F9F2D38006A83D8 /* SeaPartialPresentTransitionDelegate.m in Sources */,
 				10E7B1B41F9F2D38006A83D8 /* SeaPresentTransitionDelegate.m in Sources */,
@@ -1861,7 +1965,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1916,7 +2020,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				USE_HEADERMAP = YES;

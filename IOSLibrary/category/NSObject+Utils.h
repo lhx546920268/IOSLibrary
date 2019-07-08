@@ -30,6 +30,15 @@
  */
 + (void)sea_exchangeImplementations:(SEL) selector1 prefix:(NSString*) prefix;
 
+/**
+ 交换实例方法实现
+ 
+ @param selector1 方法1
+ @param prefix 前缀，方法2 = 前缀 + 方法1名字
+ @param clazz 要交换方法的类
+ */
++ (void)sea_exchangeImplementations:(SEL) selector1 prefix:(NSString*) prefix clazz:(Class) clazz;
+
 
 /**
  交换实例方法实现
@@ -38,6 +47,15 @@
  @param selector2 方法2
  */
 + (void)sea_exchangeImplementations:(SEL) selector1 selector2:(SEL) selector2;
+
+/**
+ 交换实例方法实现
+ 
+ @param selector1 方法1
+ @param selector2 方法2
+ @param clazz 要交换方法的类
+ */
++ (void)sea_exchangeImplementations:(SEL) selector1 selector2:(SEL) selector2 clazz:(Class) clazz;
 
 
 /**

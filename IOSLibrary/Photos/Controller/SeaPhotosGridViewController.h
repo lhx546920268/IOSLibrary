@@ -8,8 +8,17 @@
 
 #import "SeaCollectionViewController.h"
 
+
+@class SeaPhotosOptions, SeaPhotosCollection;
+
 ///相册网格列表
 @interface SeaPhotosGridViewController : SeaCollectionViewController
+
+///资源信息
+@property(nonatomic, strong) SeaPhotosCollection *collection;
+
+///选项
+@property(nonatomic, strong) SeaPhotosOptions *photosOptions;
 
 @end
 

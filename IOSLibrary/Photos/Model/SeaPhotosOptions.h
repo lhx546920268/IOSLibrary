@@ -33,13 +33,19 @@ typedef NS_ENUM(NSInteger, SeaPhotosIntention){
 @property(nonatomic, strong) SeaImageCropSettings *cropSettings;
 
 ///多选数量 default 1
-@property(nonatomic, assign) NSInteger maxCount;
+@property(nonatomic, assign) int maxCount;
 
 ///网格图片间距 default is '3.0'
-@property(nonatomic,assign) CGFloat gridInterval;
+@property(nonatomic, assign) CGFloat gridInterval;
 
 ///每行图片数量 default is '4'
-@property(nonatomic,assign) int numberOfItemsPerRow;
+@property(nonatomic, assign) int numberOfItemsPerRow;
+
+///是否显示所有图片 default YES
+@property(nonatomic, assign) BOOL shouldDisplayAllPhotos;
+
+///是否显示空的相册 default NO
+@property(nonatomic, assign) BOOL shouldDisplayEmptyCollection;
 
 @end
 

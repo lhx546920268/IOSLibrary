@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Photos/Photos.h>
+#import <Photos/PHFetchResult.h>
+#import <Photos/PHAsset.h>
 
 ///相册分组信息
 @interface SeaPhotosCollection : NSObject

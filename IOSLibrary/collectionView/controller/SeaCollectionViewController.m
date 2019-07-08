@@ -128,10 +128,7 @@
     static NSString *cellIdentifier = @"cell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    
-
     return cell;
 }
-
 
 @end
