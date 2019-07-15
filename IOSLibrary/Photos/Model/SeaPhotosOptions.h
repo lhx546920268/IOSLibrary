@@ -22,15 +22,41 @@ typedef NS_ENUM(NSInteger, SeaPhotosIntention){
     SeaPhotosIntentionCrop,
 };
 
+///相册选择结果
+@interface SeaPhotosPickResult : NSObject
+
+///图片缩略图
+@property(nonatomic, strong) UIImage *thumbnail;
+
+///压缩后的图片
+@property(nonatomic, strong) UIImage *compressedImage;
+
+///原图
+@property(nonatomic, strong) UIImage *originalImage;
+
+@end
+
 
 ///相册选项
 @interface SeaPhotosOptions : NSObject
+
+///选择图片完成回调
+@property(nonatomic, copy) void(^completion)(NSArray<SeaPhotosPickResult*> *results);
 
 ///意图
 @property(nonatomic, assign) SeaPhotosIntention intention;
 
 ///裁剪选项
 @property(nonatomic, strong) SeaImageCropSettings *cropSettings;
+
+///缩略图大小 default zero
+@property(nonatomic, assign) CGSize thumbnailSize;
+
+///压缩图片的大小 default 512
+@property(nonatomic, assign) CGSize compressedImageSize;
+
+///是否需要原图 default NO
+@property(nonatomic, assign) BOOL needOriginalImage;
 
 ///多选数量 default 1
 @property(nonatomic, assign) int maxCount;
@@ -46,6 +72,9 @@ typedef NS_ENUM(NSInteger, SeaPhotosIntention){
 
 ///是否显示空的相册 default NO
 @property(nonatomic, assign) BOOL shouldDisplayEmptyCollection;
+
+///是否直接显示第一个相册的内容 default YES
+@property(nonatomic, assign) BOOL displayFistCollection;
 
 @end
 

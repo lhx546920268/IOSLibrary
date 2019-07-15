@@ -121,7 +121,7 @@
 - (UIBarButtonItem*)fixedBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    item.width = -16 + SeaNavigationBarMargin;
+    item.width = -(UIScreen.mainScreen.scale == 2 ? 16 : 20);
     return item;
 }
 

@@ -58,6 +58,10 @@
 {
     [super viewDidLoad];
     
+    if(self.navigationController.presentingViewController){
+        [self sea_setRightItemWithTitle:@"取消" action:@selector(handleCancel)];
+    }
+    
     self.navigationItem.title = @"相册";
     [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
     [self sea_reloadData];
@@ -81,6 +85,14 @@
     self.tableView.sea_shouldShowEmptyView = YES;
     
     [super initialization];
+}
+
+//MARK: action
+
+///取消
+- (void)handleCancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 //MARK: PHPhotoLibraryChangeObserver
@@ -187,6 +199,14 @@
         [self.tableView reloadData];
     }else{
         [self initialization];
+    }
+    
+    if(self.photosOptions.displayFistCollection && self.datas.count > 0){
+        SeaPhotosGridViewController *vc = [SeaPhotosGridViewController new];
+        vc.photosOptions = self.photosOptions;
+        vc.collection = self.datas.firstObject;
+        
+        [self.navigationController setViewControllers:@[self, vc]];
     }
 }
 

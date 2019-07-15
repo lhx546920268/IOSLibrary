@@ -8,6 +8,11 @@
 
 #import "SeaPhotosOptions.h"
 
+@implementation SeaPhotosPickResult
+
+
+@end
+
 @implementation SeaPhotosOptions
 
 - (instancetype)init
@@ -18,6 +23,8 @@
         self.gridInterval = 3;
         self.numberOfItemsPerRow = 4;
         self.shouldDisplayAllPhotos = YES;
+        self.displayFistCollection = YES;
+        self.compressedImageSize = CGSizeMake(512, 512);
     }
     return self;
 }

@@ -360,7 +360,7 @@ static char SeaTransitioningDelegateKey;
                 image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             }
             
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width + SeaNavigationBarMargin * 2, 44)];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, 44)];
             imageView.image = image;
             imageView.contentMode = UIViewContentModeCenter;
             imageView.userInteractionEnabled = YES;
@@ -374,22 +374,19 @@ static char SeaTransitioningDelegateKey;
             [imageView addGestureRecognizer:longPress];
             
             objc_setAssociatedObject(self, &SeaBackImageViewKey, imageView, OBJC_ASSOCIATION_RETAIN);
-            self.navigationController.navigationBar.sea_existBackItem = YES;
             
             UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-            self.navigationItem.leftBarButtonItem = item;
+            [self setNavigationBarItem:item posiiton:SeaNavigationItemPositionLeft];
         }else{
             self.navigationItem.hidesBackButton = NO;
             self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.sea_backItemTitle style:UIBarButtonItemStyleDone target:nil action:nil];
             objc_setAssociatedObject(self, &SeaBackImageViewKey, nil, OBJC_ASSOCIATION_RETAIN);
-            self.navigationController.navigationBar.sea_existBackItem = NO;
         }
     }else{
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.leftBarButtonItems = nil;
         self.navigationItem.hidesBackButton = YES;
         objc_setAssociatedObject(self, &SeaBackImageViewKey, nil, OBJC_ASSOCIATION_RETAIN);
-        self.navigationController.navigationBar.sea_existBackItem = NO;
     }
 }
 
@@ -537,6 +534,7 @@ static char SeaTransitioningDelegateKey;
 
 - (void)setNavigationBarItem:(UIBarButtonItem*) item posiiton:(SeaNavigationItemPosition) position
 {
+    item.customView.width += SeaNavigationBarMargin * 2;
     switch (position) {
         case SeaNavigationItemPositionLeft :
             self.navigationItem.leftBarButtonItem = item;

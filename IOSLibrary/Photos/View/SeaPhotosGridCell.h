@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class SeaPhotosCheckBox, SeaPhotosGridCell;
+@class SeaPhotosCheckBox, SeaPhotosGridCell, PHAsset;
 
 ///代理
 @protocol SeaPhotosGridCellDelegate <NSObject>
@@ -34,7 +34,7 @@
 @property(nonatomic, assign) BOOL checked;
 
 ///asset标识符
-@property(nonatomic, strong) NSString *assetLocalIdentifier;
+@property(nonatomic, strong) PHAsset *asset;
 
 ///代理
 @property(nonatomic, weak) id<SeaPhotosGridCellDelegate> delegate;

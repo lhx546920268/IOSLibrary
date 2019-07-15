@@ -135,7 +135,6 @@
             self.sea_showBackItem = YES;
         }
     }
-    self.navigationController.navigationBar.sea_existBackItem = self.sea_showBackItem;
 }
 
 #pragma mark- UIStatusBar

@@ -13,7 +13,4 @@
  */
 @interface UINavigationBar (Utils)
 
-///是否存在返回按钮
-@property(nonatomic, assign) BOOL sea_existBackItem;
-
 @end

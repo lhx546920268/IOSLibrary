@@ -16,11 +16,16 @@
 #import "NSObject+Utils.h"
 #import "SeaPhotosCheckBox.h"
 #import "SeaAlertController.h"
+#import "UIViewController+Utils.h"
+#import "SeaPhotosToolBar.h"
+#import "SeaPhotosPreviewViewController.h"
+#import "SeaContainer.h"
+#import "UIImage+Utils.h"
 
 @interface SeaPhotosGridViewController ()<PHPhotoLibraryChangeObserver, SeaPhotosGridCellDelegate>
 
-//选中的图片唯一标识符
-@property(nonatomic,strong) NSMutableArray<NSString*> *selectedAssetLocalIdentifiers;
+//选中的图片
+@property(nonatomic, strong) NSMutableArray<PHAsset*> *selectedAssets;
 
 ///图片管理
 @property(nonatomic, strong) PHCachingImageManager *imageManager;
@@ -33,6 +38,9 @@
 
 ///开始缓存的
 @property(nonatomic, strong) NSMutableArray<PHAsset*> *startCachingAssets;
+
+///底部工具条
+@property(nonatomic, strong) SeaPhotosToolBar *photosToolBar;
 
 @end
 
@@ -48,8 +56,16 @@
 {
     [super viewDidLoad];
     
+    if(self.navigationController.presentingViewController){
+        [self sea_setRightItemWithTitle:@"取消" action:@selector(handleCancel)];
+    }
+    
+    //多选
+    if(self.photosOptions.intention == SeaPhotosIntentionMultiSelection){
+        self.selectedAssets = [NSMutableArray arrayWithCapacity:self.photosOptions.maxCount];
+    }
+    
     self.navigationItem.title = self.collection.title;
-    self.selectedAssetLocalIdentifiers = [NSMutableArray array];
     [PHPhotoLibrary.sharedPhotoLibrary registerChangeObserver:self];
     
     [self initialization];
@@ -64,6 +80,14 @@
 
 - (void)initialization
 {
+    if(self.photosOptions.intention == SeaPhotosIntentionMultiSelection){
+        self.container.safeLayoutGuide = SeaSafeLayoutGuideTop | SeaSafeLayoutGuideBottom;
+        self.photosToolBar = [SeaPhotosToolBar new];
+        [self.photosToolBar.previewButton addTarget:self action:@selector(handlePreview) forControlEvents:UIControlEventTouchUpInside];
+        [self.photosToolBar.useButton addTarget:self action:@selector(handleUse) forControlEvents:UIControlEventTouchUpInside];
+        [self setBottomView:self.photosToolBar height:45];
+    }
+    
     self.imageManager = [PHCachingImageManager new];
     self.imageManager.allowsCachingHighQualityImages = NO;
     
@@ -79,6 +103,128 @@
     self.collectionView.sea_shouldShowEmptyView = YES;
     
     [super initialization];
+    
+    if(self.collection.assets.count > 0){
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.collection.assets.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+    }
+}
+
+//MARK: action
+
+///取消
+- (void)handleCancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+///预览
+- (void)handlePreview
+{
+    SeaPhotosPreviewViewController *vc = [SeaPhotosPreviewViewController new];
+    vc.assets = [self.selectedAssets copy];
+    vc.selectedAssets = self.selectedAssets;
+    vc.photosOptions = self.photosOptions;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+///使用
+- (void)handleUse
+{
+    [self useAssets:self.selectedAssets];
+}
+
+///使用图片
+- (void)useAssets:(NSArray<PHAsset*>*) assets
+{
+    self.sea_showNetworkActivity = YES;
+    self.sea_backImageView.userInteractionEnabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    WeakSelf(self)
+    __block NSInteger totalCount = assets;
+    NSMutableArray *datas = [NSMutableArray arrayWithCapacity:totalCount];
+    
+    for(PHAsset *selectedAsset in assets){
+        [self.imageManager requestImageDataForAsset:selectedAsset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            totalCount --;
+            if(imageData){
+                [datas addObject:imageData];
+            }
+            if(totalCount <= 0){
+                [weakSelf onImageDataLoad:datas];
+            }
+        }];
+    }
+}
+
+///图片加载完成
+- (void)onImageDataLoad:(NSArray*) datas
+{
+    NSMutableArray *results = [NSMutableArray arrayWithCapacity:datas.count];
+    
+    WeakSelf(self)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        for(NSData *data in datas){
+            SeaPhotosPickResult *result = [SeaPhotosPickResult new];
+            UIImage *image = [UIImage imageWithData:data scale:UIScreen.mainScreen.scale];
+            if(weakSelf.photosOptions.needOriginalImage){
+                result.originalImage = image;
+            }
+            
+            if(!CGSizeEqualToSize(CGSizeZero, weakSelf.photosOptions.compressedImageSize)){
+                result.compressedImage = [image sea_aspectFitWithSize:weakSelf.photosOptions.compressedImageSize];
+            }
+            
+            if(!CGSizeEqualToSize(CGSizeZero, weakSelf.photosOptions.thumbnailSize)){
+                result.thumbnail = [result.compressedImage sea_aspectFitWithSize:weakSelf.photosOptions.thumbnailSize];
+            }
+            [results addObject:result];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.sea_showNetworkActivity = NO;
+            !weakSelf.photosOptions.completion ?: weakSelf.photosOptions.completion(results);
+            [weakSelf handleCancel];
+        });
+    });
+}
+
+///是否选中asset
+- (BOOL)containAsset:(PHAsset*) asset
+{
+    for(PHAsset *selectedAsset in self.selectedAssets){
+        if([selectedAsset.localIdentifier isEqualToString:asset.localIdentifier]){
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+///删除某个asset
+- (void)removeAsset:(PHAsset*) asset
+{
+    for(NSInteger i = 0;i < self.selectedAssets.count;i ++){
+        PHAsset *selectedAsset = self.selectedAssets[i];
+        if([selectedAsset.localIdentifier isEqualToString:asset.localIdentifier]){
+            [self.selectedAssets removeObjectAtIndex:i];
+            break;
+        }
+    }
+}
+
+///获取某个asset的下标
+- (NSInteger)indexOfAsset:(PHAsset*) asset
+{
+    for(NSInteger i = 0;i < self.selectedAssets.count;i ++){
+        PHAsset *selectedAsset = self.selectedAssets[i];
+        if([selectedAsset.localIdentifier isEqualToString:asset.localIdentifier]){
+            return i;
+        }
+    }
+    
+    return NSNotFound;
 }
 
 //MARK: PHPhotoLibraryChangeObserver
@@ -186,18 +332,23 @@
     SeaPhotosGridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:SeaPhotosGridCell.sea_nameOfClass forIndexPath:indexPath];
     
     PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
-    cell.checked = [self.selectedAssetLocalIdentifiers containsObject:asset.localIdentifier];
-    if(cell.checked){
-        cell.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self.selectedAssetLocalIdentifiers indexOfObject:asset.localIdentifier] + 1];
+    if(self.photosOptions.intention == SeaPhotosIntentionMultiSelection){
+        cell.checkBox.hidden = NO;
+        cell.checked = [self containAsset:asset];
+        if(cell.checked){
+            cell.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self indexOfAsset:asset ] + 1];
+        }else{
+            cell.checkBox.checkedText = nil;
+        }
     }else{
-        cell.checkBox.checkedText = nil;
+        cell.checkBox.hidden = YES;
     }
     cell.delegate = self;
-    cell.assetLocalIdentifier = asset.localIdentifier;
+    cell.asset = asset;
     
     [self.imageManager requestImageForAsset:asset targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
 
-        if([asset.localIdentifier isEqualToString:cell.assetLocalIdentifier]){
+        if([asset.localIdentifier isEqualToString:cell.asset.localIdentifier]){
             cell.imageView.image = result;
         }
     }];
@@ -208,6 +359,34 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    switch (self.photosOptions.intention) {
+        case SeaPhotosIntentionMultiSelection : {
+            
+            NSMutableArray *assets = [NSMutableArray arrayWithCapacity:self.collection.assets.count];
+            for(PHAsset *asset in self.collection.assets){
+                [assets addObject:asset];
+            }
+            
+            SeaPhotosPreviewViewController *vc = [SeaPhotosPreviewViewController new];
+            vc.assets = assets;
+            vc.selectedAssets = self.selectedAssets;
+            vc.photosOptions = self.photosOptions;
+            vc.visiableIndex = indexPath.item;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case SeaPhotosIntentionCrop : {
+            
+        }
+            break;
+        case SeaPhotosIntentionSingleSelection : {
+            
+            [self useAssets:@[[self.collection.assets objectAtIndex:indexPath.item]]];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 //MARK: SeaPhotosGridCellDelegate
@@ -216,10 +395,10 @@
 {
     if(cell.checked){
         cell.checked = NO;
-        [self.selectedAssetLocalIdentifiers removeObject:cell.assetLocalIdentifier];
+        [self removeAsset:cell.asset];
         [self.collectionView reloadData];
     }else{
-        if(self.selectedAssetLocalIdentifiers.count >= self.photosOptions.maxCount){
+        if(self.selectedAssets.count >= self.photosOptions.maxCount){
             
             [[SeaAlertController alertWithTitle:[NSString stringWithFormat:@"您最多能选择%d张图片", self.photosOptions.maxCount]
                                         message:nil
@@ -227,11 +406,12 @@
                               otherButtonTitles:@[@"我知道了"]] show];
             
         }else{
-            [self.selectedAssetLocalIdentifiers addObject:cell.assetLocalIdentifier];
-            cell.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)self.selectedAssetLocalIdentifiers.count];
+            [self.selectedAssets addObject:cell.asset];
+            cell.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)self.selectedAssets.count];
             [cell setChecked:YES animated:YES];
         }
     }
+    self.photosToolBar.count = (int)self.selectedAssets.count;
 }
 
 @end
