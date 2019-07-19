@@ -21,6 +21,7 @@
 #import "SeaPhotosPreviewViewController.h"
 #import "SeaContainer.h"
 #import "UIImage+Utils.h"
+#import <ImageIO/ImageIO.h>
 
 @interface SeaPhotosGridViewController ()<PHPhotoLibraryChangeObserver, SeaPhotosGridCellDelegate>
 
@@ -141,7 +142,7 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     WeakSelf(self)
-    __block NSInteger totalCount = assets;
+    __block NSInteger totalCount = assets.count;
     NSMutableArray *datas = [NSMutableArray arrayWithCapacity:totalCount];
     
     for(PHAsset *selectedAsset in assets){
@@ -166,22 +167,12 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         for(NSData *data in datas){
-            SeaPhotosPickResult *result = [SeaPhotosPickResult new];
-            UIImage *image = [UIImage imageWithData:data scale:UIScreen.mainScreen.scale];
-            if(weakSelf.photosOptions.needOriginalImage){
-                result.originalImage = image;
+            SeaPhotosPickResult *result = [SeaPhotosPickResult resultWithData:data options:self.photosOptions];
+            if(result){
+                [results addObject:result];
             }
-            
-            if(!CGSizeEqualToSize(CGSizeZero, weakSelf.photosOptions.compressedImageSize)){
-                result.compressedImage = [image sea_aspectFitWithSize:weakSelf.photosOptions.compressedImageSize];
-            }
-            
-            if(!CGSizeEqualToSize(CGSizeZero, weakSelf.photosOptions.thumbnailSize)){
-                result.thumbnail = [result.compressedImage sea_aspectFitWithSize:weakSelf.photosOptions.thumbnailSize];
-            }
-            [results addObject:result];
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.sea_showNetworkActivity = NO;
             !weakSelf.photosOptions.completion ?: weakSelf.photosOptions.completion(results);
@@ -400,7 +391,7 @@
     }else{
         if(self.selectedAssets.count >= self.photosOptions.maxCount){
             
-            [[SeaAlertController alertWithTitle:[NSString stringWithFormat:@"您最多能选择%d张图片", self.photosOptions.maxCount]
+            [[SeaAlertController alertWithTitle:[NSString stringWithFormat:@"您最多能选择%d张图片", (int)self.photosOptions.maxCount]
                                         message:nil
                               cancelButtonTitle:nil
                               otherButtonTitles:@[@"我知道了"]] show];

@@ -43,6 +43,8 @@
 {
     self = [super initWithFrame:frame];
     if(self){
+        self.opaque = YES;
+        self.userInteractionEnabled = NO;
         SeaTiledImageViewLayer *tiledLayer = (SeaTiledImageViewLayer*)[self layer];
 
         //设置砖块大小

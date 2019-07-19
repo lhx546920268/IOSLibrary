@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SeaImageCropSettings.h"
 
+@class SeaPhotosOptions;
+
 ///打开相册的意图
 typedef NS_ENUM(NSInteger, SeaPhotosIntention){
     
@@ -33,6 +35,9 @@ typedef NS_ENUM(NSInteger, SeaPhotosIntention){
 
 ///原图
 @property(nonatomic, strong) UIImage *originalImage;
+
+///通过相册选项 图片数据创建 创建失败返回nil
++ (instancetype)resultWithData:(NSData*) data options:(SeaPhotosOptions*) options;
 
 @end
 
@@ -59,13 +64,13 @@ typedef NS_ENUM(NSInteger, SeaPhotosIntention){
 @property(nonatomic, assign) BOOL needOriginalImage;
 
 ///多选数量 default 1
-@property(nonatomic, assign) int maxCount;
+@property(nonatomic, assign) NSInteger maxCount;
 
 ///网格图片间距 default is '3.0'
 @property(nonatomic, assign) CGFloat gridInterval;
 
 ///每行图片数量 default is '4'
-@property(nonatomic, assign) int numberOfItemsPerRow;
+@property(nonatomic, assign) NSInteger numberOfItemsPerRow;
 
 ///是否显示所有图片 default YES
 @property(nonatomic, assign) BOOL shouldDisplayAllPhotos;
@@ -75,6 +80,9 @@ typedef NS_ENUM(NSInteger, SeaPhotosIntention){
 
 ///是否直接显示第一个相册的内容 default YES
 @property(nonatomic, assign) BOOL displayFistCollection;
+
+///图片scale default SeaImageScale
+@property(nonatomic, assign) CGFloat scale;
 
 @end
 
