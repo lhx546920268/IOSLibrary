@@ -42,7 +42,7 @@
 {
     self.opaque = NO;
     self.font = [UIFont systemFontOfSize:12];
-    self.padding = 5;
+    _contentInsets = UIEdgeInsetsMake(5, 5, 5, 5);
 }
 
 - (void)setCheckedText:(NSString *)checkedText
@@ -73,14 +73,17 @@
     CGFloat lineWidth = 1.0;
     CGContextSetLineWidth(context, lineWidth);
     
+    CGFloat radius = MIN(rect.size.width - _contentInsets.left - _contentInsets.right, rect.size.height - _contentInsets.top - _contentInsets.bottom) / 2.0;
+    CGPoint center = CGPointMake(_contentInsets.left + radius, _contentInsets.top + radius);
+    
     if(self.checked){
         CGContextSetFillColorWithColor(context, SeaAppMainColor.CGColor);
-        CGContextAddArc(context, rect.size.width / 2.0, rect.size.height / 2.0, rect.size.width / 2.0 - self.padding, 0, M_PI * 2, NO);
+        CGContextAddArc(context, center.x, center.y, radius, 0, M_PI * 2, NO);
         CGContextFillPath(context);
         
-        [self.checkedText drawAtPoint:CGPointMake((rect.size.width - self.checkedTextSize.width) / 2.0, (rect.size.height - self.checkedTextSize.height) / 2.0) withAttributes:@{NSFontAttributeName : self.font, NSForegroundColorAttributeName : SeaAppMainTintColor}];
+        [self.checkedText drawAtPoint:CGPointMake(center.x - self.checkedTextSize.width / 2.0, center.y - self.checkedTextSize.height / 2.0) withAttributes:@{NSFontAttributeName : self.font, NSForegroundColorAttributeName : SeaAppMainTintColor}];
     }else{
-        CGContextAddArc(context, rect.size.width / 2.0, rect.size.height / 2.0, rect.size.width / 2.0 - lineWidth / 2.0 - self.padding, 0, M_PI * 2, NO);
+        CGContextAddArc(context, center.x, center.y, radius - lineWidth / 2.0, 0, M_PI * 2, NO);
         CGContextSetStrokeColorWithColor(context, UIColor.whiteColor.CGColor);
         CGContextStrokePath(context);
     }

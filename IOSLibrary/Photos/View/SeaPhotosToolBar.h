@@ -11,6 +11,9 @@
 ///相册工具条
 @interface SeaPhotosToolBar : UIView
 
+///分割线
+@property(nonatomic, readonly) UIView *divider;
+
 ///使用按钮
 @property(nonatomic, readonly) UIButton *useButton;
 

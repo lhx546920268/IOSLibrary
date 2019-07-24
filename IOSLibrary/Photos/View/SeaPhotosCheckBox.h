@@ -21,7 +21,7 @@
 @property(nonatomic, copy) NSString *checkedText;
 
 ///内边距
-@property(nonatomic, assign) CGFloat padding;
+@property(nonatomic, assign) UIEdgeInsets contentInsets;
 
 ///设置选中
 - (void)setChecked:(BOOL)checked animated:(BOOL) animated;

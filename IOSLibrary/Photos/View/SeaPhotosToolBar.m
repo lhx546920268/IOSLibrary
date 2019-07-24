@@ -19,14 +19,19 @@
         
         self.backgroundColor = UIColor.whiteColor;
         
-        UIView *divider = [UIView new];
-        divider.backgroundColor = SeaSeparatorColor;
-        [self addSubview:divider];
+        _divider = [UIView new];
+        _divider.backgroundColor = SeaSeparatorColor;
+        [self addSubview:_divider];
         
-        [divider sea_leftToSuperview];
-        [divider sea_rightToSuperview];
-        [divider sea_topToSuperview];
-        [divider sea_heightToSelf:SeaSeparatorWidth];
+        [_divider sea_leftToSuperview];
+        [_divider sea_rightToSuperview];
+        [_divider sea_topToSuperview];
+        [_divider sea_heightToSelf:SeaSeparatorWidth];
+        
+        CGFloat bottom = 0;
+        if(@available(iOS 11, *)){
+            bottom = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
+        }
         
         _previewButton = [UIButton new];
         [_previewButton setTitle:@"预览" forState:UIControlStateNormal];
@@ -40,7 +45,7 @@
         
         [_previewButton sea_leftToSuperview];
         [_previewButton sea_topToSuperview];
-        [_previewButton sea_bottomToSuperview];
+        [_previewButton sea_bottomToSuperview:bottom];
         
         _useButton = [UIButton new];
         [_useButton setTitle:@"使用" forState:UIControlStateNormal];
@@ -54,7 +59,7 @@
         
         [_useButton sea_rightToSuperview];
         [_useButton sea_topToSuperview];
-        [_useButton sea_bottomToSuperview];
+        [_useButton sea_bottomToSuperview:bottom];
         
         _countLabel = [UILabel new];
         _countLabel.text = @"已选0张图片";

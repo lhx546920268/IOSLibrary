@@ -82,7 +82,6 @@
 - (void)initialization
 {
     if(self.photosOptions.intention == SeaPhotosIntentionMultiSelection){
-        self.container.safeLayoutGuide = SeaSafeLayoutGuideTop | SeaSafeLayoutGuideBottom;
         self.photosToolBar = [SeaPhotosToolBar new];
         [self.photosToolBar.previewButton addTarget:self action:@selector(handlePreview) forControlEvents:UIControlEventTouchUpInside];
         [self.photosToolBar.useButton addTarget:self action:@selector(handleUse) forControlEvents:UIControlEventTouchUpInside];
@@ -181,6 +180,8 @@
     });
 }
 
+//MARK: 操作
+
 ///是否选中asset
 - (BOOL)containAsset:(PHAsset*) asset
 {
@@ -251,7 +252,7 @@
             self.stopCachingAssets = [NSMutableArray array];
         }
         
-        CGSize size = self.collectionView.bounds.size;
+        CGSize size = self.collectionView.frame.size;
         CGRect visibleRect = {self.collectionView.contentOffset, size};
         CGRect precachingRect = CGRectInset(visibleRect, 0, - size.height / 2.0);
         
@@ -301,6 +302,8 @@
         if(self.startCachingAssets.count > 0){
             [self.imageManager startCachingImagesForAssets:self.startCachingAssets targetSize:self.flowLayout.itemSize contentMode:PHImageContentModeAspectFill options:nil];
         }
+        
+        self.previousPrecachingRect = precachingRect;
     }
 }
 
@@ -363,7 +366,7 @@
             vc.selectedAssets = self.selectedAssets;
             vc.photosOptions = self.photosOptions;
             vc.visiableIndex = indexPath.item;
-            [self.navigationController pushViewController:vc animated:YES];
+            [self sea_pushViewControllerUseTransitionDelegate:vc useNavigationBar:NO];
         }
             break;
         case SeaPhotosIntentionCrop : {
