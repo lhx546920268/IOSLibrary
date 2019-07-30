@@ -66,7 +66,11 @@
         _countLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:_countLabel];
         
-        [_countLabel sea_centerInSuperview];
+        [_countLabel sea_centerXInSuperview];
+        [_countLabel sea_bottomToSuperview:bottom];
+        [_countLabel sea_topToSuperview];
+        
+        [self sea_heightToSelf:45 + bottom];
     }
     return self;
 }

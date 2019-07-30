@@ -22,7 +22,7 @@
     self = [super initWithFrame:frame];
     if(self){
         
-        self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+        self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
         
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_backButton setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
@@ -35,9 +35,11 @@
         [_backButton sea_bottomToSuperview];
         
         _checkBox = [SeaPhotosCheckBox new];
-        _checkBox.contentInsets = UIEdgeInsetsMake(12, SeaNavigationBarMargin, 12, SeaNavigationBarMargin);
+        _checkBox.contentInsets = UIEdgeInsetsMake(10, SeaNavigationBarMargin, 10, SeaNavigationBarMargin);
         [self addSubview:_checkBox];
+
         
+        [_checkBox sea_aspectRatio:1.0];
         [_checkBox sea_rightToSuperview];
         [_checkBox sea_topToSuperview:statusHeight];
         [_checkBox sea_bottomToSuperview];
@@ -55,7 +57,9 @@
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:_titleLabel];
         
-        [_titleLabel sea_centerInSuperview];
+        [_titleLabel sea_centerXInSuperview];
+        [_titleLabel sea_topToSuperview:UIApplication.sharedApplication.statusBarFrame.size.height];
+        [_titleLabel sea_bottomToSuperview];
     }
     
     return _titleLabel;

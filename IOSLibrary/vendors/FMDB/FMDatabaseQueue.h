@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** To perform queries and updates on multiple threads, you'll want to use `FMDatabaseQueue`.
+/** To perform queries and updates on multiple threads, you'll want to use `FMDatabaseQueue`
 
  Using a single instance of `<FMDatabase>` from multiple threads at once is a bad idea.  It has always been OK to make a `<FMDatabase>` object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.
 

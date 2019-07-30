@@ -70,7 +70,7 @@
 /**
  图片
  */
-@property(nonatomic,readonly) SeaTiledImageView *imageView;
+@property(nonatomic,readonly) UIImageView *imageView;
 
 /**
  代理
@@ -109,7 +109,7 @@
         _scrollView.bouncesZoom = YES;
         [self.contentView addSubview:_scrollView];
         
-        _imageView = [[SeaTiledImageView alloc] initWithFrame:self.bounds];
+        _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         [_scrollView addSubview:_imageView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];

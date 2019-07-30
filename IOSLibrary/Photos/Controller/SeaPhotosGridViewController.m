@@ -53,6 +53,14 @@
     [self updateAssetCaches];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if(self.isInit){
+        [self.collectionView reloadData];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -85,7 +93,7 @@
         self.photosToolBar = [SeaPhotosToolBar new];
         [self.photosToolBar.previewButton addTarget:self action:@selector(handlePreview) forControlEvents:UIControlEventTouchUpInside];
         [self.photosToolBar.useButton addTarget:self action:@selector(handleUse) forControlEvents:UIControlEventTouchUpInside];
-        [self setBottomView:self.photosToolBar height:45];
+        [self setBottomView:self.photosToolBar];
     }
     
     self.imageManager = [PHCachingImageManager new];

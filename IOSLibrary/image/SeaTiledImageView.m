@@ -43,7 +43,7 @@
 {
     self = [super initWithFrame:frame];
     if(self){
-        self.opaque = YES;
+        self.opaque = NO;
         self.userInteractionEnabled = NO;
         SeaTiledImageViewLayer *tiledLayer = (SeaTiledImageViewLayer*)[self layer];
 
