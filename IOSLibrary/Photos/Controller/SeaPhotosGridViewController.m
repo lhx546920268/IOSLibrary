@@ -398,7 +398,19 @@
     if(cell.checked){
         cell.checked = NO;
         [self removeAsset:cell.asset];
-        [self.collectionView reloadData];
+       
+        //reloadData 图片会抖动 所以只刷新选中下标
+        NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
+        for(NSIndexPath *indexPath in indexPaths){
+            SeaPhotosGridCell *cell = (SeaPhotosGridCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
+            PHAsset *asset = [self.collection.assets objectAtIndex:indexPath.item];
+            cell.checked = [self containAsset:asset];
+            if(cell.checked){
+                cell.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)[self indexOfAsset:asset] + 1];
+            }else{
+                cell.checkBox.checkedText = nil;
+            }
+        }
     }else{
         if(self.selectedAssets.count >= self.photosOptions.maxCount){
             

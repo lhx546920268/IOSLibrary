@@ -148,6 +148,7 @@
     
     WeakSelf(self)
     if([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined){
+        //没有权限 先申请授权
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             if(status == PHAuthorizationStatusAuthorized){
                 [weakSelf loadPhotos];
@@ -165,7 +166,6 @@
 {
     WeakSelf(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        //没有权限 先申请授权
         
         if(weakSelf.photosOptions.shouldDisplayAllPhotos){
             weakSelf.allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:self.fetchOptions];

@@ -19,6 +19,7 @@
 #import "UIView+SeaAutoLayout.h"
 #import "SeaTiledImageView.h"
 #import "UIImage+Utils.h"
+#import "SeaAlertController.h"
 
 @interface SeaPhotosPreviewViewController ()<SeaPhotosPreviewCellDelegate>
 
@@ -135,9 +136,18 @@
         self.header.checkBox.checked = NO;
         [self removeAsset:asset];
     }else{
-        [self.selectedAssets addObject:asset];
-        self.header.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)self.selectedAssets.count];
-        [self.header.checkBox setChecked:YES animated:YES];
+        if(self.selectedAssets.count >= self.photosOptions.maxCount){
+            
+            [[SeaAlertController alertWithTitle:[NSString stringWithFormat:@"您最多能选择%d张图片", (int)self.photosOptions.maxCount]
+                                        message:nil
+                              cancelButtonTitle:nil
+                              otherButtonTitles:@[@"我知道了"]] show];
+            
+        }else{
+            [self.selectedAssets addObject:asset];
+            self.header.checkBox.checkedText = [NSString stringWithFormat:@"%d", (int)self.selectedAssets.count];
+            [self.header.checkBox setChecked:YES animated:YES];
+        }
     }
     self.photosToolBar.count = (int)self.selectedAssets.count;
 }
@@ -206,7 +216,6 @@
             return YES;
         }
     }
-    
     return NO;
 }
 

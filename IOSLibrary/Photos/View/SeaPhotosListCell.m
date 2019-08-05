@@ -9,6 +9,7 @@
 #import "SeaPhotosListCell.h"
 #import "UIView+SeaAutoLayout.h"
 #import "SeaBasic.h"
+#import "UIColor+Utils.h"
 
 @implementation SeaPhotosListCell
 
@@ -57,6 +58,7 @@
         [divider sea_leftToItem:_titleLabel];
         [divider sea_bottomToSuperview];
         [divider sea_heightToSelf:SeaSeparatorWidth];
+        
     }
     return self;
 }

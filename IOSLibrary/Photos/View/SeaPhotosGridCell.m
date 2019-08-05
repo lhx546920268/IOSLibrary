@@ -9,6 +9,8 @@
 #import "SeaPhotosGridCell.h"
 #import "UIView+SeaAutoLayout.h"
 #import "SeaPhotosCheckBox.h"
+#import "SeaBasic.h"
+#import "UIColor+Utils.h"
 
 @implementation SeaPhotosGridCell
 
@@ -31,16 +33,14 @@
         [_imageView sea_insetsInSuperview:UIEdgeInsetsZero];
         [_overlay sea_insetsInSuperview:UIEdgeInsetsZero];
         
-        CGFloat size = 30.0;
-        CGFloat margin = 5.0;
-        
         _checkBox = [SeaPhotosCheckBox new];
         [_checkBox addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCheck)]];
+        _checkBox.contentInsets = UIEdgeInsetsMake(5, 5, 5, 5);
         [self.contentView addSubview:_checkBox];
         
-        [_checkBox sea_sizeToSelf:CGSizeMake(size, size)];
-        [_checkBox sea_rightToSuperview:margin];
-        [_checkBox sea_topToSuperview:margin];
+        [_checkBox sea_sizeToSelf:CGSizeMake(30, 30)];
+        [_checkBox sea_rightToSuperview];
+        [_checkBox sea_topToSuperview];
     }
     return self;
 }

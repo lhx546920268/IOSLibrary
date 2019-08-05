@@ -9,6 +9,28 @@
 #import "SeaCollectionViewFlowFillLayout.h"
 #import "SeaBasic.h"
 
+///更新invalid item 用来提升性能 吸顶情况只有 header需要更新
+@interface SeaCollectionViewLayoutInvalidationContext : UICollectionViewLayoutInvalidationContext
+
+///当前需要更新的
+@property(nonatomic, strong) NSDictionary<NSString*, NSArray<NSIndexPath*> *> *invalidSupplementaryIndexPaths;
+
+@end
+
+@implementation SeaCollectionViewLayoutInvalidationContext
+
+- (NSDictionary<NSString *,NSArray<NSIndexPath *> *> *)invalidatedSupplementaryIndexPaths
+{
+    return self.invalidSupplementaryIndexPaths;
+}
+
+- (NSArray<NSIndexPath *> *)invalidatedItemIndexPaths
+{
+    return nil;
+}
+
+@end
+
 @class SeaCollectionFlowRowInfo;
 
 ///每个section的布局信息
@@ -105,9 +127,9 @@
         self.rightmost = point.x + size.width;
 
         CGRect rect = CGRectMake(point.x, point.y, size.width, size.height);
-        self.highestFrame = rect;
-
         [self.outmostItemInfos addObject:[NSValue valueWithCGRect:rect]];
+        [self updateHighestFrame:rect];
+        
         return point;
     }
 
@@ -130,14 +152,19 @@
                
                 point.y = frame.size.height + frame.origin.y + self.layoutAttributes.minimumLineSpacing;
 
+                CGRect rect;
                 if(size.width < frame.size.width){
                     ///只挡住上面的item的一部分
                     [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:CGRectMake(point.x + size.width + self.layoutAttributes.minimumInteritemSpacing, frame.origin.y, frame.size.width - size.width - self.layoutAttributes.minimumInteritemSpacing, frame.size.height)]];
-                    [self.outmostItemInfos insertObject:[NSValue valueWithCGRect:CGRectMake(point.x, point.y, size.width, size.height)] atIndex:index];
+                    
+                    rect = CGRectMake(point.x, point.y, size.width, size.height);
+                    [self.outmostItemInfos insertObject:[NSValue valueWithCGRect:rect] atIndex:index];
                 }else{
                     ///已完全挡住上一个item
-                    [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:CGRectMake(point.x, point.y, size.width, size.height)]];
+                    rect = CGRectMake(point.x, point.y, size.width, size.height);
+                    [self.outmostItemInfos replaceObjectAtIndex:index withObject:[NSValue valueWithCGRect:rect]];
                 }
+                [self updateHighestFrame:rect];
 
                 ///合并相同高度的item
                 [self combineTheSameHeightItemForIndex:index];
@@ -162,13 +189,18 @@
                 [self.outmostItemInfos addObject:[NSValue valueWithCGRect:rect]];
             }
         }
-
-        if(self.highestFrame.size.height < rect.size.height){
-            self.highestFrame = rect;
-        }
+        [self updateHighestFrame:rect];
     }
 
     return point;
+}
+
+///更新最高的frame
+- (void)updateHighestFrame:(CGRect) frame
+{
+    if(frame.origin.y + frame.size.height > self.highestFrame.origin.y + self.highestFrame.size.height){
+        self.highestFrame = frame;
+    }
 }
 
 /**遍历最外围的item，获取最低的并且适合放size的 item
@@ -185,13 +217,21 @@
         value = [self.outmostItemInfos objectAtIndex:i];
         CGRect rect = [value CGRectValue];
         ///最低，并且可以放下item
-        if(rect.origin.y + rect.size.height < frame.origin.y + frame.size.height && rect.size.width >= size.width){
-            frame = rect;
-            index = i;
+        if(rect.origin.y + rect.size.height <= frame.origin.y + frame.size.height && rect.size.width >= size.width){
+            if(rect.origin.y + rect.size.height == frame.origin.y + frame.size.height){
+                //拿最左边的
+                if(rect.origin.x < frame.origin.x){
+                    frame = rect;
+                    index = i;
+                }
+            }else{
+                frame = rect;
+                index = i;
+            }
         }
     }
 
-    if(size.width > frame.size.width || size.height + frame.origin.y > self.originY + self.highestFrame.size.height){
+    if(size.width > frame.size.width){
         index = NSNotFound;
     }
 
@@ -211,7 +251,7 @@
         CGRect pframe = [[self.outmostItemInfos objectAtIndex:index - 1] CGRectValue];
         CGFloat pBottom = pframe.origin.y + pframe.size.height;
         if(fabs(bottom - pBottom) < 1.0){
-            pframe.origin.x = frame.origin.x;
+            pframe.origin.x = MIN(frame.origin.x, pframe.origin.x);
             pframe.size.width += frame.size.width + self.layoutAttributes.minimumInteritemSpacing;
             
              ///防止出现白边
@@ -227,7 +267,6 @@
 
             frame = pframe;
             [self.outmostItemInfos removeObjectAtIndex:index - 1];
-            index --;
         }
     }
 
@@ -236,7 +275,7 @@
         CGRect pframe = [[self.outmostItemInfos objectAtIndex:index + 1] CGRectValue];
         CGFloat pBottom = pframe.origin.y + pframe.size.height;
         if(fabs(bottom - pBottom) < 1.0){
-            pframe.origin.x = frame.origin.x;
+            pframe.origin.x = MIN(frame.origin.x, pframe.origin.x);
             pframe.size.width += frame.size.width + self.layoutAttributes.minimumInteritemSpacing;
             
             ///防止出现白边
@@ -297,7 +336,7 @@
     if(self.rowInfos.count > 0){
         SeaCollectionFlowRowInfo *info = [self.rowInfos lastObject];
 
-        return info.originY + info.highestFrame.size.height;
+        return info.highestFrame.origin.y + info.highestFrame.size.height;
     }else{
         return self.headerLayoutAttributes.frame.origin.y + self.headerLayoutAttributes.frame.size.height;
     }
@@ -523,7 +562,7 @@
             ///位置已超出上一行
             CGPoint point = [rowInfo itemOriginFromItemSize:itemSize];
             if(point.x < 0){
-                height += rowInfo.highestFrame.size.height + minimumLineSpacing;
+                height += rowInfo.highestFrame.origin.y - rowInfo.originY + rowInfo.highestFrame.size.height + minimumLineSpacing;
                 rowInfo = [[SeaCollectionFlowRowInfo alloc] init];
                 rowInfo.layoutAttributes = layoutAttributes;
                 rowInfo.originY = height;;
@@ -551,7 +590,7 @@
         }
 
         //添加item的最高列
-        height += rowInfo.highestFrame.size.height;
+        height += rowInfo.highestFrame.size.height + rowInfo.highestFrame.origin.y - rowInfo.originY;
 
         //获取底部高度
         if(sectionFooterHeightDelegate){
@@ -640,7 +679,7 @@
 
 - (void)setSectionInset:(UIEdgeInsets)sectionInset
 {
-    if(UIEdgeInsetsEqualToEdgeInsets(_sectionInset, sectionInset)){
+    if(!UIEdgeInsetsEqualToEdgeInsets(_sectionInset, sectionInset)){
         _sectionInset = sectionInset;
         if(![self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]){
             [self invalidateLayout];
@@ -656,7 +695,7 @@
     CGFloat top = rect.origin.y;
     CGFloat bottom = top + rect.size.height;
 
-    //有事宽度为空 CGRectIntersectsRect 计算会失败
+    //有时宽度为空 CGRectIntersectsRect 计算会失败
     if(rect.size.width == 0){
         rect.size.width = self.collectionView.frame.size.width;
     }
@@ -665,7 +704,8 @@
         rect.size.width = UIScreen.screenWidth;
     }
     
-    for(NSUInteger i = 0;i < self.attributes.count;i ++){
+
+    for(NSInteger i = 0;i < self.attributes.count;i ++){
         SeaCollectionViewFlowFillLayoutAttributes *attribute = self.attributes[i];
         ///该区域没有元素
         if(!attribute.existElement){
@@ -702,6 +742,8 @@
         }
 
         for(UICollectionViewLayoutAttributes *layoutAttributes in attribute.itemInfos){
+            if(layoutAttributes.frame.origin.y > bottom)
+                break;
             if(CGRectIntersectsRect(rect, layoutAttributes.frame)){
                 [attributes addObject:layoutAttributes];
             }
@@ -744,6 +786,11 @@
     return nil;
 }
 
++ (Class)invalidationContextClass
+{
+    return SeaCollectionViewLayoutInvalidationContext.class;
+}
+
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
     ///当要悬浮头部时要更新 header的frame
@@ -751,6 +798,35 @@
         return YES;
     }
     return NO;
+}
+
+- (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds
+{
+    SeaCollectionViewLayoutInvalidationContext *context = [SeaCollectionViewLayoutInvalidationContext new];
+    
+    for(NSInteger i = 0;i < self.attributes.count;i ++){
+        SeaCollectionViewFlowFillLayoutAttributes *attribute = self.attributes[i];
+        ///该区域没有元素
+        if(!attribute.existElement){
+            continue;
+        }
+        
+        if(attribute.headerLayoutAttributes && attribute.shouldStickHeader){
+            //悬浮头部
+            UICollectionViewLayoutAttributes *attr = [self stickHeaderLayoutAttributesFromAttribute:attribute section:i];
+            
+            CGRect frame = attr.frame;
+            //判断还在不在可见区域内
+            if(frame.origin.y + frame.size.height > self.collectionView.contentOffset.y){
+                context.invalidSupplementaryIndexPaths = @{
+                                                           UICollectionElementKindSectionHeader : @[attr.indexPath]
+                                                           };
+                break;
+            }
+        }
+    }
+    
+    return context;
 }
 
 ///获取悬浮头部属性
@@ -780,8 +856,7 @@
 {
     SeaCollectionViewFlowFillLayoutAttributes *attributes = nil;
     
-    for(NSUInteger i = 0;i < self.attributes.count;i ++){
-        SeaCollectionViewFlowFillLayoutAttributes *attr = self.attributes[i];
+    for(SeaCollectionViewFlowFillLayoutAttributes *attr in self.attributes){
         if(attr.sectionBeginning >= bounds.origin.y || attr.sectionEnd <= bounds.origin.y + bounds.size.height){
             attributes = attr;
             break;
