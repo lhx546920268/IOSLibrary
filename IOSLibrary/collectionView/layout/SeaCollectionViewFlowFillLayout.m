@@ -24,11 +24,6 @@
     return self.invalidSupplementaryIndexPaths;
 }
 
-- (NSArray<NSIndexPath *> *)invalidatedItemIndexPaths
-{
-    return nil;
-}
-
 @end
 
 @class SeaCollectionFlowRowInfo;
